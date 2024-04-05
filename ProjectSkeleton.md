@@ -372,7 +372,16 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `dice`: The dice selected by the player.
      - `creature`: The target creature selected by the player.
    - **Return Type**: `boolean`
-     - `True` if the move is possible.
-     - `False` otherwise.
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific entity using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target creature selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
 
 
