@@ -23,7 +23,8 @@ Dice-Realms/
 │   │   │       │   └── SolarLion.java
 │   │   │       │
 │   │   │       ├── dice/
-│   │   │       │   
+│   │   │       │   ├── Dice.java
+│   │   │       │   └── Move.java
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
