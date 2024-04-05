@@ -384,7 +384,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `true` if the move is successfully completed.
      - `false` otherwise.
 
-4. `void print()`
+5. `void print()`
    - **Description**: Displays data related to the realm.
    - **Parameter**: 
    - **Return Type**: `void`
