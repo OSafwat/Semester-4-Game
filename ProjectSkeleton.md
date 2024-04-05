@@ -362,3 +362,8 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `int`
      - Is the integer value representing the total score collected in this realm for the current player.
 
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the entity that has been defeated.
+   - **Return Type**: `void`
+  
+
