@@ -338,3 +338,9 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `String`
      - The String containing the creature data.
 
+### `GameBoard` class
+
+- **Package**: `game.engine`
+- **Type**:  Class
+- **Description**: This class shows the player the game board including the score sheet and the printing of all the 5 realms.
+#### Methods:
