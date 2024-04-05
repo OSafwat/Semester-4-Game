@@ -19,7 +19,12 @@ Dice-Realms/
 │   │   │       │   ├── GaiaGaurdian.java
 │   │   │       │   ├── HydraSerpent.java
 │   │   │       │   ├── MajesticPheonix.java
-│   │   │       │   └── SolarLion.java
+│   │   │       │   ├── SolarLion.java
+│   │   │       │   ├── RedRealm.java
+│   │   │       │   ├── GreenRealm.java
+│   │   │       │   ├── BlueRealm.java
+│   │   │       │   ├── MagentaRealm.java
+│   │   │       │   └── YellowRealm.java
 │   │   │       │
 │   │   │       ├── dice/
 │   │   │       │   
