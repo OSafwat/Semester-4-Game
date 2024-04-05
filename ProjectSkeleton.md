@@ -237,3 +237,8 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `true` if the move is successfully completed,
      - `false` otherwise.
 
+2. `String toString()`
+   - **Description**: Outputs a string containing the details of the creature.
+   - **Return Type**: `String`
+     - The String containing the creature data.
+
