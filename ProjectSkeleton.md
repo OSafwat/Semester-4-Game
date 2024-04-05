@@ -15,7 +15,6 @@ Dice-Realms/
 │   │   │       │   ├── ColorBonus.java
 │   │   │       │
 │   │   │       ├── creatures/
-│   │   │       │   ├── Creature.java
 │   │   │       │   ├── PyroclassDragon.java
 │   │   │       │   ├── GaiaGaurdian.java
 │   │   │       │   ├── HydraSerpent.java
@@ -31,7 +30,7 @@ Dice-Realms/
 │   │   │       │   │  ├── DiceState.java
 │   │   │       │   │  ├── DiceColor.java
 │   │   │       │   └── interface/
-│   │   │       │       ├── Cretaure.java
+│   │   │       │       ├── Creature.java
 │   │   │       │   
 │   │   │       ├── exceptions/
 │   │   │       │
