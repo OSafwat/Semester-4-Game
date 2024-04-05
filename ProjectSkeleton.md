@@ -217,9 +217,14 @@ For each package, add the skeleton details for the class and duplicate as much a
 #### Methods:
 
 1. `int getCounter()`
-   - **Description**: gives us the number of availabe timewarps a player have
+   - **Description**: returns  the number of availabe timewarps a player has
    - **Return Type**: `int`
-     - `number of timewarps a player has` 
+     - `number of active timewarps a player has` 
+2. `int getTotal()`
+   - **Description**: returns all time warps including the availabe and the used  ones
+   - **Return Type**: `int`
+     - `returns all time warps including the availabe and the used  ones`.
+
 
 ### `Template` class
 
