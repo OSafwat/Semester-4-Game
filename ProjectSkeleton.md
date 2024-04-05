@@ -208,6 +208,12 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
+      
+### `TimeWarp` class
+
+- **Package**: `game.collectibles`
+- **Type**:  Class
+- **Description**: This class represents the time warp boost which helps us to reroll if we aquired
 
 ### `Template` class
 
