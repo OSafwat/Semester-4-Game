@@ -229,6 +229,12 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `int`
      - `returns all the time warps which the player had already used` 
 
+### `ArcaneBoost` class
+
+- **Package**: `game.collectibles`
+- **Type**:  Class
+- **Description**: This class represents the Arcane boost which helps player to have an extra round.
+#### Methods:
 
 
 ### `Template` class
