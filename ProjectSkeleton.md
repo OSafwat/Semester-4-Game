@@ -223,3 +223,17 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `?`: ?
    - **Return Type**: `?`
      - `?` ?
+
+## Interfaces
+
+### `Creature` interface
+
+1. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific creature.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
