@@ -343,8 +343,22 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.engine`
 - **Type**:  Class
 - **Description**: This class shows the player the game board including the score sheet and the printing of all the 5 realms.
+
 #### Methods:
 1. `void printBoard()`
    - **Description**: shows the game boaed containing the score sheet and the details of the 5 realms.
    - **Return Type**: `void`
-     - shows the game boaed containing the score sheet and the details of the 5 realms..
+     - shows the game board containing the score sheet and the details of the 5 realms..
+
+### `Realm` class
+
+- **Package**: `game.engine`
+- **Type**:  Abstract Class
+- **Description**: This class is going to serve as the template for the five different realm classes.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+     - Is the integer value representing the total score collected in this realm for the current player.
+
