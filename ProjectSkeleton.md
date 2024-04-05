@@ -239,6 +239,10 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: returns  the number of availabe Arcane boost a player has
    - **Return Type**: `int`
      - `number of active Arcane boost a player has` 
+2. `int getTotal()`
+   - **Description**: returns all Arcane boost including the availabe and the used  ones
+   - **Return Type**: `int`
+     - `returns all Arcane boost including the availabe and the used  ones`.
 
 ### `Template` class
 
