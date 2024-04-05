@@ -26,6 +26,7 @@ Dice-Realms/
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
+│   │   │       │   ├── Realm.java
 │   │   │       │   ├── enum/
 │   │   │       │   │  ├── DiceState.java
 │   │   │       │   │  ├── DiceColor.java
