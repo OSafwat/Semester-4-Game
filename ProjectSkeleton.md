@@ -243,6 +243,11 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: returns all Arcane boost including the availabe and the used  ones
    - **Return Type**: `int`
      - `returns all Arcane boost including the availabe and the used  ones`.
+3. `void getUsed()`
+   - **Description**: returns all the Arcane boost which the player had already used
+   - **Return Type**: `int`
+     - `returns all the Arcane boost which the player had already used` 
+
 
 ### `Template` class
 
