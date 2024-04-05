@@ -235,7 +235,10 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Type**:  Class
 - **Description**: This class represents the Arcane boost which helps player to have an extra round.
 #### Methods:
-
+1. `int getCounter()`
+   - **Description**: returns  the number of availabe Arcane boost a player has
+   - **Return Type**: `int`
+     - `number of active Arcane boost a player has` 
 
 ### `Template` class
 
