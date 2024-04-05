@@ -9,21 +9,30 @@ Dice-Realms/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── game/
-│   │   │       ├── collectibles/
+│   │   │       ├── collectibles/   
+│   │   │       │   ├── TimeWarp.java
+│   │   │       │   ├── ArcaneBoost.java
+│   │   │       │   ├── ColorBonus.java
 │   │   │       │
 │   │   │       ├── creatures/
 │   │   │       │
 │   │   │       ├── dice/
+│   │   │       │   
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
-│   │   │       │
+│   │   │       │   ├── enum/
+│   │   │       │   │  ├── DiceState.java
+│   │   │       │   │  ├── DiceColor.java
+│   │   │       │   └── interface/
+│   │   │       │       ├── Cretaure.java
+│   │   │       │   
 │   │   │       ├── exceptions/
 │   │   │       │
 │   │   │       ├── gui/
 │   │   │       │
 │   │   │       └── Main.java
-│   │   │
+│   │   │         
 │   │   └── resources/
 │   │       ├── images/
 │   │       └── config/
