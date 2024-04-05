@@ -228,6 +228,12 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 ### `Creature` interface
 
+- **Package**: `game.creatures`
+- **Type**: Interface
+- **Description**: This interface represents the creatures in the game.
+
+#### Methods:
+
 1. `boolean makeMove(Dice dice, Creature creature)`
    - **Description**: Executes an attack on a specific creature.
    - **Parameter**: 
