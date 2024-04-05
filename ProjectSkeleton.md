@@ -251,13 +251,13 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
-  
-
+      - 
 2. `Creature getCreature()`
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
-   - **Return Type**: `int`
-     - The number that the dice has been rolled on
-3. `Color getColor()`
+   - **Return Type**: `Creature`
+     - The creature that makes up the move 
+     - 
+3. `Dice getDice()`
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
-   - **Return Type**: `Color`
-     - The color represented by the dice.
+   - **Return Type**: `Dice`
+     - The dice represented by the move.
