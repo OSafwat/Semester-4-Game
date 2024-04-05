@@ -234,4 +234,30 @@ For each package, add the skeleton details for the class and duplicate as much a
      - The color represented by the dice.
 
 
+### `Move` class
 
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the move attempted by the player 
+
+#### Methods:
+
+
+1. `boolean makeMove(Dice dice, Creature creature)`
+    - **Description**: Executes a move using the selected dice on a specified creature.
+    - **Parameters**:
+      - `dice`: The dice selected by the active player for the move.
+      - `creature`: The target creature that the move is against.
+    - **Return Type**: `boolean`
+      - `true` if the move is successfully completed,
+      - `false` otherwise.
+  
+
+2. `Creature getCreature()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `int`
+     - The number that the dice has been rolled on
+3. `Color getColor()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `Color`
+     - The color represented by the dice.
