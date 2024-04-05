@@ -208,18 +208,30 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
+      - 
 
-### `Template` class
+### `Dice` class
 
-- **Package**: `game.?`
-- **Type**: ? Class
-- **Description**: This class represents ?
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the dice to be rolled and used in the game 
 
 #### Methods:
 
-1. `void startGame()`
-   - **Description**: ?
+1. `Dice rollDice()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
    - **Parameters**:
      - `?`: ?
-   - **Return Type**: `?`
-     - `?` ?
+   - **Return Type**: `Dice`
+     - `Dice` object representing the dice rolled.
+2. `int getValue()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `int`
+     - The number that the dice has been rolled on
+3. `Color getColor()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `Color`
+     - The color represented by the dice.
+
+
+
