@@ -365,5 +365,14 @@ For each package, add the skeleton details for the class and duplicate as much a
 2. `void updateScore()`
    - **Description**: Updates the value of the score of this realm according to the entity that has been defeated.
    - **Return Type**: `void`
-  
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Check if a move using a specific dice can be used against a specific entity.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target creature selected by the player.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible.
+     - `False` otherwise.
+
 
