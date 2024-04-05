@@ -208,6 +208,7 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
+      - 
 
 ### `TimeWarp` class
 
@@ -250,16 +251,90 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 
 ### `Template` class
+### `Dice` class
 
-- **Package**: `game.?`
-- **Type**: ? Class
-- **Description**: This class represents ?
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the dice to be rolled and used in the game 
 
 #### Methods:
 
-1. `void startGame()`
-   - **Description**: ?
+1. `Dice rollDice()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
    - **Parameters**:
      - `?`: ?
+   - **Return Type**: `Dice`
+     - `Dice` object representing the dice rolled.
+2. `int getValue()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `int`
+     - The number that the dice has been rolled on
+3. `Color getColor()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `Color`
+     - The color represented by the dice.
+
+
+### `Move` class
+
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the move attempted by the player 
+
+#### Methods:
+
+
+1. `boolean makeMove(Dice dice, Creature creature)`
+    - **Description**: Executes a move using the selected dice on a specified creature.
+    - **Parameters**:
+      - `dice`: The dice selected by the active player for the move.
+      - `creature`: The target creature that the move is against.
+    - **Return Type**: `boolean`
+      - `true` if the move is successfully completed,
+      - `false` otherwise.
+      - 
+2. `Creature getCreature()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `Creature`
+     - The creature that makes up the move 
+     - 
+3. `Dice getDice()`
+   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Return Type**: `Dice`
+     - The dice represented by the move.
    - **Return Type**: `?`
      - `?` ?
+
+## Interfaces
+
+### `Creature` interface
+
+- **Package**: `game.creatures`
+- **Type**: Interface
+- **Description**: This interface represents the creatures in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific creature.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Check if a move on a specific creature is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The target creature that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the creature.
+   - **Return Type**: `String`
+     - The String containing the creature data.
+
