@@ -12,6 +12,12 @@ Dice-Realms/
 │   │   │       ├── collectibles/
 │   │   │       │
 │   │   │       ├── creatures/
+│   │   │       │   ├── Creature.java
+│   │   │       │   ├── PyroclassDragon.java
+│   │   │       │   ├── GaiaGaurdian.java
+│   │   │       │   ├── HydraSerpent.java
+│   │   │       │   ├── MajesticPheonix.java
+│   │   │       │   └── SolarLion.java
 │   │   │       │
 │   │   │       ├── dice/
 │   │   │       │
