@@ -350,10 +350,11 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `void`
      - shows the game board containing the score sheet and the details of the 5 realms..
 
+
 ### `Realm` class
 
 - **Package**: `game.engine`
-- **Type**:  Abstract Class
+- **Type**: Abstract Class
 - **Description**: This class is going to serve as the template for the five different realm classes.
 
 #### Methods:
@@ -390,3 +391,15 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `void`
 
 
+### `DiceState` class
+
+- **Package**: `game.engine`
+- **Type**: Enum Class
+- **Description**: This class will contain the different enumerations for the states required for the dice class.
+
+
+### `Color` class
+
+- **Package**: `game.engine`
+- **Type**: Enum Class
+- **Description**: This class will contain the different enumerations for colors required for various classes, such as realms and die.
