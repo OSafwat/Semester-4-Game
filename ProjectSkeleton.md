@@ -344,3 +344,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Type**:  Class
 - **Description**: This class shows the player the game board including the score sheet and the printing of all the 5 realms.
 #### Methods:
+1. `void printBoard()`
+   - **Description**: shows the game boaed containing the score sheet and the details of the 5 realms.
+   - **Return Type**: `void`
+     - shows the game boaed containing the score sheet and the details of the 5 realms..
