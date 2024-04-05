@@ -237,7 +237,16 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `true` if the move is successfully completed,
      - `false` otherwise.
 
-2. `String toString()`
+2. `**boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Check if a move on a specific creature is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The target creature that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
    - **Description**: Outputs a string containing the details of the creature.
    - **Return Type**: `String`
      - The String containing the creature data.
