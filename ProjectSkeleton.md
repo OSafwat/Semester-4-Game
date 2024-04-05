@@ -27,7 +27,8 @@ Dice-Realms/
 │   │   │       │   └── YellowRealm.java
 │   │   │       │
 │   │   │       ├── dice/
-│   │   │       │   
+│   │   │       │   ├── Dice.java
+│   │   │       │   └── Move.java
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
