@@ -208,12 +208,18 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
-      
+
 ### `TimeWarp` class
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
 - **Description**: This class represents the time warp boost which helps us to reroll if we aquired
+#### Methods:
+
+1. `int getCounter()`
+   - **Description**: gives us the number of availabe timewarps a player have
+   - **Return Type**: `int`
+     - `number of timewarps a player has` 
 
 ### `Template` class
 
