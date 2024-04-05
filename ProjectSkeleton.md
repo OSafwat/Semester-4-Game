@@ -237,7 +237,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `true` if the move is successfully completed,
      - `false` otherwise.
 
-2. `**boolean checkMove(Dice dice, Creature creature)`
+2. `boolean checkMove(Dice dice, Creature creature)`
    - **Description**: Check if a move on a specific creature is possible.
    - **Parameter**: 
      - `dice`: The dice selected by the active player to check for the move.
