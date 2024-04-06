@@ -36,8 +36,9 @@ Dice-Realms/
 │   │   │       │   ├── enum/
 │   │   │       │   │  ├── DiceState.java
 │   │   │       │   │  ├── Color.java
+│   │   │       │   │  └── PowerState.java
 │   │   │       │   └── interface/
-│   │   │       │       ├── Creature.java
+│   │   │       │       └── Creature.java
 │   │   │       │   
 │   │   │       ├── exceptions/
 │   │   │       │
@@ -423,6 +424,12 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.engine`
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations for colors required for various classes, such as realms and die.
+
+### `PowerState` class
+
+- **Package**: `game.engine`
+- **Type**: Enum Class
+- **Description**: This class will contain the different enumerations that represent the states of powers like the "Arcane Boost" and "Time Warp".
 
 ## Interfaces
 
