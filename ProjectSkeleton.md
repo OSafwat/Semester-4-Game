@@ -251,7 +251,6 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `returns all the Arcane boost which the player had already used` 
 
 
-### `Template` class
 ### `Dice` class
 
 - **Package**: `game.dice`
