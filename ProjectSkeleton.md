@@ -342,13 +342,35 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.engine`
 - **Type**:  Class
-- **Description**: This class shows the player the game board including the score sheet and the printing of all the 5 realms.
+- **Description**: This class shows the player the game board including the score sheet and the printing of all the 5 realms for both of the players.
 
 #### Methods:
 1. `void printBoard()`
-   - **Description**: shows the game boaed containing the score sheet and the details of the 5 realms.
+   - **Description**: shows the game board containing the score sheet and the details of the 5 realms for all players.
    - **Return Type**: `void`
-     - shows the game board containing the score sheet and the details of the 5 realms..
+
+### 'ScoreSheet' class
+
+  - **Package**: `game.engine`
+  - **Type**: Class
+  - **Description**: This class shows the scoresheet including the details of the scores of each realm including which monsters were killed and the number of collectibles for the current active player.
+
+#### Methods:
+1. `void printScoreSheet()`
+    -**Description**: prints out the entire score sheet for the current active player including the number of each collectible and the specific scores of each realm and the total score.
+    -**Return Type**: `void`
+
+2. `void updateScore()`
+    -**Description**: updates the score of the current active player after making a valid move in both the respective realm and the total score.
+    -**Return Type**: `vid`
+
+3. `void printCollectible()`
+    **Description**: prints out all the collectibles for the current active player.
+    **Return Type**: `void`
+
+4. `void printRealms()`
+    **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
+    **Return Type**: `void`
 
 
 ### `Realm` class
