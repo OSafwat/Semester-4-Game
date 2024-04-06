@@ -372,6 +372,27 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
     **Return Type**: `void`
 
+### `GameStatus` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to show the turns and rounds information for the current active player.
+
+#### Methods:
+1. `void printTurn()`
+    **Description**: prints the turn information for the current active player
+    **Return Type**: void
+
+2. `void printRound()`
+    **Description**: prints the round information for the current active player
+    **Return Type**: void
+
+3. `void printGameStatus`
+    **Description**: prints the turn and roundd information for the current active player
+    **Return Type**: void
+
+
+
 
 ### `Realm` class
 
