@@ -387,11 +387,23 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Description**: prints the round information for the current active player
     **Return Type**: void
 
-3. `void printGameStatus`
+3. `void printGameStatus()`
     **Description**: prints the turn and roundd information for the current active player
     **Return Type**: void
 
+### `GameScore` class
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class shows current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
 
+#### Methods:
+1. `void printGameScore()`
+    **Description**: prints the current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
+    **Return Type**: void
+
+2. `void updateGameScore()`
+    **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
+    **Return Type**: void    
 
 
 ### `Realm` class
