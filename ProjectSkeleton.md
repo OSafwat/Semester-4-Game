@@ -235,6 +235,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.collectibles`
 - **Type**:  Class
 - **Description**: This class represents the Arcane boost which helps player to have an extra round.
+
 #### Methods:
 1. `int getCounter()`
    - **Description**: returns  the number of availabe Arcane boost a player has
@@ -261,16 +262,14 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 1. `Dice rollDice()`
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
-   - **Parameters**:
-     - `?`: ?
    - **Return Type**: `Dice`
      - `Dice` object representing the dice rolled.
 2. `int getValue()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Description**: returns the numerical value represented by the dice
    - **Return Type**: `int`
      - The number that the dice has been rolled on
 3. `Color getColor()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Description**: returns the color of the dice 
    - **Return Type**: `Color`
      - The color represented by the dice.
 
@@ -302,8 +301,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
    - **Return Type**: `Dice`
      - The dice represented by the move.
-   - **Return Type**: `?`
-     - `?` ?
+
 
 ## Interfaces
 
