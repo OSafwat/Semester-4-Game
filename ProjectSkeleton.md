@@ -303,38 +303,6 @@ For each package, add the skeleton details for the class and duplicate as much a
      - The dice represented by the move.
 
 
-## Interfaces
-
-### `Creature` interface
-
-- **Package**: `game.creatures`
-- **Type**: Interface
-- **Description**: This interface represents the creatures in the game.
-
-#### Methods:
-
-1. `boolean makeMove(Dice dice, Creature creature)`
-   - **Description**: Executes an attack on a specific creature.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The target creature that the move is against.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed,
-     - `false` otherwise.
-
-2. `boolean checkMove(Dice dice, Creature creature)`
-   - **Description**: Check if a move on a specific creature is possible.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The target creature that the active player wants to check if the move is possible against.
-   - **Return Type**: `boolean`
-     - `True` if the move is possible,
-     - `False` otherwise.
-
-3. `String toString()`
-   - **Description**: Outputs a string containing the details of the creature.
-   - **Return Type**: `String`
-     - The String containing the creature data.
 
 ### `GameBoard` class
 
@@ -456,3 +424,36 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.engine`
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations for colors required for various classes, such as realms and die.
+
+## Interfaces
+
+### `Creature` interface
+
+- **Package**: `game.creatures`
+- **Type**: Interface
+- **Description**: This interface represents the creatures in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific creature.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Check if a move on a specific creature is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The target creature that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the creature.
+   - **Return Type**: `String`
+     - The String containing the creature data.
