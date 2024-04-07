@@ -110,18 +110,20 @@ public abstract class GameController {
     public abstract GameScore getGameScore();
 
     /**
-     * Gets the number of TimeWarp powers the active player has and their status.
-     * 
-     * @return The {@code TimeWarp} object for the current active player.
+     * Gets the number of TimeWarp powers and their status for the active player.
+     *
+     * @return An array of {@code TimeWarp} objects representing the TimeWarp powers
+     *         of the active player.
      */
-    public abstract TimeWarp getTimeWarpPowers();
+    public abstract TimeWarp[] getTimeWarpPowers();
 
     /**
-     * Gets the number of ArcaneBoost powers the active player has and their status.
-     * 
-     * @return The {@code ArcaneBoost} object for the current active player.
+     * Gets the number of ArcaneBoost powers and their status for the active player.
+     *
+     * @return An array of {@code ArcaneBoost} objects representing the ArcaneBoost
+     *         powers of the active player.
      */
-    public abstract ArcaneBoost getArcaneBoostPowers();
+    public abstract ArcaneBoost[] getArcaneBoostPowers();
 
     /**
      * Selects a dice and adds it to the current turn of the active player, moves
