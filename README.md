@@ -41,6 +41,8 @@ The `game.exceptions` package provides classes for defining custom exceptions sp
 
 You are provided with the following files:
 
+Here's the updated README.md reflecting the changes made to the GameController.java:
+
 ### `GameController.java`
 
 - **Package**: `game.engine`
@@ -84,79 +86,118 @@ You are provided with the following files:
    - **Return Type**: Array of `Dice`
      - An array of dice that are currently in the Forgotten Realm.
 
-7. `Move[] getAllPossibleMoves()`
+7. `Move[] getAllPossibleMoves(Player player)`
 
-   - **Description**: Gets all possible moves for all currently rolled dice for the active player.
+   - **Description**: Gets all possible moves for a given player.
+   - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
    - **Return Type**: Array of `Move`
      - An array of all possible moves for all rolled dice.
 
-8. `Move[] getPossibleMoves(Dice dice)`
+8. `Move[] getPossibleMovesForAvailableDice(Player player)`
 
-   - **Description**: Gets all possible moves for a given dice for the active player.
+   - **Description**: Gets possible moves for all currently rolled dice for a given player.
    - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
+   - **Return Type**: Array of `Move`
+     - An array of all possible moves for all rolled dice.
+
+9. `Move[] getPossibleMovesForADie(Player player, Dice dice)`
+
+   - **Description**: Gets all possible moves for a given die for a given player.
+   - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
      - `dice`: The dice to determine possible moves for.
    - **Return Type**: Array of `Move`
      - An array of possible moves for the given dice.
 
-9. `GameBoard getGameBoard()`
+10. `GameBoard getGameBoard()`
 
-   - **Description**: Gets the current game board, including all players and all score sheets.
-   - **Return Type**: `GameBoard`
-     - The current game board object.
+    - **Description**: Gets the current game board, including all players and all score sheets.
+    - **Return Type**: `GameBoard`
+      - The current game board object.
 
-10. `Player getPlayer()`
+11. `Player getActivePlayer()`
 
     - **Description**: Gets the current active player's information.
     - **Return Type**: `Player`
       - The active player object.
 
-11. `ScoreSheet getScoreSheet()`
+12. `Player getPassivePlayer()`
 
-    - **Description**: Gets the score sheet for the current active player.
+    - **Description**: Gets the current passive player's information.
+    - **Return Type**: `Player`
+      - The passive player object.
+
+13. `ScoreSheet getScoreSheet(Player player)`
+
+    - **Description**: Gets the score sheet for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current score sheet for.
     - **Return Type**: `ScoreSheet`
-      - The score sheet object for the current active player.
+      - The score sheet object for the given player.
 
-12. `GameStatus getGameStatus()`
+14. `GameStatus getGameStatus()`
 
     - **Description**: Gets the current game status, including round and turn information for the current active player.
     - **Return Type**: `GameStatus`
       - The current game status object.
 
-13. `GameScore getGameScore()`
+15. `GameScore getGameScore(Player player)`
 
-    - **Description**: Gets the current score of the game, including scores in each realm, number of elemental crests, and the total score for the current active player.
-    - **Return Type**: `GameScore`
-      - The current game score object.
-
-14. `TimeWarp getTimeWarpPowers()`
-
-    - **Description**: Gets the number of TimeWarp powers the active player has and their status.
-    - **Return Type**: `TimeWarp`
-      - The TimeWarp object for the current active player.
-
-15. `ArcaneBoost getArcaneBoostPowers()`
-
-    - **Description**: Gets the number of ArcaneBoost powers the active player has and their status.
-    - **Return Type**: `ArcaneBoost`
-      - The ArcaneBoost object for the current active player.
-
-16. `boolean selectDice(Dice dice)`
-
-    - **Description**: Selects a dice and adds it to the current turn of the active player, moving all other dice with less value to the Forgotten Realm.
+    - **Description**: Gets the current score of the game for a given player.
     - **Parameters**:
+      - `player`: The player to determine current score for.
+    - **Return Type**: `GameScore`
+      - The current game score object for the given player.
+
+16. `TimeWarp[] getTimeWarpPowers(Player player)`
+
+    - **Description**: Gets the array of TimeWarp powers and their status for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current TimeWarp powers for.
+    - **Return Type**: Array of `TimeWarp`
+      - An array of `TimeWarp` objects representing the TimeWarp powers for the given player.
+
+17. `ArcaneBoost[] getArcaneBoostPowers(Player player)`
+
+    - **Description**: Gets the array of ArcaneBoost powers and their status for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current ArcaneBoost powers for.
+    - **Return Type**: Array of `ArcaneBoost`
+      - An array of `ArcaneBoost` objects representing the ArcaneBoost powers for the given player.
+
+18. `boolean selectDice(Dice dice, Player player)`
+
+    - **Description**: Selects a die and adds it to the player's class, then moves all other dice with less value to the Forgotten Realm.
+    - **Parameters**:
+      - `player`: The player who selected the die.
       - `dice`: The dice to be selected.
     - **Return Type**: `boolean`
       - `true` if the selection was successful,
       - `false` otherwise.
 
-17. `boolean makeMove(Dice dice, Creature creature)`
+19. `boolean makeMove(Player player, Move move)`
+
     - **Description**: Executes a move using the selected dice on a specified creature.
     - **Parameters**:
-      - `dice`: The dice selected by the active player for the move.
-      - `creature`: The target creature that the move is against.
+      - `player`: The player who wants to make the move.
+      - `move`: The move to be executed, including the selected dice and target creature.
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
+
+#### Summary of Changes:
+
+- Refactored `getAllPossibleMoves()` to `getAllPossibleMoves(Player player)` to specify the player for whom moves are determined.
+- Refactored `getPossibleMoves(Dice dice)` to `getPossibleMovesForADie(Player player, Dice dice)` to get all possible moves for a given die for a given player.
+- Added `getPossibleMovesForAvailableDice(Player player)` to get possible moves for all currently rolled dice for a given player.
+- Refactored `getPlayer()` to `getActivePlayer()` and `getScoreSheet()` to `getScoreSheet(Player player)` to specify the player for whom information is retrieved.
+- Added `getPassivePlayer()` to get the current passive player's information.
+- Refactored `getGameScore()` to `getGameScore(Player player)` to specify the player for whom the score is determined.
+- Refactored `getTimeWarpPowers()` and `getArcaneBoostPowers()` to accept a `Player` parameter and return an array of powers for that player.
+- Refactored `selectDice(Dice dice)` to `selectDice(Dice dice, Player player)` to specify the player who is selecting the die.
+- Refactored `makeMove(Dice dice, Creature creature)` to `makeMove(Player player, Move move)` to specify the player and move details for executing a move.
 
 ### `Main.java`
 

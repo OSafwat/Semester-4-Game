@@ -1,7 +1,6 @@
 package game.engine;
 
 import game.dice.*;
-import game.creatures.*;
 import game.collectibles.*;
 
 /**
@@ -58,19 +57,29 @@ public abstract class GameController {
     public abstract Dice[] getForgottenRealmDice();
 
     /**
-     * Gets all possible moves for all current rolled dice for the active player.
-     * 
-     * @return An array of all possible {@code Move} for all rolled dice.
+     * Gets all possible moves for a given player.
+     *
+     * @param player The player for whom to determine possible moves.
+     * @return An array of all possible moves for all rolled dice.
      */
-    public abstract Move[] getAllPossibleMoves();
+    public abstract Move[] getAllPossibleMoves(Player player);
 
     /**
-     * Gets all possible moves for a given dice for the active player.
-     * 
-     * @param dice The dice to determine possible moves for.
-     * @return An array of possible {@code Move} for the given dice.
+     * Gets possible moves for all currently rolled dice for a given player.
+     *
+     * @param player The player for whom to determine possible moves.
+     * @return An array of all possible moves for all rolled dice.
      */
-    public abstract Move[] getPossibleMoves(Dice dice);
+    public abstract Move[] getPossibleMovesForAvailableDice(Player player);
+
+    /**
+     * Gets all possible moves for a given die for a given player.
+     *
+     * @param player The player for whom to determine possible moves.
+     * @param dice   The dice to determine possible moves for.
+     * @return An array of possible moves for the given dice.
+     */
+    public abstract Move[] getPossibleMovesForADie(Player player, Dice dice);
 
     /**
      * Gets the current game board, including all players and all score sheets.
@@ -84,14 +93,22 @@ public abstract class GameController {
      * 
      * @return The active {@code Player} object.
      */
-    public abstract Player getPlayer();
+    public abstract Player getActivePlayer();
 
     /**
-     * Gets the score sheet for the current active player.
+     * Gets the current passive player's information.
      * 
-     * @return The {@code ScoreSheet} object for the current active player.
+     * @return The passive {@code Player} object.
      */
-    public abstract ScoreSheet getScoreSheet();
+    public abstract Player getPassivePlayer();
+
+    /**
+     * Gets the score sheet for a given player.
+     * 
+     * @param player The player to get the current score sheet for.
+     * @return The {@code ScoreSheet} object for a given player.
+     */
+    public abstract ScoreSheet getScoreSheet(Player player);
 
     /**
      * Gets the current game status, including round and turn information for the
@@ -103,46 +120,50 @@ public abstract class GameController {
 
     /**
      * Gets the current score of the game, including scores in each realm, number of
-     * elemental crests, and the total score for the current active player.
+     * elemental crests, and the total score for a given player.
      * 
+     * @param player The player to determine current score for.
      * @return The current {@code GameScore} object.
      */
-    public abstract GameScore getGameScore();
+    public abstract GameScore getGameScore(Player player);
 
     /**
-     * Gets the number of TimeWarp powers and their status for the active player.
+     * Gets the array of TimeWarp powers and their status for a given player.
      *
+     * @param player The player to get the current TimeWarp powers for.
      * @return An array of {@code TimeWarp} objects representing the TimeWarp powers
-     *         of the active player.
+     *         for a given player.
      */
-    public abstract TimeWarp[] getTimeWarpPowers();
+    public abstract TimeWarp[] getTimeWarpPowers(Player player);
 
     /**
-     * Gets the number of ArcaneBoost powers and their status for the active player.
+     * Gets the array of ArcaneBoost powers and their status for a given player.
      *
+     * @param player The player to get the current ArcaneBoost powers for.
      * @return An array of {@code ArcaneBoost} objects representing the ArcaneBoost
-     *         powers of the active player.
+     *         powers for a given player.
      */
-    public abstract ArcaneBoost[] getArcaneBoostPowers();
+    public abstract ArcaneBoost[] getArcaneBoostPowers(Player player);
 
     /**
-     * Selects a dice and adds it to the current turn of the active player, moves
+     * Selects a die and adds it to the player class, then moves
      * all other dice with less value to the Forgotten Realm.
      * 
-     * @param dice The dice to be selected.
+     * @param player The player who selected the die.
+     * @param dice   The dice to be selected.
      * @return {@code true} if the selection was successful,
      *         {@code false} otherwise.
      */
-    public abstract boolean selectDice(Dice dice);
+    public abstract boolean selectDice(Dice dice, Player player);
 
     /**
      * Executes a move using the selected dice on a specified creature.
      *
-     * @param dice     The dice selected by the active player for the move.
-     * @param creature The target creature that the move is against.
+     * @param player The player who wants to make the move.
+     * @param move   The move to be executed, including the selected dice and
+     *               target creature.
      * @return {@code true} if the move is successfully completed,
      *         {@code false} otherwise.
      */
-    public abstract boolean makeMove(Dice dice, Creature creature);
-
+    public abstract boolean makeMove(Player player, Move move);
 }
