@@ -180,19 +180,19 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `GameScore`
       - The current game score object.
 
-14. `TimeWarp getTimeWarpPowers()`
+14. `TimeWarp[] getTimeWarpPowers()`
 
-    - **Description**: Gets the number of TimeWarp powers the active player has and their status.
-    - **Return Type**: `TimeWarp`
+    - **Description**: returns an array of TimeWarp objects representing the TimeWarp objects of the active player.
+    - **Return Type**: `TimeWarp []`
       - The TimeWarp object for the current active player.
 
-15. `ArcaneBoost getArcaneBoostPowers()`
+1.  `ArcaneBoost[] getArcaneBoostPowers()`
 
-    - **Description**: Gets the number of ArcaneBoost powers the active player has and their status.
-    - **Return Type**: `ArcaneBoost`
+    - **Description**: returns An array of ArcaneBoost objects representing the ArcaneBoost powers of the active player.
+    - **Return Type**: `ArcaneBoost[]`
       - The ArcaneBoost object for the current active player.
 
-16. `boolean selectDice(Dice dice)`
+1.  `boolean selectDice(Dice dice)`
 
     - **Description**: Selects a dice and adds it to the current turn of the active player, moving all other dice with less value to the Forgotten Realm.
     - **Parameters**:
@@ -201,7 +201,7 @@ For each package, add the skeleton details for the class and duplicate as much a
       - `true` if the selection was successful,
       - `false` otherwise.
 
-17. `boolean makeMove(Dice dice, Creature creature)`
+2.  `boolean makeMove(Dice dice, Creature creature)`
     - **Description**: Executes a move using the selected dice on a specified creature.
     - **Parameters**:
       - `dice`: The dice selected by the active player for the move.
