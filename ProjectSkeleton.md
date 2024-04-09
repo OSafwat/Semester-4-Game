@@ -265,6 +265,7 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Parameters**:
         - The PowerState value to be changed to
     - **Description**: changes the state of the ArcaneBoost to the value passed in to the function.
+    - **Return Type**: Void
 2. `PowerState getUsed()`
     - **Description**: returns the state of the ArcaneBoost
     - **Return Type**: `PowerState`
