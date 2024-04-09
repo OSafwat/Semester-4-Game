@@ -410,11 +410,11 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 3. `HashMap<Dice> getDiceUsed()`<br>
     - **Description**: Used to get the hashmap container having the dice used by the player.<br>
-    **Return Type**: Hashmap with the dice used by the player.<br>
+    - **Return Type**: Hashmap with the dice used by the player.<br>
 
 4. `void addDiceUsed(Dice dice)`<br>
-    **Description**: Used to add dice to the hashmap container having the dice used by the player.<br>
-    **Return Type**: Void<br>
+    - **Description**: Used to add dice to the hashmap container having the dice used by the player.<br>
+    - **Return Type**: Void<br>
 
 
 ### `Realm` class
