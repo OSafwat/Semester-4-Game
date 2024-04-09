@@ -398,23 +398,23 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Description**: This class will contain information regarding the player.
 
 ### Methods:
-1. `getPlayerState()`
-    **Description**: Returns the player state for the current player.
+1. `getPlayerState()` <br>
+    **Description**: Returns the player state for the current player. <br>
     **Return Type**: PlayerState
 
-2. `setPlayerState(PlayerState playerState)`
-    **Description**: Sets the player state for the current player to the input state.
-    **Parameters**:
+2. `setPlayerState(PlayerState playerState)`<br>
+    **Description**: Sets the player state for the current player to the input state.<br>
+    **Parameters**:<br>
         `playerState`: The PlayerState to be changed to.
-    **Return Type**: Void
+    **Return Type**: Void<br>
 
-3. `HashMap<Dice> getDiceUsed()`
-    **Description**: Used to get the hashmap container having the dice used by the player.
-    **Return Type**: Hashmap with the dice used by the player.
+3. `HashMap<Dice> getDiceUsed()`<br>
+    **Description**: Used to get the hashmap container having the dice used by the player.<br>
+    **Return Type**: Hashmap with the dice used by the player.<br>
 
-4. `void addDiceUsed(Dice dice)`
-    **Description**: Used to add dice to the hashmap container having the dice used by the player.
-    **Return Type**: Void
+4. `void addDiceUsed(Dice dice)`<br>
+    **Description**: Used to add dice to the hashmap container having the dice used by the player.<br>
+    **Return Type**: Void<br>
 
 
 ### `Realm` class
