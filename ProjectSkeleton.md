@@ -136,63 +136,74 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: Array of `Dice`
      - An array of dice that are currently in the Forgotten Realm.
 
-7. `Move[] getAllPossibleMoves()`
+7. `Move[] getAllPossibleMoves(Player player)`
 
-   - **Description**: Gets all possible moves for all currently rolled dice for the active player.
+   - **Description**: Gets all possible moves for a given player.
+   - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
    - **Return Type**: Array of `Move`
      - An array of all possible moves for all rolled dice.
 
-8. `Move[] getPossibleMoves(Dice dice)`
+8. `Move[] getPossibleMovesForAvailableDice(Player player)`
 
-   - **Description**: Gets all possible moves for a given dice for the active player.
+   - **Description**: Gets possible moves for all currently rolled dice for a given player.
    - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
+   - **Return Type**: Array of `Move`
+     - An array of all possible moves for all rolled dice.
+
+9. `Move[] getPossibleMovesForADie(Player player, Dice dice)`
+
+   - **Description**: Gets all possible moves for a given die for a given player.
+   - **Parameters**:
+     - `player`: The player for whom to determine possible moves.
      - `dice`: The dice to determine possible moves for.
    - **Return Type**: Array of `Move`
      - An array of possible moves for the given dice.
 
-9. `GameBoard getGameBoard()`
+7. `GameBoard getGameBoard()`
 
    - **Description**: Gets the current game board, including all players and all score sheets.
    - **Return Type**: `GameBoard`
      - The current game board object.
 
-10. `Player getPlayer()`
+8.  `Player getPlayer()`
 
     - **Description**: Gets the current active player's information.
     - **Return Type**: `Player`
       - The active player object.
 
-11. `ScoreSheet getScoreSheet()`
+9.  `ScoreSheet getScoreSheet()`
 
     - **Description**: Gets the score sheet for the current active player.
     - **Return Type**: `ScoreSheet`
       - The score sheet object for the current active player.
 
-12. `GameStatus getGameStatus()`
+10. `GameStatus getGameStatus()`
 
     - **Description**: Gets the current game status, including round and turn information for the current active player.
     - **Return Type**: `GameStatus`
       - The current game status object.
 
-13. `GameScore getGameScore()`
+11. `GameScore getGameScore()`
 
     - **Description**: Gets the current score of the game, including scores in each realm, number of elemental crests, and the total score for the current active player.
     - **Return Type**: `GameScore`
       - The current game score object.
 
-14. `TimeWarp[] getTimeWarpPowers()`
+12. `TimeWarp[] getTimeWarpPowers()`
 
     - **Description**: returns an array of TimeWarp objects representing the TimeWarp objects of the active player.
     - **Return Type**: `TimeWarp []`
       - The TimeWarp object for the current active player.
 
-1.  `ArcaneBoost[] getArcaneBoostPowers()`
+13. `ArcaneBoost[] getArcaneBoostPowers()`
 
     - **Description**: returns An array of ArcaneBoost objects representing the ArcaneBoost powers of the active player.
     - **Return Type**: `ArcaneBoost[]`
       - The ArcaneBoost object for the current active player.
 
-1.  `boolean selectDice(Dice dice)`
+14. `boolean selectDice(Dice dice)`
 
     - **Description**: Selects a dice and adds it to the current turn of the active player, moving all other dice with less value to the Forgotten Realm.
     - **Parameters**:
@@ -201,7 +212,7 @@ For each package, add the skeleton details for the class and duplicate as much a
       - `true` if the selection was successful,
       - `false` otherwise.
 
-2.  `boolean makeMove(Dice dice, Creature creature)`
+15. `boolean makeMove(Dice dice, Creature creature)`
     - **Description**: Executes a move using the selected dice on a specified creature.
     - **Parameters**:
       - `dice`: The dice selected by the active player for the move.
