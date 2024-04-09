@@ -241,7 +241,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
-- **Description**: This class represents the Time Warp boost which helps us to reroll if we acquired
+- **Description**: This class represents the Time Warp boost which allows the player to reroll the die.
 #### Methods:
 
 1. `void setState(PowerState)`
