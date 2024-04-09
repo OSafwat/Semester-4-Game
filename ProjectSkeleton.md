@@ -32,6 +32,7 @@ Dice-Realms/
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
+│   │   │       │   ├── Player.java
 │   │   │       │   ├── Realm.java
 │   │   │       │   ├── enum/
 │   │   │       │   │  ├── DiceState.java
@@ -273,7 +274,9 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `int`
      - `returns all the Arcane boost which the player had already used` 
 
+### `Player` class
 
+- **Package**: `game.`
 ### `Dice` class
 
 - **Package**: `game.dice`
