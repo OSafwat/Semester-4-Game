@@ -244,18 +244,14 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Description**: This class represents the time warp boost which helps us to reroll if we aquired
 #### Methods:
 
-1. `int getCounter()`
-   - **Description**: returns  the number of availabe timewarps a player has
-   - **Return Type**: `int`
-     - `number of active timewarps a player has` 
-2. `int getTotal()`
-   - **Description**: returns all time warps including the availabe and the used  ones
-   - **Return Type**: `int`
-     - `returns all time warps including the availabe and the used  ones`.
-3. `void getUsed()`
-   - **Description**: returns all the time warps which the player had already used
-   - **Return Type**: `int`
-     - `returns all the time warps which the player had already used` 
+1. `void setState(PowerState)`
+   - **Parameters**: 
+     - The PowerState value to be changed to
+   - **Description**: changes the state of the TimeWarp to the value passed in to the function.
+2. `PowerState getUsed()`
+   - **Description**: returns the state of the TimeWarp
+   - **Return Type**: `PowerState`
+     - `returns the current state of the the timewarp represented in the enum: PowerState ` 
 
 ### `ArcaneBoost` class
 
