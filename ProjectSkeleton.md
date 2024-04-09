@@ -344,20 +344,20 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 1. `void printScoreSheet()`
-    -**Description**: prints out the entire score sheet for the current active player including the number of each collectible and the specific scores of each realm and the total score.
-    -**Return Type**: `void`
+    - **Description**: prints out the entire score sheet for the current active player including the number of each collectible and the specific scores of each realm and the total score.
+    - **Return Type**: `void`
 
 2. `void updateScore()`
-    -**Description**: updates the score of the current active player after making a valid move in both the respective realm and the total score.
-    -**Return Type**: `vid`
+    - **Description**: updates the score of the current active player after making a valid move in both the respective realm and the total score.
+    - **Return Type**: `vid`
 
 3. `void printCollectible()`
-    **Description**: prints out all the collectibles for the current active player.
-    **Return Type**: `void`
+    - **Description**: prints out all the collectibles for the current active player.
+    - **Return Type**: `void`
 
 4. `void printRealms()`
-    **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
-    **Return Type**: `void`
+    - **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
+    - **Return Type**: `void`
 
 ### `GameStatus` class
 
@@ -367,16 +367,16 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 1. `void printTurn()`
-    **Description**: prints the turn information for the current active player
-    **Return Type**: void
+   - **Description**: prints the turn information for the current active player
+    - **Return Type**: void
 
 2. `void printRound()`
-    **Description**: prints the round information for the current active player
-    **Return Type**: void
+    - **Description**: prints the round information for the current active player
+    - **Return Type**: void
 
 3. `void printGameStatus()`
-    **Description**: prints the turn and round information for the current active player
-    **Return Type**: void
+    - **Description**: prints the turn and round information for the current active player
+    - **Return Type**: void
 
 ### `GameScore` class
 - **Package**: `game.engine`
@@ -385,12 +385,12 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 1. `void printGameScore()`
-    **Description**: prints the current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
-    **Return Type**: void
+   - **Description**: prints the current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
+   - **Return Type**: void
 
 2. `void updateGameScore()`
-    **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
-    **Return Type**: void    
+    - **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
+    - **Return Type**: void    
 
 ### `Player` class
 - **Package**: `game.engine`
@@ -399,17 +399,17 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 ### Methods:
 1. `getPlayerState()` <br>
-    **Description**: Returns the player state for the current player. <br>
-    **Return Type**: PlayerState
+    - **Description**: Returns the player state for the current player. <br>
+    - **Return Type**: PlayerState
 
 2. `setPlayerState(PlayerState playerState)`<br>
-    **Description**: Sets the player state for the current player to the input state.<br>
-    **Parameters**:<br>
+    - **Description**: Sets the player state for the current player to the input state.<br>
+    - **Parameters**:<br>
         `playerState`: The PlayerState to be changed to.
-    **Return Type**: Void<br>
+    - **Return Type**: Void<br>
 
 3. `HashMap<Dice> getDiceUsed()`<br>
-    **Description**: Used to get the hashmap container having the dice used by the player.<br>
+    - **Description**: Used to get the hashmap container having the dice used by the player.<br>
     **Return Type**: Hashmap with the dice used by the player.<br>
 
 4. `void addDiceUsed(Dice dice)`<br>
