@@ -161,67 +161,82 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: Array of `Move`
      - An array of possible moves for the given dice.
 
-7. `GameBoard getGameBoard()`
+10. `GameBoard getGameBoard()`
 
-   - **Description**: Gets the current game board, including all players and all score sheets.
-   - **Return Type**: `GameBoard`
-     - The current game board object.
+    - **Description**: Gets the current game board, including all players and all score sheets.
+    - **Return Type**: `GameBoard`
+      - The current game board object.
 
-8.  `Player getPlayer()`
+11. `Player getActivePlayer()`
 
     - **Description**: Gets the current active player's information.
     - **Return Type**: `Player`
       - The active player object.
 
-9.  `ScoreSheet getScoreSheet()`
+12. `Player getPassivePlayer()`
 
-    - **Description**: Gets the score sheet for the current active player.
+    - **Description**: Gets the current passive player's information.
+    - **Return Type**: `Player`
+      - The passive player object.
+
+13. `ScoreSheet getScoreSheet(Player player)`
+
+    - **Description**: Gets the score sheet for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current score sheet for.
     - **Return Type**: `ScoreSheet`
-      - The score sheet object for the current active player.
+      - The score sheet object for the given player.
 
-10. `GameStatus getGameStatus()`
+14. `GameStatus getGameStatus()`
 
     - **Description**: Gets the current game status, including round and turn information for the current active player.
     - **Return Type**: `GameStatus`
       - The current game status object.
 
-11. `GameScore getGameScore()`
+15. `GameScore getGameScore(Player player)`
 
-    - **Description**: Gets the current score of the game, including scores in each realm, number of elemental crests, and the total score for the current active player.
-    - **Return Type**: `GameScore`
-      - The current game score object.
-
-12. `TimeWarp[] getTimeWarpPowers()`
-
-    - **Description**: returns an array of TimeWarp objects representing the TimeWarp objects of the active player.
-    - **Return Type**: `TimeWarp []`
-      - The TimeWarp object for the current active player.
-
-13. `ArcaneBoost[] getArcaneBoostPowers()`
-
-    - **Description**: returns An array of ArcaneBoost objects representing the ArcaneBoost powers of the active player.
-    - **Return Type**: `ArcaneBoost[]`
-      - The ArcaneBoost object for the current active player.
-
-14. `boolean selectDice(Dice dice)`
-
-    - **Description**: Selects a dice and adds it to the current turn of the active player, moving all other dice with less value to the Forgotten Realm.
+    - **Description**: Gets the current score of the game for a given player.
     - **Parameters**:
+      - `player`: The player to determine current score for.
+    - **Return Type**: `GameScore`
+      - The current game score object for the given player.
+
+16. `TimeWarp[] getTimeWarpPowers(Player player)`
+
+    - **Description**: Gets the array of TimeWarp powers and their status for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current TimeWarp powers for.
+    - **Return Type**: Array of `TimeWarp`
+      - An array of `TimeWarp` objects representing the TimeWarp powers for the given player.
+
+17. `ArcaneBoost[] getArcaneBoostPowers(Player player)`
+
+    - **Description**: Gets the array of ArcaneBoost powers and their status for a given player.
+    - **Parameters**:
+      - `player`: The player to get the current ArcaneBoost powers for.
+    - **Return Type**: Array of `ArcaneBoost`
+      - An array of `ArcaneBoost` objects representing the ArcaneBoost powers for the given player.
+
+18. `boolean selectDice(Dice dice, Player player)`
+
+    - **Description**: Selects a die and adds it to the player's class, then moves all other dice with less value to the Forgotten Realm.
+    - **Parameters**:
+      - `player`: The player who selected the die.
       - `dice`: The dice to be selected.
     - **Return Type**: `boolean`
       - `true` if the selection was successful,
       - `false` otherwise.
 
-15. `boolean makeMove(Dice dice, Creature creature)`
+19. `boolean makeMove(Player player, Move move)`
+
     - **Description**: Executes a move using the selected dice on a specified creature.
     - **Parameters**:
-      - `dice`: The dice selected by the active player for the move.
-      - `creature`: The target creature that the move is against.
+      - `player`: The player who wants to make the move.
+      - `move`: The move to be executed, including the selected dice and target creature.
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
-      - 
-
+  
 ### `TimeWarp` class
 
 - **Package**: `game.collectibles`
