@@ -477,6 +477,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Description**: This class will contain the different enumerations that represent the states of powers like the "Arcane Boost" and "Time Warp".
 
 ### `PlayerState` class
+
 - **Package**: `game.engine`
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
