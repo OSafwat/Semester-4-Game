@@ -37,7 +37,8 @@ Dice-Realms/
 │   │   │       │   ├── enum/
 │   │   │       │   │  ├── DiceState.java
 │   │   │       │   │  ├── Color.java
-│   │   │       │   │  └── PowerState.java
+│   │   │       │   │  ├── PowerState.java
+│   │   │       │   │  └── PlayerState.java
 │   │   │       │   └── interface/
 │   │   │       │       └── Creature.java
 │   │   │       │   
@@ -242,7 +243,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
-- **Description**: This class represents the time warp boost which helps us to reroll if aquired
+- **Description**: This class represents the Time Warp boost which allows the player to reroll the die.
 #### Methods:
 
 1. `void setState(PowerState)`
@@ -252,13 +253,13 @@ For each package, add the skeleton details for the class and duplicate as much a
 2. `PowerState getUsed()`
    - **Description**: returns the state of the TimeWarp
    - **Return Type**: `PowerState`
-     - `returns the current state of the the timewarp represented in the enum: PowerState ` 
+     - `Returns the current state of the the Time Warp represented in the enum: PowerState.` 
 
 ### `ArcaneBoost` class
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
-- **Description**: This class represents the Arcane boost which helps a player to have an extra round.
+- **Description**: This class represents the Arcane Boost which helps player to have an extra round.
 
 #### Methods:
 1. `int getCounter()`
@@ -273,6 +274,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: returns all the Arcane boost which the player had already used
    - **Return Type**: `int`
      - `returns all the Arcane boost which the player had already used` 
+
 
 ### `Dice` class
 
@@ -337,7 +339,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: shows the game board containing the score sheet and the details of the 5 realms for all players.
    - **Return Type**: `void`
 
-### 'ScoreSheet' class
+### `ScoreSheet` class
 
   - **Package**: `game.engine`
   - **Type**: Class
@@ -376,7 +378,7 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Return Type**: void
 
 3. `void printGameStatus()`
-    **Description**: prints the turn and roundd information for the current active player
+    **Description**: prints the turn and round information for the current active player
     **Return Type**: void
 
 ### `GameScore` class
@@ -393,6 +395,21 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
     **Return Type**: void    
 
+### `Player` class
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class will contain information regarding the player.
+
+### Methods:
+1. `getPlayerState()`
+    **Description**: Returns the player state for the current player.
+    **Return Type**: PlayerState
+
+2. `setPlayerState(PlayerState playerState)`
+    **Description**: Sets the player state for the current player to the input state.
+    **Parameters**:
+        `playerState`: The PlayerState to be changed to.
+    **Return Type**: Void
 
 ### `Realm` class
 
@@ -452,6 +469,11 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.engine`
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of powers like the "Arcane Boost" and "Time Warp".
+
+### `PlayerState` class
+- **Package**: `game.engine`
+- **Type**: Enum Class
+- **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
 
 ## Interfaces
 
