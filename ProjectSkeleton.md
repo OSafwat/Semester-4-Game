@@ -390,6 +390,15 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
     **Return Type**: void    
 
+### `Player` class
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class will contain information regarding the player.
+
+### Methods:
+1. `getPlayerState()`
+    **Description**: Returns the player state for the current player.
+    **Return Type**: PlayerState
 
 ### `Realm` class
 
