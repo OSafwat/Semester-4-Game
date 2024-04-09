@@ -241,7 +241,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
-- **Description**: This class represents the time warp boost which helps us to reroll if we aquired
+- **Description**: This class represents the time warp boost which helps us to reroll if aquired
 #### Methods:
 
 1. `void setState(PowerState)`
@@ -257,7 +257,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.collectibles`
 - **Type**:  Class
-- **Description**: This class represents the Arcane boost which helps player to have an extra round.
+- **Description**: This class represents the Arcane boost which helps a player to have an extra round.
 
 #### Methods:
 1. `int getCounter()`
