@@ -250,7 +250,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameters**: 
      - The PowerState value to be changed to
    - **Description**: changes the state of the TimeWarp to the value passed in to the function.
-2. `PowerState getUsed()`
+2. `PowerState getState()`
    - **Description**: returns the state of the TimeWarp
    - **Return Type**: `PowerState`
      - `Returns the current state of the the Time Warp represented in the enum: PowerState.` 
@@ -262,18 +262,15 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Description**: This class represents the Arcane Boost which helps player to have an extra round.
 
 #### Methods:
-1. `int getCounter()`
-   - **Description**: returns  the number of availabe Arcane boost a player has
-   - **Return Type**: `int`
-     - `number of active Arcane boost a player has` 
-2. `int getTotal()`
-   - **Description**: returns all Arcane boost including the availabe and the used  ones
-   - **Return Type**: `int`
-     - `returns all Arcane boost including the availabe and the used  ones`.
-3. `void getUsed()`
-   - **Description**: returns all the Arcane boost which the player had already used
-   - **Return Type**: `int`
-     - `returns all the Arcane boost which the player had already used` 
+1. `void setState(PowerState)`
+    - **Parameters**:
+        - The PowerState value to be changed to
+    - **Description**: changes the state of the ArcaneBoost to the value passed in to the function.
+    - **Return Type**: Void
+2. `PowerState getUsed()`
+    - **Description**: returns the state of the ArcaneBoost
+    - **Return Type**: `PowerState`
+        - `Returns the current state of the the Arcane Boost represented in the enum: PowerState.`
 
 
 ### `Dice` class
