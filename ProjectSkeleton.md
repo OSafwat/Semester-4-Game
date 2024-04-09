@@ -334,7 +334,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: shows the game board containing the score sheet and the details of the 5 realms for all players.
    - **Return Type**: `void`
 
-### 'ScoreSheet' class
+### `ScoreSheet` class
 
   - **Package**: `game.engine`
   - **Type**: Class
@@ -449,6 +449,11 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Package**: `game.engine`
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of powers like the "Arcane Boost" and "Time Warp".
+
+### `PlayerState` class
+- **Package**: `game.engine`
+- **Type**: Enum Class
+- **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
 
 ## Interfaces
 
