@@ -250,7 +250,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameters**: 
      - The PowerState value to be changed to
    - **Description**: changes the state of the TimeWarp to the value passed in to the function.
-2. `PowerState getUsed()`
+2. `PowerState getState()`
    - **Description**: returns the state of the TimeWarp
    - **Return Type**: `PowerState`
      - `Returns the current state of the the Time Warp represented in the enum: PowerState.` 
