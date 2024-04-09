@@ -413,7 +413,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 3. `HashMap<Dice> getDiceUsed()`
     **Description**: Used to get the hashmap container having the dice used by the player.
     **Return Type**: Hashmap with the dice used by the player.
-4. `void setDiceUsed(HashMap<Dice> diceUsed)`
+4. `void addDiceUsed(Dice dice)`
     **Description**: Used to add dice to the hashmap container having the dice used by the player.
     **Return Type**: Void
 
