@@ -36,7 +36,8 @@ Dice-Realms/
 │   │   │       │   ├── enum/
 │   │   │       │   │  ├── DiceState.java
 │   │   │       │   │  ├── Color.java
-│   │   │       │   │  └── PowerState.java
+│   │   │       │   │  ├── PowerState.java
+│   │   │       │   │  └── PlayerState.java
 │   │   │       │   └── interface/
 │   │   │       │       └── Creature.java
 │   │   │       │   
