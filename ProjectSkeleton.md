@@ -373,7 +373,7 @@ For each package, add the skeleton details for the class and duplicate as much a
     **Return Type**: void
 
 3. `void printGameStatus()`
-    **Description**: prints the turn and roundd information for the current active player
+    **Description**: prints the turn and round information for the current active player
     **Return Type**: void
 
 ### `GameScore` class
@@ -399,6 +399,12 @@ For each package, add the skeleton details for the class and duplicate as much a
 1. `getPlayerState()`
     **Description**: Returns the player state for the current player.
     **Return Type**: PlayerState
+
+2. `setPlayerState(PlayerState playerState)`
+    **Description**: Sets the player state for the current player to the input state.
+    **Parameters**:
+        `playerState`: The PlayerState to be changed to.
+    **Return Type**: Void
 
 ### `Realm` class
 
