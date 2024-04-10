@@ -516,7 +516,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the PyroclassDragon in the game.
+- **Description**: This class represents the PyroDragon in the game.
 
 #### Methods:
 
@@ -530,7 +530,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - `false` otherwise.
 
 2. `boolean checkMove(Dice dice,  PyroDragon pyroDragon)`
-   - **Description**: Check if a move on a specific creature is possible.
+   - **Description**: Check if a move on a PyroDragon is possible.
    - **Parameter**: 
      - `dice`: The dice selected by the active player to check for the move.
      - `creature`: The PyroDragon that the active player wants to check if the move is possible against.
@@ -575,6 +575,37 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `String`
      - The String containing the GaiaGaurdian.
 
+
+### `HydraSerpent` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the HydraSerpent in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, HydraSerpent hydraSerpent)`
+   - **Description**: Executes an attack on a HydraSerpent.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  HydraSerpent hydraSerpent)`
+   - **Description**: Check if a move on a specific creature is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The HydraSerpent that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the HydraSerpent.
+   - **Return Type**: `String`
+     - The String containing the HydraSerpent.
 ## Interfaces
 
 ### `Creature` interface
