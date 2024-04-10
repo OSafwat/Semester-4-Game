@@ -357,7 +357,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 4. `void updateScore()`
     -**Description**: updates the score of the current player after making a valid move in both the respective realm and the total score.
-    -**Return Type**: `vid`
+    -**Return Type**: `void`
 
 5. `void printCollectible()`
     **Description**: prints out all the collectibles for the current player.
