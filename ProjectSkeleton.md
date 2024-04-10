@@ -372,20 +372,33 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class is going to show the turns and rounds information for the current active player.
+- **Description**: This class is going to show the turns and rounds information and the current active player.
 
 #### Methods:
-1. `void printTurn()`
-   - **Description**: prints the turn information for the current active player
-    - **Return Type**: void
+1. `GameStatus getGameStatus()`
+    -**Description**: returns the game status with turn and round information and the current player.
+    -**Return Type**: GameStatus 
 
-2. `void printRound()`
-    - **Description**: prints the round information for the current active player
-    - **Return Type**: void
+2. `void initGameStatus()`
+    -**Description**: initializes the game status to the first round and turn and the first active player.
+    -**Return Type**: void
 
-3. `void printGameStatus()`
-    - **Description**: prints the turn and round information for the current active player
-    - **Return Type**: void
+3. `void updateGameStatus()`
+    -**Description**: updates the game status with the new turn and round information and the current player.
+    -**Return Type**: void
+
+4. `void printGameStatus()`
+    **Description**: prints the turn and round information and the current player
+    **Return Type**: void
+
+5. `void printTurn()`
+    **Description**: prints the turn information and the current player
+    **Return Type**: void
+
+6. `void printRound()`
+    **Description**: prints the round information and the current player
+    **Return Type**: void
+
 
 ### `GameScore` class
 - **Package**: `game.engine`
