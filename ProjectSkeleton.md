@@ -314,10 +314,10 @@ For each package, add the skeleton details for the class and duplicate as much a
       - `false` otherwise.
       - 
 2. `Creature getCreature()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Description**: returns the creature corresponding to the move made.
    - **Return Type**: `Creature`
      - The creature that makes up the move 
-     - 
+     
 3. `Dice getDice()`
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
    - **Return Type**: `Dice`
