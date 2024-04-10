@@ -533,7 +533,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: Check if a move on a specific creature is possible.
    - **Parameter**: 
      - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The target creature that the active player wants to check if the move is possible against.
+     - `creature`: The PyroDragon that the active player wants to check if the move is possible against.
    - **Return Type**: `boolean`
      - `True` if the move is possible,
      - `False` otherwise.
@@ -542,6 +542,38 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: Outputs a string containing the details of the PyroDragon.
    - **Return Type**: `String`
      - The String containing the PyroDragon .
+
+
+### `GaiaGaurdian` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the GaiaGaurdian in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, GaiaGaurdian gaiaGaurdian)`
+   - **Description**: Executes an attack on a GaiaGaurdian.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The GaiaGaurdian that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  GaiaGaurdian gaiaGaurdian)`
+   - **Description**: Check if a move on a GaiaGaurdian is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The GaiaGaurdian that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the GaiaGaurdian.
+   - **Return Type**: `String`
+     - The String containing the GaiaGaurdian.
 
 ## Interfaces
 
