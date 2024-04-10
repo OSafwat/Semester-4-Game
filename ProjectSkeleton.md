@@ -403,16 +403,24 @@ For each package, add the skeleton details for the class and duplicate as much a
 ### `GameScore` class
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class shows current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
+- **Description**: This class shows current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current player.
 
 #### Methods:
-1. `void printGameScore()`
-   - **Description**: prints the current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
-   - **Return Type**: void
+1. `GameScore getGameScore()`
+    -**Description**: returns the current score of the game including the total score of each realm, the number of elemental crests, and the total score for the current player.
+    -**Return Type**: 
 
-2. `void updateGameScore()`
-    - **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
-    - **Return Type**: void    
+2. `void initGameScore()`
+    -**Description**: initializes the gamescore to one with 0 scores in all realms and 0 elemental crests.
+    -**Return Type**: void
+
+3. `void printGameScore()`
+    **Description**: prints the current score of the game including the total score of each realm, the number of elemental crests, and the total score for the current player.
+    **Return Type**: void
+
+4. `void updateGameScore()`
+    **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current player.
+    **Return Type**: void  
 
 ### `Player` class
 - **Package**: `game.engine`
