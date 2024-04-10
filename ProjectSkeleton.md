@@ -547,6 +547,7 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Return Type**: `boolean`
      - `true` if the move is possible.
      - `false` otherwise.
+    - law ya kirat mashoftesh de enta betestahbel
 
 4. `boolean makeMove(Dice dice, Creature creature)`
    - **Description**: Executes an attack on a specific guardian using a specific dice.
