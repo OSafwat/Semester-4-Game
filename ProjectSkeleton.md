@@ -15,7 +15,7 @@ Dice-Realms/
 │   │   │       │   ├── ColorBonus.java
 │   │   │       │
 │   │   │       ├── creatures/
-│   │   │       │   ├── PyroclassDragon.java
+│   │   │       │   ├── PyroDragon.java
 │   │   │       │   ├── GaiaGaurdian.java
 │   │   │       │   ├── HydraSerpent.java
 │   │   │       │   ├── MajesticPheonix.java
@@ -314,10 +314,10 @@ For each package, add the skeleton details for the class and duplicate as much a
       - `false` otherwise.
       - 
 2. `Creature getCreature()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
+   - **Description**: returns the creature corresponding to the move made.
    - **Return Type**: `Creature`
      - The creature that makes up the move 
-     - 
+     
 3. `Dice getDice()`
    - **Description**: returns a dice with a given color and a random number between 1 and 6 
    - **Return Type**: `Dice`
@@ -336,61 +336,91 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: shows the game board containing the score sheet and the details of the 5 realms for all players.
    - **Return Type**: `void`
 
-### `ScoreSheet` class
+### 'ScoreSheet' class
 
   - **Package**: `game.engine`
   - **Type**: Class
-  - **Description**: This class shows the scoresheet including the details of the scores of each realm including which monsters were killed and the number of collectibles for the current active player.
+  - **Description**: This class shows the scoresheet including the details of the scores of each realm including which monsters were killed and the number of collectibles for the current player.
 
 #### Methods:
-1. `void printScoreSheet()`
-    -**Description**: prints out the entire score sheet for the current active player including the number of each collectible and the specific scores of each realm and the total score.
+1. `ScoreSheet getScoreSheet()`
+    -**Description**: returns the scoresheet for the current player.
+    -**Return Type**: ScoreSheet.
+
+2. `void initScoreSheet()`
+    -**Description**: initializes the scoresheet to one with no scores in all realms and no collectibles for both players.
+    -**Return Type**:void 
+
+3. `void printScoreSheet()`
+    -**Description**: prints out the entire score sheet for the current player including the number of each collectible and the specific scores of each realm and the total score.
     -**Return Type**: `void`
 
-2. `void updateScore()`
-    -**Description**: updates the score of the current active player after making a valid move in both the respective realm and the total score.
-    -**Return Type**: `vid`
+4. `void updateScore()`
+    -**Description**: updates the score of the current player after making a valid move in both the respective realm and the total score.
+    -**Return Type**: `void`
 
-3. `void printCollectible()`
-    **Description**: prints out all the collectibles for the current active player.
+5. `void printCollectible()`
+    **Description**: prints out all the collectibles for the current player.
     **Return Type**: `void`
 
-4. `void printRealms()`
+6. `void printRealms()`
     **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
     **Return Type**: `void`
+
 
 ### `GameStatus` class
 
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class is going to show the turns and rounds information for the current active player.
+- **Description**: This class is going to show the turns and rounds information and the current active player.
 
 #### Methods:
-1. `void printTurn()`
-    **Description**: prints the turn information for the current active player
+1. `GameStatus getGameStatus()`
+    -**Description**: returns the game status with turn and round information and the current player.
+    -**Return Type**: GameStatus 
+
+2. `void initGameStatus()`
+    -**Description**: initializes the game status to the first round and turn and the first active player.
+    -**Return Type**: void
+
+3. `void updateGameStatus()`
+    -**Description**: updates the game status with the new turn and round information and the current player.
+    -**Return Type**: void
+
+4. `void printGameStatus()`
+    **Description**: prints the turn and round information and the current player
     **Return Type**: void
 
-2. `void printRound()`
-    **Description**: prints the round information for the current active player
+5. `void printTurn()`
+    **Description**: prints the turn information and the current player
     **Return Type**: void
 
-3. `void printGameStatus()`
-    **Description**: prints the turn and round information for the current active player
+6. `void printRound()`
+    **Description**: prints the round information and the current player
     **Return Type**: void
+
 
 ### `GameScore` class
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class shows current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
+- **Description**: This class shows current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current player.
 
 #### Methods:
-1. `void printGameScore()`
-    **Description**: prints the current score of the game including the scores of each realm, the number of elemental crests, and the total score for the current active player.
-    **Return Type**: void
+1. `GameScore getGameScore()`
+    - **Description**: returns the current score of the game including the total score of each realm, the number of elemental crests, and the total score for the current player.
+    - **Return Type**: 
 
-2. `void updateGameScore()`
-    **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current active player.
-    **Return Type**: void    
+2. `void initGameScore()`
+    - **Description**: initializes the gamescore to one with 0 scores in all realms and 0 elemental crests.
+    - **Return Type**: void
+
+3. `void printGameScore()`
+    - **Description**: prints the current score of the game including the total score of each realm, the number of elemental crests, and the total score for the current player.
+    - **Return Type**: void
+
+4. `void updateGameScore()`
+    - **Description**: updates the current score of a realm after making a valid move in it, then updates the total score and the number of elemental crests for the current player.
+    - **Return Type**: void  
 
 ### `Player` class
 - **Package**: `game.engine`
@@ -398,23 +428,23 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Description**: This class will contain information regarding the player.
 
 ### Methods:
-1. `getPlayerState()`
-    **Description**: Returns the player state for the current player.
-    **Return Type**: PlayerState
+1. `getPlayerState()` 
+    - **Description**: Returns the player state for the current player. 
+    - **Return Type**: PlayerState
 
 2. `setPlayerState(PlayerState playerState)`
-    **Description**: Sets the player state for the current player to the input state.
-    **Parameters**:
+    - **Description**: Sets the player state for the current player to the input state.
+    - **Parameters**:
         `playerState`: The PlayerState to be changed to.
-    **Return Type**: Void
+    - **Return Type**: Void
 
 3. `HashMap<Dice> getDiceUsed()`
-    **Description**: Used to get the hashmap container having the dice used by the player.
-    **Return Type**: Hashmap with the dice used by the player.
+    - **Description**: Used to get the hashmap container having the dice used by the player.
+    - **Return Type**: Hashmap with the dice used by the player.
 
 4. `void addDiceUsed(Dice dice)`
-    **Description**: Used to add dice to the hashmap container having the dice used by the player.
-    **Return Type**: Void
+    - **Description**: Used to add dice to the hashmap container having the dice used by the player.
+    - **Return Type**: Void
 
 
 ### `Realm` class
@@ -456,6 +486,195 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
+### `RedRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the pyro dragons.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm for the current player.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the dragon that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific dragon.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target dragon selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific dragon using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target dragon selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `GreenRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the gaia guardians.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the guardian that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific guardian.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target guardian selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific guardian using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target guardian selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `BlueRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the hydra serpents.
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the serpent that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific serpent.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target serpent selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific serpent using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target serpent selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `MagentaRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the magenta phoenix.
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the phoenix that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against the phoenix.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The phoenix.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on the phoenix using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The phoenix.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `YellowRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the solar lion.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the lion that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against the lion.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The solar lion.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on the lion using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The solar lion.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+
 
 ### `DiceState` class
 
@@ -482,6 +701,163 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
 
+### `PyroDragon` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the PyroDragon in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, PyroDragon pyroDragon)`
+   - **Description**: Executes an attack on a PyroDragon.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The PyroDragon that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  PyroDragon pyroDragon)`
+   - **Description**: Check if a move on a PyroDragon is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The PyroDragon that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the PyroDragon.
+   - **Return Type**: `String`
+     - The String containing the PyroDragon .
+
+
+### `GaiaGaurdian` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the GaiaGaurdian in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, GaiaGaurdian gaiaGaurdian)`
+   - **Description**: Executes an attack on a GaiaGaurdian.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The GaiaGaurdian that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  GaiaGaurdian gaiaGaurdian)`
+   - **Description**: Check if a move on a GaiaGaurdian is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The GaiaGaurdian that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the GaiaGaurdian.
+   - **Return Type**: `String`
+     - The String containing the GaiaGaurdian.
+
+
+### `HydraSerpent` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the HydraSerpent in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, HydraSerpent hydraSerpent)`
+   - **Description**: Executes an attack on a HydraSerpent.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  HydraSerpent hydraSerpent)`
+   - **Description**: Check if a move on a HydraSerpent is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The HydraSerpent that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the HydraSerpent.
+   - **Return Type**: `String`
+     - The String containing the HydraSerpent.
+  
+
+### `MajesticPhoenix` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the MajesticPheonix in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, MajesticPhoenix majesticPhoenix)`
+   - **Description**: Executes an attack on a MajesticPhoenix.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The MajesticPhoenix that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  MajesticPhoenix majesticPhoenix)`
+   - **Description**: Check if a move on a MajesticPhoenix is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The MajesticPhoenix that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the MajesticPhoenix.
+   - **Return Type**: `String`
+     - The String containing the MajesticPhoenix.
+
+### `SolarLion` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the SolarLion in the game.
+
+#### Methods:
+
+1. `boolean makeMove(Dice dice, SolarLion solarLion)`
+   - **Description**: Executes an attack on a SolarLion.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+     - `creature`: The target creature that the move is against.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice,  SolarLion SolarLion)`
+   - **Description**: Check if a move on a SolarLion is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+     - `creature`: The SolarLion that the active player wants to check if the move is possible against.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String toString()`
+   - **Description**: Outputs a string containing the details of the SolarLion.
+   - **Return Type**: `String`
+     - The String containing the SolarLion.
 ## Interfaces
 
 ### `Creature` interface
