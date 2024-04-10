@@ -336,28 +336,37 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: shows the game board containing the score sheet and the details of the 5 realms for all players.
    - **Return Type**: `void`
 
-### `ScoreSheet` class
+### 'ScoreSheet' class
 
   - **Package**: `game.engine`
   - **Type**: Class
-  - **Description**: This class shows the scoresheet including the details of the scores of each realm including which monsters were killed and the number of collectibles for the current active player.
+  - **Description**: This class shows the scoresheet including the details of the scores of each realm including which monsters were killed and the number of collectibles for the current player.
 
 #### Methods:
-1. `void printScoreSheet()`
-    - **Description**: prints out the entire score sheet for the current active player including the number of each collectible and the specific scores of each realm and the total score.
-    - **Return Type**: `void`
+1. `ScoreSheet getScoreSheet()`
+    -**Description**: returns the scoresheet for the current player.
+    -**Return Type**: ScoreSheet.
 
-2. `void updateScore()`
-    - **Description**: updates the score of the current active player after making a valid move in both the respective realm and the total score.
-    - **Return Type**: `vid`
+2. `void initScoreSheet()`
+    -**Description**: initializes the scoresheet to one with no scores in all realms and no collectibles for both players.
+    -**Return Type**:void 
 
-3. `void printCollectible()`
-    - **Description**: prints out all the collectibles for the current active player.
-    - **Return Type**: `void`
+3. `void printScoreSheet()`
+    -**Description**: prints out the entire score sheet for the current player including the number of each collectible and the specific scores of each realm and the total score.
+    -**Return Type**: `void`
 
-4. `void printRealms()`
-    - **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
-    - **Return Type**: `void`
+4. `void updateScore()`
+    -**Description**: updates the score of the current player after making a valid move in both the respective realm and the total score.
+    -**Return Type**: `vid`
+
+5. `void printCollectible()`
+    **Description**: prints out all the collectibles for the current player.
+    **Return Type**: `void`
+
+6. `void printRealms()`
+    **Description**: prints out the details of all the realms including which monsters were killed and which collectibles were acquired.
+    **Return Type**: `void`
+
 
 ### `GameStatus` class
 
