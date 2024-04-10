@@ -486,6 +486,195 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
+### `RedRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the pyro dragons.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm for the current player.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the dragon that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific dragon.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target dragon selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific dragon using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target dragon selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `GreenRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the gaia guardians.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the guardian that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific guardian.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target guardian selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific guardian using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target guardian selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `BlueRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the hydra serpents.
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the serpent that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against a specific serpent.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The target serpent selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on a specific serpent using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The target serpent selected by the player.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `MagentaRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the magenta phoenix.
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the phoenix that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against the phoenix.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The phoenix.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on the phoenix using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The phoenix.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+### `YellowRealm` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class is going to represent the realm that has the solar lion.
+
+#### Methods:
+1. `int getScore()`
+   - **Description**: Returns the current score of this realm.
+   - **Return Type**: `int`
+
+2. `void updateScore()`
+   - **Description**: Updates the value of the score of this realm according to the lion that has been defeated.
+   - **Return Type**: `void`
+
+3. `boolean checkMove(Dice dice, Creature creature)`
+   - **Description**: Checks if a move using a specific dice can be used against the lion.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player.
+     - `creature`: The solar lion.
+   - **Return Type**: `boolean`
+     - `true` if the move is possible.
+     - `false` otherwise.
+
+4. `boolean makeMove(Dice dice, Creature creature)`
+   - **Description**: Executes an attack on the lion using a specific dice.
+   - **Parameter**: 
+     - `dice`: The dice selected by the player for the move.
+     - `creature`: The solar lion.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed.
+     - `false` otherwise.
+
+5. `void print()`
+   - **Description**: Displays data related to the realm.
+   - **Parameter**: 
+   - **Return Type**: `void`
+
+
 
 ### `DiceState` class
 
