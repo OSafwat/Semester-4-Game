@@ -1,221 +1,60 @@
 # Dice Realms: Quest for the Elemental Crests Game
 
-This repository contains the skeleton for a Dice Realms: Quest for the Elemental Crests Java-based game. It uses the Maven build system and JUnit4 for testing. Below are instructions on how to get started.
+This repository contains the code for a Dice Realms: Quest for the Elemental Crests Java-based game. It uses the Maven build system and JUnit4 for testing. Below are instructions on how to get started.
 
 ## Setup
 
-1. Clone the Repository: Clone this repository to your local machine.
-2. Import into IDE: Import the project into your preferred Java IDE (e.g., VS Code).
-3. Install Dependencies: Maven will automatically download the required dependencies. Otherwise, you can manually import it.
-4. Familiarize yourself with the provided files:
-   - `GameController.java`: Do not make any changes to this file as it serves as the common blueprint for different controllers.
-   - `Main.java`: This file contains the main method to start the game.
+1. **Clone the Repository**: Clone this repository to your local machine.
+2. **Import into IDE**: Import the project into your preferred Java IDE (e.g., VS Code).
+3. **Install Dependencies**: Maven will automatically download the required dependencies. Otherwise, you can manually import them.
+   - **Java Version**: The project is configured to be compatible with at least Java 8 (1.8).
+   - **Maven**: This project uses Maven (v.3.8.0) for dependency management and build automation.
+   - **Encoding**: Ensure your IDE and build tools are configured to use UTF-8 encoding to avoid issues with character representation.
+   - **Testing**: Tests are run using JUnit 4.13.2 as specified in the Maven dependencies.
+4. **Familiarize yourself with the provided files**:
 
-## Packages
+   #### **DO NOT** alter all core provided files as per the below list. Any modifications to these files will be reverted, which might disrupt your game’s functionality.
 
-### game.engine
+   - root folder (`/`)
+     - [`Grades.md`](/Grades.md)
+     - [`pom.xml`](/pom.xml)
+     - [`README.md`](/README.md)
+     - [`TemplateSkeleton.md`](/TemplateSkeleton.md)
+   - resources folder (`/src/main/resources/`)
+     - [`EmptyScoreSheet.txt`](/src/main/resources/EmptyScoreSheet.txt)
+     - config folder (`/src/main/resources/config/`)
+       - [`RoundsRewards.properties`](/src/main/resources/config/RoundsRewards.properties)
+       - [`EmberfallDominionRewards.properties`](/src/main/resources/config/EmberfallDominionRewards.properties)
+       - [`TerrasHeartlandRewards.properties`](/src/main/resources/config/TerrasHeartlandRewards.properties)
+       - [`TideAbyssRewards.properties`](/src/main/resources/config/TideAbyssRewards.properties)
+       - [`MysticalSkyRewards.properties`](/src/main/resources/config/MysticalSkyRewards.properties)
+       - [`RadiantSvannaRewards.properties`](/src/main/resources/config/RadiantSvannaRewards.properties)
+     - images folder (`/src/main/resources/images/`)
+       - [`Project-UML-Diagram.png`](/src/main/resources/images/Project-UML-Diagram.png)
+   - game folder (`/src/main/java/game/`)
+     - [`Main.java`](/src/main/java/game/Main.java)
+     - engine folder (`/src/main/java/game/engine/`)
+       - [`GameController.java`](/src/main/java/game/engine/GameController.java)
+   - [test folder](`/src/test/`) (`/src/test/`)
+     - All files created under the test folder, however, you are free and highly recommended to add more custom test cases files to ensure proper unit testing of your code.
 
-This package contains the core engine components of the game, including the abstract classes and interfaces that define the game's structure and functionality. It serves as the foundation for implementing various game controllers and managing game logic. Additional classes related to game mechanics and control can be added to this package as needed.
+## Grading
 
-### game.dice
-
-The `game.dice` package encompasses classes related to dice functionality within the game. It includes implementations for rolling dice, managing dice states, and handling dice-related actions and interactions.
-
-### game.creatures
-
-In the `game.creatures` package, you'll find classes representing creatures in their corresponding realms; including all necessary features about how to attack them or their current status to update the score sheet accordingly.
-
-### game.collectibles
-
-The `game.collectibles` package contains classes for the various collectible items within the game; such as power-ups, elemental crest, color bonus, or the essence bonus.
-
-### game.gui
-
-The `game.gui` package houses classes related to the graphical user interface (GUI) of the game. This includes components for rendering game graphics, handling user input, and managing the visual presentation of game elements.
-
-### game.exceptions
-
-The `game.exceptions` package provides classes for defining custom exceptions specific to the game. These exceptions help handle error conditions and unexpected situations, providing meaningful feedback to the player or developer.
-
-## Implementation
-
-You are provided with the following files:
-
-Here's the updated README.md reflecting the changes made to the GameController.java:
-
-### `GameController.java`
-
-- **Package**: `game.engine`
-- **Type**: Abstract Class
-- **Description**: This abstract class represents the controller for the game. It defines the common blueprint for different controllers used in the game.
-
-#### Methods:
-
-1. `void startGame()`
-
-   - **Description**: Initializes necessary components and starts the game loop.
-
-2. `boolean switchPlayer()`
-
-   - **Description**: Switches the role of the current active player to passive and vice versa, ensuring that the turn-taking mechanism functions correctly.
-   - **Return Type**: `boolean`
-     - `true` if the switch was successful,
-     - `false` otherwise.
-
-3. `Dice[] rollDice()`
-
-   - **Description**: Rolls all available dice for the current turn, assigning each a random number from 1 to 6.
-   - **Return Type**: Array of `Dice`
-     - An array of the currently rolled dice.
-
-4. `Dice[] getAvailableDice()`
-
-   - **Description**: Gets the dice available for rolling or rerolling.
-   - **Return Type**: Array of `Dice`
-     - An array of dice available for the current turn.
-
-5. `Dice[] getAllDice()`
-
-   - **Description**: Gets all six dice, providing their current state and value within the game regardless of their location or status.
-   - **Return Type**: Array of `Dice`
-     - An array of all six dice, with each die's state and value.
-
-6. `Dice[] getForgottenRealmDice()`
-
-   - **Description**: Gets the dice currently available in the Forgotten Realm.
-   - **Return Type**: Array of `Dice`
-     - An array of dice that are currently in the Forgotten Realm.
-
-7. `Move[] getAllPossibleMoves(Player player)`
-
-   - **Description**: Gets all possible moves for a given player.
-   - **Parameters**:
-     - `player`: The player for whom to determine possible moves.
-   - **Return Type**: Array of `Move`
-     - An array of all possible moves for all rolled dice.
-
-8. `Move[] getPossibleMovesForAvailableDice(Player player)`
-
-   - **Description**: Gets possible moves for all currently rolled dice for a given player.
-   - **Parameters**:
-     - `player`: The player for whom to determine possible moves.
-   - **Return Type**: Array of `Move`
-     - An array of all possible moves for all rolled dice.
-
-9. `Move[] getPossibleMovesForADie(Player player, Dice dice)`
-
-   - **Description**: Gets all possible moves for a given die for a given player.
-   - **Parameters**:
-     - `player`: The player for whom to determine possible moves.
-     - `dice`: The dice to determine possible moves for.
-   - **Return Type**: Array of `Move`
-     - An array of possible moves for the given dice.
-
-10. `GameBoard getGameBoard()`
-
-    - **Description**: Gets the current game board, including all players and all score sheets.
-    - **Return Type**: `GameBoard`
-      - The current game board object.
-
-11. `Player getActivePlayer()`
-
-    - **Description**: Gets the current active player's information.
-    - **Return Type**: `Player`
-      - The active player object.
-
-12. `Player getPassivePlayer()`
-
-    - **Description**: Gets the current passive player's information.
-    - **Return Type**: `Player`
-      - The passive player object.
-
-13. `ScoreSheet getScoreSheet(Player player)`
-
-    - **Description**: Gets the score sheet for a given player.
-    - **Parameters**:
-      - `player`: The player to get the current score sheet for.
-    - **Return Type**: `ScoreSheet`
-      - The score sheet object for the given player.
-
-14. `GameStatus getGameStatus()`
-
-    - **Description**: Gets the current game status, including round and turn information for the current active player.
-    - **Return Type**: `GameStatus`
-      - The current game status object.
-
-15. `GameScore getGameScore(Player player)`
-
-    - **Description**: Gets the current score of the game for a given player.
-    - **Parameters**:
-      - `player`: The player to determine current score for.
-    - **Return Type**: `GameScore`
-      - The current game score object for the given player.
-
-16. `TimeWarp[] getTimeWarpPowers(Player player)`
-
-    - **Description**: Gets the array of TimeWarp powers and their status for a given player.
-    - **Parameters**:
-      - `player`: The player to get the current TimeWarp powers for.
-    - **Return Type**: Array of `TimeWarp`
-      - An array of `TimeWarp` objects representing the TimeWarp powers for the given player.
-
-17. `ArcaneBoost[] getArcaneBoostPowers(Player player)`
-
-    - **Description**: Gets the array of ArcaneBoost powers and their status for a given player.
-    - **Parameters**:
-      - `player`: The player to get the current ArcaneBoost powers for.
-    - **Return Type**: Array of `ArcaneBoost`
-      - An array of `ArcaneBoost` objects representing the ArcaneBoost powers for the given player.
-
-18. `boolean selectDice(Dice dice, Player player)`
-
-    - **Description**: Selects a die and adds it to the player's class, then moves all other dice with less value to the Forgotten Realm.
-    - **Parameters**:
-      - `player`: The player who selected the die.
-      - `dice`: The dice to be selected.
-    - **Return Type**: `boolean`
-      - `true` if the selection was successful,
-      - `false` otherwise.
-
-19. `boolean makeMove(Player player, Move move)`
-
-    - **Description**: Executes a move using the selected dice on a specified creature.
-    - **Parameters**:
-      - `player`: The player who wants to make the move.
-      - `move`: The move to be executed, including the selected dice and target creature.
-    - **Return Type**: `boolean`
-      - `true` if the move is successfully completed,
-      - `false` otherwise.
-
-#### Summary of Changes:
-
-- Refactored `getAllPossibleMoves()` to `getAllPossibleMoves(Player player)` to specify the player for whom moves are determined.
-- Refactored `getPossibleMoves(Dice dice)` to `getPossibleMovesForADie(Player player, Dice dice)` to get all possible moves for a given die for a given player.
-- Added `getPossibleMovesForAvailableDice(Player player)` to get possible moves for all currently rolled dice for a given player.
-- Refactored `getPlayer()` to `getActivePlayer()` and `getScoreSheet()` to `getScoreSheet(Player player)` to specify the player for whom information is retrieved.
-- Added `getPassivePlayer()` to get the current passive player's information.
-- Refactored `getGameScore()` to `getGameScore(Player player)` to specify the player for whom the score is determined.
-- Refactored `getTimeWarpPowers()` and `getArcaneBoostPowers()` to accept a `Player` parameter and return an array of powers for that player.
-- Refactored `selectDice(Dice dice)` to `selectDice(Dice dice, Player player)` to specify the player who is selecting the die.
-- Refactored `makeMove(Dice dice, Creature creature)` to `makeMove(Player player, Move move)` to specify the player and move details for executing a move.
-
-### `Main.java`
-
-- This file contains the main method to start the game.
+The [Grades.md](/Grades.md) file in your repository will be updated with milestone grades for each team. Individual performance will be assessed during the final evaluation presentation.
 
 ---
 
-## Milestone 1: Project Hierarchy and Skeleton - Preparation Instructions
+# Milestone 1: Project Hierarchy and Skeleton
 
 - You are tasked with implementing Dice Realms: Quest for the Elemental Crests game project.
 - The project will involve creating various classes and interfaces to handle game logic, user interaction, and testing.
 - This milestone focuses on establishing the project hierarchy and skeleton by listing the files, classes, interfaces, and enums you need to implement.
 
-### Submission Deadline: April 10, 2024
+## Submission Deadline
 
 - Submit your project hierarchy and skeleton by pushing an updated `ProjectSkeleton.md` file to the repo root folder before **April 10, 2024**.
 
-### Tasks
+## Tasks
 
 1. **Update the Project Structure**:
 
@@ -229,18 +68,119 @@ Here's the updated README.md reflecting the changes made to the GameController.j
 
    - Update the `ProjectSkeleton.md` file with the following details for each class you plan to implement:
      - **Class Name**
-     - **Package**
-     - **Type** (Class, Abstract Class, Interface, or Enum)
-     - **Description**
-     - **Methods** (List of methods with descriptions, parameters, and return types)
+       - **Package**
+       - **Type** (Class, Abstract Class, Interface, or Enum)
+       - **Description**
+       - **Methods** (List of methods with descriptions, parameters, and return types)
 
 4. **Submission**:
 
-   - Before the deadline, push your updated `ProjectSkeleton.md` file to the repository root folder to indicate your submission and make a Pull Request titled `Milestone 1 Submission`
+   - Before the deadline, push your updated `ProjectSkeleton.md` file to the repository root folder to indicate your submission and make a Pull Request titled `Milestone-1-Submission`
+   - Since many of you have been working on the main branch directly, which is not recommended. Therefore, you can use the Git-Tag instead of the pull request by tagging your submission commit on the `main` branch with tag `Milestone-1`. Use Git-Tag to tag the commit that is ready for evaluation. If you are unfamiliar with how to use Git-Tag, you can refer to the instructions at the end of this README.
 
 5. **Review and Feedback**:
    - Once the deadline passes, review any feedback provided by the instructor and prepare for the next milestone accordingly.
 
 ---
 
-_Note: Refer to the provided test files for guidance on implementing the required classes and methods. Reach out to the instructor if you encounter any issues or have questions._
+# Milestone 2: Game Engine
+
+## Objective
+
+Develop a fully functional game engine that can be played through the Command Line Interface (CLI). This milestone
+
+will focus on implementing the core functionality that allows two players to interact with the game and navigate through different realms, attack creatures and collect crests.
+
+## Submission Deadlines
+
+1. **Check-in Deadline**: 04.05.2024
+
+   This is a binary graded check-in to ensure your project is heading in the correct direction. No content grade, just a submission check, yet mandatory.
+
+2. **Final Submission Deadline**: 15.05.2024
+
+   Deliver a fully functional CLI-based game. This will be graded for passing unit tests, functionality, code quality, and adherence to the project requirements.
+
+## Project Skeleton
+
+You may choose to use your proposed [project skeleton](/ProjectSkeleton.md) or adopt the suggested [template skeleton](/TemplateSkeleton.md). Both approaches are equally valid and should be chosen based on your team’s preference and design strategy.
+
+_**Note:** The provided template skeleton is intended as a guideline to shape your approach. However, it is not fully complete and should not be used as a direct substitute for the Milestone-1 submission._
+
+## Tasks
+
+1. **Implement Defined Classes**:
+
+   - Begin implementing the defined classes within their respective packages based on the chosen project skeleton. If you are collaborating as a team on a single machine, make sure to utilize Git's commit system as much as possible to clearly document each team member's contributions to their specific classes.
+
+2. **Define Custom Exceptions**:
+
+   - Design and develop custom exceptions to enhance the robustness of error handling within your game. By implementing these exceptions, you can ensure that unexpected user inputs or other error conditions are managed gracefully, preventing the game from terminating unexpectedly.
+
+3. **Realms Reward System**:
+
+   - The rewards for each realm are specified in individual files located in the [config folder](/src/main/resources/config/). It is the responsibility of those managing each realm to ensure that the game engine reads these files correctly to distribute rewards accurately. Similarly, the assignment of initial rewards for the rounds is the responsibility of the team coordinator. This setup ensures that rewards are systematically and fairly allocated throughout the game, contributing to a balanced and engaging gameplay experience.
+
+4. **Score Management**:
+
+   - Take a look at the [EmptyScoreSheet.txt](/src/main/resources/EmptyScoreSheet.txt) file located in the resource folder to understand the format for displaying the Score Sheet to players. This should be achieved by utilizing the `toString()` method of the `ScoreSheet` object. Individuals responsible for each realm are tasked with implementing the `toString()` method for their specific creature or realm. The `ScoreSheet` object then combines all these individual representations into a cohesive whole.
+   - Additionally, to maintain consistency and ease of management similar to the rewards system, it is recommended to create a configuration file for the scoring system of each realm. This approach ensures that the scoring criteria are clear, structured, and easily adjustable, enhancing the game's transparency and adaptability.
+
+5. **Update the Project Structure & Skeleton**:
+
+   - Prior to submission, ensure that your [ProjectSkeleton.md](/ProjectSkeleton.md) accurately reflects the latest state of your project. This document should provide a comprehensive overview of the current folder and file structure, as well as the organization of packages, classes, and their respective methods. Keeping this document updated is crucial for maintaining a clear and precise record of the project’s development progress.
+
+6. **Review and Feedback**:
+   - Once the deadline passes, review any feedback provided by the instructor and prepare for the next milestone accordingly.
+
+## Submission Guidelines
+
+- **Branch Management**: It is recommended to conduct ongoing development on separate branches. Reserve the `main` branch strictly for finalized submissions.
+- **Check-in Submission**: As a team, push your current progress to the main branch and tag it as `CheckInMS-2` for evaluation purposes by the given deadline. Failure to correctly tag may result in your submission not being evaluated. If you need guidance on using Git-Tag, please refer to the instructions provided at the end of this README.
+- **Final Evaluation**: As a team, push all completed work in the game engine to the main branch and label it `Milestone-2` for evaluation purposes by the given deadline. Failure to correctly tag may result in your submission not being evaluated. If you need guidance on using Git-Tag, please refer to the instructions provided at the end of this README.
+- **Feedback Requests**: For interim feedback, initiate a pull request titled "Feedback Request yyyymmdd" (insert the actual date of request). Please allow 1-2 days for the review to be completed. Utilizing feedback requests prior to your final submission can be invaluable for refining your project.
+- **Updates and Syncing**: Should there be any updates to the core files by the instructor, your forked repositories will automatically be synchronized with the original repository. Notifications regarding such updates will be communicated via Discord and email.
+
+---
+
+_**Note:** Refer to the provided test files for guidance on implementing the required classes and methods. Reach out to the instructor if you encounter any issues or have questions._
+
+---
+
+# Milestone 3: Game GUI
+
+WIP
+
+# Bonus Milestone 3: Game AI
+
+WIP
+
+# Version Control Best Practices
+
+Proper use of version control is critical in managing and tracking the progress of your software project. Below are some best practices for using Git, which will help you maintain a healthy codebase and effective collaboration:
+
+## Regular Commits
+
+- **Commit Often**: Make regular commits to your repository instead of bulk commits. This approach helps in minimizing the risk of losing work and allows for better understanding and tracking of changes.
+- **Meaningful Commit Messages**: Write clear and descriptive commit messages that explain why the changes were made. This practice is invaluable for historical tracking and understanding the context of changes.
+
+## Writing and Running Unit Tests
+
+- **Test Early and Often**: Write unit tests alongside your code. Tests are not just for finding bugs but also for ensuring that your code behaves as expected.
+- **Run Local Tests Frequently**: Before pushing your changes, run your tests locally to ensure everything works as expected. Use the command:
+
+```
+mvn test
+```
+
+- **Add Custom Tests**: While it's essential to pass the provided tests, creating your own can help cover more scenarios specific to your implementation.
+
+## Creating a Tag on GitHub Website:
+
+1. Navigate to the repository on GitHub.
+2. Click on the “Releases” label on the right side.
+3. Click on the “Create a new release” button.
+4. Fill in the “Tag version” field with the desired tag name (e.g., Milestone-1).
+5. Optionally, provide a release title and description.
+6. Choose the target branch or commit for the tag.
+7. Click on the “Publish release” button to create the tag.
