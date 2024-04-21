@@ -20,7 +20,7 @@ jobs:
       with:
         test-name: CLIGameControllerTest
         setup-command: mvn compile
-        command: mvn -Dtest=CLIControllerTest test
+        command: mvn -Dtest=CLIGameControllerTest test
         timeout: 3
         max-score: 10
     - name: Autograding Reporter
