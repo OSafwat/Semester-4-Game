@@ -10,9 +10,13 @@ Dice-Realms/
 │   │   ├── java/
 │   │   │   └── game/
 │   │   │       ├── collectibles/   
-│   │   │       │   ├── TimeWarp.java
+│   │   │       │   ├── Reward.java
+│   │   │       │   ├── Power.java
+│   │   │       │   ├── Bonus.java
+│   │   │       │   ├── ElementalCrest.java
 │   │   │       │   ├── ArcaneBoost.java
-│   │   │       │   ├── ColorBonus.java
+│   │   │       │   ├── TimeWarp.java
+│   │   │       │   └── EssenceBonus.java
 │   │   │       │
 │   │   │       ├── creatures/
 │   │   │       │   ├── PyroDragon.java
