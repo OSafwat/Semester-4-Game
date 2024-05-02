@@ -6,6 +6,7 @@ import game.creatures.Lion;
 public class GameScore {
     int allScores[];
     int elementalCrestCounter;
+
     public GameScore(){
         allScores= new int[6];
         elementalCrestCounter =0;
@@ -14,7 +15,7 @@ public class GameScore {
     public void updateScores(int [] scores ){
         this.allScores = scores;
     }
-
+    
     public int getTotalScore(){
         int total=0;
         int min= Integer.MAX_VALUE;
@@ -41,6 +42,5 @@ public class GameScore {
         // Print bottom border
         res+=("+--------+--------+-------+-------+------+-------+"); 
         return res;
-    
     }
 }

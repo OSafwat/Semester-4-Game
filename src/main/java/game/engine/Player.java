@@ -23,7 +23,8 @@ public class Player {
             this.playerStatus = PlayerStatus.ACTIVE; 
     }
     public void updateGameScore(){
-        gameScore.updateScores(this.scoreSheet.getScores());
+
+        gameScore.updateScores(this.scoreSheet.getScores(), );
     }
 
     

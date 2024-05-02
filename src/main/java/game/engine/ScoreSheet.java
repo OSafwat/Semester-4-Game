@@ -20,5 +20,14 @@ public class ScoreSheet {
         Scores[4]= this.lion.getScore();
         return Scores;
     }
+    public int getElementalCrests(){
+        int total=0;
+        total+=dragon.getElementalCrest();
+        total+=gaia.getElementalCrest();
+        total+=hydra.getElementalCrest();
+        total+=phoenix.getElementalCrest();
+        total+=lion.getElementalCrest();
+        return total;
+    }
 
 }
