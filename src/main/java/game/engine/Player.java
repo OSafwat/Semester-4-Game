@@ -5,8 +5,8 @@ import game.engine.enums.*;
 
 public class Player {
     private PlayerStatus playerStatus;
-    private GameScore gamescore;
-    private ScoreSheet scoresheet;
+    private GameScore gameScore;
+    private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
     private TimeWarp timeWarp;
 
@@ -23,6 +23,8 @@ public class Player {
             this.playerStatus = PlayerStatus.ACTIVE; 
     }
     public void updateGameScore(){
-        int RedScore = ScoreSheet.
+        gameScore.updateScores(this.scoreSheet.getScores());
     }
+
+    
 }

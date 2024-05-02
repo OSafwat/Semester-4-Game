@@ -11,9 +11,9 @@ public class GameScore {
         elementalCrestCounter =0;
     }
     
-public void updateScores(Lion lion, Gaia gaia, ){
-    allScores[0]= lion.getScore();
-}
+    public void updateScores(int [] scores ){
+        this.allScores = scores;
+    }
 
     public int getTotalScore(){
         int total=0;
@@ -27,5 +27,20 @@ public void updateScores(Lion lion, Gaia gaia, ){
         return total;
     }
     
-
+    public String toString(){
+        String res="";
+        // Print top border
+        res+=("+--------+--------+-------+-------+------+-------+");
+        // Print header row
+        res+=("| Dragon | Phoenix| Lion  | Hydra | Gaia | Total |");
+        // Print middle border
+        res+=("+--------+--------+-------+-------+------+-------+");
+        // Print values with vertical lines and tabs to align them as a table
+        res+=("|   " + allScores[0] + "    |   " +  allScores[1] + "    |   " +  allScores[2] + "   |   " +  allScores[3] + "   |  " +  allScores[4] + "   |   " +
+                (getTotalScore()) + "   |");
+        // Print bottom border
+        res+=("+--------+--------+-------+-------+------+-------+"); 
+        return res;
+    
+    }
 }
