@@ -1,5 +1,6 @@
 package game.creatures;
 
-public class Creature {
+public abstract class Creature {
+    public abstract int getScore();
     
 }
