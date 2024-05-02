@@ -5,7 +5,7 @@ import game.engine.enums.PlayerStatus;
 public class CLIGameController {
     GameBoard gameBoard;
 
-    public GameBoard getGameBoard() {
+    public GameBoard getGameBoard() {   
         return gameBoard;
     }
     public boolean switchPlayer(){
@@ -27,6 +27,13 @@ public class CLIGameController {
         }
     }
 
+    public Player getPassivePlayer(){
+        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE){
+            return this.gameBoard.getPlayer1();
+        }else{
+            return this.gameBoard.getPlayer2();
+        }
+    }
 
     // public abstract boolean switchPlayer(){
     // }
