@@ -1,5 +1,5 @@
 package game.creatures;
 
-public class Lion {
+public class Lion extends Creature{
     
 }

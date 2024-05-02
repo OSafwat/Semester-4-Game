@@ -1,5 +1,5 @@
 package game.creatures;
 
-public class Phoenix {
+public class Phoenix extends Creature{
     
 }

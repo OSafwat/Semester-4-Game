@@ -1,5 +1,5 @@
 package game.creatures;
 
-public class Hydra {
+public class Hydra extends Creature{
     
 }
