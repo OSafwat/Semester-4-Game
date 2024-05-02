@@ -31,18 +31,27 @@ public class Gaia extends Creature{
 
 // gets a specific guardian in the Gaia
     public Guardians getGuardians(int c){
+
+        int row =0;
+        int col =0;
         if(c<2 || c>12)
         return null;
         int index =1;
         for(int i=0;i<gaiaGuardians.length;i++){
             for(int j=0;j<gaiaGuardians[i].length;j++){
-                if(c==index)
-                break;
+                if(c==index){
+                    row=i;
+                    col=j;
+                    break;
+
+                }
+                
                 index++;
             }
-            return gaiaGuardians[i][j];
+            
 
     }
+    return gaiaGuardians[row][col];
 
 
 }
@@ -61,21 +70,6 @@ public void killGaiaGuardian(Guardians g){
 public int getAlliveGuardians(){
     return alliveGuardians;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
