@@ -13,5 +13,7 @@ public class GameBoard {
         this.allDice[3]=new MagentaDice();
         this.allDice[4]=new YellowDice();
         this.allDice[5]=new ArcanePrism();
+
+        player1 = new Player();
     } 
 }

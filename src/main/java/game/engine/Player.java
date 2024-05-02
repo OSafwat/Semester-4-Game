@@ -10,6 +10,9 @@ public class Player {
     ElementalCrest elementalCrest;
     TimeWarp timeWarp;
 
+    public Player(PlayerStatus status){
+        this.playerStatus= status;
+    }
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }
