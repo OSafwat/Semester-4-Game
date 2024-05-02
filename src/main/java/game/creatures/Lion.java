@@ -1,4 +1,4 @@
-package game.collectibles;
+package game.creatures;
 
 public class Lion {
     

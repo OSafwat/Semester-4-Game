@@ -1,7 +1,6 @@
 package game.engine;
 
-import game.collectibles.Lion;
-import game.collectibles.Phoenix;
+import game.creatures.*;
 
 public class ScoreSheet {
     Hydra hydra;
@@ -9,5 +8,5 @@ public class ScoreSheet {
     Lion lion;
     Dragon dragon;
     Gaia gaia;
-    
+
 }
