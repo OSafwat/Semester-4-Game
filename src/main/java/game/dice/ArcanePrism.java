@@ -1,5 +1,5 @@
 package game.dice;
 
-public class ArcanePrism {
+public class ArcanePrism extends Dice{
     
 }
