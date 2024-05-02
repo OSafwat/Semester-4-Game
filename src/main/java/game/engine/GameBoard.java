@@ -14,7 +14,10 @@ public class GameBoard {
     public Player getPlayer2() {
         return player2;
     }
-    
+
+    public GameStatus getGameStatus(){
+        return this.gameStatus;
+    }
     public GameBoard(){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
@@ -26,6 +29,8 @@ public class GameBoard {
 
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
+
+        //this.gameStatus= <gamestatus>;
 
     } 
 }

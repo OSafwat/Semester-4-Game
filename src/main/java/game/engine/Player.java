@@ -8,13 +8,16 @@ public class Player {
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
-    private TimeWarp timeWarp;
+    private TimeWarp [] timeWarp;
 
     public Player(PlayerStatus status){
         this.playerStatus= status;
     }
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
+    }
+    public ScoreSheet getScoresheet(){
+        return this.scoreSheet;
     }
     public void switchStatus(){
         if (this.playerStatus == PlayerStatus.ACTIVE)
@@ -25,6 +28,11 @@ public class Player {
     public void updateGameScore(){
         gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests() );
     }
-
+    public GameScore getGameScore(){
+        return this.gameScore;
+    }
+    public TimeWarp [] getTimeWarps(){
+        return this.timeWarp;
+    }
     
 }

@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.collectibles.TimeWarp;
 import game.engine.enums.PlayerStatus;
 
 public class CLIGameController {
@@ -34,6 +35,21 @@ public class CLIGameController {
             return this.gameBoard.getPlayer2();
         }
     }
+    public ScoreSheet getScoreSheet(Player player){
+        return player.getScoresheet();
+    }
+
+    public GameStatus getGameStatus(){
+        return this.gameBoard.getGameStatus();
+    }
+    public GameScore getGameScore(Player player){
+        return player.getGameScore();
+    }
+
+    public  TimeWarp[] getTimeWarpPowers(Player player){
+        return player.getTimeWarps();
+    }
+
 
     // public abstract boolean switchPlayer(){
     // }
