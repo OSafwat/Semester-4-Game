@@ -16,7 +16,7 @@ public class Player {
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }
-    public void changeStatus(){
+    public void switchStatus(){
         if (this.playerStatus == PlayerStatus.ACTIVE)
             this.playerStatus = PlayerStatus.PASSIVE;
         else 

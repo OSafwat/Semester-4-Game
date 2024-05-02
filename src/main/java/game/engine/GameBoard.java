@@ -7,6 +7,14 @@ public class GameBoard {
     Player player2;
     Dice [] allDice;
     
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+    
     public GameBoard(){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
