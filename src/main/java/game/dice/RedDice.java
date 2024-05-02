@@ -1,5 +1,7 @@
 package game.dice;
 
+import game.engine.enums.RealmColor;
+
 public class RedDice extends Dice{
     int num;
     public void rollDice(){
@@ -7,5 +9,8 @@ public class RedDice extends Dice{
     }
     public int getValue(){
         return this.num;
+    }
+    public RealmColor getRealm(){
+        return RealmColor.RED;
     }  
 } 
