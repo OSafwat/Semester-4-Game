@@ -1,5 +1,5 @@
 package game.engine.enums;
 
-public enum PlayerState {
+public enum PlayerStatus {
     ACTIVE, PASSIVE
 }
