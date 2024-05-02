@@ -1,5 +1,6 @@
 package game.engine;
 import game.dice.*;
+import game.engine.enums.PlayerStatus;
 public class GameBoard {
     GameStatus gameStatus;
     Player player1;
@@ -14,6 +15,8 @@ public class GameBoard {
         this.allDice[4]=new YellowDice();
         this.allDice[5]=new ArcanePrism();
 
-        player1 = new Player();
+        player1 = new Player(PlayerStatus.ACTIVE);
+        player2 = new Player(PlayerStatus.PASSIVE);
+
     } 
 }

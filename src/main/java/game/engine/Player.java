@@ -4,11 +4,11 @@ import game.collectibles.TimeWarp;
 import game.engine.enums.*;
 
 public class Player {
-    PlayerStatus playerStatus;
-    GameScore gamescore;
-    ScoreSheet scoresheet;
-    ElementalCrest elementalCrest;
-    TimeWarp timeWarp;
+    private PlayerStatus playerStatus;
+    private GameScore gamescore;
+    private ScoreSheet scoresheet;
+    private ElementalCrest elementalCrest;
+    private TimeWarp timeWarp;
 
     public Player(PlayerStatus status){
         this.playerStatus= status;
@@ -22,5 +22,7 @@ public class Player {
         else 
             this.playerStatus = PlayerStatus.ACTIVE; 
     }
-
+    public void updateGameScore(){
+        int RedScore = ScoreSheet.
+    }
 }

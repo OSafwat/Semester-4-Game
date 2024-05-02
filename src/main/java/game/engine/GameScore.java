@@ -1,5 +1,8 @@
 package game.engine;
 
+import game.creatures.Gaia;
+import game.creatures.Lion;
+
 public class GameScore {
     int allScores[];
     int elementalCrestCounter;
@@ -8,6 +11,10 @@ public class GameScore {
         elementalCrestCounter =0;
     }
     
+public void updateScores(Lion lion, Gaia gaia, ){
+    allScores[0]= lion.getScore();
+}
+
     public int getTotalScore(){
         int total=0;
         int min= Integer.MAX_VALUE;
