@@ -1,5 +1,5 @@
 package game.exceptions;
 
-public class ExhaustedResourceException {
+public class ExhaustedResourceException extends PlayerActionException{
     
 }
