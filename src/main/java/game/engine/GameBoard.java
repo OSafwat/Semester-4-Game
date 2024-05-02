@@ -8,6 +8,10 @@ public class GameBoard {
     public GameBoard(){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
+        this.allDice[1]=new GreenDice();
+        this.allDice[2]=new RedDice();
+        this.allDice[3]=new MagentaDice();
+        this.allDice[4]=new YellowDice();
         
     } 
 }
