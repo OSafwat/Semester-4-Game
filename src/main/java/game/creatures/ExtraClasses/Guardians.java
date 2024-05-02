@@ -2,6 +2,7 @@ package game.creatures.ExtraClasses;
 
 public class Guardians {
 
+    public static final int length = 0;
     private  int guardianValue;
     private boolean guardianStatus;
 

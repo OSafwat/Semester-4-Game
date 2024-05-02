@@ -70,6 +70,37 @@ public void killGaiaGuardian(Guardians g){
 public int getAlliveGuardians(){
     return alliveGuardians;
 }
+ 
+
+// checks if all gueadiiand in a given col are dead if yes then true
+public boolean checkCol(int col){
+    for(int i=0;i<3;i++){
+        if(!gaiaGuardians[i][col].isDead())
+            return false;
+    
+
+    }
+    return true;
+}
+
+// checks if all gueadiiand in a given row are dead if yes then true
+public boolean checkRow(int row){
+    for(int i=0;i<4;i++){
+        if(!gaiaGuardians[row][i].isDead())
+            return false;
+    
+
+    }
+    return true;
+}
+
+
+
+
+
+
+
+
 
 
 }
