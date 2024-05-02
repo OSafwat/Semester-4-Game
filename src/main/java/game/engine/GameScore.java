@@ -12,8 +12,9 @@ public class GameScore {
         elementalCrestCounter =0;
     }
     
-    public void updateScores(int [] scores ){
+    public void updateScores(int [] scores, int elementalCrests ){
         this.allScores = scores;
+        this.elementalCrestCounter=elementalCrests;
     }
     
     public int getTotalScore(){

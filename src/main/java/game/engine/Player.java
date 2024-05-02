@@ -24,7 +24,7 @@ public class Player {
     }
     public void updateGameScore(){
 
-        gameScore.updateScores(this.scoreSheet.getScores(), );
+        gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests() );
     }
 
     
