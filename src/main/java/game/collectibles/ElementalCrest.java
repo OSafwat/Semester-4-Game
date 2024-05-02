@@ -1,5 +1,5 @@
 package game.collectibles;
 
-public class ElementalCrest {
+public class ElementalCrest extends Reward{
     
 }

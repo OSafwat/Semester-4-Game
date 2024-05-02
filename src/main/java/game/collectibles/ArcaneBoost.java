@@ -1,5 +1,5 @@
 package game.collectibles;
 
-public class ArcaneBoost {
+public class ArcaneBoost extends Power{
     
 }

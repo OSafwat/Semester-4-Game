@@ -1,5 +1,5 @@
 package game.collectibles;
 
-public class Power {
+public class Power extends Reward {
     
 }
