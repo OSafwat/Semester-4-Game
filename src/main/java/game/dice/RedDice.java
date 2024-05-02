@@ -1,5 +1,5 @@
 package game.dice;
 
-public class RedDice {
+public class RedDice extends Dice{
     
 }

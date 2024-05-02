@@ -1,5 +1,5 @@
 package game.exceptions;
 
-public class InvalidMoveException {
+public class InvalidMoveException extends PlayerActionException{
     
 }
