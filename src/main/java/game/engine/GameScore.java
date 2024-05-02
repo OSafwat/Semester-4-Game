@@ -1,8 +1,5 @@
 package game.engine;
 
-import game.creatures.Gaia;
-import game.creatures.Lion;
-
 public class GameScore {
     int allScores[];
     int elementalCrestCounter;
