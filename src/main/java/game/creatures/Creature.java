@@ -12,5 +12,5 @@ public abstract class Creature {
     public abstract String getScoreSheet();   //return your part from the score sheet as a string while handling its update after each move or change
     public abstract boolean checkMove(Dice dice); 
     public abstract boolean makeMove(Dice dice);
-    public abstract Move[] getAllPossibleMoves( Dice dice);
+    public abstract Move[] getAllPossibleMoves();
 }

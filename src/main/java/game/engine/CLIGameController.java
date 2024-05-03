@@ -27,7 +27,9 @@ public class CLIGameController {
                 move.setCreature(dragon);
 
             }
-            player.makeMove(move);
+            else{
+                move.getCreature().makeMove(move.getDice());
+            }
             return true;
         }
         catch(Exception e){
