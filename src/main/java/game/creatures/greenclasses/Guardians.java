@@ -1,4 +1,4 @@
-package game.creatures.ExtraClasses;
+package game.creatures.greenclasses;
 
 public class Guardians {
 

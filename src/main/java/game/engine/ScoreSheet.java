@@ -1,6 +1,7 @@
 package game.engine;
 
 import game.creatures.*;
+import game.creatures.greenclasses.Gaia;
 
 public class ScoreSheet {
     Hydra hydra;
