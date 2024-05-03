@@ -32,5 +32,8 @@ public class GameBoard {
 
         //this.gameStatus= <gamestatus>;
 
+    }
+    public Dice [] getDice(){
+        return this.allDice;
     } 
 }
