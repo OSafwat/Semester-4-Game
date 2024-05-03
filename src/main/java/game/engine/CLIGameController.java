@@ -14,6 +14,9 @@ public class CLIGameController {
     public GameBoard getGameBoard() {   
         return gameBoard;
     }
+    public void rollDice(){
+        this.gameBoard.rollDice();
+    }
     public boolean switchPlayer(){
         try{
             this.gameBoard.getPlayer1().switchStatus();

@@ -14,9 +14,16 @@ public class GameBoard {
     public Player getPlayer2() {
         return player2;
     }
+    
 
     public GameStatus getGameStatus(){
         return this.gameStatus;
+    }
+
+    public void rollDice(){
+        for (Dice die : allDice) {
+            die.rollDice();
+        }
     }
     public GameBoard(){
         this.allDice= new Dice [6];
