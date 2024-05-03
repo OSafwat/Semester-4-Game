@@ -4,10 +4,23 @@
 // EXP = explanation
 // ASUM  = assumption till the leader finish
 
+
+import game.engine.enums.RealmColor;
 package game.dice;
 import game.creatures.*;
 import game.creatures.ExtraClasses.Guardians;
 public class GreenDice extends Dice {
+  int num;
+    public RealmColor getRealm(){
+        return RealmColor.GREEN;
+    }
+    public void rollDice(){
+        this.num= (int) Math.random()*6+1;
+    }
+    public int getValue(){
+        return this.num;
+  
+      //******************************************
     private int score;
     private Gaia gaia;
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
@@ -150,7 +163,8 @@ public class GreenDice extends Dice {
                 return "Invalid";
         }
 
-    
+   
+  
 }
 
 
