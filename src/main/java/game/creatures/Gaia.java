@@ -222,7 +222,7 @@ private  void updateRow(int r){
 
     }
 
-      // EXP gives the respective bonus for each roe
+      // EXP gives the respective bonus for each row
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r){
         switch (r) {
@@ -402,27 +402,27 @@ public String toString(){
     returnValue =returnValue+ "+-----------------------------------------------------------------------+\n";
     if(this.getScore()==0)
     returnValue =returnValue+"|  S  |1    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==1)
+    else if(this.getScore()==1)
     returnValue =returnValue+"|  S  |X    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==2)
+    else if(this.getScore()==2)
     returnValue =returnValue+"|  S  |X    |X    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==4)
+    else if(this.getScore()==4)
     returnValue =returnValue+"|  S  |X    |X    |X    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==7)
+    else if(this.getScore()==7)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |11   |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==11)
+    else if(this.getScore()==11)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |16   |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==16)
+    else if(this.getScore()==16)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |22   |29   |37   |46   |56   |\n";
-    if(this.getScore()==22)
+    else if(this.getScore()==22)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |29   |37   |46   |56   |\n";
-    if(this.getScore()==29)
+    else if(this.getScore()==29)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |37   |46   |56   |\n";
-    if(this.getScore()==37)
+    else if(this.getScore()==37)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |46   |56   |\n";
-    if(this.getScore()==46)
+    else if(this.getScore()==46)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |56   |\n";
-    if(this.getScore()==56)
+    else if(this.getScore()==56)
     returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |\n";
     returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
     return returnValue;
