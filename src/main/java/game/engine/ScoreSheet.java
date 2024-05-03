@@ -31,7 +31,7 @@ public class ScoreSheet {
     }
 
     public String getScoreSheet(){
-        
+        String res = hydra.getScoreSheet();
     }
 
 }
