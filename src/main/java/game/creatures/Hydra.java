@@ -7,6 +7,9 @@ public class Hydra extends Creature{
     private Stack<Integer>() SecondSerpent = new Stack<Integer>();
     SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
     private Stack<Integer>() CurrentSerpent;
+
+    // Define an integer indicating the number of heads killed so far, and a boolean indicating whether or not the serpent has regenerated.
+    private int headsKilled;
     private boolean regenerateFlag;
 
     // Define array for the score values and an integer for the current score.
