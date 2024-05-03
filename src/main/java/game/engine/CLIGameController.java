@@ -6,7 +6,7 @@ import game.exceptions.BonusException;
 import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.*;
-
+import game.engine.enums.*;
 public class CLIGameController {
     GameBoard gameBoard;
     
@@ -45,10 +45,10 @@ public class CLIGameController {
         }
         catch(BonusException bException){
             RealmColor theBonusColor= bException.getRealmColor();
-            Move move;
-            switch(theBonusColor){
-                case RED: move = new Move(new RedDice(), ); 
-            }
+            // Move move;
+            // switch(theBonusColor){
+            //     case RED: move = new Move(new RedDice(), ); 
+            // }
             //Move move = new Move(new Dice())
         }
         catch(Exception e){
