@@ -194,7 +194,7 @@ public class Dragon extends Creature{
         scoreSheet += "|  T  |" + Dragons[0].changeToString(heart) + "    |" + Dragons[1].changeToString(heart) + "    |" + Dragons[2].changeToString(heart) + "    |"+ Dragons[3].changeToString(heart) + "    |" + getBlueBoostString() + "   |\n";
         scoreSheet += "|  H  |" + Dragons[0].changeToString(tail) + "    |" + Dragons[1].changeToString(tail) + "    |" + Dragons[2].changeToString(tail) + "    |"+ Dragons[3].changeToString(tail) + "    |" + getElementalCrestString() + "   |\n";
         scoreSheet += "+-----------------------------------+\n";
-        scoreSheet += "|  S  |10   |14   |16   |20   |AB   |\n";
+        scoreSheet += "|  S  |10   |14   |16   |20   |" + getArcaneBoostString() + "   |\n";
         scoreSheet += "+-----------------------------------+";
         return scoreSheet;
     }
@@ -222,5 +222,9 @@ public class Dragon extends Creature{
 
     public String getElementalCrestString () {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : "EC";
+    }
+
+    public String getArcaneBoostString () {
+        return allPossibleMoves.isEmpty() ? "X" : "AB";
     }
 }
