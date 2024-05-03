@@ -184,6 +184,10 @@ public class Dragon extends Creature{
         return getElementalCrestString().equals("X") ? 1 : 0;
     }
 
+    public int getArcaneBoostPower () {
+        return allPossibleMoves.isEmpty() ? 1 : 0;
+    }
+
     @Override
     public String getScoreSheet() {
         String scoreSheet =  "+-----------------------------------+\n";
@@ -225,6 +229,6 @@ public class Dragon extends Creature{
     }
 
     public String getArcaneBoostString () {
-        return allPossibleMoves.isEmpty() ? "X" : "AB";
+        return getArcaneBoostPower() == 1 ? "X" : "AB";
     }
 }
