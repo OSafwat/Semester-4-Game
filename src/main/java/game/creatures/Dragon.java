@@ -48,6 +48,98 @@ public class Dragon extends Creature{
         return face.equals(null) && wings.equals(null) && heart.equals(null) && tail.equals(null);
     }
 
+    public boolean makeMove(Dice dice, Creature creature){
+        boolean valid = checkMove(dice, creature);
+        if (!valid){
+            return false;
+        }
+        int targetValue = dice.getValue();
+        Dragon targetDragon = (Dragon)creature;
+        DragonNumber dragonNumber = targetDragon.getDragonNumber();
+        moveHelper(targetValue, true);
+        return true;
+    }
+
+    public boolean checkMove(Dice dice, Creature creature){
+        //implement exception handling
+        int targetValue = dice.getValue();
+        Dragon targetDragon = (Dragon)creature;
+        return targetDragon.moveHelper(targetValue, false);
+    }
+
+    public boolean moveHelper (int targetValue, boolean doMove) {
+        boolean valid = false;
+        if (dragonNumber.equals(DragonNumber.Dragon1)) {
+            if (targetValue == 3 && !face.equals(null)) {
+                valid = true;
+                if (doMove)
+                    face = null;
+            }
+            else if (targetValue == 2 && !wings.equals(null)) {
+                valid = true;
+                if (doMove)
+                    wings = null;
+            }
+            else if (targetValue == 1 && !tail.equals(null)) {
+                valid = true;
+                if (doMove)
+                    tail = null;
+            }
+        }
+        else if (dragonNumber.equals(DragonNumber.Dragon2)) {
+            if (targetValue == 6 && !face.equals(null)) {
+                valid = true;
+                if (doMove)
+                    face = null;
+            }
+            else if (targetValue == 1 && !wings.equals(null)) {
+                valid = true;
+                if (doMove)
+                    wings = null;
+            }
+            else if (targetValue == 3 && !heart.equals(null)) {
+                valid = true;
+                if (doMove)
+                    heart = null;
+            }
+        }
+        else if (dragonNumber.equals(DragonNumber.Dragon3)) {
+            if (targetValue == 5 && !face.equals(null)) {
+                valid = true;
+                if (doMove)
+                    face = null;
+            }
+            else if (targetValue == 2 && !tail.equals(null)) {
+                valid = true;
+                if (doMove)
+                    tail = null;
+            }
+            else if (targetValue == 4 && !heart.equals(null)) {
+                valid = true;
+                if (doMove)
+                    heart = null;
+            }
+        }
+        else {
+            if (targetValue == 5 && !wings.equals(null)) {
+                valid = true;
+                if (doMove)
+                    wings = null;
+            }
+            else if (targetValue == 4 && !tail.equals(null)) {
+                valid = true;
+                if (doMove)
+                    tail = null;
+            }
+            else if (targetValue == 6 && !heart.equals(null)) {
+                valid = true;
+                if (doMove)
+                    heart = null;
+            }
+        }
+        return valid;
+    }
+
     public Dragon dragonSelector (int index){
         return Dragons[index-1];
     }
