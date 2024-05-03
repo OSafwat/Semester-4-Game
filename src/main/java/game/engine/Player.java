@@ -11,7 +11,7 @@ public class Player {
     private TimeWarp [] timeWarp;
     Move  allPossiblMoves [];
 
-    
+
     public Player(PlayerStatus status){
         this.playerStatus= status;
         //move starting should be inserted here
@@ -43,6 +43,6 @@ public class Player {
     
 
     public void makeMove(Move move){
-        move.getCreature().makeMove(null);
+        move.getCreature().makeMove(move.getDice());
     }
 }

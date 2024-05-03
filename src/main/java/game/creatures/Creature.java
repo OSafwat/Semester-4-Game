@@ -11,6 +11,4 @@ public abstract class Creature {
     public abstract boolean checkMove(Dice dice); 
     public abstract boolean makeMove(Dice dice);
     public abstract Move[] getAllPossibleMoves( Dice dice);
-
-
 }

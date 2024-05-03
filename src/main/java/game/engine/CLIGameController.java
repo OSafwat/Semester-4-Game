@@ -16,7 +16,7 @@ public class CLIGameController {
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
     }
-
+    //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
     public boolean makeMove(Player player, Move move){
         try{
             player.makeMove(move);
