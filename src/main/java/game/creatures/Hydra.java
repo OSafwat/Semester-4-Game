@@ -30,5 +30,11 @@ public class Hydra extends Creature{
         this.score += score;
     }
 
-    
+    // Funtion that returns 1 if if the second head of the regenerated serpent is killed.
+    public int getElementalCrest() {
+        if((int) CurrentSerpent.peek() > 2 && regenerateFlag == true) 
+            return 1;
+        else   
+            return 0;
+    }
 }
