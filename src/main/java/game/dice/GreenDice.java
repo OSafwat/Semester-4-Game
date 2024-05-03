@@ -1,26 +1,8 @@
-//KEY
+//KEY:-
 // IMP = important to change
 // COMPLETE =  should be completed later
 // EXP = explanation
 // ASUM  = assumption till the leader finish
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 package game.dice;
 import game.creatures.*;
