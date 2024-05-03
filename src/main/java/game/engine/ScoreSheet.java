@@ -1,6 +1,4 @@
 package game.engine;
-import game.engine.enums.*;
-import javafx.scene.Parent;
 import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
