@@ -17,4 +17,9 @@ public class Hydra extends Creature{
         this.score = 0;
         CurrentSerpent = FirstSerpent;
     }
+
+    // "score" variable getter.
+    public int getScore() {
+        return score;
+    }
 }
