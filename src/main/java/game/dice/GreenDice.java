@@ -7,5 +7,8 @@ public class GreenDice extends Dice {
     public RealmColor getRealm(){
         return RealmColor.GREEN;
     }
+    public GreenDice(){
+        super();
+    } 
 }
 

@@ -9,5 +9,8 @@ public class ArcanePrism extends Dice{
     public RealmColor getRealm(){
         return RealmColor.WHITE;
     }
+    public ArcanePrism(){
+        super();
+    } 
 
 }

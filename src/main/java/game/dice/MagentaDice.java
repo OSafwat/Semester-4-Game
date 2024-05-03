@@ -9,4 +9,7 @@ public class MagentaDice extends Dice{
     public RealmColor getRealm(){
         return RealmColor.MAGENTA;
     }
+    public MagentaDice(){
+        super();
+    } 
 }

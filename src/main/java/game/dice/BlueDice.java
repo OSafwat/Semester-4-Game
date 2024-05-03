@@ -9,4 +9,7 @@ public class BlueDice extends Dice{
     public RealmColor getRealm(){
         return RealmColor.BLUE;
     }
+    public BlueDice(){
+        super();
+    } 
 }

@@ -19,6 +19,6 @@ public class Move {
     }
 
     Dice getDice(){
-        return dice;
+        return this.dice;
     }
 }

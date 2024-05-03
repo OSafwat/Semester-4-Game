@@ -8,5 +8,8 @@ public class RedDice extends Dice{
     }
     public RealmColor getRealm(){
         return RealmColor.RED;
+    } 
+    public RedDice(){
+        super();
     }  
 } 

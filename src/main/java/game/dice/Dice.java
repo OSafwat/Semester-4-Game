@@ -13,6 +13,9 @@ public class Dice {
     public Dice(int num){
         this.num= num;
     }
+    public Dice(){
+        rollDice();
+    }
     public int getValue(){
         return this.num;
     }
