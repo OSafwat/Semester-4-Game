@@ -5,6 +5,7 @@ import game.engine.enums.PlayerStatus;
 
 public class CLIGameController {
     GameBoard gameBoard;
+    Move []
 
     public GameBoard getGameBoard() {   
         return gameBoard;
