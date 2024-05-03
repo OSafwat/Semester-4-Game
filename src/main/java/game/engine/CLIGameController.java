@@ -26,7 +26,7 @@ public class CLIGameController {
             if (move.getCreature() instanceof Dragon ){
                 System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
                 int dragonIndex = Integer.parseInt(System.console().readLine());
-                Dragon dragon= move.getCreature().dragonSelector(dragonIndex);
+                Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
                 move.setCreature(dragon);
             }else if (move.getCreature() instanceof Gaia){
                 Gaia gaia = (Gaia)player.getScoresheet().getCreatureByRealm(move.getDice());
