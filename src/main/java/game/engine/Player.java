@@ -9,6 +9,7 @@ public class Player {
     private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
     private TimeWarp [] timeWarp;
+    Move  allPossiblMoves [];
 
     public Player(PlayerStatus status){
         this.playerStatus= status;
@@ -33,6 +34,9 @@ public class Player {
     }
     public TimeWarp [] getTimeWarps(){
         return this.timeWarp;
+    }
+    public Move [] getAllPossiblMoves(){
+        return this.allPossiblMoves;
     }
     
 }
