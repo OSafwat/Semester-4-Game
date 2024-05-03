@@ -16,13 +16,13 @@ public class Hydra extends Creature{
     // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
     public Hydra() {
         this.score = 0;
-        this.CurrentSerpent = FirstSerpent;
+        this.CurrentSerpent = this.FirstSerpent;
         this.regenerateFlag = false;
     }
 
     // Getter for the "score" variable.
     public int getScore() {
-        return score;
+        return this.score;
     }
 
     // Setter for the "score" variable.
@@ -32,7 +32,7 @@ public class Hydra extends Creature{
 
     // Funtion that returns 1 if if the second head of the regenerated serpent is killed.
     public int getElementalCrest() {
-        if((int) CurrentSerpent.peek() > 2 && regenerateFlag == true) 
+        if((int) this.CurrentSerpent.peek() > 2 && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
