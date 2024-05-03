@@ -1,9 +1,13 @@
 package game.creatures;
 
+import java.util.ArrayList;
+
 import game.dice.Dice;
 import game.engine.Move;
 
 public class Phoenix extends Creature{
+    public int[] phoenixsReceivedHP = new int[11];
+    public ArrayList<Move> allPossibleMoves;
 
     @Override
     public int getElementalCrest() {
@@ -24,5 +28,7 @@ public class Phoenix extends Creature{
     @Override
     public Move[] getAllPossibleMoves() {
     }
+
+    
     
 }
