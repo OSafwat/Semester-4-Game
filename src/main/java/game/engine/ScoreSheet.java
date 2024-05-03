@@ -1,6 +1,9 @@
 package game.engine;
 
-import game.creatures.*;
+import game.creatures.Dragon;
+import game.creatures.Hydra;
+import game.creatures.Lion;
+import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
 
 public class ScoreSheet {
@@ -45,6 +48,9 @@ public class ScoreSheet {
         res +="\n";
         return res;
 
+    }
+    public getCreatureByRealm(Dice dice){
+        dice.get 
     }
 
 }

@@ -13,6 +13,7 @@ public class Player {
 
     public Player(PlayerStatus status){
         this.playerStatus= status;
+        //move starting should be inserted here
     }
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
