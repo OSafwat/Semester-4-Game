@@ -16,6 +16,16 @@ public class CLIGameController {
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
     }
+
+    public boolean makeMove(Player player, Move move){
+        try{
+            player.makeMove(move);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }    
     //gameboard getter:
     public GameBoard getGameBoard() {   
         return gameBoard;
@@ -78,6 +88,8 @@ public class CLIGameController {
     public  TimeWarp[] getTimeWarpPowers(Player player){
         return player.getTimeWarps();
     }
+
+
 
 
     // public abstract boolean switchPlayer(){
