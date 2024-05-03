@@ -26,10 +26,26 @@ public class Dragon extends Creature{
         Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         initPointMap();
-        allPossibleMoves = null;
+        initPossibleMoves();
     }
 
-    public Dragon (Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber){
+    public void initPossibleMoves() {
+        allPossibleMoves = new ArrayList<>();
+        allPossibleMoves.add(new Move(new RedDice(1), Dragons[0]));
+        allPossibleMoves.add(new Move(new RedDice(1), Dragons[1]));
+        allPossibleMoves.add(new Move(new RedDice(2), Dragons[0]));
+        allPossibleMoves.add(new Move(new RedDice(2), Dragons[2]));
+        allPossibleMoves.add(new Move(new RedDice(3), Dragons[0]));
+        allPossibleMoves.add(new Move(new RedDice(3), Dragons[1]));
+        allPossibleMoves.add(new Move(new RedDice(4), Dragons[2]));
+        allPossibleMoves.add(new Move(new RedDice(4), Dragons[3]));
+        allPossibleMoves.add(new Move(new RedDice(5), Dragons[2]));
+        allPossibleMoves.add(new Move(new RedDice(5), Dragons[3]));
+        allPossibleMoves.add(new Move(new RedDice(6), Dragons[1]));
+        allPossibleMoves.add(new Move(new RedDice(6), Dragons[3]));
+    }
+
+    private Dragon (Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber){
         this.face = face;
         this.wings = wings;
         this.tail = tail;
@@ -60,10 +76,17 @@ public class Dragon extends Creature{
         }
         int targetValue = dice.getValue();
         moveHelper(targetValue, true);
+        Move move = new Move(dice, this);
+        for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
+            if (allPossibleMoves.get(i).equals(move)) {
+                allPossibleMoves.remove(i);
+                break;
+            }
+        }
         return true;
     }
 
-    private boolean checkMove(Dice dice){
+    public boolean checkMove(Dice dice){
         //implement exception handling
         int targetValue = dice.getValue();
         return moveHelper(targetValue, false);
@@ -177,10 +200,6 @@ public class Dragon extends Creature{
     }
 
     public Move[] getAllPossibleMoves() {
-        if (allPossibleMoves.equals(null)) {
-            allPossibleMoves = new ArrayList<>();
-            allPossibleMoves.add(new Move(new RedDice(3)))
-        }
         Move[] returnedArray = new Move[allPossibleMoves.size()];
         return allPossibleMoves.toArray(returnedArray);
     }

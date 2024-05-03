@@ -9,9 +9,12 @@ public class Player {
     private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
     private TimeWarp [] timeWarp;
+    Move  allPossiblMoves [];
+
 
     public Player(PlayerStatus status){
         this.playerStatus= status;
+        //move starting should be inserted here
     }
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
@@ -34,5 +37,13 @@ public class Player {
     public TimeWarp [] getTimeWarps(){
         return this.timeWarp;
     }
+    public Move [] getAllPossiblMoves(){
+        return this.allPossiblMoves;
+    }
     
+
+    public void makeMove(Move move){
+        if (move.getCreature() instanceof dragon){}
+        
+    }
 }

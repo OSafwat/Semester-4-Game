@@ -1,6 +1,6 @@
-package game.creatures;
+package game.creatures.greenclasses;
 
-import game.creatures.ExtraClasses.Guardians;
+import game.creatures.Creature;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
@@ -10,7 +10,6 @@ public class Gaia extends Creature{
     private Guardians [][]  gaiaGuardians;
     private int alliveGuardians;
     private int deadGuardians;
-    private int score;
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
