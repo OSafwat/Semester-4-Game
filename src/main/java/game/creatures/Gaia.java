@@ -310,7 +310,138 @@ public Move[] getAllPossibleMoves( Dice dice,Creature creature){
     return allMoves;
 }
 
+public String toString(){
+    String returnValue = "Terra's Heartland: Gaia Guardians (GREEN REALM):\n" +
+    "+-----------------------------------+\n" +
+    "|  #  |1    |2    |3    |4    |R    |\n" +
+    "|  1  |X    " ;
+    Guardians G2 = this.getGuardians(2);
+    if(G2.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|2    ";
+    Guardians G3 = this.getGuardians(3);
+    if(G3.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|3    ";
+    Guardians G4 = this.getGuardians(4);
+    if(G4.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|4    ";
+    if(checkRow(0))
+    returnValue = returnValue +"|X    |\n"+"|  2  ";
+    else
+    returnValue = returnValue +"|YB   |\n"+"|  2  ";
+    Guardians G5 = this.getGuardians(5);
+    if(G5.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|5    ";
+    Guardians G6 = this.getGuardians(6);
+    if(G6.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|6    ";
+    Guardians G7 = this.getGuardians(7);
+    if(G7.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|7    ";
+    Guardians G8 = this.getGuardians(8);
+    if(G8.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|8    ";
+    if(checkRow(1))
+    returnValue = returnValue +"|X    |\n"+"|  3  ";
+    else
+    returnValue = returnValue +"|RB   |\n"+"|  3  ";
+    Guardians G9 = this.getGuardians(9);
+    if(G9.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|9    ";
+    Guardians G10 = this.getGuardians(10);
+    if(G10.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|10   ";
+    Guardians G11 = this.getGuardians(11);
+    if(G11.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|11   ";
+    Guardians G12 = this.getGuardians(12);
+    if(G12.isDead())
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue = returnValue +"|12   ";
+    if(checkRow(2))
+    returnValue = returnValue +"|X    |\n";
+    else
+    returnValue = returnValue +"|EC   |\n";
+    returnValue=returnValue+"+-----------------------------------+\n"+"|  R  ";
+    if(checkCol(0))
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue =returnValue+"|TW   ";
+    if(checkCol(1))
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue =returnValue+"|BB   ";
+    if(checkCol(2))
+    returnValue = returnValue +"|X    ";
+    else
+    returnValue =returnValue+"|MP   ";
+    if(checkCol(3))
+    returnValue = returnValue +"|X    " +"|     |\n";
+    else
+    returnValue =returnValue+"|AP   "+ "|     |\n";
+    returnValue =returnValue+ "+-----------------------------------------------------------------------+\n";
+    if(this.getScore()==0)
+    returnValue =returnValue+"|  S  |1    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==1)
+    returnValue =returnValue+"|  S  |X    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==2)
+    returnValue =returnValue+"|  S  |X    |X    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==4)
+    returnValue =returnValue+"|  S  |X    |X    |X    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==7)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |11   |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==11)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |16   |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==16)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |22   |29   |37   |46   |56   |\n";
+    if(this.getScore()==22)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |29   |37   |46   |56   |\n";
+    if(this.getScore()==29)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |37   |46   |56   |\n";
+    if(this.getScore()==37)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |46   |56   |\n";
+    if(this.getScore()==46)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |56   |\n";
+    if(this.getScore()==56)
+    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |\n";
+    returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
+    return returnValue;
 
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+}
 
 
 
