@@ -12,4 +12,9 @@ public class Hydra extends Creature{
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
     private int score;
 
+    // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
+    public Hydra() {
+        this.score = 0;
+        CurrentSerpent = FirstSerpent;
+    }
 }
