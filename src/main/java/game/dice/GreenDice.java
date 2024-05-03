@@ -1,7 +1,5 @@
 package game.dice;
 import game.engine.enums.RealmColor;
-import game.creatures.*;
-import game.creatures.ExtraClasses.Guardians;
 public class GreenDice extends Dice {
   int num;
   ArcanePrism whitedie;

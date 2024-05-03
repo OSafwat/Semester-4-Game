@@ -3,6 +3,7 @@ package game.creatures;
 import game.creatures.ExtraClasses.Guardians;
 import game.dice.Dice;
 import game.dice.GreenDice;
+import game.engine.Move;
 
 public class Gaia extends Creature{
 
@@ -62,7 +63,7 @@ public class Gaia extends Creature{
 
 
 
-// gets a specific guardian in the Gaia
+// EXP gets a specific guardian in the Gaia
     public Guardians getGuardians(int c){
 
         int row =0;
@@ -89,11 +90,10 @@ public class Gaia extends Creature{
 
 }
 
-// gets a specific guardian row position in the Gaia
+// EXP gets a specific guardian row position in the Gaia
 public int getGuardiansRow(int c){
 
     int row =0;
-    int col =0;
     if(c<2 || c>12)
     return 0;
     int index =1;
@@ -101,7 +101,6 @@ public int getGuardiansRow(int c){
         for(int j=0;j<gaiaGuardians[i].length;j++){
             if(c==index){
                 row=i;
-                col=j;
                 break;
 
             }
@@ -117,10 +116,9 @@ public int getGuardiansRow(int c){
 }
 
 
-// gets a specific guardian col position in the Gaia
+// EXP gets a specific guardian col position in the Gaia
 public int getGuardiansCol(int c){
 
-    int row =0;
     int col =0;
     if(c<2 || c>12)
     return 0;
@@ -128,7 +126,6 @@ public int getGuardiansCol(int c){
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
             if(c==index){
-                row=i;
                 col=j;
                 break;
 
@@ -145,7 +142,7 @@ public int getGuardiansCol(int c){
 }
 
 
-// kills a a given guardian if not already killed
+//EXP  kills a a given guardian if not already killed
 public void killGaiaGuardian(Guardians g){
     if(g.isDead())
     System.out.println("Invalid Allready Killed");
@@ -156,7 +153,7 @@ public void killGaiaGuardian(Guardians g){
     }
 }
 
-// gets the number of  still allive guradians
+//EXP  gets the number of  still allive guradians
 public int getAlliveGuardians(){
     return alliveGuardians;
 }
@@ -167,7 +164,7 @@ public int getDeadGuardians(){
 
 
 
-    // checks if all guardians in a given col are dead if yes then true
+    // EXP checks if all guardians in a given col are dead if yes then true
 public boolean checkCol(int col){
     for(int i=0;i<3;i++){
         if(!gaiaGuardians[i][col].isDead())
@@ -178,7 +175,7 @@ public boolean checkCol(int col){
     return true;
 }
 
-// checks if all guardians in a given row are dead if yes then true
+// EXP checks if all guardians in a given row are dead if yes then true
 public boolean checkRow(int row){
     for(int i=0;i<4;i++){
         if(!gaiaGuardians[row][i].isDead())
@@ -248,15 +245,17 @@ private  void updateRow(int r){
         if(!checkMove(dice, creature))
             return false;
         else{
+            alliveGuardians--;
+            deadGuardians++;
             GreenDice greendie = (GreenDice) dice;
-            Gaia gaiaCreature = this.gaia;
+            
             // ASUM assuming getValue done in the dice class
             int greenValue = greendie.getValue();
-            Guardians speceficGuardian = gaiaCreature.getGuardians(greenValue);
-            gaiaCreature.killGaiaGuardian(speceficGuardian);
+            Guardians speceficGuardian = this.getGuardians(greenValue);
+            this.killGaiaGuardian(speceficGuardian);
             updateScore();
-            int colToCheck = gaiaCreature.getGuardiansCol(greenValue);
-            int rowToCheck = gaiaCreature.getGuardiansRow(greenValue);
+            int colToCheck = this.getGuardiansCol(greenValue);
+            int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
             updateRow(rowToCheck);
             if(row[rowToCheck]== false && col[colToCheck]==false)
@@ -280,11 +279,8 @@ private  void updateRow(int r){
                 //and modify  whichCollectableCol accordingly
 
                 return true;
-
-
-
-
             }
+
 
 
 
@@ -296,6 +292,26 @@ private  void updateRow(int r){
 
 
     }
+
+// EXP method to get all possible moves
+public Move[] getAllPossibleMoves( Dice dice,Creature creature){
+
+    GreenDice greeDice = (GreenDice) dice;
+    Move [] allMoves = new Move[alliveGuardians];
+    int c=0;
+    for(int i=2;i<13;i++){
+        if(checkMove(greeDice, this)){
+        // ASUM assuming move constructor is done
+        allMoves[c]= new Move(greeDice,this);
+        c++;
+        }
+
+    }
+    return allMoves;
+}
+
+
+
 
 
    
