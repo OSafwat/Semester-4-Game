@@ -18,8 +18,13 @@ public class Hydra extends Creature{
         CurrentSerpent = FirstSerpent;
     }
 
-    // "score" variable getter.
+    // Getter for the "score" variable.
     public int getScore() {
         return score;
+    }
+
+    // Setter for the "score" variable.
+    public void updateScore(int score) {
+        this.score += score;
     }
 }
