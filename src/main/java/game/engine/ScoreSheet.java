@@ -30,4 +30,8 @@ public class ScoreSheet {
         return total;
     }
 
+    public String getScoreSheet(){
+        
+    }
+
 }
