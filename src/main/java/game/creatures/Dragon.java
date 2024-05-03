@@ -4,11 +4,10 @@ import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Dragon extends Creature{
+public class Dragon extends Creature {
     public Integer face;
     public Integer wings;
     public Integer tail;
@@ -19,7 +18,7 @@ public class Dragon extends Creature{
     public ArrayList<Move> allPossibleMoves;
 
 
-    public Dragon(){
+    public Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
@@ -45,7 +44,7 @@ public class Dragon extends Creature{
         allPossibleMoves.add(new Move(new RedDice(6), Dragons[3]));
     }
 
-    private Dragon (Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber){
+    private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
         this.tail = tail;
@@ -53,11 +52,11 @@ public class Dragon extends Creature{
         this.dragonNumber = dragonNumber;
     }
 
-    public DragonNumber getDragonNumber(){
+    public DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
-    public void initPointMap(){
+    public void initPointMap() {
         pointMap = new HashMap<>();
         pointMap.put(DragonNumber.Dragon1, 10);
         pointMap.put(DragonNumber.Dragon2, 14);
@@ -65,11 +64,11 @@ public class Dragon extends Creature{
         pointMap.put(DragonNumber.Dragon4, 20);
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    public boolean makeMove(Dice dice){
+    public boolean makeMove(Dice dice) {
         boolean valid = checkMove(dice);
         if (!valid){
             return false;
@@ -86,13 +85,13 @@ public class Dragon extends Creature{
         return true;
     }
 
-    public boolean checkMove(Dice dice){
+    public boolean checkMove(Dice dice) {
         //implement exception handling
         int targetValue = dice.getValue();
         return moveHelper(targetValue, false);
     }
 
-    public boolean moveHelper (int targetValue, boolean doMove) {
+    public boolean moveHelper(int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -165,15 +164,14 @@ public class Dragon extends Creature{
         return valid;
     }
 
-    public Dragon dragonSelector (int index){
+    public Dragon dragonSelector(int index) {
         return Dragons[index-1];
     }
 
     @Override
     public int getScore() {
         int score = 0;
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             score += Dragons[i].isDead() ? pointMap.get(Dragons[i].getDragonNumber()) : 0;
         }
         return score;
@@ -184,7 +182,7 @@ public class Dragon extends Creature{
         return getElementalCrestString().equals("X") ? 1 : 0;
     }
 
-    public int getArcaneBoostPower () {
+    public int getArcaneBoostPower() {
         return allPossibleMoves.isEmpty() ? 1 : 0;
     }
 
@@ -208,27 +206,27 @@ public class Dragon extends Creature{
         return allPossibleMoves.toArray(returnedArray);
     }
 
-    public String changeToString (Integer integer) {
+    public String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
 
-    public String getGreenBoostString () {
+    public String getGreenBoostString() {
         return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : "GB";
     }
 
-    public String getYellowBoostString () {
+    public String getYellowBoostString() {
         return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : "YB";
     }
 
-    public String getBlueBoostString () {
+    public String getBlueBoostString() {
         return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : "BB";
     }
 
-    public String getElementalCrestString () {
+    public String getElementalCrestString() {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : "EC";
     }
 
-    public String getArcaneBoostString () {
+    public String getArcaneBoostString() {
         return getArcaneBoostPower() == 1 ? "X" : "AB";
     }
 }
