@@ -32,7 +32,19 @@ public class ScoreSheet {
     }
 
     public String getScoreSheet(){
-        String res = hydra.getScoreSheet();
+        String res ="\n";
+        res += dragon.getScoreSheet();
+        res +="\n\n";
+        res += gaia.getScoreSheet();
+        res +="\n\n";
+        res += hydra.getScoreSheet();
+        res +="\n\n";
+        res += phoenix.getScoreSheet();
+        res +="\n\n";
+        res += lion.getScoreSheet();
+        res +="\n";
+        return res;
+
     }
 
 }
