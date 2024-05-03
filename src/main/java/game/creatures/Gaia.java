@@ -6,10 +6,12 @@ public class Gaia extends Creature{
 
     private Guardians [][]  gaiaGuardians;
     private int alliveGuardians;
+    private int deadGuardians;
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
         alliveGuardians = 11;
+        deadGuardians=0;
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){
@@ -56,6 +58,77 @@ public class Gaia extends Creature{
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// gets a specific guardian row position in the Gaia
+public int getGuardiansRow(int c){
+
+    int row =0;
+    int col =0;
+    if(c<2 || c>12)
+    return 0;
+    int index =1;
+    for(int i=0;i<gaiaGuardians.length;i++){
+        for(int j=0;j<gaiaGuardians[i].length;j++){
+            if(c==index){
+                row=i;
+                col=j;
+                break;
+
+            }
+            
+            index++;
+        }
+        
+
+}
+    return row;
+
+
+}
+
+
+// gets a specific guardian col position in the Gaia
+public int getGuardiansCol(int c){
+
+    int row =0;
+    int col =0;
+    if(c<2 || c>12)
+    return 0;
+    int index =1;
+    for(int i=0;i<gaiaGuardians.length;i++){
+        for(int j=0;j<gaiaGuardians[i].length;j++){
+            if(c==index){
+                row=i;
+                col=j;
+                break;
+
+            }
+            
+            index++;
+        }
+        
+
+}
+    return col;
+
+
+}
+
+
 // kills a a given guardian if not already killed
 public void killGaiaGuardian(Guardians g){
     if(g.isDead())
@@ -63,6 +136,7 @@ public void killGaiaGuardian(Guardians g){
     else{
         g.kill();
         alliveGuardians--;
+        deadGuardians++;
     }
 }
 
@@ -71,6 +145,9 @@ public int getAlliveGuardians(){
     return alliveGuardians;
 }
  
+public int getDeadGuardians(){
+    return deadGuardians;
+}
 
 // checks if all gueadiiand in a given col are dead if yes then true
 public boolean checkCol(int col){
