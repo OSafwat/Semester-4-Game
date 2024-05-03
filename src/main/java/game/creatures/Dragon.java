@@ -45,93 +45,90 @@ public class Dragon extends Creature{
     }
 
     public boolean isDead(){
-        return face.equals(null) && wings.equals(null) && heart.equals(null) && tail.equals(null);
+        return face == null && wings == null && heart == null && tail == null;
     }
 
-    public boolean makeMove(Dice dice, Creature creature){
-        boolean valid = checkMove(dice, creature);
+    public boolean makeMove(Dice dice){
+        boolean valid = checkMove(dice);
         if (!valid){
             return false;
         }
         int targetValue = dice.getValue();
-        Dragon targetDragon = (Dragon)creature;
-        DragonNumber dragonNumber = targetDragon.getDragonNumber();
         moveHelper(targetValue, true);
         return true;
     }
 
-    public boolean checkMove(Dice dice, Creature creature){
+    public boolean checkMove(Dice dice){
         //implement exception handling
         int targetValue = dice.getValue();
-        Dragon targetDragon = (Dragon)creature;
-        return targetDragon.moveHelper(targetValue, false);
+        return moveHelper(targetValue, false);
     }
 
     public boolean moveHelper (int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
-            if (targetValue == 3 && !face.equals(null)) {
+            if (targetValue == 3 && face != null) {
                 valid = true;
                 if (doMove)
                     face = null;
             }
-            else if (targetValue == 2 && !wings.equals(null)) {
+            else if (targetValue == 2 && wings != null) {
                 valid = true;
                 if (doMove)
                     wings = null;
             }
-            else if (targetValue == 1 && !tail.equals(null)) {
+            else if (targetValue == 1 && tail != null) {
                 valid = true;
                 if (doMove)
                     tail = null;
             }
         }
         else if (dragonNumber.equals(DragonNumber.Dragon2)) {
-            if (targetValue == 6 && !face.equals(null)) {
+            if (targetValue == 6 && face != null) {
                 valid = true;
                 if (doMove)
                     face = null;
             }
-            else if (targetValue == 1 && !wings.equals(null)) {
+            else if (targetValue == 1 && wings != null) {
                 valid = true;
                 if (doMove)
                     wings = null;
             }
-            else if (targetValue == 3 && !heart.equals(null)) {
+            else if (targetValue == 3 && heart != null) {
                 valid = true;
                 if (doMove)
                     heart = null;
             }
         }
         else if (dragonNumber.equals(DragonNumber.Dragon3)) {
-            if (targetValue == 5 && !face.equals(null)) {
+            if (targetValue == 5 && face != null) {
                 valid = true;
                 if (doMove)
                     face = null;
             }
-            else if (targetValue == 2 && !tail.equals(null)) {
+            else if (targetValue == 2 && tail != null) {
                 valid = true;
                 if (doMove)
                     tail = null;
             }
-            else if (targetValue == 4 && !heart.equals(null)) {
+            else if (targetValue == 4 && heart != null) {
                 valid = true;
                 if (doMove)
                     heart = null;
             }
         }
         else {
-            if (targetValue == 5 && !wings.equals(null)) {
+            if (targetValue == 5 && wings != null) {
                 valid = true;
                 if (doMove)
                     wings = null;
             }
-            else if (targetValue == 4 && !tail.equals(null)) {
+            else if (targetValue == 4 && tail != null) {
                 valid = true;
                 if (doMove)
                     tail = null;
             }
-            else if (targetValue == 6 && !heart.equals(null)) {
+            else if (targetValue == 6 && heart != null) {
                 valid = true;
                 if (doMove)
                     heart = null;
@@ -156,11 +153,41 @@ public class Dragon extends Creature{
 
     @Override
     public int getElementalCrest() {
-        return 0;
+        return getElementalCrestString().equals("X") ? 1 : 0;
     }
 
     @Override
     public String getScoreSheet() {
-        return null;
+        String scoreSheet =  "+-----------------------------------+\n";
+        scoreSheet += "|  #  |D1   |D2   |D3   |D4   |R    |\n";
+        scoreSheet += "+-----------------------------------+\n";
+        scoreSheet += "|  F  |" + Dragons[0].changeToString(face) + "    |" + Dragons[1].changeToString(face) + "    |" + Dragons[2].changeToString(face) + "    |"+ Dragons[3].changeToString(face) + "    |" + getGreenBoostString() + "   |\n";
+        scoreSheet += "|  W  |" + Dragons[0].changeToString(wings) + "    |" + Dragons[1].changeToString(wings) + "    |" + Dragons[2].changeToString(wings) + "    |"+ Dragons[3].changeToString(wings) + "    |" + getYellowBoostString() + "   |\n";
+        scoreSheet += "|  T  |" + Dragons[0].changeToString(heart) + "    |" + Dragons[1].changeToString(heart) + "    |" + Dragons[2].changeToString(heart) + "    |"+ Dragons[3].changeToString(heart) + "    |" + getBlueBoostString() + "   |\n";
+        scoreSheet += "|  H  |" + Dragons[0].changeToString(tail) + "    |" + Dragons[1].changeToString(tail) + "    |" + Dragons[2].changeToString(tail) + "    |"+ Dragons[3].changeToString(tail) + "    |" + getElementalCrestString() + "   |\n";
+        scoreSheet += "+-----------------------------------+\n";
+        scoreSheet += "|  S  |10   |14   |16   |20   |AB   |\n";
+        scoreSheet += "+-----------------------------------+";
+        return scoreSheet;
+    }
+
+    public String changeToString (Integer integer) {
+        return integer == null ? "X" : "" + integer;
+    }
+
+    public String getGreenBoostString () {
+        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : "GB";
+    }
+
+    public String getYellowBoostString () {
+        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : "YB";
+    }
+
+    public String getBlueBoostString () {
+        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : "BB";
+    }
+
+    public String getElementalCrestString () {
+        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : "EC";
     }
 }
