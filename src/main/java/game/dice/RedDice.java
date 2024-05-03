@@ -3,14 +3,12 @@ package game.dice;
 import game.engine.enums.RealmColor;
 
 public class RedDice extends Dice{
-    int diceValue;
 
     public RedDice () {
         super();
     }
-
     public RedDice (int diceValue) {
-        this.diceValue = diceValue;
+        super(diceValue);
     }
     public void rollDice(){
         this.diceValue= (int) (Math.random() * 6 +1);

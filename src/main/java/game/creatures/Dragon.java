@@ -1,8 +1,11 @@
 package game.creatures;
 
 import game.dice.Dice;
+import game.dice.RedDice;
+import game.engine.Move;
 import game.engine.enums.DragonNumber;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Dragon extends Creature{
@@ -13,6 +16,7 @@ public class Dragon extends Creature{
     public DragonNumber dragonNumber;
     public Dragon[] Dragons;
     public HashMap<DragonNumber, Integer> pointMap;
+    public ArrayList<Move> allPossibleMoves;
 
 
     public Dragon(){
@@ -22,6 +26,7 @@ public class Dragon extends Creature{
         Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         initPointMap();
+        allPossibleMoves = null;
     }
 
     public Dragon (Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber){
@@ -58,7 +63,7 @@ public class Dragon extends Creature{
         return true;
     }
 
-    public boolean checkMove(Dice dice){
+    private boolean checkMove(Dice dice){
         //implement exception handling
         int targetValue = dice.getValue();
         return moveHelper(targetValue, false);
@@ -169,6 +174,15 @@ public class Dragon extends Creature{
         scoreSheet += "|  S  |10   |14   |16   |20   |AB   |\n";
         scoreSheet += "+-----------------------------------+";
         return scoreSheet;
+    }
+
+    public Move[] getAllPossibleMoves() {
+        if (allPossibleMoves.equals(null)) {
+            allPossibleMoves = new ArrayList<>();
+            allPossibleMoves.add(new Move(new RedDice(3)))
+        }
+        Move[] returnedArray = new Move[allPossibleMoves.size()];
+        return allPossibleMoves.toArray(returnedArray);
     }
 
     public String changeToString (Integer integer) {
