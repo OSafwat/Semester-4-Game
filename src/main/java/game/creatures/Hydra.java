@@ -7,6 +7,7 @@ public class Hydra extends Creature{
     private Stack<Integer>() SecondSerpent = new Stack<Integer>();
     SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
     private Stack<Integer>() CurrentSerpent;
+    private boolean regenerateFlag;
 
     // Define array for the score values and an integer for the current score.
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
@@ -15,7 +16,8 @@ public class Hydra extends Creature{
     // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
     public Hydra() {
         this.score = 0;
-        CurrentSerpent = FirstSerpent;
+        this.CurrentSerpent = FirstSerpent;
+        this.regenerateFlag = false;
     }
 
     // Getter for the "score" variable.
@@ -27,4 +29,6 @@ public class Hydra extends Creature{
     public void updateScore(int score) {
         this.score += score;
     }
+
+    
 }
