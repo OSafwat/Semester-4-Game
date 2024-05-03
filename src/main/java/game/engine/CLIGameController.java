@@ -7,19 +7,23 @@ public class CLIGameController {
     GameBoard gameBoard;
     
 
-    //constructor:
+    //constructor(s):
     public CLIGameController(){
         this.gameBoard = new GameBoard();
     }
 
-
+    // move methods
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
     }
-
+    //gameboard getter:
     public GameBoard getGameBoard() {   
         return gameBoard;
     }
+    public GameStatus getGameStatus(){
+        return this.gameBoard.getGameStatus();
+    }
+    // dice related methods:
     public void rollDice(){
         this.gameBoard.rollDice();
     }
@@ -32,6 +36,9 @@ public class CLIGameController {
     public Dice [] getForgottenRealmDice(){
         return this.gameBoard.getForgottenRealmDice();
     }
+    
+    
+    //player related methods: 
     public boolean switchPlayer(){
         try{
             this.gameBoard.getPlayer1().switchStatus();
@@ -58,13 +65,12 @@ public class CLIGameController {
             return this.gameBoard.getPlayer2();
         }
     }
+
+    //player attributes related methods
     public ScoreSheet getScoreSheet(Player player){
         return player.getScoresheet();
     }
 
-    public GameStatus getGameStatus(){
-        return this.gameBoard.getGameStatus();
-    }
     public GameScore getGameScore(Player player){
         return player.getGameScore();
     }
