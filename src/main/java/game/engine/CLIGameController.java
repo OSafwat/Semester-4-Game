@@ -2,13 +2,53 @@ package game.engine;
 
 import game.collectibles.TimeWarp;
 import game.engine.enums.PlayerStatus;
-
+import game.dice.*;
 public class CLIGameController {
     GameBoard gameBoard;
+    
 
+    //constructor(s):
+    public CLIGameController(){
+        this.gameBoard = new GameBoard();
+    }
+
+    // move methods
+    public Move [] getAllPossibleMoves(Player player){
+        return player.getAllPossiblMoves();
+    }
+    //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
+    public boolean makeMove(Player player, Move move){
+        try{
+            player.makeMove(move);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }    
+    //gameboard getter:
     public GameBoard getGameBoard() {   
         return gameBoard;
     }
+    public GameStatus getGameStatus(){
+        return this.gameBoard.getGameStatus();
+    }
+    // dice related methods:
+    public void rollDice(){
+        this.gameBoard.rollDice();
+    }
+    public Dice [] getAllDice(){
+        return this.gameBoard.getAllDice();
+    }
+    public Dice [] getAvailableDice(){
+        return this.gameBoard.getAvailableDice();
+    }
+    public Dice [] getForgottenRealmDice(){
+        return this.gameBoard.getForgottenRealmDice();
+    }
+    
+    
+    //player related methods: 
     public boolean switchPlayer(){
         try{
             this.gameBoard.getPlayer1().switchStatus();
@@ -35,13 +75,12 @@ public class CLIGameController {
             return this.gameBoard.getPlayer2();
         }
     }
+
+    //player attributes related methods
     public ScoreSheet getScoreSheet(Player player){
         return player.getScoresheet();
     }
 
-    public GameStatus getGameStatus(){
-        return this.gameBoard.getGameStatus();
-    }
     public GameScore getGameScore(Player player){
         return player.getGameScore();
     }
@@ -49,6 +88,8 @@ public class CLIGameController {
     public  TimeWarp[] getTimeWarpPowers(Player player){
         return player.getTimeWarps();
     }
+
+
 
 
     // public abstract boolean switchPlayer(){

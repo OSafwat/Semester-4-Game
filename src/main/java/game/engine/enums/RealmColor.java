@@ -1,5 +1,5 @@
 package game.engine.enums;
 
 public enum RealmColor {
-        WHITE, RED,GREEN,BLUE, MAGENTA, YELLOW
+        WHITE, RED,GREEN,BLUE, MAGENTA, YELLOW, PARENT
 }
