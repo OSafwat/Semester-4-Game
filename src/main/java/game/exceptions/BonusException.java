@@ -7,5 +7,8 @@ public class BonusException extends Exception{
     public BonusException(RealmColor color) {
         this.color = color;
     }
+    public RealmColor getRealmColor(){
+        return this.color;
+    }
     
 }

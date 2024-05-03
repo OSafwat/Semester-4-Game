@@ -11,7 +11,12 @@ public class GameBoard {
     Dice [] allDice;
     List<Dice> availableDice;
     List <Dice> forgottenRealmDice;
-    
+    public Dice getWhite(){
+        return this.allDice[5];
+    }
+    public Dice getGreen(){
+        return this.allDice[1];
+    }
     //constructor
     public GameBoard(){
         this.allDice= new Dice [6];
@@ -38,7 +43,9 @@ public class GameBoard {
         //this.gameStatus= <gamestatus>;
 
     }
-
+    public void setGreenValue(){            //any makemove check move and so on use the real value
+        ((GreenDice)this.allDice[1]).setRealValue(this.allDice[1].getValue()+this.allDice[5].getValue());
+    }
     //player methods:
     public Player getPlayer1() {
         return player1;
