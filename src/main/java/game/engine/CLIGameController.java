@@ -3,6 +3,7 @@ package game.engine;
 import game.collectibles.TimeWarp;
 import game.engine.enums.PlayerStatus;
 import game.dice.*;
+import game.creatures.*;
 public class CLIGameController {
     GameBoard gameBoard;
     
@@ -19,7 +20,16 @@ public class CLIGameController {
     //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
     public boolean makeMove(Player player, Move move){
         try{
-            player.makeMove(move);
+            if (move.getCreature() instanceof Dragon ){
+                System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
+                int dragonIndex = Integer.parseInt(System.console().readLine());
+                Dragon dragon= move.getCreature().dragonSelector(dragonIndex);
+                move.setCreature(dragon);
+
+            }
+            else{
+                move.getCreature().makeMove(move.getDice());
+            }
             return true;
         }
         catch(Exception e){

@@ -43,6 +43,7 @@ public class Player {
     
 
     public void makeMove(Move move){
-        move.getCreature().makeMove(move.getDice());
+        if (move.getCreature() instanceof dragon){}
+        
     }
 }

@@ -17,7 +17,9 @@ public class Move {
     Creature getCreature(){
         return creature;
     }
-
+    void setCreature(Creature creature){
+        this.creature = creature;
+    }
     Dice getDice(){
         return this.dice;
     }
