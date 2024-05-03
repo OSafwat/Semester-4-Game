@@ -38,7 +38,7 @@ public class GameBoard {
         //this.gameStatus= <gamestatus>;
 
     }
-    
+
     //player methods:
     public Player getPlayer1() {
         return player1;
@@ -59,8 +59,13 @@ public class GameBoard {
             die.rollDice();
         }
     }
-   
-    public Dice [] getDice(){
+    public Dice [] getAllDice(){
         return this.allDice;
     } 
+    public Dice[] getAvailableDice(){
+        return this.availableDice.toArray(new Dice[this.availableDice.size()]);
+    }
+    public Dice [] getForgottenRealmDice(){
+        return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
+    }
 }

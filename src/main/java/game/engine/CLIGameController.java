@@ -2,7 +2,7 @@ package game.engine;
 
 import game.collectibles.TimeWarp;
 import game.engine.enums.PlayerStatus;
-
+import game.dice.*;
 public class CLIGameController {
     GameBoard gameBoard;
     
@@ -11,7 +11,7 @@ public class CLIGameController {
     public CLIGameController(){
         this.gameBoard = new GameBoard();
     }
-    
+
 
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
@@ -24,10 +24,13 @@ public class CLIGameController {
         this.gameBoard.rollDice();
     }
     public Dice [] getAllDice(){
-        gameBoard.getAllDice();
+        return this.gameBoard.getAllDice();
     }
-    public Dice[] getAvailableDice(){
-
+    public Dice [] getAvailableDice(){
+        return this.gameBoard.getAvailableDice();
+    }
+    public Dice [] getForgottenRealmDice(){
+        return this.gameBoard.getForgottenRealmDice();
     }
     public boolean switchPlayer(){
         try{
