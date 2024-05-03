@@ -7,6 +7,12 @@ public class CLIGameController {
     GameBoard gameBoard;
     
 
+    //constructor:
+    public CLIGameController(){
+        this.gameBoard = new GameBoard();
+    }
+    
+
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
     }

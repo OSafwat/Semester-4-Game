@@ -12,24 +12,7 @@ public class GameBoard {
     List<Dice> availableDice;
     List <Dice> forgottenRealmDice;
     
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
-    
-
-    public GameStatus getGameStatus(){
-        return this.gameStatus;
-    }
-
-    public void rollDice(){
-        for (Dice die : allDice) {
-            die.rollDice();
-        }
-    }
+    //constructor
     public GameBoard(){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
@@ -55,6 +38,28 @@ public class GameBoard {
         //this.gameStatus= <gamestatus>;
 
     }
+    
+    //player methods:
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+    
+    //game status getter
+    public GameStatus getGameStatus(){
+        return this.gameStatus;
+    }
+
+    //dice related methods
+    public void rollDice(){
+        for (Dice die : allDice) {
+            die.rollDice();
+        }
+    }
+   
     public Dice [] getDice(){
         return this.allDice;
     } 
