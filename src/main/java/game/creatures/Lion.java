@@ -17,12 +17,12 @@ public class Lion extends Creature{
     private int timeWarp;
 
     public Lion(){
-        this.lions=new int[11];
         this.deadLions=0;
         this.score=0;
         this.elementalCrest=0;
         this.arcaneBoost=0;
         this.timeWarp=0;
+        initLions();
         initScoreSheet();
     }
 
@@ -32,8 +32,11 @@ public class Lion extends Creature{
     private void setLions(int[] lions){
         this.lions=lions;
     }
+    private void initLions(){
+        setLions(new int[11]);
+    }
     private void updateLions(Dice dice){
-        this.lions[deadLions]=dice.getValue();
+        this.lions[deadLions]=calculateScore(dice);
     }
 
     public int getDeadLions(){
@@ -42,7 +45,7 @@ public class Lion extends Creature{
     private void setDeadLions (int deadLions){
         this.deadLions=deadLions;
     }
-    private void updateDeadLions(Dice dice){
+    private void updateDeadLions(){
         setDeadLions(deadLions+1);
     }
 
@@ -79,7 +82,7 @@ public class Lion extends Creature{
         temp+="|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n";
         temp+="|  R  |     |     |TW   |     |RB   |AB   |     |EC   |     |MB   |     |\n";
         temp+="+-----------------------------------------------------------------------+\n";
-        this.scoresheet=temp;
+        setScoreSheet(temp);
     }
 
 
@@ -107,20 +110,22 @@ public class Lion extends Creature{
         temp+="+-----------------------------------------------------------------------+\n";
     }
 
-    public void makeMove(Dice dice,Creature Lion){ 
-            if(!checkMove(dice,Lion)){
+    public void makeMove(Dice dice,Lion lion){ 
+            if(!checkMove(dice,lion)){
                 System.out.print("erm what the sigma");
                 return;
             }
+            updateLions(dice);
             updateScoreSheet(dice);
             updateScore(dice);
-            updateDeadLions(dice); //leave this after the updatescoresheet method bc youre changing the deadlions number here
+            updateDeadLions(); //leave this after the updatescoresheet method bc youre changing the deadlions number here
             updateElementalCrest();
             updateArcaneBoost();
             updateTimeWarp();
         }
 
     public boolean checkMove(Dice dice,Creature Lion){
+        // need to check for exceptions here
         return true;
     }
 
@@ -132,7 +137,7 @@ public class Lion extends Creature{
     }
     private void updateElementalCrest(){
         if(deadLions==8){
-            elementalCrest=1;
+            setElementalCrest(1);
         }
     }
     
@@ -144,19 +149,19 @@ public class Lion extends Creature{
     }
     private void updateArcaneBoost(){
         if(deadLions==6){
-            arcaneBoost=1;
+            setArcaneBoost(1);
         }
     }
 
     public int getTimeWarp(){
         return this.timeWarp;
     }
-    private void setTimeWarp(){
+    private void setTimeWarp(int timeWarp){
         this.timeWarp=timeWarp;
     }
     private void updateTimeWarp(){
         if(deadLions==3){
-            timeWarp=1;
+            setTimeWarp(1);
         }
     }
 
