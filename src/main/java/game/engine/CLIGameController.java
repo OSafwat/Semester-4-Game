@@ -2,6 +2,7 @@ package game.engine;
 
 import game.collectibles.TimeWarp;
 import game.engine.enums.PlayerStatus;
+import game.exceptions.BonusException;
 import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.*;
@@ -35,13 +36,20 @@ public class CLIGameController {
                 int greenVal= greenDice.getValue();
                 int whiteVal= whiteDice.getValue();
                 greenDice.setRealValue(greenVal+ whiteVal);
-               
                 gaia.makeMove(greenDice);
             }
             else{
                 move.getCreature().makeMove(move.getDice());
             }
             return true;
+        }
+        catch(BonusException bException){
+            RealmColor theBonusColor= bException.getRealmColor();
+            Move move;
+            switch(theBonusColor){
+                case RED: move = new Move(new RedDice(), ); 
+            }
+            //Move move = new Move(new Dice())
         }
         catch(Exception e){
             return false;
