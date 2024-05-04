@@ -16,23 +16,23 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class Dragon extends Creature {
-    public Integer face;
-    public Integer wings;
-    public Integer tail;
-    public Integer heart;
-    public DragonNumber dragonNumber;
-    public Dragon[] Dragons;
-    public int[] pointMap;
-    public ArrayList<Move> allPossibleMoves;
-    public ArrayList<TimeWarp> timeWarps;
-    public ArrayList<ArcaneBoost> arcaneBoosts;
-    public String[] rewards;
-    public Supplier<String>[] suppliers;
-    public int elementalCrestCount;
+private class Dragon extends Creature {
+    private Integer face;
+    private Integer wings;
+    private Integer tail;
+    private Integer heart;
+    private DragonNumber dragonNumber;
+    private Dragon[] Dragons;
+    private int[] pointMap;
+    private ArrayList<Move> allPossibleMoves;
+    private ArrayList<TimeWarp> timeWarps;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private String[] rewards;
+    private Supplier<String>[] suppliers;
+    private int elementalCrestCount;
 
 
-    public Dragon() {
+    private Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
@@ -50,7 +50,7 @@ public class Dragon extends Creature {
         this.dragonNumber = dragonNumber;
     }
 
-    public void initialization() {
+    private void initialization() {
         initPointMap();
         initPossibleMoves();
         initRewards();
@@ -58,7 +58,7 @@ public class Dragon extends Creature {
         initTimeWarpsAndArcaneBoosts();
     }
 
-    public void initRewards() {
+    private void initRewards() {
         rewards = new String[5];
         File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
         try (FileReader fr = new FileReader(file)) {
@@ -73,7 +73,7 @@ public class Dragon extends Creature {
         }
     }
 
-    public void initTimeWarpsAndArcaneBoosts () {
+    private void initTimeWarpsAndArcaneBoosts () {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
@@ -85,7 +85,7 @@ public class Dragon extends Creature {
         }
     }
 
-    public void initPossibleMoves() {
+    private void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
@@ -118,31 +118,36 @@ public class Dragon extends Creature {
         return elementalCrestCount;
     }
 
-    public int getArcaneBoostPower() {
+    private int getArcaneBoostPower() {
         return allPossibleMoves.isEmpty() ? 1 : 0;
     }
 
-    public ArrayList<TimeWarp> getAllTimeWarps() {
+    public Move[] getAllPossibleMoves() {
+        Move[] returnedArray = new Move[allPossibleMoves.size()];
+        return allPossibleMoves.toArray(returnedArray);
+    }
+
+    private ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
-    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+    private ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
 
-    public DragonNumber getDragonNumber() {
+    private DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
-    public void initPointMap() {
+    private void initPointMap() {
         pointMap = new int[]{10, 14, 16, 20};
     }
 
-    public boolean isDead() {
+    private boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    public boolean areAllDragonsDead() {
+    private boolean allDead() {
         boolean dead = true;
         for (int i = 0; i < 4; i++)
             dead = dead && Dragons[i].isDead();
@@ -172,7 +177,7 @@ public class Dragon extends Creature {
         return true;
     }
 
-    public void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
+    private void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
@@ -198,15 +203,15 @@ public class Dragon extends Creature {
         }
     }
 
-    public void initNextTimeWarp() {
+    private void initNextTimeWarp() {
         //Is supposed to change the enum for the timewarp obtained
     }
 
-    public void initNextArcaneBoost() {
+    private void initNextArcaneBoost() {
         //Is supposed to change the enum for the arcane boost obtained
     }
 
-    public void initSuppliers () {
+    private void initSuppliers () {
         suppliers = new Supplier[]{
                 this::getFirstRowRewardString,
                 this::getSecondRowRewardString,
@@ -216,7 +221,7 @@ public class Dragon extends Creature {
         };
     }
 
-    public RealmColor decodeLetterToRealmColor (char c) {
+    private RealmColor decodeLetterToRealmColor (char c) {
         return switch (c) {
             case 'G' -> RealmColor.GREEN;
             case 'B' -> RealmColor.BLUE;
@@ -234,7 +239,7 @@ public class Dragon extends Creature {
         return true;
     }
 
-    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
+    private boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -342,40 +347,35 @@ public class Dragon extends Creature {
         return scoreSheet.toString();
     }
 
-    public String changeToString(Integer integer) {
+    private String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
 
-    public String getFirstRowRewardString() {
+    private String getFirstRowRewardString() {
         return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
     }
 
-    public String getSecondRowRewardString() {
+    private String getSecondRowRewardString() {
         return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
     }
 
-    public String getThirdRowRewardString() {
+    private String getThirdRowRewardString() {
         return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
     }
 
-    public String getFourthRowRewardString() {
+    private String getFourthRowRewardString() {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
     }
 
-    public String getCornerRewardString() {
-        return areAllDragonsDead() ? "X" : encode(rewards[4]);
+    private String getCornerRewardString() {
+        return allDead() ? "X" : encode(rewards[4]);
     }
 
-    public String encode (String reward) {
+    private String encode (String reward) {
         return extractCapitalLetters(reward);
     }
 
-    public static String extractCapitalLetters(String reward) {
+    private static String extractCapitalLetters(String reward) {
         return reward.replaceAll("[^A-Z]", "");
-    }
-
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
     }
 }
