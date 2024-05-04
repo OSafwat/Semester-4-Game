@@ -6,8 +6,6 @@ import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
-
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,7 +68,7 @@ public class Dragon extends Creature {
         this.dragonNumber = dragonNumber;
     }
 
-    public ArrayList<TimeWarp> getAllTimewarps() {
+    public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
