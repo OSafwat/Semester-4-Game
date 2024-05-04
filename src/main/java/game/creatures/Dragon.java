@@ -10,9 +10,10 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.*;
+
+import java.io.FileReader;
+import java.util.*;
 
 public class Dragon extends Creature {
     public Integer face;
@@ -25,6 +26,7 @@ public class Dragon extends Creature {
     public ArrayList<Move> allPossibleMoves;
     public ArrayList<TimeWarp> timeWarps;
     public ArrayList<ArcaneBoost> arcaneBoosts;
+    public String[] rewards;
 
 
     public Dragon() {
@@ -37,6 +39,7 @@ public class Dragon extends Creature {
         initPossibleMoves();
         initTimeWarps();
         initArcaneBoosts();
+        initRewards();
     }
 
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
@@ -45,6 +48,21 @@ public class Dragon extends Creature {
         this.tail = tail;
         this.heart = heart;
         this.dragonNumber = dragonNumber;
+    }
+
+    public void initRewards() {
+        rewards = new String[5];
+        File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
+        try (FileReader fr = new FileReader(file)) {
+            Properties properties = new Properties();
+            properties.load(fr);
+            ArrayList<Object> temporaryRewards = new ArrayList<>(new LinkedHashSet<>(properties.values()));
+            for (int i = 0, size = temporaryRewards.size(); i < size; i++) {
+                rewards[i] = (String)temporaryRewards.get(i);
+            }
+        } catch (IOException e) {
+            rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+        }
     }
 
     public void initPossibleMoves() {
