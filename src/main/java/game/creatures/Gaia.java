@@ -4,6 +4,12 @@ import game.creatures.greenclasses.Guardians;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
+//Key:
+//IMP = important to change
+// COMPLETE = should be completed later
+//EXP =explanation
+//ASUM = assumption till the leader finish
+
 
 public class Gaia extends Creature{
 
@@ -49,7 +55,7 @@ public class Gaia extends Creature{
 
 
     // EXP checks if a given move is possible
-    public boolean checkMove(Dice dice, Creature creature){
+    public boolean checkMove(Dice dice){
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getValue done in the dice class add white
         int greenValue = greendie.getValue();
@@ -240,9 +246,9 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-    public boolean makeMove(Dice dice, Creature creature){
+    public boolean makeMove(Dice dice){
         
-        if(!checkMove(dice, creature))
+        if(!checkMove(dice))
             return false;
         else{
             alliveGuardians--;
@@ -294,15 +300,15 @@ private  void updateRow(int r){
     }
 
 // EXP method to get all possible moves
-public Move[] getAllPossibleMoves( Dice dice,Creature creature){
+public Move[] getAllPossibleMoves(){
 
-    GreenDice greeDice = (GreenDice) dice;
     Move [] allMoves = new Move[alliveGuardians];
     int c=0;
     for(int i=2;i<13;i++){
-        if(checkMove(greeDice, this)){
+        GreenDice greenDice = new GreenDice(i);
+        if(checkMove(greenDice)){
         // ASUM assuming move constructor is done
-        allMoves[c]= new Move(greeDice,this);
+        allMoves[c]= new Move(greenDice,this);
         c++;
         }
 
@@ -406,6 +412,8 @@ public String getScoreSheet(){
     returnValue =returnValue+"|  S  |1    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
     returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
     return returnValue;
+
+// 
 
 
     
