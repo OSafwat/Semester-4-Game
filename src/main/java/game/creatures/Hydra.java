@@ -52,6 +52,19 @@ public class Hydra extends Creature{
         
     }
 
+    // Method to return the value after the '=' in the config file.
+    public String getValue(String s) {
+        int index = 0;
+        while(s.charAt(i) != 0) {
+            index++;
+        }
+        
+        String value = s.substring(index+1, s.length());
+        if(value == "null") value = null;
+
+        return value;
+    }
+
     // Getter for the "score" variable.
     public int getScore() {
         return this.score;
