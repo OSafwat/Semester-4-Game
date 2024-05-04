@@ -127,13 +127,8 @@ public class Dragon extends Creature {
             dragonIndex = sc.nextInt();
         }
         Dragon targetDragon = Dragons[dragonIndex-1];
-        boolean valid = false;
-        try {
-            valid = targetDragon.checkMove(dice);
-        } catch (InvalidMoveException e) {
-            throw e;
-            return false;
-        }
+        targetDragon.checkMove(dice);
+        sc.close();
         int targetValue = dice.getValue();
         String oldGreenBoost = getGreenBoostString();
         String oldBlueBoost = getBlueBoostString();
@@ -163,10 +158,8 @@ public class Dragon extends Creature {
 
     public boolean checkMove(Dice dice) throws InvalidMoveException {
         int targetValue = dice.getValue();
-        try {
-            moveHelper(targetValue, false)
-        }
-        return ;
+        moveHelper(targetValue, false);
+        return true;
     }
 
     public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
@@ -241,7 +234,7 @@ public class Dragon extends Creature {
         }
         //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
         if (!doMove) {
-            throw new InvalidMoveException();
+            throw new InvalidMoveException("message");
         }
         return valid;
     }
