@@ -6,6 +6,10 @@ import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
+import game.engine.enums.RealmColor;
+import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -33,6 +37,14 @@ public class Dragon extends Creature {
         initPossibleMoves();
         initTimeWarps();
         initArcaneBoosts();
+    }
+
+    private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
+        this.face = face;
+        this.wings = wings;
+        this.tail = tail;
+        this.heart = heart;
+        this.dragonNumber = dragonNumber;
     }
 
     public void initPossibleMoves() {
@@ -64,12 +76,22 @@ public class Dragon extends Creature {
 
     }
 
-    private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
-        this.face = face;
-        this.wings = wings;
-        this.tail = tail;
-        this.heart = heart;
-        this.dragonNumber = dragonNumber;
+    @Override
+    public int getScore() {
+        int score = 0;
+        for (int i = 0; i < 4; i++) {
+            score += Dragons[i].isDead() ? pointMap.get(Dragons[i].getDragonNumber()) : 0;
+        }
+        return score;
+    }
+
+    @Override
+    public int getElementalCrest() {
+        return getElementalCrestString().equals("X") ? 1 : 0;
+    }
+
+    public int getArcaneBoostPower() {
+        return allPossibleMoves.isEmpty() ? 1 : 0;
     }
 
     public ArrayList<TimeWarp> getAllTimeWarps() {
@@ -96,34 +118,58 @@ public class Dragon extends Creature {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    public boolean makeMove(Dice dice) {
+    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
         int dragonIndex = sc.nextInt();
+        while (dragonIndex < 1 || dragonIndex > 4) {
+            System.out.println("The value you have entered is invalid.\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
+            dragonIndex = sc.nextInt();
+        }
         Dragon targetDragon = Dragons[dragonIndex-1];
-        boolean valid = targetDragon.checkMove(dice);
-        if (!valid){
+        boolean valid = false;
+        try {
+            valid = targetDragon.checkMove(dice);
+        } catch (InvalidMoveException e) {
+            throw e;
             return false;
         }
         int targetValue = dice.getValue();
+        String oldGreenBoost = getGreenBoostString();
+        String oldBlueBoost = getBlueBoostString();
+        String oldYellowBoost = getYellowBoostString();
         targetDragon.moveHelper(targetValue, true);
-        Move move = new Move(dice, this);
+        Move move = new Move(dice, targetDragon);
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
                 break;
             }
         }
+        String newGreenBoost = getGreenBoostString();
+        String newBlueBoost = getBlueBoostString();
+        String newYellowBoost = getYellowBoostString();
+        if (!oldGreenBoost.equals(newGreenBoost)) {
+            throw new BonusException(RealmColor.GREEN);
+        }
+        if (!oldBlueBoost.equals(newBlueBoost)) {
+            throw new BonusException(RealmColor.BLUE);
+        }
+        if (!oldYellowBoost.equals(newYellowBoost)) {
+            throw new BonusException(RealmColor.YELLOW);
+        }
         return true;
     }
 
-    public boolean checkMove(Dice dice) {
-        //implement exception handling
+    public boolean checkMove(Dice dice) throws InvalidMoveException {
         int targetValue = dice.getValue();
-        return moveHelper(targetValue, false);
+        try {
+            moveHelper(targetValue, false)
+        }
+        return ;
     }
 
-    public boolean moveHelper(int targetValue, boolean doMove) {
+    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -193,29 +239,11 @@ public class Dragon extends Creature {
                     heart = null;
             }
         }
-        return valid;
-    }
-
-    public Dragon dragonSelector(int index) {
-        return Dragons[index-1];
-    }
-
-    @Override
-    public int getScore() {
-        int score = 0;
-        for (int i = 0; i < 4; i++) {
-            score += Dragons[i].isDead() ? pointMap.get(Dragons[i].getDragonNumber()) : 0;
+        //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
+        if (!doMove) {
+            throw new InvalidMoveException();
         }
-        return score;
-    }
-
-    @Override
-    public int getElementalCrest() {
-        return getElementalCrestString().equals("X") ? 1 : 0;
-    }
-
-    public int getArcaneBoostPower() {
-        return allPossibleMoves.isEmpty() ? 1 : 0;
+        return valid;
     }
 
     @Override
@@ -249,11 +277,6 @@ public class Dragon extends Creature {
         return scoreSheet.toString();
     }
 
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
-    }
-
     public String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
@@ -276,5 +299,10 @@ public class Dragon extends Creature {
 
     public String getArcaneBoostString() {
         return getArcaneBoostPower() == 1 ? "X" : "AB";
+    }
+
+    public Move[] getAllPossibleMoves() {
+        Move[] returnedArray = new Move[allPossibleMoves.size()];
+        return allPossibleMoves.toArray(returnedArray);
     }
 }
