@@ -13,6 +13,19 @@ public class Hydra extends Creature{
     SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
     private Stack<Integer>() CurrentSerpent;
 
+    // Define 11 variable dictating where all the rewards should be.
+    String hit1Reward;
+    String hit2Reward;
+    String hit3Reward;
+    String hit4Reward;
+    String hit5Reward;
+    String hit6Reward;
+    String hit7Reward;
+    String hit8Reward;
+    String hit9Reward;
+    String hit10Reward;
+    String hit11Reward;
+
     // Define an integer indicating the number of heads killed so far, and a boolean indicating whether or not the serpent has regenerated.
     private int headsKilled;
     private boolean regenerateFlag;
@@ -26,6 +39,9 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
     public Hydra() {
+        File config = new File("src/main/resources/config/TideAbyssRewards.properties");
+        Scanner scanner = new Scanner(config);
+
         this.score = 0;
         this.CurrentSerpent = this.FirstSerpent;
         this.regenerateFlag = false;
@@ -33,6 +49,7 @@ public class Hydra extends Creature{
         this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
+        
     }
 
     // Getter for the "score" variable.
