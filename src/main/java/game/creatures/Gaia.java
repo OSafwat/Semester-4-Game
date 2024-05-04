@@ -413,24 +413,14 @@ public String getScoreSheet(){
     returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
     return returnValue;
 
-// 
-
-
-    
-
-
-
-
-
-    
-
-
-
-
-
-    
 }
 
+  //return number of elemental crests for each realm will be 0 or 1 
+  public  int getElementalCrest(){
+    if(this.checkRow(2))
+    return 1;
+    return 0;
+       }
 
 
    
