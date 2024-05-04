@@ -10,6 +10,7 @@ public class Hydra extends Creature{
 
     // Define an integer indicating the number of heads killed so far, and a boolean indicating whether or not the serpent has regenerated.
     private int headsKilled;
+    private String[] diceUsed;
     private boolean regenerateFlag;
 
     // Define array for the score values and an integer for the current score.
@@ -21,6 +22,10 @@ public class Hydra extends Creature{
         this.score = 0;
         this.CurrentSerpent = this.FirstSerpent;
         this.regenerateFlag = false;
+
+        this.diceUsed = new String[11];
+        for(int i = 0; i < 11; i++)
+            diceUsed[i] = "---";
     }
 
     // Getter for the "score" variable.
@@ -41,7 +46,10 @@ public class Hydra extends Creature{
             return 0;
     }
 
+
+
     public boolean checkMove(Dice dice) {
         return dice.getValue() >= (int) CurrentSerpent.peek();
     }
+    
 }
