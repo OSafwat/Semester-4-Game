@@ -180,6 +180,11 @@ public class Dragon extends Creature {
         }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
+        moveAfterMath(oldRewardStatus, move);
+        return true;
+    }
+
+    public void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
@@ -203,7 +208,6 @@ public class Dragon extends Creature {
                 }
             }
         }
-        return true;
     }
 
     public void initNextTimeWarp() {
