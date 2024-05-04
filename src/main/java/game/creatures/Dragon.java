@@ -8,6 +8,7 @@ import game.engine.Move;
 import game.engine.enums.DragonNumber;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Dragon extends Creature {
     public Integer face;
@@ -36,18 +37,21 @@ public class Dragon extends Creature {
 
     public void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
-        allPossibleMoves.add(new Move(new RedDice(1), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(1), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(2), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(2), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(3), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(3), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(4), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(4), Dragons[3]));
-        allPossibleMoves.add(new Move(new RedDice(5), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(5), Dragons[3]));
-        allPossibleMoves.add(new Move(new RedDice(6), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(6), Dragons[3]));
+        for (int i = 0; i < 3; i++)
+        {
+            if (Dragons[i].face != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face), Dragons[i]));
+            }
+            if (Dragons[i].wings != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings), Dragons[i]));
+            }
+            if (Dragons[i].tail != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail), Dragons[i]));
+            }
+            if (Dragons[i].heart != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart), Dragons[i]));
+            }
+        }
     }
 
     public void initTimeWarps () {
@@ -93,12 +97,16 @@ public class Dragon extends Creature {
     }
 
     public boolean makeMove(Dice dice) {
-        boolean valid = checkMove(dice);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
+        int dragonIndex = sc.nextInt();
+        Dragon targetDragon = this.Dragons[dragonIndex-1];
+        boolean valid = targetDragon.checkMove(dice);
         if (!valid){
             return false;
         }
         int targetValue = dice.getValue();
-        moveHelper(targetValue, true);
+        targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, this);
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
