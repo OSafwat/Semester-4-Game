@@ -1,5 +1,7 @@
 package game.creatures;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
@@ -228,5 +230,17 @@ public class Dragon extends Creature {
 
     public String getArcaneBoostString() {
         return getArcaneBoostPower() == 1 ? "X" : "AB";
+    }
+
+    @Override
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
+    }
+
+    @Override
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
     }
 }

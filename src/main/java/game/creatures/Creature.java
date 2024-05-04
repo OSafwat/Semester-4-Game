@@ -5,6 +5,7 @@ import game.collectibles.Bonus;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
+import java.util.ArrayList;
 import game.exceptions.BonusException;
 
 public abstract class Creature {
@@ -16,7 +17,7 @@ public abstract class Creature {
     public abstract String getScoreSheet();   //return your part from the score sheet as a string while handling its update after each move or change
     public abstract boolean checkMove(Dice dice); 
     public abstract boolean makeMove(Dice dice) throws BonusException ;
-    public abstract TimeWarp [] getAllTimeWarps();
-    public abstract ArcaneBoost [] getAllArcaneBoosts();
+    public abstract ArrayList<TimeWarp> getAllTimeWarps();
+    public abstract ArrayList<ArcaneBoost> getAllArcaneBoosts();
     public abstract Move[] getAllPossibleMoves();
 }
