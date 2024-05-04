@@ -6,44 +6,40 @@ import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
-import java.util.ArrayList;
-import java.util.HashMap;
+import game.engine.enums.RealmColor;
+import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
 
-public class Dragon extends Creature {
-    public Integer face;
-    public Integer wings;
-    public Integer tail;
-    public Integer heart;
-    public DragonNumber dragonNumber;
-    public Dragon[] Dragons;
-    public HashMap<DragonNumber, Integer> pointMap;
-    public ArrayList<Move> allPossibleMoves;
+import java.io.*;
+
+import java.io.FileReader;
+import java.util.*;
+import java.util.function.Supplier;
+
+private class Dragon extends Creature {
+    private Integer face;
+    private Integer wings;
+    private Integer tail;
+    private Integer heart;
+    private DragonNumber dragonNumber;
+    private Dragon[] Dragons;
+    private int[] pointMap;
+    private ArrayList<Move> allPossibleMoves;
+    private ArrayList<TimeWarp> timeWarps;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private String[] rewards;
+    private Supplier<String>[] suppliers;
+    private int elementalCrestCount;
 
 
-    public Dragon() {
+    private Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
         Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
-        initPointMap();
-        initPossibleMoves();
-    }
-
-    public void initPossibleMoves() {
-        allPossibleMoves = new ArrayList<>();
-        allPossibleMoves.add(new Move(new RedDice(1), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(1), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(2), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(2), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(3), Dragons[0]));
-        allPossibleMoves.add(new Move(new RedDice(3), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(4), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(4), Dragons[3]));
-        allPossibleMoves.add(new Move(new RedDice(5), Dragons[2]));
-        allPossibleMoves.add(new Move(new RedDice(5), Dragons[3]));
-        allPossibleMoves.add(new Move(new RedDice(6), Dragons[1]));
-        allPossibleMoves.add(new Move(new RedDice(6), Dragons[3]));
+        elementalCrestCount = 0;
+        initialization();
     }
 
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
@@ -54,46 +50,196 @@ public class Dragon extends Creature {
         this.dragonNumber = dragonNumber;
     }
 
-    public DragonNumber getDragonNumber() {
+    private void initialization() {
+        initPointMap();
+        initPossibleMoves();
+        initRewards();
+        initSuppliers();
+        initTimeWarpsAndArcaneBoosts();
+    }
+
+    private void initRewards() {
+        rewards = new String[5];
+        File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
+        try (FileReader fr = new FileReader(file)) {
+            Properties properties = new Properties();
+            properties.load(fr);
+            ArrayList<Object> temporaryRewards = new ArrayList<>(new LinkedHashSet<>(properties.values()));
+            for (int i = 0, size = temporaryRewards.size(); i < size; i++) {
+                rewards[i] = (String)temporaryRewards.get(i);
+            }
+        } catch (IOException e) {
+            rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+        }
+    }
+
+    private void initTimeWarpsAndArcaneBoosts () {
+        for (int i = 0; i < 5; i++) {
+            String current = suppliers[i].get();
+            if (current.equals("TW")) {
+                timeWarps.add(new TimeWarp());
+            }
+            if (current.equals("AB")) {
+                arcaneBoosts.add(new ArcaneBoost());
+            }
+        }
+    }
+
+    private void initPossibleMoves() {
+        allPossibleMoves = new ArrayList<>();
+        for (int i = 0; i < 4; i++)
+        {
+            if (Dragons[i].face != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face), Dragons[i]));
+            }
+            if (Dragons[i].wings != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings), Dragons[i]));
+            }
+            if (Dragons[i].tail != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail), Dragons[i]));
+            }
+            if (Dragons[i].heart != null) {
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart), Dragons[i]));
+            }
+        }
+    }
+
+    @Override
+    public int getScore() {
+        int score = 0;
+        for (int i = 0; i < 4; i++) {
+            score += Dragons[i].isDead() ? pointMap[i] : 0;
+        }
+        return score;
+    }
+
+    @Override
+    public int getElementalCrest() {
+        return elementalCrestCount;
+    }
+
+    private int getArcaneBoostPower() {
+        return allPossibleMoves.isEmpty() ? 1 : 0;
+    }
+
+    public Move[] getAllPossibleMoves() {
+        Move[] returnedArray = new Move[allPossibleMoves.size()];
+        return allPossibleMoves.toArray(returnedArray);
+    }
+
+    private ArrayList<TimeWarp> getAllTimeWarps() {
+        return timeWarps;
+    }
+
+    private ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
+
+    private DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
-    public void initPointMap() {
-        pointMap = new HashMap<>();
-        pointMap.put(DragonNumber.Dragon1, 10);
-        pointMap.put(DragonNumber.Dragon2, 14);
-        pointMap.put(DragonNumber.Dragon3, 16);
-        pointMap.put(DragonNumber.Dragon4, 20);
+    private void initPointMap() {
+        pointMap = new int[]{10, 14, 16, 20};
     }
 
-    public boolean isDead() {
+    private boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    public boolean makeMove(Dice dice) {
-        boolean valid = checkMove(dice);
-        if (!valid){
-            return false;
+    private boolean allDead() {
+        boolean dead = true;
+        for (int i = 0; i < 4; i++)
+            dead = dead && Dragons[i].isDead();
+        return dead;
+    }
+
+    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
+        int dragonIndex = sc.nextInt();
+        while (dragonIndex < 1 || dragonIndex > 4) {
+            System.out.println("The value you have entered is invalid.\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
+            dragonIndex = sc.nextInt();
         }
+        sc.close();
+        Dragon targetDragon = Dragons[dragonIndex-1];
+        targetDragon.checkMove(dice);
         int targetValue = dice.getValue();
-        moveHelper(targetValue, true);
-        Move move = new Move(dice, this);
+
+        String[] oldRewardStatus = new String[5];
+        for (int i = 0; i < 5; i++) {
+            oldRewardStatus[i] = suppliers[i].get();
+        }
+        targetDragon.moveHelper(targetValue, true);
+        Move move = new Move(dice, targetDragon);
+        moveAfterMath(oldRewardStatus, move);
+        return true;
+    }
+
+    private void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
                 break;
             }
         }
+        for (int i = 0; i < 5; i++) {
+            String newRewardStatus = suppliers[i].get();
+            if (!oldRewardStatus[i].equals(newRewardStatus)) {
+                if (oldRewardStatus[i].contains("C")) {
+                    elementalCrestCount++;
+                }
+                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(i) != 'A') {
+                    throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[i].charAt(0)));
+                }
+                else if (oldRewardStatus[i].equals("TW")) {
+                    initNextTimeWarp();
+                }
+                else if (oldRewardStatus[i].equals("AB")) {
+                    initNextArcaneBoost();
+                }
+            }
+        }
+    }
+
+    private void initNextTimeWarp() {
+        //Is supposed to change the enum for the timewarp obtained
+    }
+
+    private void initNextArcaneBoost() {
+        //Is supposed to change the enum for the arcane boost obtained
+    }
+
+    private void initSuppliers () {
+        suppliers = new Supplier[]{
+                this::getFirstRowRewardString,
+                this::getSecondRowRewardString,
+                this::getThirdRowRewardString,
+                this::getFourthRowRewardString,
+                this::getCornerRewardString,
+        };
+    }
+
+    private RealmColor decodeLetterToRealmColor (char c) {
+        return switch (c) {
+            case 'G' -> RealmColor.GREEN;
+            case 'B' -> RealmColor.BLUE;
+            case 'R' -> RealmColor.RED;
+            case 'M' -> RealmColor.MAGENTA;
+            case 'E' -> RealmColor.WHITE;
+            case 'Y' -> RealmColor.YELLOW;
+            default -> null;
+        };
+    }
+
+    public boolean checkMove(Dice dice) throws InvalidMoveException {
+        int targetValue = dice.getValue();
+        moveHelper(targetValue, false);
         return true;
     }
 
-    public boolean checkMove(Dice dice) {
-        //implement exception handling
-        int targetValue = dice.getValue();
-        return moveHelper(targetValue, false);
-    }
-
-    public boolean moveHelper(int targetValue, boolean doMove) {
+    private boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -163,84 +309,73 @@ public class Dragon extends Creature {
                     heart = null;
             }
         }
-        return valid;
-    }
-
-    public Dragon dragonSelector(int index) {
-        return Dragons[index-1];
-    }
-
-    @Override
-    public int getScore() {
-        int score = 0;
-        for (int i = 0; i < 4; i++) {
-            score += Dragons[i].isDead() ? pointMap.get(Dragons[i].getDragonNumber()) : 0;
+        //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
+        if (!doMove) {
+            throw new InvalidMoveException("message");
         }
-        return score;
-    }
-
-    @Override
-    public int getElementalCrest() {
-        return getElementalCrestString().equals("X") ? 1 : 0;
-    }
-
-    public int getArcaneBoostPower() {
-        return allPossibleMoves.isEmpty() ? 1 : 0;
+        return valid;
     }
 
     @Override
     public String getScoreSheet() {
-        String scoreSheet =  "+-----------------------------------+\n";
-        scoreSheet += "|  #  |D1   |D2   |D3   |D4   |R    |\n";
-        scoreSheet += "+-----------------------------------+\n";
-        scoreSheet += "|  F  |" + Dragons[0].changeToString(face) + "    |" + Dragons[1].changeToString(face) + "    |" + Dragons[2].changeToString(face) + "    |"+ Dragons[3].changeToString(face) + "    |" + getGreenBoostString() + "   |\n";
-        scoreSheet += "|  W  |" + Dragons[0].changeToString(wings) + "    |" + Dragons[1].changeToString(wings) + "    |" + Dragons[2].changeToString(wings) + "    |"+ Dragons[3].changeToString(wings) + "    |" + getYellowBoostString() + "   |\n";
-        scoreSheet += "|  T  |" + Dragons[0].changeToString(heart) + "    |" + Dragons[1].changeToString(heart) + "    |" + Dragons[2].changeToString(heart) + "    |"+ Dragons[3].changeToString(heart) + "    |" + getBlueBoostString() + "   |\n";
-        scoreSheet += "|  H  |" + Dragons[0].changeToString(tail) + "    |" + Dragons[1].changeToString(tail) + "    |" + Dragons[2].changeToString(tail) + "    |"+ Dragons[3].changeToString(tail) + "    |" + getElementalCrestString() + "   |\n";
-        scoreSheet += "+-----------------------------------+\n";
-        scoreSheet += "|  S  |10   |14   |16   |20   |" + getArcaneBoostString() + "   |\n";
-        scoreSheet += "+-----------------------------------+";
-        return scoreSheet;
+        StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
+        scoreSheet.append("|  #  |D1   |D2   |D3   |D4   |R    |\n");
+        scoreSheet.append("+-----------------------------------+\n");
+        scoreSheet.append("|  F  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
+        }
+        scoreSheet.append(getFirstRowRewardString()).append("   |\n");
+        scoreSheet.append("|  W  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
+        }
+        scoreSheet.append(getSecondRowRewardString()).append("   |\n");
+        scoreSheet.append("|  T  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
+        }
+        scoreSheet.append(getThirdRowRewardString()).append("   |\n");
+        scoreSheet.append("|  W  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
+        }
+        scoreSheet.append(getFourthRowRewardString()).append("   |\n");
+        scoreSheet.append("+-----------------------------------+\n");
+        scoreSheet.append("|  S  |10   |14   |16   |20   |").append(getCornerRewardString()).append("   |\n");
+        scoreSheet.append("+-----------------------------------+");
+        return scoreSheet.toString();
     }
 
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
-    }
-
-    public String changeToString(Integer integer) {
+    private String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
 
-    public String getGreenBoostString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : "GB";
+    private String getFirstRowRewardString() {
+        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
     }
 
-    public String getYellowBoostString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : "YB";
+    private String getSecondRowRewardString() {
+        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
     }
 
-    public String getBlueBoostString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : "BB";
+    private String getThirdRowRewardString() {
+        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
     }
 
-    public String getElementalCrestString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : "EC";
+    private String getFourthRowRewardString() {
+        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
     }
 
-    public String getArcaneBoostString() {
-        return getArcaneBoostPower() == 1 ? "X" : "AB";
+    private String getCornerRewardString() {
+        return allDead() ? "X" : encode(rewards[4]);
     }
 
-    @Override
-    public ArrayList<TimeWarp> getAllTimeWarps() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
+    private String encode (String reward) {
+        return extractCapitalLetters(reward);
     }
 
-    @Override
-    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
+    private static String extractCapitalLetters(String reward) {
+        return reward.replaceAll("[^A-Z]", "");
     }
 }
