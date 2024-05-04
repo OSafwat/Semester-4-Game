@@ -74,6 +74,10 @@ public class Dragon extends Creature {
         return timeWarps;
     }
 
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
+
     public DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
