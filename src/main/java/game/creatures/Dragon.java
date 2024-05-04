@@ -186,12 +186,9 @@ public class Dragon extends Creature {
                 break;
             }
         }
-        String[] newRewardStatus = new String[5];
         for (int i = 0; i < 5; i++) {
-            newRewardStatus[i] = suppliers[i].get();
-        }
-        for (int i = 0; i < 5; i++) {
-            if (!oldRewardStatus[i].equals(newRewardStatus[i])) {
+            String newRewardStatus = suppliers[i].get();
+            if (!oldRewardStatus[i].equals(newRewardStatus)) {
                 if (oldRewardStatus[i].contains("C")) {
                     elementalCrestCount++;
                 }
@@ -207,6 +204,14 @@ public class Dragon extends Creature {
             }
         }
         return true;
+    }
+
+    public void initNextTimeWarp() {
+        //Is supposed to change the enum for the timewarp obtained
+    }
+
+    public void initNextArcaneBoost() {
+        //Is supposed to change the enum for the arcane boost obtained
     }
 
     public void initSuppliers () {
