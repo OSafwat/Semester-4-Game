@@ -45,6 +45,7 @@ public class Dragon extends Creature {
         initArcaneBoosts();
         initRewards();
         initSuppliers();
+        initTimeWarpsAndArcaneBoosts();
     }
 
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
@@ -67,6 +68,18 @@ public class Dragon extends Creature {
             }
         } catch (IOException e) {
             rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+        }
+    }
+
+    public void initTimeWarpsAndArcaneBoosts () {
+        for (int i = 0; i < 5; i++) {
+            String current = suppliers[i].get();
+            if (current.equals("TW")) {
+                timeWarps.add(new TimeWarp());
+            }
+            if (current.equals("AB")) {
+                arcaneBoosts.add(new ArcaneBoost());
+            }
         }
     }
 
