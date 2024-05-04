@@ -32,6 +32,8 @@ public class Phoenix extends Creature{
 
     @Override
     public Move[] getAllPossibleMoves() {
+        Move[] returnedArray = new Move[allPossibleMoves.size()];
+        return allPossibleMoves.toArray(returnedArray);
     }
 
     
