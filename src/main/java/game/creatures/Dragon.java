@@ -23,7 +23,7 @@ public class Dragon extends Creature {
     public Integer heart;
     public DragonNumber dragonNumber;
     public Dragon[] Dragons;
-    public HashMap<DragonNumber, Integer> pointMap;
+    public int[] pointMap;
     public ArrayList<Move> allPossibleMoves;
     public ArrayList<TimeWarp> timeWarps;
     public ArrayList<ArcaneBoost> arcaneBoosts;
@@ -53,8 +53,6 @@ public class Dragon extends Creature {
     public void initialization() {
         initPointMap();
         initPossibleMoves();
-        initTimeWarps();
-        initArcaneBoosts();
         initRewards();
         initSuppliers();
         initTimeWarpsAndArcaneBoosts();
@@ -110,7 +108,7 @@ public class Dragon extends Creature {
     public int getScore() {
         int score = 0;
         for (int i = 0; i < 4; i++) {
-            score += Dragons[i].isDead() ? pointMap.get(Dragons[i].getDragonNumber()) : 0;
+            score += Dragons[i].isDead() ? pointMap[i] : 0;
         }
         return score;
     }
@@ -137,11 +135,7 @@ public class Dragon extends Creature {
     }
 
     public void initPointMap() {
-        pointMap = new HashMap<>();
-        pointMap.put(DragonNumber.Dragon1, 10);
-        pointMap.put(DragonNumber.Dragon2, 14);
-        pointMap.put(DragonNumber.Dragon3, 16);
-        pointMap.put(DragonNumber.Dragon4, 20);
+        pointMap = new int[]{10, 14, 16, 20};
     }
 
     public boolean isDead() {
