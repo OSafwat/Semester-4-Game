@@ -100,7 +100,7 @@ public class Dragon extends Creature {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
         int dragonIndex = sc.nextInt();
-        Dragon targetDragon = this.Dragons[dragonIndex-1];
+        Dragon targetDragon = Dragons[dragonIndex-1];
         boolean valid = targetDragon.checkMove(dice);
         if (!valid){
             return false;
@@ -220,17 +220,33 @@ public class Dragon extends Creature {
 
     @Override
     public String getScoreSheet() {
-        String scoreSheet =  "+-----------------------------------+\n";
-        scoreSheet += "|  #  |D1   |D2   |D3   |D4   |R    |\n";
-        scoreSheet += "+-----------------------------------+\n";
-        scoreSheet += "|  F  |" + Dragons[0].changeToString(face) + "    |" + Dragons[1].changeToString(face) + "    |" + Dragons[2].changeToString(face) + "    |"+ Dragons[3].changeToString(face) + "    |" + getGreenBoostString() + "   |\n";
-        scoreSheet += "|  W  |" + Dragons[0].changeToString(wings) + "    |" + Dragons[1].changeToString(wings) + "    |" + Dragons[2].changeToString(wings) + "    |"+ Dragons[3].changeToString(wings) + "    |" + getYellowBoostString() + "   |\n";
-        scoreSheet += "|  T  |" + Dragons[0].changeToString(heart) + "    |" + Dragons[1].changeToString(heart) + "    |" + Dragons[2].changeToString(heart) + "    |"+ Dragons[3].changeToString(heart) + "    |" + getBlueBoostString() + "   |\n";
-        scoreSheet += "|  H  |" + Dragons[0].changeToString(tail) + "    |" + Dragons[1].changeToString(tail) + "    |" + Dragons[2].changeToString(tail) + "    |"+ Dragons[3].changeToString(tail) + "    |" + getElementalCrestString() + "   |\n";
-        scoreSheet += "+-----------------------------------+\n";
-        scoreSheet += "|  S  |10   |14   |16   |20   |" + getArcaneBoostString() + "   |\n";
-        scoreSheet += "+-----------------------------------+";
-        return scoreSheet;
+        StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
+        scoreSheet.append("|  #  |D1   |D2   |D3   |D4   |R    |\n");
+        scoreSheet.append("+-----------------------------------+\n");
+        scoreSheet.append("|  F  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
+        }
+        scoreSheet.append(getGreenBoostString()).append("   |\n");
+        scoreSheet.append("|  W  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
+        }
+        scoreSheet.append(getYellowBoostString()).append("   |\n");
+        scoreSheet.append("|  T  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
+        }
+        scoreSheet.append(getBlueBoostString()).append("   |\n");
+        scoreSheet.append("|  W  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
+        }
+        scoreSheet.append(getElementalCrestString()).append("   |\n");
+        scoreSheet.append("+-----------------------------------+\n");
+        scoreSheet.append("|  S  |10   |14   |16   |20   |").append(getArcaneBoostString()).append("   |\n");
+        scoreSheet.append("+-----------------------------------+");
+        return scoreSheet.toString();
     }
 
     public Move[] getAllPossibleMoves() {
