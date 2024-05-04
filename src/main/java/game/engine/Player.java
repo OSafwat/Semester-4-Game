@@ -1,4 +1,5 @@
 package game.engine;
+import game.collectibles.ArcaneBoost;
 import game.collectibles.ElementalCrest;
 import game.collectibles.TimeWarp;
 import game.engine.enums.*;
@@ -8,14 +9,25 @@ public class Player {
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
+    private ArcaneBoost [] arcaneBoosts;
     private TimeWarp [] timeWarp;
     Move  allPossiblMoves [];
 
 
+
     public Player(PlayerStatus status){
         this.playerStatus= status;
-        //move starting should be inserted here
+        
     }
+
+    public void initArcaneBoosts (){
+        
+    }
+
+    public void initTimeWarps () {
+
+    }
+
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }
