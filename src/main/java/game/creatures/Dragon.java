@@ -341,8 +341,11 @@ private class Dragon extends Creature {
             scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
         }
         scoreSheet.append(getFourthRowRewardString()).append("   |\n");
-        scoreSheet.append("+-----------------------------------+\n");
-        scoreSheet.append("|  S  |10   |14   |16   |20   |").append(getCornerRewardString()).append("   |\n");
+        scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
+        for (int i = 0; i < 4; i++) {
+            scoreSheet.append(pointMap[i]).append("  |");
+        }
+        scoreSheet.append(getCornerRewardString()).append("   |\n");
         scoreSheet.append("+-----------------------------------+");
         return scoreSheet.toString();
     }
