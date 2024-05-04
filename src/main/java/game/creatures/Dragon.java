@@ -14,6 +14,7 @@ import java.io.*;
 
 import java.io.FileReader;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class Dragon extends Creature {
     public Integer face;
@@ -27,6 +28,8 @@ public class Dragon extends Creature {
     public ArrayList<TimeWarp> timeWarps;
     public ArrayList<ArcaneBoost> arcaneBoosts;
     public String[] rewards;
+    public Supplier<String>[] suppliers;
+    public int elementalCrestCount;
 
 
     public Dragon() {
@@ -35,11 +38,13 @@ public class Dragon extends Creature {
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
         Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
+        elementalCrestCount = 0;
         initPointMap();
         initPossibleMoves();
         initTimeWarps();
         initArcaneBoosts();
         initRewards();
+        initSuppliers();
     }
 
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
@@ -105,7 +110,7 @@ public class Dragon extends Creature {
 
     @Override
     public int getElementalCrest() {
-        return getElementalCrestString().equals("X") ? 1 : 0;
+        return elementalCrestCount;
     }
 
     public int getArcaneBoostPower() {
@@ -151,15 +156,15 @@ public class Dragon extends Creature {
             System.out.println("The value you have entered is invalid.\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
             dragonIndex = sc.nextInt();
         }
+        sc.close();
         Dragon targetDragon = Dragons[dragonIndex-1];
         targetDragon.checkMove(dice);
-        sc.close();
         int targetValue = dice.getValue();
-        String oldFirstRowReward = getFirstRowRewardString();
-        String oldSecondRowReward = getSecondRowRewardString();
-        String oldThirdRowReward = getThirdRowRewardString();
-        String oldFourthRowReward = getFourthRowRewardString();
-        String oldCornerReward = getCornerRewardString();
+
+        String[] oldRewardStatus = new String[5];
+        for (int i = 0; i < 5; i++) {
+            oldRewardStatus[i] = suppliers[i].get();
+        }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
@@ -168,15 +173,37 @@ public class Dragon extends Creature {
                 break;
             }
         }
-        String newFirstRowReward = getFirstRowRewardString();
-        String newSecondRowReward = getSecondRowRewardString();
-        String newThirdRowReward = getThirdRowRewardString();
-        String newFourthRowReward = getFourthRowRewardString();
-        String newCornerReward = getCornerRewardString();
-        if (!oldFirstRowReward.equals(newFirstRowReward) && oldFirstRowReward.contains("B")) {
-
+        String[] newRewardStatus = new String[5];
+        for (int i = 0; i < 5; i++) {
+            newRewardStatus[i] = suppliers[i].get();
+        }
+        for (int i = 0; i < 5; i++) {
+            if (!oldRewardStatus[i].equals(newRewardStatus[i])) {
+                if (oldRewardStatus[i].contains("C")) {
+                    elementalCrestCount++;
+                }
+                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(i) != 'A') {
+                    throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[i].charAt(0)));
+                }
+                else if (oldRewardStatus[i].equals("TW")) {
+                    initNextTimeWarp();
+                }
+                else if (oldRewardStatus[i].equals("AB")) {
+                    initNextArcaneBoost();
+                }
+            }
         }
         return true;
+    }
+
+    public void initSuppliers () {
+        suppliers = new Supplier[]{
+                this::getFirstRowRewardString,
+                this::getSecondRowRewardString,
+                this::getThirdRowRewardString,
+                this::getFourthRowRewardString,
+                this::getCornerRewardString,
+        };
     }
 
     public RealmColor decodeLetterToRealmColor (char c) {
