@@ -136,6 +136,13 @@ public class Dragon extends Creature {
         return face == null && wings == null && heart == null && tail == null;
     }
 
+    public boolean areAllDragonsDead() {
+        boolean dead = true;
+        for (int i = 0; i < 4; i++)
+            dead = dead && Dragons[i].isDead();
+        return dead;
+    }
+
     public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
@@ -148,9 +155,11 @@ public class Dragon extends Creature {
         targetDragon.checkMove(dice);
         sc.close();
         int targetValue = dice.getValue();
-        String oldGreenBoost = getGreenBoostString();
-        String oldBlueBoost = getBlueBoostString();
-        String oldYellowBoost = getYellowBoostString();
+        String oldFirstRowReward = getFirstRowRewardString();
+        String oldSecondRowReward = getSecondRowRewardString();
+        String oldThirdRowReward = getThirdRowRewardString();
+        String oldFourthRowReward = getFourthRowRewardString();
+        String oldCornerReward = getCornerRewardString();
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
@@ -159,19 +168,27 @@ public class Dragon extends Creature {
                 break;
             }
         }
-        String newGreenBoost = getGreenBoostString();
-        String newBlueBoost = getBlueBoostString();
-        String newYellowBoost = getYellowBoostString();
-        if (!oldGreenBoost.equals(newGreenBoost)) {
-            throw new BonusException(RealmColor.GREEN);
-        }
-        if (!oldBlueBoost.equals(newBlueBoost)) {
-            throw new BonusException(RealmColor.BLUE);
-        }
-        if (!oldYellowBoost.equals(newYellowBoost)) {
-            throw new BonusException(RealmColor.YELLOW);
+        String newFirstRowReward = getFirstRowRewardString();
+        String newSecondRowReward = getSecondRowRewardString();
+        String newThirdRowReward = getThirdRowRewardString();
+        String newFourthRowReward = getFourthRowRewardString();
+        String newCornerReward = getCornerRewardString();
+        if (!oldFirstRowReward.equals(newFirstRowReward) && oldFirstRowReward.contains("B")) {
+
         }
         return true;
+    }
+
+    public RealmColor decodeLetterToRealmColor (char c) {
+        return switch (c) {
+            case 'G' -> RealmColor.GREEN;
+            case 'B' -> RealmColor.BLUE;
+            case 'R' -> RealmColor.RED;
+            case 'M' -> RealmColor.MAGENTA;
+            case 'E' -> RealmColor.WHITE;
+            case 'Y' -> RealmColor.YELLOW;
+            default -> null;
+        };
     }
 
     public boolean checkMove(Dice dice) throws InvalidMoveException {
@@ -266,24 +283,24 @@ public class Dragon extends Creature {
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
         }
-        scoreSheet.append(getGreenBoostString()).append("   |\n");
+        scoreSheet.append(getFirstRowRewardString()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
         }
-        scoreSheet.append(getYellowBoostString()).append("   |\n");
+        scoreSheet.append(getSecondRowRewardString()).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
         }
-        scoreSheet.append(getBlueBoostString()).append("   |\n");
+        scoreSheet.append(getThirdRowRewardString()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
         }
-        scoreSheet.append(getElementalCrestString()).append("   |\n");
+        scoreSheet.append(getFourthRowRewardString()).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n");
-        scoreSheet.append("|  S  |10   |14   |16   |20   |").append(getArcaneBoostString()).append("   |\n");
+        scoreSheet.append("|  S  |10   |14   |16   |20   |").append(getCornerRewardString()).append("   |\n");
         scoreSheet.append("+-----------------------------------+");
         return scoreSheet.toString();
     }
@@ -292,24 +309,55 @@ public class Dragon extends Creature {
         return integer == null ? "X" : "" + integer;
     }
 
-    public String getGreenBoostString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : "GB";
+    public String getFirstRowRewardString() {
+        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
     }
 
-    public String getYellowBoostString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : "YB";
+    public String getSecondRowRewardString() {
+        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
     }
 
-    public String getBlueBoostString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : "BB";
+    public String getThirdRowRewardString() {
+        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
     }
 
-    public String getElementalCrestString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : "EC";
+    public String getFourthRowRewardString() {
+        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
     }
 
-    public String getArcaneBoostString() {
-        return getArcaneBoostPower() == 1 ? "X" : "AB";
+    public String getCornerRewardString() {
+        return areAllDragonsDead() ? "X" : encode(rewards[4]);
+    }
+
+    public String encode (String reward) {
+        if (reward.equals("GreenBonus")) {
+            return "GB";
+        }
+        if (reward.equals("BlueBonus")) {
+            return "BB";
+        }
+        if (reward.equals("YellowBonus")) {
+            return "YB";
+        }
+        if (reward.equals("RedBonus")) {
+            return "RB";
+        }
+        if (reward.equals("PurpleBonus")) {
+            return "PB";
+        }
+        if (reward.equals("EssenceBonus")) {
+            return "EB";
+        }
+        if (reward.equals("ElementalCrest")) {
+            return "EC";
+        }
+        if (reward.equals("ArcaneBoost")) {
+            return "AB";
+        }
+        if (reward.equals("TimeWarp")) {
+            return "TW";
+        }
+        return "ERROR";
     }
 
     public Move[] getAllPossibleMoves() {
