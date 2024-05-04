@@ -6,8 +6,13 @@ import game.dice.Dice;
 import game.engine.Move;
 
 public class Phoenix extends Creature{
-    public int[] phoenixsReceivedHP = new int[11];
+    public int[] phoenixsReceivedHP;
     public ArrayList<Move> allPossibleMoves;
+
+    public Phoenix() {
+        phoenixsReceivedHP = new int[11];
+        initPossibleMoves();
+    }
 
     @Override
     public int getElementalCrest() {
