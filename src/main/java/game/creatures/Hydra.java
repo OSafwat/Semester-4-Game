@@ -48,6 +48,18 @@ public class Hydra extends Creature{
             return 0;
     }
 
+    // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
+    public String getScoreSheet() {
+        System.out.print("Tide Abyss: Hydra Serpents (BLUE REALM):\n" +
+                "+-----------------------------------------------------------------------+\n" +
+                "|  #  |H11  |H12  |H13  |H14  |H15  |H21  |H22  |H23  |H24  |H25  |H26  |\n" +
+                "+-----------------------------------------------------------------------+\n");
+                
+        System.out.printf("|  H  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%n", 
+        diceUsed[0], diceUsed[1], diceUsed[2], diceUsed[3], diceUsed[4], diceUsed[5], diceUsed[6], diceUsed[7], diceUsed[8], diceUsed[9], diceUsed[10]);
+        
+        System.out.print("|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n");
+    }
 
     // Method that returns true if the move is possible.
     public boolean checkMove(Dice dice) {
