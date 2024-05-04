@@ -1,5 +1,10 @@
 package game.creatures;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Stack;
+import java.util.Scanner;
+
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
     private Stack<Integer>() FirstSerpent = new Stack<Integer>();
