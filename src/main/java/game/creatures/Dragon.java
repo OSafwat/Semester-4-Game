@@ -106,16 +106,6 @@ public class Dragon extends Creature {
         }
     }
 
-    public void initTimeWarps () {
-        timeWarps = new ArrayList<>();
-        timeWarps.add(new TimeWarp());
-    }
-
-    public void initArcaneBoosts() {
-        arcaneBoosts = new ArrayList<>();
-
-    }
-
     @Override
     public int getScore() {
         int score = 0;
