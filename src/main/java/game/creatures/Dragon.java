@@ -85,7 +85,7 @@ public class Dragon extends Creature {
 
     public void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (Dragons[i].face != null) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].face), Dragons[i]));
