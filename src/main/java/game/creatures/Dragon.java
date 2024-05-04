@@ -379,34 +379,11 @@ public class Dragon extends Creature {
     }
 
     public String encode (String reward) {
-        if (reward.equals("GreenBonus")) {
-            return "GB";
-        }
-        if (reward.equals("BlueBonus")) {
-            return "BB";
-        }
-        if (reward.equals("YellowBonus")) {
-            return "YB";
-        }
-        if (reward.equals("RedBonus")) {
-            return "RB";
-        }
-        if (reward.equals("PurpleBonus")) {
-            return "PB";
-        }
-        if (reward.equals("EssenceBonus")) {
-            return "EB";
-        }
-        if (reward.equals("ElementalCrest")) {
-            return "EC";
-        }
-        if (reward.equals("ArcaneBoost")) {
-            return "AB";
-        }
-        if (reward.equals("TimeWarp")) {
-            return "TW";
-        }
-        return "ERROR";
+        return extractCapitalLetters(reward);
+    }
+
+    public static String extractCapitalLetters(String reward) {
+        return reward.replaceAll("[^A-Z]", "");
     }
 
     public Move[] getAllPossibleMoves() {
