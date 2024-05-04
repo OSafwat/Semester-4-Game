@@ -7,11 +7,11 @@ import game.dice.MagentaDice;
 import game.engine.Move;
 
 public class Phoenix extends Creature{
-    public int[] phoenixsReceivedHP;
+    public Integer[] phoenixsReceivedHP;
     public ArrayList<Move> allPossibleMoves;
 
     public Phoenix() {
-        phoenixsReceivedHP = new int[11];
+        phoenixsReceivedHP = new Integer[11];
         initPossibleMoves();
     }
 
@@ -41,5 +41,25 @@ public class Phoenix extends Creature{
         for (int i = 0; i < 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i + 1), this));
         }
+    }
+
+    public String getGreenBoostString() {
+        return phoenixsReceivedHP[3] != null ? "X" : "GB";
+    }
+
+    public String getYellowBoostString() {
+        return phoenixsReceivedHP[9] != null ? "X" : "YB";
+    }
+
+    public String getBlueBoostString() {
+        return phoenixsReceivedHP[8] != null ? "X" : "BB";
+    }
+
+    public String getElementalCrestString() {
+        return phoenixsReceivedHP[6] != null ? "X" : "EC";
+    }
+
+    public String getArcaneBoostString(int n) {
+        return phoenixsReceivedHP[n] != null ? "X" : "AB";
     }
 }
