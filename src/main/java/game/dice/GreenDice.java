@@ -5,8 +5,8 @@ public class GreenDice extends Dice {
     public void setRealValue(int num){
         this.realValue= num;
     }
-    public GreenDice(int num){
-        super(num);
+    public GreenDice(int realvalue){
+        this.realValue=realvalue;
     }
     public RealmColor getRealm(){
         return RealmColor.GREEN;
