@@ -40,4 +40,8 @@ public class Hydra extends Creature{
         else   
             return 0;
     }
+
+    public boolean checkMove(Dice dice) {
+        return dice.getValue() >= (int) CurrentSerpent.peek();
+    }
 }

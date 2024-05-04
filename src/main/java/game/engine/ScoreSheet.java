@@ -1,7 +1,11 @@
 package game.engine;
-
-import game.creatures.*;
+import game.creatures.Creature;
+import game.creatures.Dragon;
+import game.creatures.Hydra;
+import game.creatures.Lion;
+import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
+import game.dice.Dice;
 
 public class ScoreSheet {
     Hydra hydra;
@@ -44,6 +48,19 @@ public class ScoreSheet {
         res += lion.getScoreSheet();
         res +="\n";
         return res;
+
+    }
+    //red    green  blue    magenta    yellow
+    //dragon gaia   hydra   phoenix  lion
+    public Creature getCreatureByRealm(Dice dice){
+        switch (dice.getRealm()){
+            case RED: return this.dragon;
+            case GREEN:  return this.gaia;
+            case BLUE:  return this.hydra;
+            case MAGENTA:  return this.phoenix;
+            case YELLOW: return this.lion;
+            default: return null;
+        } 
 
     }
 
