@@ -70,7 +70,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    public Guardians getGuardians(int c){
+    protected Guardians getGuardians(int c){
 
         int row =0;
         int col =0;
@@ -97,7 +97,7 @@ public class Gaia extends Creature{
 }
 
 // EXP gets a specific guardian row position in the Gaia
-public int getGuardiansRow(int c){
+private int getGuardiansRow(int c){
 
     int row =0;
     if(c<2 || c>12)
@@ -123,7 +123,7 @@ public int getGuardiansRow(int c){
 
 
 // EXP gets a specific guardian col position in the Gaia
-public int getGuardiansCol(int c){
+private int getGuardiansCol(int c){
 
     int col =0;
     if(c<2 || c>12)
@@ -149,7 +149,7 @@ public int getGuardiansCol(int c){
 
 
 //EXP  kills a a given guardian if not already killed
-public void killGaiaGuardian(Guardians g){
+protected void killGaiaGuardian(Guardians g){
     if(g.isDead())
     System.out.println("Invalid Allready Killed");
     else{
@@ -160,18 +160,18 @@ public void killGaiaGuardian(Guardians g){
 }
 
 //EXP  gets the number of  still allive guradians
-public int getAlliveGuardians(){
+private int getAlliveGuardians(){
     return alliveGuardians;
 }
  
-public int getDeadGuardians(){
+private int getDeadGuardians(){
     return deadGuardians;
 }
 
 
 
     // EXP checks if all guardians in a given col are dead if yes then true
-public boolean checkCol(int col){
+private boolean checkCol(int col){
     for(int i=0;i<3;i++){
         if(!gaiaGuardians[i][col].isDead())
             return false;
@@ -182,7 +182,7 @@ public boolean checkCol(int col){
 }
 
 // EXP checks if all guardians in a given row are dead if yes then true
-public boolean checkRow(int row){
+private boolean checkRow(int row){
     for(int i=0;i<4;i++){
         if(!gaiaGuardians[row][i].isDead())
             return false;
@@ -302,7 +302,7 @@ private  void updateRow(int r){
 // EXP method to get all possible moves
 public Move[] getAllPossibleMoves(){
 
-    Move [] allMoves = new Move[alliveGuardians];
+    Move [] allMoves = new Move[this.getAlliveGuardians()];
     int c=0;
     for(int i=2;i<13;i++){
         GreenDice greenDice = new GreenDice(i);
