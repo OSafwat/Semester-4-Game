@@ -39,13 +39,7 @@ public class Dragon extends Creature {
         Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         elementalCrestCount = 0;
-        initPointMap();
-        initPossibleMoves();
-        initTimeWarps();
-        initArcaneBoosts();
-        initRewards();
-        initSuppliers();
-        initTimeWarpsAndArcaneBoosts();
+        initialization();
     }
 
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
@@ -54,6 +48,16 @@ public class Dragon extends Creature {
         this.tail = tail;
         this.heart = heart;
         this.dragonNumber = dragonNumber;
+    }
+
+    public void initialization() {
+        initPointMap();
+        initPossibleMoves();
+        initTimeWarps();
+        initArcaneBoosts();
+        initRewards();
+        initSuppliers();
+        initTimeWarpsAndArcaneBoosts();
     }
 
     public void initRewards() {
