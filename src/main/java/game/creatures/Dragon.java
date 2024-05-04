@@ -1,9 +1,13 @@
 package game.creatures;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +20,8 @@ public class Dragon extends Creature {
     public Dragon[] Dragons;
     public HashMap<DragonNumber, Integer> pointMap;
     public ArrayList<Move> allPossibleMoves;
+    public ArrayList<TimeWarp> timeWarps;
+    public ArrayList<ArcaneBoost> arcaneBoosts;
 
 
     public Dragon() {
@@ -26,6 +32,8 @@ public class Dragon extends Creature {
         Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         initPointMap();
         initPossibleMoves();
+        initTimeWarps();
+        initArcaneBoosts();
     }
 
     public void initPossibleMoves() {
@@ -44,12 +52,26 @@ public class Dragon extends Creature {
         allPossibleMoves.add(new Move(new RedDice(6), Dragons[3]));
     }
 
+    public void initTimeWarps () {
+        timeWarps = new ArrayList<>();
+        timeWarps.add(new TimeWarp());
+    }
+
+    public void initArcaneBoosts() {
+        arcaneBoosts = new ArrayList<>();
+
+    }
+
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
         this.tail = tail;
         this.heart = heart;
         this.dragonNumber = dragonNumber;
+    }
+
+    public ArrayList<TimeWarp> getAllTimewarps() {
+        return timeWarps;
     }
 
     public DragonNumber getDragonNumber() {
