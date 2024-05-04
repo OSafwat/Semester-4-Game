@@ -3,6 +3,7 @@ package game.creatures;
 import java.util.ArrayList;
 
 import game.dice.Dice;
+import game.dice.MagentaDice;
 import game.engine.Move;
 
 public class Phoenix extends Creature{
@@ -36,6 +37,9 @@ public class Phoenix extends Creature{
         return allPossibleMoves.toArray(returnedArray);
     }
 
-    
-    
+    public void initPossibleMoves() {
+        for (int i = 0; i < 6; i++) {
+            allPossibleMoves.add(new Move(new MagentaDice(i + 1), this));
+        }
+    }
 }
