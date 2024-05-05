@@ -173,11 +173,6 @@ private class Dragon extends Creature {
         }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
-        moveAfterMath(oldRewardStatus, move);
-        return true;
-    }
-
-    private void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
@@ -201,6 +196,7 @@ private class Dragon extends Creature {
                 }
             }
         }
+        return true;
     }
 
     private void initNextTimeWarp() {
@@ -325,27 +321,27 @@ private class Dragon extends Creature {
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
         }
-        scoreSheet.append(getFirstRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[0].get()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
         }
-        scoreSheet.append(getSecondRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[1].get()).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
         }
-        scoreSheet.append(getThirdRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[2].get()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
         }
-        scoreSheet.append(getFourthRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[3].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(pointMap[i]).append("  |");
         }
-        scoreSheet.append(getCornerRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[4].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+");
         return scoreSheet.toString();
     }
