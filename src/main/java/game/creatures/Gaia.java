@@ -171,43 +171,36 @@ private int getDeadGuardians(){
 
 
     // EXP checks if all guardians in a given col are dead if yes then true
-private boolean checkCol(int col){
-    for(int i=0;i<3;i++){
-        if(!gaiaGuardians[i][col].isDead())
-            return false;
-    
+private boolean checkCol(int c){
+    return col[c];
 
-    }
-    return true;
 }
 
 // EXP checks if all guardians in a given row are dead if yes then true
-private boolean checkRow(int row){
-    for(int i=0;i<4;i++){
-        if(!gaiaGuardians[row][i].isDead())
-            return false;
-    
+private boolean checkRow(int r){
+    return row[r];
 
-    }
-    return true;
 }
 
 
 // EXP  update the  instance  variable col accordingly
 private  void updateCol(int c){
+    for(int i=0;i<3;i++){
+        if(!gaiaGuardians[i][c].isDead())
+            return;               
+    }
+    col[c]= true;
          
-    if (this.checkCol(c))
-        col[c]= true;
+    
 }
 
 // EXP check if a row is already killed and update the  instance  variable col accordingly
 private  void updateRow(int r){
-     
-    if (this.checkRow(r)){    
-        row[r]= true;
-     
+    for(int i=0;i<4;i++){
+        if(!gaiaGuardians[r][i].isDead())
+            return;               
     }
-               
+    row[r]= true;
 }
 
 
