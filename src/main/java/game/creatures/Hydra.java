@@ -45,6 +45,23 @@ public class Hydra extends Creature{
             diceUsed[i] = "---";
     }
 
+    // Method that returns the value of the bonus that should be printed in the scoresheet.
+    private String getBonus(int value) {
+        String reward = properties.getProperty("hit"+value+"Reward");
+        if(reward.equals("null"))
+            return "  ";
+        else if(diceUsed[value]!=0)
+            return "X ";
+        else{
+            if(reward.equals("ArcaneBoost")) return "AB";
+            else if(reward.equals("GreenBonus")) return "GB";
+            else if(reward.equals("ElementalCrest")) return "EC";
+            else if(reward.equals("MagentaBonus")) return "MB";
+            else if(reward.equals("TimeWarp")) return "TW";
+            // Add a case for the else later.
+        }
+    }
+
     // Getter for the "score" variable.
     public int getScore() {
         return this.score;
@@ -75,6 +92,9 @@ public class Hydra extends Creature{
         " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n" 
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
+
+        scoreSheet += "|  R  |" +getBonus(0)+ "  |" +getBonus(1)+ "  |" +getBonus(2)+ "  |" +getBonus(3)+ "  |" +getBonus(4)+ 
+        "  |" +getBonus(5)+ "  |" +getBonus(6)+ "  |" +getBonus(7)+ "  |" +getBonus(8)+ "  |" +getBonus(9)+ "  |" +getBonus(10)+ "  |\n"; 
     }
 
     // Method that returns true if the move is possible.
