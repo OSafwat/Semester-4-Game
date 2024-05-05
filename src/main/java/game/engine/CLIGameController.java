@@ -19,16 +19,31 @@ public class CLIGameController {
         this.gameBoard = new GameBoard(player1Name, player2Name);
     }
     public void startGame(){
-        BufferedReader br = null;
-        FileReader fileReader = new FileReader("dice-realms-game-dimension/src/main/resources/")
         Scanner scanner = new Scanner(System.in);
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
         CLIGameController clicontroller = new CLIGameController(player1Name, player2Name);
+        
+        
+        int numberOfRounds;
+        int numebrOfTurnsPerRound;
+        try{
+        FileReader SettingsfileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsSettings.properties");
+        BufferedReader settings = new BufferedReader(SettingsfileReader);
+        }
+        catch(){
+       
         //game loop
-        int numberOfLoops = 
+        String line1=  settings.readLine();
+        String [] lineOfRounds = line1.split("="); 
+        numberOfRounds = Integer.parseInt(lineOfRounds[1]);
+
+        String line2=  settings.readLine();
+        String [] lineOfTurns = line1.split("="); 
+        numebrOfTurnsPerRound = Integer.parseInt(lineOfTurns[1]);
+        }
     }
 
     // move methods
