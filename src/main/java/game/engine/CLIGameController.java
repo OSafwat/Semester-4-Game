@@ -58,7 +58,18 @@ public class CLIGameController {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
         }
-        
+
+        System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+        do {
+        String choice= scanner.nextLine();
+        if (choice == "i"){
+            System.out.println("Description goes here");
+            break;
+        }
+        else if (choice== "c"){
+            break;
+        }
+        } while (true);
     }
 
     // move methods
@@ -67,32 +78,32 @@ public class CLIGameController {
     }
 
     //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
-    public boolean makeMove(Player player, Move move)throws BonusException{
-        try{
-            if (move.getCreature() instanceof Dragon ){
-                System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
-                int dragonIndex = Integer.parseInt(System.console().readLine());
-                Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-                move.setCreature(dragon);  //should be make move
-            }else if (move.getCreature() instanceof Gaia){            
-                GreenDice greenDice= (GreenDice)this.gameBoard.getWhite();
-                Dice whiteDice= this.gameBoard.getGreen();
-                int greenVal= greenDice.getValue();
-                int whiteVal= whiteDice.getValue();
-                greenDice.setRealValue(greenVal+ whiteVal);
-            }
-            move.getCreature().makeMove(move.getDice());
+    // public boolean makeMove(Player player, Move move)throws BonusException{
+    //     try{
+    //         if (move.getCreature() instanceof Dragon ){
+    //             System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
+    //             int dragonIndex = Integer.parseInt(System.console().readLine());
+    //             Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
+    //             move.setCreature(dragon);  //should be make move
+    //         }else if (move.getCreature() instanceof Gaia){            
+    //             GreenDice greenDice= (GreenDice)this.gameBoard.getWhite();
+    //             Dice whiteDice= this.gameBoard.getGreen();
+    //             int greenVal= greenDice.getValue();
+    //             int whiteVal= whiteDice.getValue();
+    //             greenDice.setRealValue(greenVal+ whiteVal);
+    //         }
+    //         move.getCreature().makeMove(move.getDice());
             
-        }catch (BonusException bException){
-            RealmColor theBonusColor= bException.getRealmColor();
-            System.out.println("please enter the number to attack the "+theBonusColor + " realm with: ");
-            int numberToAttackWith = Integer.parseInt(System.console().readLine());
-            Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
-            Move bonusmove = new Move(new Dice(numberToAttackWith), creature );
-            makeMove(player, bonusmove);
-        }
-        return true;
-    }    
+    //     }catch (BonusException bException){
+    //         RealmColor theBonusColor= bException.getRealmColor();
+    //         System.out.println("please enter the number to attack the "+theBonusColor + " realm with: ");
+    //         int numberToAttackWith = Integer.parseInt(System.console().readLine());
+    //         Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
+    //         Move bonusmove = new Move(new Dice(numberToAttackWith), creature );
+    //         makeMove(player, bonusmove);
+    //     }
+    //     return true;
+    // }    
     //gameboard getter:
     public GameBoard getGameBoard() {   
         return gameBoard;
@@ -157,7 +168,9 @@ public class CLIGameController {
     }
 
     
-
+    public static void main(String[] args) {
+        
+    }
 
 
 
