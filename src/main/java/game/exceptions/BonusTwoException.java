@@ -3,7 +3,7 @@ package game.exceptions;
 import game.engine.enums.RealmColor;
 
 
-public class BonusTwoException {
+public class BonusTwoException extends Exception{
     RealmColor color1;
     RealmColor color2;
     public BonusTwoException(RealmColor color1, RealmColor color2) {
