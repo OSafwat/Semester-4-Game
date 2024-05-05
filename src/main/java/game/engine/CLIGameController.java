@@ -21,19 +21,11 @@ public class CLIGameController {
     // constructor(s):
     public CLIGameController() {
     }
-
-    public void startGame() throws IOException{
+    public int [] getSettings() throws IOException{
         Scanner scanner = new Scanner(System.in);
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-        this.gameBoard = new GameBoard(player1Name, player2Name);
-
-        BufferedReader settings=null;
         int numberOfRounds;
         int numebrOfTurnsPerRound;
-
+        BufferedReader settings=null;
         //the following is taking in the game settings from the RoundsSettings file
         try {
             // opening the file
@@ -67,6 +59,22 @@ public class CLIGameController {
             if (settings != null)
                 settings.close();
         }
+        int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
+        return temp;
+    }
+
+    public void startGame() throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        this.gameBoard = new GameBoard(player1Name, player2Name);
+
+        int [] temp = getSettings();
+        int numberOfRounds= temp[0]; 
+        int numebrOfTurnsPerRound=temp[1];
+        
 
         System.out.println(
                 "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
