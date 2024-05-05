@@ -61,6 +61,8 @@ public class Gaia extends Creature{
         }
         //ASUM TimWarp class is done
          // IMP create as not accuired
+         // make it unaqquired
+         // ASUM waiting for set and get to be made in TimeWarp class
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("TimeWarp"))
             timeWarps.add(new TimeWarp());
@@ -73,6 +75,8 @@ public class Gaia extends Creature{
         }
         //ASUM ArcaneBoost class is done
          // IMP create as not accuired
+         //make it unaquired
+         // ASUM waiting for set and get to be made in arcaneboost class
             
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("ArcaneBoost"))
