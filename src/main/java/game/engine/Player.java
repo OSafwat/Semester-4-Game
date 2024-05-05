@@ -5,6 +5,7 @@ import game.collectibles.TimeWarp;
 import game.engine.enums.*;
 
 public class Player {
+    String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
@@ -15,8 +16,9 @@ public class Player {
 
 
 
-    public Player(PlayerStatus status){
+    public Player(PlayerStatus status, String name){
         this.playerStatus= status;
+        this.name= name;
         
     }
 
@@ -26,6 +28,10 @@ public class Player {
 
     public void initTimeWarps () {
 
+    }
+
+    public String getName(){
+        return this.name;   
     }
 
     public PlayerStatus getPlayerStatus(){

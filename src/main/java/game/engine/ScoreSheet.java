@@ -77,10 +77,10 @@ public class ScoreSheet {
         } 
     }
 
-    public  getAllArcaneBoosts(){
-            // dragon.getAllArcaneBoosts().addAll(gaia.getAllArcaneBoosts().addAll(hydra.getAllArcaneBoosts().addAll(phoenix.getAllArcaneBoosts().addAll(lion.getAllArcaneBoosts()))));
-            // ArrayList<ArcaneBoost> allBoosts = dragon.getAllArcaneBoosts();
-            // allBoosts.addAll((ArrayList)gaia.getAllTimeWarps());
-    }
+    // public  getAllArcaneBoosts(){
+    //         // dragon.getAllArcaneBoosts().addAll(gaia.getAllArcaneBoosts().addAll(hydra.getAllArcaneBoosts().addAll(phoenix.getAllArcaneBoosts().addAll(lion.getAllArcaneBoosts()))));
+    //         // ArrayList<ArcaneBoost> allBoosts = dragon.getAllArcaneBoosts();
+    //         // allBoosts.addAll((ArrayList)gaia.getAllTimeWarps());
+    // }
 
 }
