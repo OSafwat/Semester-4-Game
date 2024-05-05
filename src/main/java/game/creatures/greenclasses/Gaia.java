@@ -1,6 +1,7 @@
 package game.creatures.greenclasses;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import game.collectibles.ArcaneBoost;
@@ -9,6 +10,9 @@ import game.creatures.Creature;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
+import game.engine.enums.RealmColor;
+import game.exceptions.BonusException;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -28,8 +32,8 @@ public class Gaia extends Creature{
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
-    private TimeWarp timeWarps [];
-    private ArcaneBoost arcaneBoosts [];
+    private ArrayList<TimeWarp> timeWarps ;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
@@ -46,39 +50,30 @@ public class Gaia extends Creature{
 
         }
         gaiaGuardians[0][0].kill();
-        int timeWarpCounter=0;
+         
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("TimeWarp"))
-            timeWarpCounter++;
+            timeWarps.add(new TimeWarp());
         }
+        //ASUM TimWarp class is done
+         // IMP create as not accuired
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("TimeWarp"))
-            timeWarpCounter++;
+            timeWarps.add(new TimeWarp());
         }
-        timeWarps = new TimeWarp[timeWarpCounter];
-        for(int i =0;i<timeWarps.length;i++){
-            //ASUM TimWarp class is done
-            // IMP create as not accuired
-            timeWarps[i]= new TimeWarp();
-        }
-        int arcaneBoostCounter=0;
+        
+        
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("ArcaneBoost"))
-            arcaneBoostCounter++;
+            arcaneBoosts.add(new ArcaneBoost());
         }
+        //ASUM ArcaneBoost class is done
+         // IMP create as not accuired
+            
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("ArcaneBoost"))
-            arcaneBoostCounter++;
+            arcaneBoosts.add(new ArcaneBoost());
         }
-        arcaneBoosts = new ArcaneBoost[arcaneBoostCounter];
-        for(int i =0;i<arcaneBoosts.length;i++){
-            //ASUM ArcaneBoost class is done
-            // IMP create as not accuired
-            arcaneBoosts[i]= new ArcaneBoost();
-        }
-
-
-        
 
     }
 
@@ -88,7 +83,7 @@ public class Gaia extends Creature{
         return score;
     }
 
-    // EXP methos to update the score of the realm
+    // EXP method to update the score of the realm
     private void updateScore(){
         int dead = this.getDeadGuardians()-1;
         score= scores[dead];
@@ -295,7 +290,7 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-    public boolean makeMove(Dice dice)   {
+    public boolean makeMove(Dice dice) throws BonusException   {
         
         if(!checkMove(dice))
             return false;
@@ -316,16 +311,17 @@ private  void updateRow(int r){
             if(!checkRow(rowToCheck)  && !checkCol(colToCheck))
             return true;
             else if(checkRow(rowToCheck)  && !checkCol(colToCheck)){
-                String act="";
-                 act = whichCollectableRow(rowToCheck);
-                
-               
+                String act = whichCollectableRow(rowToCheck);
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will need to change in the whichCollectableRow(rowToCheck)
                 if(act.equals("TimeWarp")){
-
+                    timeWarps.add(new TimeWarp());
                 }
+                else if(act.equals("YellowBonus")){
+                    throw new BonusException(RealmColor.YELLOW);
+                }
+                
                 return true;
             }
             else if(!checkRow(rowToCheck)  && checkCol(colToCheck)){
@@ -478,6 +474,15 @@ public String getScoreSheet(){
     return 1;
     return 0;
        }
+
+// EXP return all aquired time warp in Gaia
+public  ArrayList<TimeWarp> getAllTimeWarps(){
+    return this.timeWarps;
+}
+// Exp return all aquired  arcane boost in Gaia
+public  ArrayList<ArcaneBoost> getAllArcaneBoosts(){
+    return this.arcaneBoosts;
+}
 
 
    
