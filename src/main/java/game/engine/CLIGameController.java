@@ -34,6 +34,7 @@ public class CLIGameController {
         int numberOfRounds;
         int numebrOfTurnsPerRound;
 
+        //the following is taking in the game settings from the RoundsSettings file
         try {
             // opening the file
             FileReader SettingsfileReader = new FileReader(
@@ -59,6 +60,9 @@ public class CLIGameController {
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
+            numberOfRounds = 6;
+            numebrOfTurnsPerRound= 3;
+
         } finally{
             if (settings != null)
                 settings.close();
@@ -76,6 +80,7 @@ public class CLIGameController {
             }
         } while (true);
 
+        //the following is taking in the round rewards from the properties file
         BufferedReader rewardsFile=null;
         ArrayList<String> rewards= new ArrayList<String>() ;
         try {
@@ -106,10 +111,54 @@ public class CLIGameController {
                 rewardsFile.close();
         }
   
+
+        //the following is trying to start the game loop:
+
+        for (int i=0; i<numberOfRounds; i++){
+            
+            //the following is trying to start the round loop:
+            for (int j=0; j<numebrOfTurnsPerRound; j++){
+                Player player1= getActivePlayer();
+                //Player player2= getPassivePlayer();
+                ScoreSheet scoreSheet = getScoreSheet(getActivePlayer());
+                System.out.println(player1.getName()+", here is your score sheet:");
+                System.out.println(getScoreSheet(player1));
+
+                gameBoard.rollDice();
+
+                System.out.println("Here are your rolled dice: ");
+                
+                Dice [] availableDice= getAvailableDice();
+                int counter= 0;
+                for (Dice die : availableDice) {
+                    System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+                }
+
+            //  1:B5  2:W6  3:Y3 4:B
+                System.out.println("please choose a number between 1 and "+ availableDice.length);
+                Dice chosenDice=null;
+                do {
+                    int choice = scanner.nextInt();
+                    if (!(choice > availableDice.length || choice <= 0)){
+                        chosenDice = availableDice[choice-1];
+                    }else {
+                        System.out.println("please choose a valid move");
+                    }
+                } while (true);
+
+                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getCreatureByColor() )));
+
+            }
+
+        }
         
 
     }
 
+    public void getMove(Player player,Dice dice){
+        Move [] listOfMoves= player.getAllPossiblMoves();
+        
+    }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
