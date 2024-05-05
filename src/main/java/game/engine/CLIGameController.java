@@ -164,7 +164,9 @@ public class CLIGameController {
                     if (!(choice > availableDice.length || choice <= 0)){
                         chosenDice = availableDice[choice-1];
                         try{
-                            makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())));
+                            if (makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                                
+                            }
                         }catch(InvalidMoveException iException){
                         }
                         break;
@@ -181,10 +183,7 @@ public class CLIGameController {
 
     }
 
-    public void getMove(Player player,Dice dice){
-        Move [] listOfMoves= player.getAllPossiblMoves();
-        
-    }
+ 
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
@@ -206,7 +205,7 @@ public class CLIGameController {
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
             }
-            move.getCreature().makeMove(move.getDice());
+            return move.getCreature().makeMove(move.getDice());
 
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor();
@@ -214,9 +213,8 @@ public class CLIGameController {
             int numberToAttackWith = Integer.parseInt(System.console().readLine());
             Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
             Move bonusmove = new Move(new Dice(numberToAttackWith), creature);
-            makeMove(player, bonusmove);
+            return makeMove(player, bonusmove);
         }
-        return true;
     }
 
     // gameboard getter:
