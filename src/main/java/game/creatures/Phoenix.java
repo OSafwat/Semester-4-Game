@@ -20,6 +20,8 @@ public class Phoenix extends Creature{
 
     @Override
     public int getElementalCrest() {
+        String boostName = "ElementalCrest";
+        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? 1 : 0;
     }
 
     @Override
