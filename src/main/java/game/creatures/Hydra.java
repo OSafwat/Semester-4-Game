@@ -40,7 +40,7 @@ public class Hydra extends Creature{
         this.CurrentSerpent = this.FirstSerpent;
         this.regenerateFlag = false;
 
-        this.diceUsed = new String[11];
+        this.diceUsed = {1,2,3,4,5,1,2,3,4,5,6};
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
     }
@@ -74,7 +74,13 @@ public class Hydra extends Creature{
 
     // Method that returns 1 if if the second head of the regenerated serpent is killed.
     public int getElementalCrest() {
-        if((int) this.CurrentSerpent.peek() > 2 && this.regenerateFlag == true) 
+        int elementalCrestCount = 0;
+        for(int i = 0; i < properties.size(); i++){
+            if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
+                elementalCrestCount = i
+        }
+
+        if((int) this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
@@ -99,11 +105,14 @@ public class Hydra extends Creature{
         scoreSheet += "+-----------------------------------------------------------------------+\n
                        |  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n
                        +-----------------------------------------------------------------------+\n";
+        return scoreSheet;
     }
 
     // Method that returns true if the move is possible.
-    public boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) throws InvalidMoveException {
+        if(dice.getValue()<1 || dice.getValue>6) {
+            throw InvalidMoveException;
+        }
         return dice.getValue() >= (int) CurrentSerpent.peek();
     }
-    
 }
