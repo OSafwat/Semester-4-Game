@@ -6,6 +6,7 @@ import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.*;
 import game.engine.enums.*;
+import java.util.Scanner;
 public class CLIGameController {
     GameBoard gameBoard;
     
@@ -108,6 +109,17 @@ public class CLIGameController {
 
     public  TimeWarp[] getTimeWarpPowers(Player player){
         return player.getTimeWarps();
+    }
+
+    public void startGame(){
+        Scanner scanner = new Scanner(System.in);
+        CLIGameController clicontroller = new CLIGameController();
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        Player 
+
     }
 
 

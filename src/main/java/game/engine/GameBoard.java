@@ -18,7 +18,7 @@ public class GameBoard {
         return this.allDice[1];
     }
     //constructor
-    public GameBoard(){
+    public GameBoard(String player1name, String player2Name){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
         this.allDice[1]=new GreenDice();
