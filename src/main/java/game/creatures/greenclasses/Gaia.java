@@ -581,7 +581,7 @@ private int getPriorityValue(String s){
 }
 
 
-
+//EXP used in the Bonus class
 private String getCorrectBonusInScore(String s){
     switch (s) {
         case "RedBonus": return "RB";
@@ -597,7 +597,7 @@ private String getCorrectBonusInScore(String s){
 
 
 }
-   
+//EXP apply powers 
 private boolean applyNotBonusCollectable(String s){
     if(s.equals("TimeWarp")){
         //IMP set as Aqquired
