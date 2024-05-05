@@ -134,7 +134,7 @@ public class CLIGameController {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
 
-            //  1:B5  2:W6  3:Y3 4:B
+                //  1:B5  2:W6  3:Y3 4:B
                 System.out.println("please choose a number between 1 and "+ availableDice.length);
                 Dice chosenDice=null;
                 do {
@@ -146,7 +146,7 @@ public class CLIGameController {
                     }
                 } while (true);
 
-                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByRealm(chosenDice.getRealm())) );
+                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())) );
 
             }
 
