@@ -16,7 +16,7 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.function.Supplier;
 
-private class Dragon extends Creature {
+public class Dragon extends Creature {
     private Integer face;
     private Integer wings;
     private Integer tail;
@@ -127,11 +127,11 @@ private class Dragon extends Creature {
         return allPossibleMoves.toArray(returnedArray);
     }
 
-    private ArrayList<TimeWarp> getAllTimeWarps() {
+    public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
-    private ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
 
