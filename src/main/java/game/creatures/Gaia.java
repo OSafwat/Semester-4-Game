@@ -58,7 +58,7 @@ public class Gaia extends Creature{
     public boolean checkMove(Dice dice){
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getValue done in the dice class add white
-        int greenValue = greendie.getValue();
+        int greenValue = greendie.getRealValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -183,7 +183,7 @@ private boolean checkRow(int r){
 }
 
 
-// EXP  update the  instance  variable col accordingly
+// EXP check if a row is already killed and update the  instance array col accordingly
 private  void updateCol(int c){
     for(int i=0;i<3;i++){
         if(!gaiaGuardians[i][c].isDead())
@@ -194,7 +194,7 @@ private  void updateCol(int c){
     
 }
 
-// EXP check if a row is already killed and update the  instance  variable col accordingly
+// EXP check if a row is already killed and update the  instance array row accordingly
 private  void updateRow(int r){
     for(int i=0;i<4;i++){
         if(!gaiaGuardians[r][i].isDead())
@@ -249,7 +249,7 @@ private  void updateRow(int r){
             GreenDice greendie = (GreenDice) dice;
             
             // ASUM assuming getValue done in the dice class
-            int greenValue = greendie.getValue();
+            int greenValue = greendie.getRealValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
             updateScore();
