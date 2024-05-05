@@ -34,11 +34,13 @@ public class Gaia extends Creature{
     private boolean [] col = {false,false,false,false};
     private ArrayList<TimeWarp> timeWarps ;
     private ArrayList<ArcaneBoost> arcaneBoosts;
+    private int elementalCrestCount;
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
         alliveGuardians = 11;
         deadGuardians=0;
+        elementalCrestCount = 0;
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){
@@ -316,21 +318,41 @@ private  void updateRow(int r){
                 // IMP this will be changed when collectables classes are done
                 // I will need to change in the whichCollectableRow(rowToCheck)
                 if(act.equals("TimeWarp")){
-                    timeWarps.add(new TimeWarp());
+                    //IMP set as Aqquired
                 }
-                else if(act.equals("YellowBonus")){
-                    throw new BonusException(RealmColor.YELLOW);
+                else if(act.equals("ArcaneBoost")){
+                    // Imp set ass Aqquired
                 }
+                else if(act.equals("ElementalCrest")){
+                    elementalCrestCount++;
+                }
+                else {
+                    RealmColor  realm= this.getCorrectRealm(act);
+                    throw new BonusException(realm);
+                }
+
                 
                 return true;
             }
             else if(!checkRow(rowToCheck)  && checkCol(colToCheck)){
                     String act = whichCollectableCol(colToCheck);
-                        System.out.println("Invaild");
-                    
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will only need to change  in the whichCollectableCol(colToCheck);
+                if(act.equals("TimeWarp")){
+                    //IMP set as Aqquired
+                }
+                else if(act.equals("ArcaneBoost")){
+                    // Imp set ass Aqquired
+                }
+                else if(act.equals("ElementalCrest")){
+                    elementalCrestCount++;
+                }
+                else {
+                    RealmColor  realm= this.getCorrectRealm(act);
+                    throw new BonusException(realm);
+                }
+
                 return true;
             }
             else{
@@ -470,20 +492,29 @@ public String getScoreSheet(){
 
   //return number of elemental crests for each realm will be 0 or 1 
   public  int getElementalCrest(){
-    if(this.checkRow(2))
-    return 1;
-    return 0;
-       }
+   return elementalCrestCount;
+  }
 
 // EXP return all aquired time warp in Gaia
 public  ArrayList<TimeWarp> getAllTimeWarps(){
     return this.timeWarps;
 }
-// Exp return all aquired  arcane boost in Gaia
+// EXP return all aquired  arcane boost in Gaia
 public  ArrayList<ArcaneBoost> getAllArcaneBoosts(){
     return this.arcaneBoosts;
 }
 
+// EXP get correct realm where bonus should be applied
+private RealmColor getCorrectRealm(String s){
+    switch (s) {
+        case "RedBonus": return RealmColor.RED;
+        case "GreenBonus": return RealmColor.GREEN;
+        case "BlueBonus": return RealmColor.BLUE;
+        case "MagentaBonus": return RealmColor.MAGENTA;
+        case "YellowBonus":return RealmColor.YELLOW;
+        default :return null;
+    }
+}
 
    
 
