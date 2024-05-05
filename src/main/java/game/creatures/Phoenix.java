@@ -18,10 +18,14 @@ public class Phoenix extends Creature{
     public ArrayList<Move> allPossibleMoves;
     public static HashMap<String, Integer> rewardLocations = new HashMap<>();
     public static String[] mappedRewardLocations = new String[11];
+    public ArrayList<TimeWarp> allTimeWarps;
+    public ArrayList<ArcaneBoost> allArcaneBoosts;
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
         killedPhoenixes = 0;
+        allTimeWarps = new ArrayList<>();
+        allArcaneBoosts = new ArrayList<>();
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
     }
@@ -95,11 +99,12 @@ public class Phoenix extends Creature{
 
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
+        return allTimeWarps;
     }
 
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-
+        return allArcaneBoosts;
     }
 
     public void initPossibleMoves() {
