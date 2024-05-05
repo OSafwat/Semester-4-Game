@@ -95,6 +95,10 @@ public class Hydra extends Creature{
 
         scoreSheet += "|  R  |" +getBonus(0)+ "  |" +getBonus(1)+ "  |" +getBonus(2)+ "  |" +getBonus(3)+ "  |" +getBonus(4)+ 
         "  |" +getBonus(5)+ "  |" +getBonus(6)+ "  |" +getBonus(7)+ "  |" +getBonus(8)+ "  |" +getBonus(9)+ "  |" +getBonus(10)+ "  |\n"; 
+
+        scoreSheet += "+-----------------------------------------------------------------------+\n
+                       |  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n
+                       +-----------------------------------------------------------------------+\n";
     }
 
     // Method that returns true if the move is possible.
