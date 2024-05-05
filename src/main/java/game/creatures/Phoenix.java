@@ -26,6 +26,24 @@ public class Phoenix extends Creature{
 
     @Override
     public String getScoreSheet() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Mystical Sky: Majestic Phoenix (MAGENTA REALM):\n");
+        sb.append("+-----------------------------------------------------------------------+\n");
+        sb.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
+        sb.append("+-----------------------------------------------------------------------+\n");
+
+        // for loop to loop on the phoenixsReceivedHP array which stored the hits received by each pheonix
+        for (int i = 0; i < 11; i++) {
+            if (phoenixsReceivedHP[i] == null) sb.append("0    |");
+            else sb.append(i + "    |" );
+        }
+        sb.append("\n");
+
+        sb.append("|  C  |<    |<    |<    |<    |<    |<    |<    |<    |<    |<    |<    |\n");
+        sb.append("|  R  |     |     |TW   |GB   |AB   |RB   |EC   |TW   |BB   |YB   |AB   |\n");
+        sb.append("+-----------------------------------------------------------------------+\n\n");
+
+        return sb.toString();
     }
 
     @Override
