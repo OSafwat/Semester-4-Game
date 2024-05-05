@@ -63,32 +63,8 @@ public class CLIGameController {
         return temp;
     }
 
-    public void startGame() throws IOException{
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-        this.gameBoard = new GameBoard(player1Name, player2Name);
+    public String [] getRewards() throws IOException{
 
-        int [] temp = getSettings();
-        int numberOfRounds= temp[0]; 
-        int numebrOfTurnsPerRound=temp[1];
-        
-
-        System.out.println(
-                "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
-        do {
-            String choice = scanner.nextLine();
-            if (choice == "i") {
-                System.out.println("Description goes here");
-                break;
-            } else if (choice == "c") {
-                break;
-            }
-        } while (true);
-
-        //the following is taking in the round rewards from the properties file
         BufferedReader rewardsFile=null;
         ArrayList<String> rewards= new ArrayList<String>() ;
         try {
@@ -118,7 +94,37 @@ public class CLIGameController {
             if (rewardsFile != null)
                 rewardsFile.close();
         }
-  
+
+        return rewards.stream().toArray(String[]::new);
+    }
+
+    public void startGame() throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        this.gameBoard = new GameBoard(player1Name, player2Name);
+
+        int [] temp = getSettings();
+        int numberOfRounds= temp[0]; 
+        int numebrOfTurnsPerRound=temp[1];
+        
+
+        System.out.println(
+                "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+        do {
+            String choice = scanner.nextLine();
+            if (choice == "i") {
+                System.out.println("Description goes here");
+                break;
+            } else if (choice == "c") {
+                break;
+            }
+        } while (true);
+
+        //the following is taking in the round rewards from the properties file
+        String rewards [] = getRewards();
 
         //the following is trying to start the game loop:
 
