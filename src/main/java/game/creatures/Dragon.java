@@ -17,23 +17,23 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public class Dragon extends Creature {
-    private Integer face;
-    private Integer wings;
-    private Integer tail;
-    private Integer heart;
-    private DragonNumber dragonNumber;
-    private Dragon[] Dragons;
-    private int[] pointMap;
-    private ArrayList<Move> allPossibleMoves;
-    private ArrayList<TimeWarp> timeWarps;
-    private ArrayList<ArcaneBoost> arcaneBoosts;
-    private String[] rewards;
-    private Supplier<String>[] suppliers;
-    private int elementalCrestCount;
+    public Integer face;
+    public Integer wings;
+    public Integer tail;
+    public Integer heart;
+    public DragonNumber dragonNumber;
+    public Dragon[] Dragons;
+    public int[] pointMap;
+    public ArrayList<Move> allPossibleMoves;
+    public ArrayList<TimeWarp> timeWarps;
+    public ArrayList<ArcaneBoost> arcaneBoosts;
+    public String[] rewards;
+    public Supplier<String>[] suppliers;
+    public int elementalCrestCount;
 
 
     //Constructor to be used in the CLIcontroller to initialize the Dragon array
-    private Dragon() {
+    public Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
@@ -44,7 +44,7 @@ public class Dragon extends Creature {
     }
 
     //Constructor used inside the first one to initialize the actual Dragons themselves
-    private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
+    public Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
         this.tail = tail;
@@ -53,7 +53,7 @@ public class Dragon extends Creature {
     }
 
     //Method that contains all initialization methods to reduce the amount of code written in the first constructor
-    private void initialization() {
+    public void initialization() {
         initPointMap();
         initPossibleMoves();
         initRewards();
@@ -62,7 +62,7 @@ public class Dragon extends Creature {
     }
 
     //Method that reads the row and corner rewards from the EmberfallDominionRewards.properties file
-    private void initRewards() {
+    public void initRewards() {
         rewards = new String[5];
         File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
         try (FileReader fr = new FileReader(file)) {
@@ -78,12 +78,12 @@ public class Dragon extends Creature {
     }
 
     //A method to initialize the pointMap instance variable, which is used in score calculation
-    private void initPointMap() {
+    public void initPointMap() {
         pointMap = new int[]{10, 14, 16, 20};
     }
 
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
-    private void initTimeWarpsAndArcaneBoosts () {
+    public void initTimeWarpsAndArcaneBoosts () {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
@@ -96,7 +96,7 @@ public class Dragon extends Creature {
     }
 
     //Method that goes over all the dragons and fills up an arraylist with all the possible moves that can be done against these dragons
-    private void initPossibleMoves() {
+    public void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
@@ -148,17 +148,17 @@ public class Dragon extends Creature {
     }
 
     //A method to get the dragon number attribute
-    private DragonNumber getDragonNumber() {
+    public DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
     //A method used to know whether a Dragon is dead or not
-    private boolean isDead() {
+    public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
     //A method used to know whether all Dragons in the Dragon array are dead or not
-    private boolean allDead() {
+    public boolean allDead() {
         boolean dead = true;
         for (int i = 0; i < 4; i++)
             dead = dead && Dragons[i].isDead();
@@ -212,17 +212,17 @@ public class Dragon extends Creature {
     }
 
     //Method that updates TimeWarps
-    private void initNextTimeWarp() {
+    public void initNextTimeWarp() {
         //Is supposed to change the enum for the timewarp obtained
     }
 
     //Method that updates ArcaneBoosts
-    private void initNextArcaneBoost() {
+    public void initNextArcaneBoost() {
         //Is supposed to change the enum for the arcane boost obtained
     }
 
     //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
-    private void initSuppliers () {
+    public void initSuppliers () {
         suppliers = new Supplier[]{
                 this::getFirstRowRewardString,
                 this::getSecondRowRewardString,
@@ -233,7 +233,7 @@ public class Dragon extends Creature {
     }
 
     //Method that, using a character, can identify what realm a boost belongs to
-    private RealmColor decodeLetterToRealmColor (char c) {
+    public RealmColor decodeLetterToRealmColor (char c) {
         return switch (c) {
             case 'G' -> RealmColor.GREEN;
             case 'B' -> RealmColor.BLUE;
@@ -253,7 +253,7 @@ public class Dragon extends Creature {
     }
 
     //Method to reduce code redundancy
-    private boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
+    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -366,32 +366,32 @@ public class Dragon extends Creature {
     }
 
     //This and the methods below it assist in the scoresheet and other methods
-    private String changeToString(Integer integer) {
+    public String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
 
-    private String getFirstRowRewardString() {
+    public String getFirstRowRewardString() {
         return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
     }
 
-    private String getSecondRowRewardString() {
+    public String getSecondRowRewardString() {
         return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
     }
 
-    private String getThirdRowRewardString() {
+    public String getThirdRowRewardString() {
         return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
     }
 
-    private String getFourthRowRewardString() {
+    public String getFourthRowRewardString() {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
     }
 
-    private String getCornerRewardString() {
+    public String getCornerRewardString() {
         return allDead() ? "X" : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
-    private String encode (String reward) {
+    public String encode (String reward) {
         return reward.replaceAll("[^A-Z]", "");
     }
 }
