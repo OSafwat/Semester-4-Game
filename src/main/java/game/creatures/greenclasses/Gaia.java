@@ -13,10 +13,11 @@ import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.exceptions.BonusTwoException;
+import game.exceptions.InvalidMoveException;
 
-import java.io.FileInputStream;
+
 import java.io.IOException;
-import java.util.Properties;
+
 //Key:
 //IMP = important to change
 // COMPLETE = should be completed later
@@ -96,7 +97,9 @@ public class Gaia extends Creature{
 
 
     // EXP checks if a given move is possible
-    public boolean checkMove(Dice dice){
+    public boolean checkMove(Dice dice)throws InvalidMoveException{
+        if(!(dice instanceof GreenDice))
+        throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
         int greenValue = greendie.getRealValue();
@@ -293,9 +296,10 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-     public boolean makeMove(Dice dice) throws BonusException , BonusTwoException   {
-        
-        if(!checkMove(dice))
+     public boolean makeMove(Dice dice) throws BonusException , BonusTwoException,InvalidMoveException   {
+        if(!(dice instanceof GreenDice))
+        throw new InvalidMoveException();
+       else  if(!checkMove(dice))
             return false;
         else{
             alliveGuardians--;
