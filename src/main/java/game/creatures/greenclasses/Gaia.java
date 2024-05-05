@@ -12,6 +12,7 @@ import game.dice.GreenDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
+import game.exceptions.BonusTwoException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -292,7 +293,7 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-    public boolean makeMove(Dice dice) throws BonusException   {
+     public boolean makeMove(Dice dice) throws BonusException , BonusTwoException   {
         
         if(!checkMove(dice))
             return false;
@@ -317,16 +318,8 @@ private  void updateRow(int r){
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will need to change in the whichCollectableRow(rowToCheck)
-                if(act.equals("TimeWarp")){
-                    //IMP set as Aqquired
-                }
-                else if(act.equals("ArcaneBoost")){
-                    // Imp set ass Aqquired
-                }
-                else if(act.equals("ElementalCrest")){
-                    elementalCrestCount++;
-                }
-                else {
+               
+                if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
                     throw new BonusException(realm);
                 }
@@ -339,26 +332,44 @@ private  void updateRow(int r){
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will only need to change  in the whichCollectableCol(colToCheck);
-                if(act.equals("TimeWarp")){
-                    //IMP set as Aqquired
-                }
-                else if(act.equals("ArcaneBoost")){
-                    // Imp set ass Aqquired
-                }
-                else if(act.equals("ElementalCrest")){
-                    elementalCrestCount++;
-                }
-                else {
+                if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
                     throw new BonusException(realm);
                 }
-
                 return true;
             }
+            // EXP made to handle collisions
             else{
-                //COMPLETE  create  prioirity method which excutes based on priority 
-                //and modify  whichCollectableCol accordingly
+                String act1 = whichCollectableCol(colToCheck);
+                String act2 = whichCollectableRow(rowToCheck);
+                int act1Prtority = this.getPriorityValue(act1);
+                int act2Prtority=this.getPriorityValue(act2);
+                if(act1Prtority==1 && act2Prtority==1){
+                    this.applyNotBonusCollectable(act1);
+                    this.applyNotBonusCollectable(act2);
+                }
+                else if(act1Prtority>1 && act2Prtority==1){
+                    this.applyNotBonusCollectable(act2);
+                    RealmColor  realm= this.getCorrectRealm(act1);
+                    throw new BonusException(realm);
 
+                }
+                else if(act1Prtority==1 && act2Prtority>1){
+                    this.applyNotBonusCollectable(act1);
+                    RealmColor  realm= this.getCorrectRealm(act2);
+                    throw new BonusException(realm);
+
+                }
+                else if(act1Prtority>act2Prtority){
+                    RealmColor realm1= this.getCorrectRealm(act1);
+                    RealmColor realm2 = this.getCorrectRealm(act2);
+                    throw new BonusTwoException(realm1, realm2);
+                }
+                else if(act1Prtority<act2Prtority){
+                    RealmColor realm1= this.getCorrectRealm(act2);
+                    RealmColor realm2 = this.getCorrectRealm(act1);
+                    throw new BonusTwoException(realm1, realm2);
+                }     
                 return true;
             }
 
@@ -464,8 +475,11 @@ public String getScoreSheet(){
     returnValue = returnValue +"|12   ";
     if(checkRow(2))
     returnValue = returnValue +"|X    |\n";
-    else
-    returnValue = returnValue +"|EC   |\n";
+    else{
+        String s = this.whichCollectableRow(2);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   |\n";
+    }
     returnValue=returnValue+"+-----------------------------------+\n"+"|  R  ";
     if(checkCol(0))
     returnValue = returnValue +"|X    ";
@@ -516,7 +530,55 @@ private RealmColor getCorrectRealm(String s){
     }
 }
 
+// EXP return the priority of a given bonus or boost
+private int getPriorityValue(String s){
+    switch (s) {
+        case "RedBonus": return 6;
+        case "GreenBonus": return 5;
+        case "BlueBonus": return 4;
+        case "MagentaBonus": return 3;
+        case "YellowBonus":return 2;
+        default: return 1;
+            
+    }
+
+}
+
+
+
+private String getCorrectBonusInScore(String s){
+    switch (s) {
+        case "RedBonus": return "RB";
+        case "GreenBonus": return "GB";
+        case "BlueBonus": return "BB";
+        case "MagentaBonus": return "MB";
+        case "YellowBonus":return "YB";
+        case "TimeWarp" : return"TW";
+        case "ArcaneBoost" : return"AB";
+        default: return "";
+            
+    }
+
+
+}
    
+private boolean applyNotBonusCollectable(String s){
+    if(s.equals("TimeWarp")){
+        //IMP set as Aqquired
+        return true;
+    }
+    else if(s.equals("ArcaneBoost")){
+        // Imp set ass Aqquired
+        return true;
+    }
+    else if(s.equals("ElementalCrest")){
+        elementalCrestCount++;
+        return true ;
+
+    }
+    return false;
+
+}
 
 
 
