@@ -2,9 +2,9 @@ package game.engine;
 
 import game.collectibles.TimeWarp;
 import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
 import game.dice.*;
 import game.creatures.*;
-import game.creatures.greenclasses.*;
 import game.engine.enums.*;
 
 import java.io.BufferedReader;
@@ -114,7 +114,7 @@ public class CLIGameController {
 
         //the following is trying to start the game loop:
 
-        for (int i=0; i<numberOfRounds; i++){
+        for (int i=0; i<numberOfRounds*2; i++){
             
             //the following is trying to start the round loop:
             for (int j=0; j<numebrOfTurnsPerRound; j++){
@@ -135,20 +135,25 @@ public class CLIGameController {
                 }
 
                 //  1:B5  2:W6  3:Y3 4:B
-                System.out.println("please choose a number between 1 and "+ availableDice.length);
+                
                 Dice chosenDice=null;
                 do {
+                    System.out.println("please choose a number between 1 and "+ availableDice.length);
                     int choice = scanner.nextInt();
                     if (!(choice > availableDice.length || choice <= 0)){
                         chosenDice = availableDice[choice-1];
+                        try{
+                            makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())));
+                        }catch(InvalidMoveException iException){
+                        }
+                        break;
                     }else {
                         System.out.println("please choose a valid move");
                     }
                 } while (true);
-
-                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())) );
-
             }
+
+        
 
         }
         
@@ -165,14 +170,15 @@ public class CLIGameController {
     }
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
-    public boolean makeMove(Player player, Move move) throws BonusException {
+    public boolean makeMove(Player player, Move move) throws InvalidMoveException {
         try {
-            if (move.getCreature() instanceof Dragon) {
-                System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
-                int dragonIndex = Integer.parseInt(System.console().readLine());
-                Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-                move.setCreature(dragon); // should be make move
-            } else if (move.getCreature() instanceof Gaia) {
+            // if (move.getCreature() instanceof Dragon) {
+            //     System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
+            //     int dragonIndex = Integer.parseInt(System.console().readLine());
+            //     Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
+            //     move.setCreature(dragon); // should be make move
+            // } else 
+            if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
                 Dice whiteDice = this.gameBoard.getGreen();
                 int greenVal = greenDice.getValue();
