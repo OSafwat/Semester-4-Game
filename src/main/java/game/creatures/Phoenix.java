@@ -42,7 +42,16 @@ public class Phoenix extends Creature{
         sb.append("\n");
 
         sb.append("|  C  |<    |<    |<    |<    |<    |<    |<    |<    |<    |<    |<    |\n");
-        sb.append("|  R  |     |     |TW   |GB   |AB   |RB   |EC   |TW   |BB   |YB   |AB   |\n");
+        sb.append("|  R  |");
+
+        for (int i = 0 ; i < 11; i++) {
+            String rewardToken = mappedRewardLocations[i];
+            if (rewardLocations == null) sb.append("     |");
+            else sb.append(rewardToken + "   |");
+        }
+
+        sb.append("\n");
+
         sb.append("+-----------------------------------------------------------------------+\n\n");
 
         return sb.toString();
