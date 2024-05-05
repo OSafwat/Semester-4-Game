@@ -112,6 +112,19 @@ public class Gaia extends Creature{
     }
 
 
+    private boolean checkMove1(Dice dice){
+        GreenDice greendie = (GreenDice) dice;
+        // ASUM assuming getRealValue done in the dice class add white
+        int greenValue = greendie.getRealValue();
+        Guardians speceficGuardian = this.getGuardians(greenValue);
+        if(speceficGuardian.isDead())
+            return false;
+        else
+        return true;
+
+    }
+
+
 
 // EXP gets a specific guardian in the Gaia
     private Guardians getGuardians(int c){
@@ -390,13 +403,13 @@ private  void updateRow(int r){
     }
 
 // EXP method to get all possible moves
-public Move[] getAllPossibleMoves(){
+public Move[] getAllPossibleMoves() {
 
     Move [] allMoves = new Move[this.getAlliveGuardians()];
     int c=0;
     for(int i=2;i<13;i++){
         GreenDice greenDice = new GreenDice(i);
-        if(checkMove(greenDice)){
+        if(checkMove1(greenDice)){
         // ASUM assuming move constructor is done
         allMoves[c]= new Move(greenDice,this);
         c++;
