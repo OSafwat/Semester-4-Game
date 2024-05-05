@@ -34,6 +34,7 @@ public class CLIGameController {
         int numberOfRounds;
         int numebrOfTurnsPerRound;
 
+        //the following is taking in the game settings from the RoundsSettings file
         try {
             // opening the file
             FileReader SettingsfileReader = new FileReader(
@@ -59,6 +60,9 @@ public class CLIGameController {
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
+            numberOfRounds = 6;
+            numebrOfTurnsPerRound= 3;
+
         } finally{
             if (settings != null)
                 settings.close();
@@ -76,6 +80,7 @@ public class CLIGameController {
             }
         } while (true);
 
+        //the following is taking in the round rewards from the properties file
         BufferedReader rewardsFile=null;
         ArrayList<String> rewards= new ArrayList<String>() ;
         try {
@@ -106,6 +111,21 @@ public class CLIGameController {
                 rewardsFile.close();
         }
   
+
+        //the following is trying to start the game loop:
+
+        for (int i=0; i<numberOfRounds; i++){
+            //the following is trying to start the round loop:
+            for (int j=0; j<numebrOfTurnsPerRound; j++){
+                Player player1= getActivePlayer();
+                Player player2= getPassivePlayer();
+
+                System.out.println(player1.get"here is your score sheet:");
+                System.out.println(getScoreSheet(player1));
+
+            }
+
+        }
         
 
     }
