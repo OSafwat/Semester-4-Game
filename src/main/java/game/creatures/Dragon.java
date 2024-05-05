@@ -32,6 +32,7 @@ public class Dragon extends Creature {
     private int elementalCrestCount;
 
 
+    //Constructor to be used in the CLIcontroller to initialize the Dragon array
     private Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
@@ -42,6 +43,7 @@ public class Dragon extends Creature {
         initialization();
     }
 
+    //Constructor used inside the first one to initialize the actual Dragons themselves
     private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
@@ -50,6 +52,7 @@ public class Dragon extends Creature {
         this.dragonNumber = dragonNumber;
     }
 
+    //Method that contains all initialization methods to reduce the amount of code written in the first constructor
     private void initialization() {
         initPointMap();
         initPossibleMoves();
@@ -58,6 +61,7 @@ public class Dragon extends Creature {
         initTimeWarpsAndArcaneBoosts();
     }
 
+    //Method that reads the row and corner rewards from the EmberfallDominionRewards.properties file
     private void initRewards() {
         rewards = new String[5];
         File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
@@ -73,6 +77,7 @@ public class Dragon extends Creature {
         }
     }
 
+    //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
     private void initTimeWarpsAndArcaneBoosts () {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
@@ -85,6 +90,7 @@ public class Dragon extends Creature {
         }
     }
 
+    //Method that goes over all the dragons and fills up an arraylist with all the possible moves that can be done against these dragons
     private void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
@@ -104,6 +110,7 @@ public class Dragon extends Creature {
         }
     }
 
+    //Method that calculates the score at any point in the game
     @Override
     public int getScore() {
         int score = 0;
@@ -113,13 +120,10 @@ public class Dragon extends Creature {
         return score;
     }
 
+    //Method to get the elemental crest count
     @Override
     public int getElementalCrest() {
         return elementalCrestCount;
-    }
-
-    private int getArcaneBoostPower() {
-        return allPossibleMoves.isEmpty() ? 1 : 0;
     }
 
     public Move[] getAllPossibleMoves() {
