@@ -1,21 +1,35 @@
 package game.engine;
+import game.collectibles.ArcaneBoost;
 import game.collectibles.ElementalCrest;
 import game.collectibles.TimeWarp;
 import game.engine.enums.*;
 
 public class Player {
+    String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
     private ElementalCrest elementalCrest;
+    private ArcaneBoost [] arcaneBoosts;
     private TimeWarp [] timeWarp;
     Move  allPossiblMoves [];
 
 
-    public Player(PlayerStatus status){
+
+    public Player(PlayerStatus status, String name){
         this.playerStatus= status;
-        //move starting should be inserted here
+        this.name= name;
+        
     }
+
+    public void initArcaneBoosts (){
+        
+    }
+
+    public void initTimeWarps () {
+
+    }
+
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }

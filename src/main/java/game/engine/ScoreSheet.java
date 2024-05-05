@@ -1,4 +1,5 @@
 package game.engine;
+import game.collectibles.ArcaneBoost;
 import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
@@ -6,6 +7,8 @@ import game.creatures.Lion;
 import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
+import game.engine.enums.RealmColor;
+import java.util.ArrayList;
 
 public class ScoreSheet {
     Hydra hydra;
@@ -62,6 +65,22 @@ public class ScoreSheet {
             default: return null;
         } 
 
+    }
+    public Creature getCreatureByColor(RealmColor color){
+        switch (color){
+            case RED: return this.dragon;
+            case GREEN:  return this.gaia;
+            case BLUE:  return this.hydra;
+            case MAGENTA:  return this.phoenix;
+            case YELLOW: return this.lion;
+            default: return null;
+        } 
+    }
+
+    public  getAllArcaneBoosts(){
+            // dragon.getAllArcaneBoosts().addAll(gaia.getAllArcaneBoosts().addAll(hydra.getAllArcaneBoosts().addAll(phoenix.getAllArcaneBoosts().addAll(lion.getAllArcaneBoosts()))));
+            // ArrayList<ArcaneBoost> allBoosts = dragon.getAllArcaneBoosts();
+            // allBoosts.addAll((ArrayList)gaia.getAllTimeWarps());
     }
 
 }

@@ -1,12 +1,12 @@
 package game.engine;
 
 import game.collectibles.TimeWarp;
-import game.engine.enums.PlayerStatus;
 import game.exceptions.BonusException;
 import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.*;
 import game.engine.enums.*;
+import java.util.Scanner;
 public class CLIGameController {
     GameBoard gameBoard;
     
@@ -20,40 +20,33 @@ public class CLIGameController {
     public Move [] getAllPossibleMoves(Player player){
         return player.getAllPossiblMoves();
     }
+
     //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
-    public boolean makeMove(Player player, Move move){
+    public boolean makeMove(Player player, Move move)throws BonusException{
         try{
             if (move.getCreature() instanceof Dragon ){
                 System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
                 int dragonIndex = Integer.parseInt(System.console().readLine());
                 Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-                move.setCreature(dragon);
-            }else if (move.getCreature() instanceof Gaia){
-                Gaia gaia = (Gaia)player.getScoresheet().getCreatureByRealm(move.getDice());
-               
+                move.setCreature(dragon);  //should be make move
+            }else if (move.getCreature() instanceof Gaia){            
                 GreenDice greenDice= (GreenDice)this.gameBoard.getWhite();
                 Dice whiteDice= this.gameBoard.getGreen();
                 int greenVal= greenDice.getValue();
                 int whiteVal= whiteDice.getValue();
                 greenDice.setRealValue(greenVal+ whiteVal);
-                gaia.makeMove(greenDice);
             }
-            else{
-                move.getCreature().makeMove(move.getDice());
-            }
-            return true;
-        }
-        catch(BonusException bException){
+            move.getCreature().makeMove(move.getDice());
+            
+        }catch (BonusException bException){
             RealmColor theBonusColor= bException.getRealmColor();
-            // Move move;
-            // switch(theBonusColor){
-            //     case RED: move = new Move(new RedDice(), ); 
-            // }
-            //Move move = new Move(new Dice())
+            System.out.println("please enter the number to attack the "+theBonusColor + " realm with: ");
+            int numberToAttackWith = Integer.parseInt(System.console().readLine());
+            Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
+            Move bonusmove = new Move(new Dice(numberToAttackWith), creature );
+            makeMove(player, bonusmove);
         }
-        catch(Exception e){
-            return false;
-        }
+        return true;
     }    
     //gameboard getter:
     public GameBoard getGameBoard() {   
@@ -116,6 +109,17 @@ public class CLIGameController {
 
     public  TimeWarp[] getTimeWarpPowers(Player player){
         return player.getTimeWarps();
+    }
+
+    public void startGame(){
+        Scanner scanner = new Scanner(System.in);
+        CLIGameController clicontroller = new CLIGameController();
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        Player 
+
     }
 
 
