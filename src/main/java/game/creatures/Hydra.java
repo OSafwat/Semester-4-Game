@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.util.Stack;
 import java.util.Properties;
 import java.util.Scanner;
-import static org.junit.Assert.assertTrue;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
@@ -18,6 +17,7 @@ public class Hydra extends Creature{
 
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
+
     // Define an integer indicating the number of heads killed so far, and a boolean indicating whether or not the serpent has regenerated.
     private int headsKilled;
     private boolean regenerateFlag;
@@ -29,7 +29,7 @@ public class Hydra extends Creature{
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
     private int score;
 
-    // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
+    // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
@@ -63,17 +63,18 @@ public class Hydra extends Creature{
             return 0;
     }
 
+
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
     public String getScoreSheet() {
-        System.out.print("Tide Abyss: Hydra Serpents (BLUE REALM):\n" +
+        String scoreSheet = "Tide Abyss: Hydra Serpents (BLUE REALM):\n" +
                 "+-----------------------------------------------------------------------+\n" +
                 "|  #  |H11  |H12  |H13  |H14  |H15  |H21  |H22  |H23  |H24  |H25  |H26  |\n" +
-                "+-----------------------------------------------------------------------+\n");
+                "+-----------------------------------------------------------------------+\n";
                 
-        System.out.printf("|  H  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%s  |%n", 
-        diceUsed[0], diceUsed[1], diceUsed[2], diceUsed[3], diceUsed[4], diceUsed[5], diceUsed[6], diceUsed[7], diceUsed[8], diceUsed[9], diceUsed[10]);
+        scoreSheet += "|  H  |" +diceUsed[0]+ " |" +diceUsed[1]+ " |" +diceUsed[2]+ " |" +diceUsed[3]+ " |" +diceUsed[4]+ 
+        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n" 
         
-        System.out.print("|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n");
+        scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
     }
 
     // Method that returns true if the move is possible.
