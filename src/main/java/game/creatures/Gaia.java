@@ -57,7 +57,7 @@ public class Gaia extends Creature{
     // EXP checks if a given move is possible
     public boolean checkMove(Dice dice){
         GreenDice greendie = (GreenDice) dice;
-        // ASUM assuming getValue done in the dice class add white
+        // ASUM assuming getRealValue done in the dice class add white
         int greenValue = greendie.getRealValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
