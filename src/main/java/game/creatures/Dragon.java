@@ -77,6 +77,11 @@ public class Dragon extends Creature {
         }
     }
 
+    //A method to initialize the pointMap instance variable, which is used in score calculation
+    private void initPointMap() {
+        pointMap = new int[]{10, 14, 16, 20};
+    }
+
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
     private void initTimeWarpsAndArcaneBoosts () {
         for (int i = 0; i < 5; i++) {
@@ -126,31 +131,33 @@ public class Dragon extends Creature {
         return elementalCrestCount;
     }
 
+    //Method used to get all possible moves at any stage in the game
     public Move[] getAllPossibleMoves() {
         Move[] returnedArray = new Move[allPossibleMoves.size()];
         return allPossibleMoves.toArray(returnedArray);
     }
 
+    //A method to get all the time warp powers
     public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
+    //A method to get all the arcane boost powers
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
 
+    //A method to get the dragon number attribute
     private DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
-    private void initPointMap() {
-        pointMap = new int[]{10, 14, 16, 20};
-    }
-
+    //A method used to know whether a Dragon is dead or not
     private boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
+    //A method used to know whether all Dragons in the Dragon array are dead or not
     private boolean allDead() {
         boolean dead = true;
         for (int i = 0; i < 4; i++)
@@ -158,6 +165,7 @@ public class Dragon extends Creature {
         return dead;
     }
 
+    //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
     public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
@@ -203,14 +211,17 @@ public class Dragon extends Creature {
         return true;
     }
 
+    //Method that updates TimeWarps
     private void initNextTimeWarp() {
         //Is supposed to change the enum for the timewarp obtained
     }
 
+    //Method that updates ArcaneBoosts
     private void initNextArcaneBoost() {
         //Is supposed to change the enum for the arcane boost obtained
     }
 
+    //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
     private void initSuppliers () {
         suppliers = new Supplier[]{
                 this::getFirstRowRewardString,
@@ -221,6 +232,7 @@ public class Dragon extends Creature {
         };
     }
 
+    //Method that, using a character, can identify what realm a boost belongs to
     private RealmColor decodeLetterToRealmColor (char c) {
         return switch (c) {
             case 'G' -> RealmColor.GREEN;
@@ -233,12 +245,14 @@ public class Dragon extends Creature {
         };
     }
 
+    //Method that checks if a move can be done
     public boolean checkMove(Dice dice) throws InvalidMoveException {
         int targetValue = dice.getValue();
         moveHelper(targetValue, false);
         return true;
     }
 
+    //Method to reduce code redundancy
     private boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
@@ -316,6 +330,7 @@ public class Dragon extends Creature {
         return valid;
     }
 
+    //Method that returns the scoreSheet at any point in the game
     @Override
     public String getScoreSheet() {
         StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
@@ -350,6 +365,7 @@ public class Dragon extends Creature {
         return scoreSheet.toString();
     }
 
+    //This and the methods below it assist in the scoresheet and other methods
     private String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
@@ -374,11 +390,8 @@ public class Dragon extends Creature {
         return allDead() ? "X" : encode(rewards[4]);
     }
 
+    //Method that changes the name of the row and corner rewards to their abbreviation
     private String encode (String reward) {
-        return extractCapitalLetters(reward);
-    }
-
-    private static String extractCapitalLetters(String reward) {
         return reward.replaceAll("[^A-Z]", "");
     }
 }
