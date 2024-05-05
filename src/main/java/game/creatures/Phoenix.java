@@ -3,18 +3,23 @@ package game.creatures;
 import java.io.*;
 import java.util.*;
 
+import game.dice.ArcanePrism;
 import game.dice.Dice;
 import game.dice.MagentaDice;
 import game.engine.Move;
+import game.exceptions.InvalidDiceSelectionException;
+import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
     public Integer[] phoenixsReceivedHP;
+    int killedPhoenixes;
     public ArrayList<Move> allPossibleMoves;
     public static HashMap<String, Integer> rewardLocations = new HashMap<>();
     public static String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
+        killedPhoenixes = 0;
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
     }
@@ -58,7 +63,18 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) throws InvalidDiceSelectionException, InvalidMoveException {
+        int diceValue = dice.getValue();
+        if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
+            if (killedPhoenixes == 0) {
+                return true;
+            } else {
+                if (diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) {
+                    return true;
+                }
+                else throw new InvalidMoveException("Invalid Move Exception");
+            }
+        } else throw new InvalidDiceSelectionException("Invalid Dice used for the Magenta Class");
     }
 
     @Override
