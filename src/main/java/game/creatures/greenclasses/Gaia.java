@@ -1,9 +1,15 @@
 package game.creatures.greenclasses;
 
+import java.io.FileInputStream;
+import java.util.Properties;
+
 import game.creatures.Creature;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 //Key:
 //IMP = important to change
 // COMPLETE = should be completed later
@@ -70,7 +76,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    protected Guardians getGuardians(int c){
+    private Guardians getGuardians(int c){
 
         int row =0;
         int col =0;
@@ -149,7 +155,7 @@ private int getGuardiansCol(int c){
 
 
 //EXP  kills a a given guardian if not already killed
-protected void killGaiaGuardian(Guardians g){
+private void killGaiaGuardian(Guardians g){
     if(g.isDead())
     System.out.println("Invalid Allready Killed");
     else{
@@ -209,31 +215,33 @@ private  void updateRow(int r){
  // EXP gives the respective bonus for each col
     // IMP this will be changed when collectables classes are done
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
-    private String whichCollectableCol(int c){
-        switch (c) {
-            case 0: return "Time Warp";
-            case 1: return "Blue_Bonus";
-            case 2 : return "Magenta_Bonus";
-            case 3 : return "Arcane_Power";
-            default:
-                return "Invalid";
-        }
-
+    private String whichCollectableCol (int c)throws IOException{
+         String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+        Properties prop ;
+        String colReward;
+        prop = new Properties();
+        FileInputStream ip = new FileInputStream(filePath);
+        prop.load(ip);
+        int real = c+1;
+        String whichReward = "column"+real+"Reward";
+        colReward = prop.getProperty(whichReward);
+        return colReward;
+      
     }
 
       // EXP gives the respective bonus for each row
     // IMP this will be changed when collectables classes are done
-      private String whichCollectableRow(int r){
-        switch (r) {
-            case 0: return "Yellow_Bonus";
-            case 1: return "Red_Bonus";
-            case 2 : return "Elemntal_Crest";
-            default:
-                return "Invalid";
-        }
-
-   
-  
+      private String whichCollectableRow(int r) throws IOException{
+        String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+        Properties prop ;
+        String rowReward;
+        prop = new Properties();
+        FileInputStream ip = new FileInputStream(filePath);
+        prop.load(ip);
+        int real = r+1;
+        String whichReward = "row"+real+"Reward";
+        rowReward = prop.getProperty(whichReward);
+        return rowReward;
 }
 
 
@@ -257,16 +265,16 @@ private  void updateRow(int r){
             int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
             updateRow(rowToCheck);
-            if(row[rowToCheck]== false && col[colToCheck]==false)
+            if(!checkRow(rowToCheck)  && !checkCol(colToCheck))
             return true;
-            else if(row[rowToCheck]== true && col[colToCheck]==false){
+            else if(checkRow(rowToCheck)  && !checkCol(colToCheck)){
                 String act = whichCollectableRow(rowToCheck);
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will need to change in the whichCollectableRow(rowToCheck)
                 return true;
             }
-            else if(row[rowToCheck]== false && col[colToCheck]==true){
+            else if(!checkRow(rowToCheck)  && checkCol(colToCheck)){
                 String act = whichCollectableCol(colToCheck);
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
