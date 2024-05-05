@@ -10,10 +10,11 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
-import java.io.*;
-
+import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.function.Supplier;
 
 public class Dragon extends Creature {
@@ -64,13 +65,19 @@ public class Dragon extends Creature {
     //Method that reads the row and corner rewards from the EmberfallDominionRewards.properties file
     public void initRewards() {
         rewards = new String[5];
-        File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
-        try (FileReader fr = new FileReader(file)) {
-            Properties properties = new Properties();
-            properties.load(fr);
-            ArrayList<Object> temporaryRewards = new ArrayList<>(new LinkedHashSet<>(properties.values()));
-            for (int i = 0, size = temporaryRewards.size(); i < size; i++) {
-                rewards[i] = (String)temporaryRewards.get(i);
+        int pointer = 0;
+        String filePath = "../../../main/resources/config/EmberFallDominionRewards.properties";
+        try (BufferedReader br = new BufferedReader( new FileReader(filePath))) {
+            String nextLine;
+            while ((nextLine = br.readLine()) != null) {
+                nextLine = nextLine.trim();
+                if (!nextLine.isEmpty() && !nextLine.startsWith("#")) {
+                    int separatorIndex = nextLine.indexOf('=');
+                    if (separatorIndex != -1) {
+                        String value = nextLine.substring(separatorIndex + 1).trim();
+                        rewards[pointer++] = value;
+                    }
+                }
             }
         } catch (IOException e) {
             rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
