@@ -11,6 +11,7 @@ public class Phoenix extends Creature{
     public Integer[] phoenixsReceivedHP;
     public ArrayList<Move> allPossibleMoves;
     public static HashMap<String, Integer> rewardLocations = new HashMap<>();
+    public static String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
@@ -100,6 +101,46 @@ public class Phoenix extends Creature{
             rewardLocations.put("BlueBonus", 8);
             rewardLocations.put("YellowBonus", 9);
             rewardLocations.put("ArcaneBoost", 10);
+        }
+    }
+
+    public void populateMappedRewardLocation() {
+        // Iterate over the key-value pairs in the rewardLocations HashMap
+        for (Map.Entry<String, Integer> entry : rewardLocations.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            
+            String rewardString;
+            switch(key) {
+                case "RedBonus":
+                    rewardString = getRedBoostString();
+                    break;
+                case "GreenBonus":
+                    rewardString = getGreenBoostString();
+                    break;
+                case "BlueBonus":
+                    rewardString = getBlueBoostString();
+                    break;
+                case "MagentaBonus":
+                    rewardString = getMagentaBoostString();
+                    break;
+                case "YellowBonus":
+                    rewardString = getYellowBoostString();
+                    break;
+                case "ElementalCrest":
+                    rewardString = getElementalCrestString();
+                    break;
+                case "ArcaneBoost":
+                    rewardString = getArcaneBoostString(value);
+                    break;
+                case "TimeWarp":
+                    rewardString = getTimeWarpString(value);
+                    break;
+                default:
+                    rewardString = null;
+            }
+
+            mappedRewardLocations[value] = rewardString;
         }
     }
 
