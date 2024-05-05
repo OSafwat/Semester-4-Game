@@ -109,7 +109,10 @@ public class Hydra extends Creature{
     }
 
     // Method that returns true if the move is possible.
-    public boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) throws InvalidMoveException {
+        if(dice.getValue()<1 || dice.getValue>6) {
+            throw InvalidMoveException;
+        }
         return dice.getValue() >= (int) CurrentSerpent.peek();
     }
 }
