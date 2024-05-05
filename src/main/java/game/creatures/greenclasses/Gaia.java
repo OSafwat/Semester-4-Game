@@ -4,12 +4,19 @@ import game.creatures.Creature;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
+//Key:
+//IMP = important to change
+// COMPLETE = should be completed later
+//EXP =explanation
+//ASUM = assumption till the leader finish
+
 
 public class Gaia extends Creature{
 
     private Guardians [][]  gaiaGuardians;
     private int alliveGuardians;
     private int deadGuardians;
+    private int score;
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
@@ -48,10 +55,10 @@ public class Gaia extends Creature{
 
 
     // EXP checks if a given move is possible
-    public boolean checkMove(Dice dice, Creature creature){
+    public boolean checkMove(Dice dice){
         GreenDice greendie = (GreenDice) dice;
-        // ASUM assuming getValue done in the dice class add white
-        int greenValue = greendie.getValue();
+        // ASUM assuming getRealValue done in the dice class add white
+        int greenValue = greendie.getRealValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -63,7 +70,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    public Guardians getGuardians(int c){
+    protected Guardians getGuardians(int c){
 
         int row =0;
         int col =0;
@@ -90,7 +97,7 @@ public class Gaia extends Creature{
 }
 
 // EXP gets a specific guardian row position in the Gaia
-public int getGuardiansRow(int c){
+private int getGuardiansRow(int c){
 
     int row =0;
     if(c<2 || c>12)
@@ -116,7 +123,7 @@ public int getGuardiansRow(int c){
 
 
 // EXP gets a specific guardian col position in the Gaia
-public int getGuardiansCol(int c){
+private int getGuardiansCol(int c){
 
     int col =0;
     if(c<2 || c>12)
@@ -142,7 +149,7 @@ public int getGuardiansCol(int c){
 
 
 //EXP  kills a a given guardian if not already killed
-public void killGaiaGuardian(Guardians g){
+protected void killGaiaGuardian(Guardians g){
     if(g.isDead())
     System.out.println("Invalid Allready Killed");
     else{
@@ -153,54 +160,47 @@ public void killGaiaGuardian(Guardians g){
 }
 
 //EXP  gets the number of  still allive guradians
-public int getAlliveGuardians(){
+private int getAlliveGuardians(){
     return alliveGuardians;
 }
  
-public int getDeadGuardians(){
+private int getDeadGuardians(){
     return deadGuardians;
 }
 
 
 
     // EXP checks if all guardians in a given col are dead if yes then true
-public boolean checkCol(int col){
-    for(int i=0;i<3;i++){
-        if(!gaiaGuardians[i][col].isDead())
-            return false;
-    
+private boolean checkCol(int c){
+    return col[c];
 
-    }
-    return true;
 }
 
 // EXP checks if all guardians in a given row are dead if yes then true
-public boolean checkRow(int row){
-    for(int i=0;i<4;i++){
-        if(!gaiaGuardians[row][i].isDead())
-            return false;
-    
+private boolean checkRow(int r){
+    return row[r];
 
-    }
-    return true;
 }
 
 
-// EXP  update the  instance  variable col accordingly
+// EXP check if a row is already killed and update the  instance array col accordingly
 private  void updateCol(int c){
+    for(int i=0;i<3;i++){
+        if(!gaiaGuardians[i][c].isDead())
+            return;               
+    }
+    col[c]= true;
          
-    if (this.checkCol(c))
-        col[c]= true;
+    
 }
 
-// EXP check if a row is already killed and update the  instance  variable col accordingly
+// EXP check if a row is already killed and update the  instance array row accordingly
 private  void updateRow(int r){
-     
-    if (this.checkRow(r)){    
-        row[r]= true;
-     
+    for(int i=0;i<4;i++){
+        if(!gaiaGuardians[r][i].isDead())
+            return;               
     }
-               
+    row[r]= true;
 }
 
 
@@ -239,9 +239,9 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-    public boolean makeMove(Dice dice, Creature creature){
+    public boolean makeMove(Dice dice){
         
-        if(!checkMove(dice, creature))
+        if(!checkMove(dice))
             return false;
         else{
             alliveGuardians--;
@@ -249,7 +249,7 @@ private  void updateRow(int r){
             GreenDice greendie = (GreenDice) dice;
             
             // ASUM assuming getValue done in the dice class
-            int greenValue = greendie.getValue();
+            int greenValue = greendie.getRealValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
             updateScore();
@@ -293,15 +293,15 @@ private  void updateRow(int r){
     }
 
 // EXP method to get all possible moves
-public Move[] getAllPossibleMoves( Dice dice,Creature creature){
+public Move[] getAllPossibleMoves(){
 
-    GreenDice greeDice = (GreenDice) dice;
-    Move [] allMoves = new Move[alliveGuardians];
+    Move [] allMoves = new Move[this.getAlliveGuardians()];
     int c=0;
     for(int i=2;i<13;i++){
-        if(checkMove(greeDice, this)){
+        GreenDice greenDice = new GreenDice(i);
+        if(checkMove(greenDice)){
         // ASUM assuming move constructor is done
-        allMoves[c]= new Move(greeDice,this);
+        allMoves[c]= new Move(greenDice,this);
         c++;
         }
 
@@ -309,7 +309,10 @@ public Move[] getAllPossibleMoves( Dice dice,Creature creature){
     return allMoves;
 }
 
-public String toString(){
+
+
+// EXP method to print the  Green creature
+public String getScoreSheet(){
     String returnValue = "Terra's Heartland: Gaia Guardians (GREEN REALM):\n" +
     "+-----------------------------------+\n" +
     "|  #  |1    |2    |3    |4    |R    |\n" +
@@ -399,49 +402,18 @@ public String toString(){
     else
     returnValue =returnValue+"|AP   "+ "|     |\n";
     returnValue =returnValue+ "+-----------------------------------------------------------------------+\n";
-    if(this.getScore()==0)
     returnValue =returnValue+"|  S  |1    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==1)
-    returnValue =returnValue+"|  S  |X    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==2)
-    returnValue =returnValue+"|  S  |X    |X    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==4)
-    returnValue =returnValue+"|  S  |X    |X    |X    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==7)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |11   |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==11)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |16   |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==16)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |22   |29   |37   |46   |56   |\n";
-    else if(this.getScore()==22)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |29   |37   |46   |56   |\n";
-    else if(this.getScore()==29)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |37   |46   |56   |\n";
-    else if(this.getScore()==37)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |46   |56   |\n";
-    else if(this.getScore()==46)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |56   |\n";
-    else if(this.getScore()==56)
-    returnValue =returnValue+"|  S  |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |X    |\n";
     returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
     return returnValue;
 
-
-    
-
-
-
-
-
-    
-
-
-
-
-
-    
 }
 
+  //return number of elemental crests for each realm will be 0 or 1 
+  public  int getElementalCrest(){
+    if(this.checkRow(2))
+    return 1;
+    return 0;
+       }
 
 
    
