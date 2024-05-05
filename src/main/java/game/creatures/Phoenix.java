@@ -88,6 +88,9 @@ public class Phoenix extends Creature{
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
             phoenixsReceivedHP[killedPhoenixes++] = diceValue;
+
+            if (rewardLocations.get("TimeWarp") == killedPhoenixes) allTimeWarps.add(new TimeWarp());
+            else if (rewardLocations.get("ArcaneBoost") == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
         }
     }
 
