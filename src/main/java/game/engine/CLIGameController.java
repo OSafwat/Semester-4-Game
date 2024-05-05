@@ -146,7 +146,7 @@ public class CLIGameController {
                     }
                 } while (true);
 
-                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getCreatureByColor() )));
+                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByRealm(chosenDice.getRealm())) );
 
             }
 
