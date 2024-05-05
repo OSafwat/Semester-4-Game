@@ -3,6 +3,8 @@ package game.creatures;
 import java.io.*;
 import java.util.*;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.dice.ArcanePrism;
 import game.dice.Dice;
 import game.dice.MagentaDice;
@@ -89,6 +91,15 @@ public class Phoenix extends Creature{
     public Move[] getAllPossibleMoves() {
         Move[] returnedArray = new Move[allPossibleMoves.size()];
         return allPossibleMoves.toArray(returnedArray);
+    }
+
+    @Override
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+    }
+
+    @Override
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+
     }
 
     public void initPossibleMoves() {
