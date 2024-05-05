@@ -16,23 +16,24 @@ import java.io.FileReader;
 import java.util.*;
 import java.util.function.Supplier;
 
-private class Dragon extends Creature {
-    private Integer face;
-    private Integer wings;
-    private Integer tail;
-    private Integer heart;
-    private DragonNumber dragonNumber;
-    private Dragon[] Dragons;
-    private int[] pointMap;
-    private ArrayList<Move> allPossibleMoves;
-    private ArrayList<TimeWarp> timeWarps;
-    private ArrayList<ArcaneBoost> arcaneBoosts;
-    private String[] rewards;
-    private Supplier<String>[] suppliers;
-    private int elementalCrestCount;
+public class Dragon extends Creature {
+    public Integer face;
+    public Integer wings;
+    public Integer tail;
+    public Integer heart;
+    public DragonNumber dragonNumber;
+    public Dragon[] Dragons;
+    public int[] pointMap;
+    public ArrayList<Move> allPossibleMoves;
+    public ArrayList<TimeWarp> timeWarps;
+    public ArrayList<ArcaneBoost> arcaneBoosts;
+    public String[] rewards;
+    public Supplier<String>[] suppliers;
+    public int elementalCrestCount;
 
 
-    private Dragon() {
+    //Constructor to be used in the CLIcontroller to initialize the Dragon array
+    public Dragon() {
         Dragons = new Dragon[4];
         Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
         Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
@@ -42,7 +43,8 @@ private class Dragon extends Creature {
         initialization();
     }
 
-    private Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
+    //Constructor used inside the first one to initialize the actual Dragons themselves
+    public Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
         this.tail = tail;
@@ -50,7 +52,8 @@ private class Dragon extends Creature {
         this.dragonNumber = dragonNumber;
     }
 
-    private void initialization() {
+    //Method that contains all initialization methods to reduce the amount of code written in the first constructor
+    public void initialization() {
         initPointMap();
         initPossibleMoves();
         initRewards();
@@ -58,7 +61,8 @@ private class Dragon extends Creature {
         initTimeWarpsAndArcaneBoosts();
     }
 
-    private void initRewards() {
+    //Method that reads the row and corner rewards from the EmberfallDominionRewards.properties file
+    public void initRewards() {
         rewards = new String[5];
         File file = new File("../../../main/resources/config/EmberFallDominionRewards.properties");
         try (FileReader fr = new FileReader(file)) {
@@ -73,7 +77,13 @@ private class Dragon extends Creature {
         }
     }
 
-    private void initTimeWarpsAndArcaneBoosts () {
+    //A method to initialize the pointMap instance variable, which is used in score calculation
+    public void initPointMap() {
+        pointMap = new int[]{10, 14, 16, 20};
+    }
+
+    //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
+    public void initTimeWarpsAndArcaneBoosts () {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
@@ -85,7 +95,8 @@ private class Dragon extends Creature {
         }
     }
 
-    private void initPossibleMoves() {
+    //Method that goes over all the dragons and fills up an arraylist with all the possible moves that can be done against these dragons
+    public void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
@@ -104,6 +115,7 @@ private class Dragon extends Creature {
         }
     }
 
+    //Method that calculates the score at any point in the game
     @Override
     public int getScore() {
         int score = 0;
@@ -113,47 +125,47 @@ private class Dragon extends Creature {
         return score;
     }
 
+    //Method to get the elemental crest count
     @Override
     public int getElementalCrest() {
         return elementalCrestCount;
     }
 
-    private int getArcaneBoostPower() {
-        return allPossibleMoves.isEmpty() ? 1 : 0;
-    }
-
+    //Method used to get all possible moves at any stage in the game
     public Move[] getAllPossibleMoves() {
         Move[] returnedArray = new Move[allPossibleMoves.size()];
         return allPossibleMoves.toArray(returnedArray);
     }
 
-    private ArrayList<TimeWarp> getAllTimeWarps() {
+    //A method to get all the time warp powers
+    public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
-    private ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+    //A method to get all the arcane boost powers
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
 
-    private DragonNumber getDragonNumber() {
+    //A method to get the dragon number attribute
+    public DragonNumber getDragonNumber() {
         return this.dragonNumber;
     }
 
-    private void initPointMap() {
-        pointMap = new int[]{10, 14, 16, 20};
-    }
-
-    private boolean isDead() {
+    //A method used to know whether a Dragon is dead or not
+    public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    private boolean allDead() {
+    //A method used to know whether all Dragons in the Dragon array are dead or not
+    public boolean allDead() {
         boolean dead = true;
         for (int i = 0; i < 4; i++)
             dead = dead && Dragons[i].isDead();
         return dead;
     }
 
+    //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
     public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
@@ -173,11 +185,6 @@ private class Dragon extends Creature {
         }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
-        moveAfterMath(oldRewardStatus, move);
-        return true;
-    }
-
-    private void moveAfterMath (String[] oldRewardStatus, Move move) throws BonusException {
         for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
             if (allPossibleMoves.get(i).equals(move)) {
                 allPossibleMoves.remove(i);
@@ -201,17 +208,21 @@ private class Dragon extends Creature {
                 }
             }
         }
+        return true;
     }
 
-    private void initNextTimeWarp() {
+    //Method that updates TimeWarps
+    public void initNextTimeWarp() {
         //Is supposed to change the enum for the timewarp obtained
     }
 
-    private void initNextArcaneBoost() {
+    //Method that updates ArcaneBoosts
+    public void initNextArcaneBoost() {
         //Is supposed to change the enum for the arcane boost obtained
     }
 
-    private void initSuppliers () {
+    //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
+    public void initSuppliers () {
         suppliers = new Supplier[]{
                 this::getFirstRowRewardString,
                 this::getSecondRowRewardString,
@@ -221,7 +232,8 @@ private class Dragon extends Creature {
         };
     }
 
-    private RealmColor decodeLetterToRealmColor (char c) {
+    //Method that, using a character, can identify what realm a boost belongs to
+    public RealmColor decodeLetterToRealmColor (char c) {
         return switch (c) {
             case 'G' -> RealmColor.GREEN;
             case 'B' -> RealmColor.BLUE;
@@ -233,13 +245,15 @@ private class Dragon extends Creature {
         };
     }
 
+    //Method that checks if a move can be done
     public boolean checkMove(Dice dice) throws InvalidMoveException {
         int targetValue = dice.getValue();
         moveHelper(targetValue, false);
         return true;
     }
 
-    private boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
+    //Method to reduce code redundancy
+    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -316,6 +330,7 @@ private class Dragon extends Creature {
         return valid;
     }
 
+    //Method that returns the scoreSheet at any point in the game
     @Override
     public String getScoreSheet() {
         StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
@@ -325,60 +340,58 @@ private class Dragon extends Creature {
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
         }
-        scoreSheet.append(getFirstRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[0].get()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
         }
-        scoreSheet.append(getSecondRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[1].get()).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
         }
-        scoreSheet.append(getThirdRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[2].get()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
         }
-        scoreSheet.append(getFourthRowRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[3].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(pointMap[i]).append("  |");
         }
-        scoreSheet.append(getCornerRewardString()).append("   |\n");
+        scoreSheet.append(suppliers[4].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+");
         return scoreSheet.toString();
     }
 
-    private String changeToString(Integer integer) {
+    //This and the methods below it assist in the scoresheet and other methods
+    public String changeToString(Integer integer) {
         return integer == null ? "X" : "" + integer;
     }
 
-    private String getFirstRowRewardString() {
+    public String getFirstRowRewardString() {
         return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
     }
 
-    private String getSecondRowRewardString() {
+    public String getSecondRowRewardString() {
         return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
     }
 
-    private String getThirdRowRewardString() {
+    public String getThirdRowRewardString() {
         return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
     }
 
-    private String getFourthRowRewardString() {
+    public String getFourthRowRewardString() {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
     }
 
-    private String getCornerRewardString() {
+    public String getCornerRewardString() {
         return allDead() ? "X" : encode(rewards[4]);
     }
 
-    private String encode (String reward) {
-        return extractCapitalLetters(reward);
-    }
-
-    private static String extractCapitalLetters(String reward) {
+    //Method that changes the name of the row and corner rewards to their abbreviation
+    public String encode (String reward) {
         return reward.replaceAll("[^A-Z]", "");
     }
 }
