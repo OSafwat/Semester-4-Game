@@ -1,9 +1,12 @@
 package game.creatures;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.Stack;
+import java.util.Properties;
 import java.util.Scanner;
+import static org.junit.Assert.assertTrue;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
@@ -13,19 +16,8 @@ public class Hydra extends Creature{
     SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
     private Stack<Integer>() CurrentSerpent;
 
-    // Define 11 variable dictating where all the rewards should be.
-    String hit1Reward;
-    String hit2Reward;
-    String hit3Reward;
-    String hit4Reward;
-    String hit5Reward;
-    String hit6Reward;
-    String hit7Reward;
-    String hit8Reward;
-    String hit9Reward;
-    String hit10Reward;
-    String hit11Reward;
-
+    // Define an array containing the hit reward for each hydra head.
+    private final Properties properties;
     // Define an integer indicating the number of heads killed so far, and a boolean indicating whether or not the serpent has regenerated.
     private int headsKilled;
     private boolean regenerateFlag;
@@ -38,9 +30,11 @@ public class Hydra extends Creature{
     private int score;
 
     // Constructor that initializes the score to 0 and the serpent to the first serpent with 5 heads.
-    public Hydra() {
+    public Hydra() throws IOException {
+        properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
-        Scanner scanner = new Scanner(config);
+        FileReader configReader = new FileReader(config);
+        properties.load(configReader);
 
         this.score = 0;
         this.CurrentSerpent = this.FirstSerpent;
@@ -49,20 +43,6 @@ public class Hydra extends Creature{
         this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
-        
-    }
-
-    // Method to return the value after the '=' in the config file.
-    public String getValue(String s) {
-        int index = 0;
-        while(s.charAt(i) != 0) {
-            index++;
-        }
-        
-        String value = s.substring(index+1, s.length());
-        if(value == "null") value = null;
-
-        return value;
     }
 
     // Getter for the "score" variable.
