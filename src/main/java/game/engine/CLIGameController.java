@@ -1,10 +1,10 @@
 package game.engine;
 
-import game.collectibles.TimeWarp;
+import game.collectibles.*;
 import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
 import game.dice.*;
 import game.creatures.*;
-import game.creatures.greenclasses.*;
 import game.engine.enums.*;
 
 import java.io.BufferedReader;
@@ -21,19 +21,11 @@ public class CLIGameController {
     // constructor(s):
     public CLIGameController() {
     }
-
-    public void startGame() throws IOException{
+    public int [] getSettings() throws IOException{
         Scanner scanner = new Scanner(System.in);
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-        this.gameBoard = new GameBoard(player1Name, player2Name);
-
-        BufferedReader settings=null;
         int numberOfRounds;
         int numebrOfTurnsPerRound;
-
+        BufferedReader settings=null;
         //the following is taking in the game settings from the RoundsSettings file
         try {
             // opening the file
@@ -67,9 +59,66 @@ public class CLIGameController {
             if (settings != null)
                 settings.close();
         }
+        int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
+        return temp;
+    }
 
-        System.out.println(
-                "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+    public Reward [] getRewards(int numberOfRounds) throws IOException{
+
+        BufferedReader rewardsFile=null;
+        Reward[] rewards= new Reward [numberOfRounds] ;
+        try {
+            // opening the file
+            FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
+            rewardsFile = new BufferedReader(rewardsFileReader);
+
+            // taking in input from the file which is currently only 2
+            String rewardsline ;
+            int rewardsCounter = 0;
+            while ((rewardsline  = rewardsFile.readLine()) != null){
+                String reward = rewardsline.split("=")[1];
+                switch (reward){
+                    case "TimeWarp" : rewards[rewardsCounter++] = new TimeWarp();            break;
+                    case "ArcaneBoost": rewards[rewardsCounter++] = new ArcaneBoost();       break;
+                    case "EssenceBonus": rewards[rewardsCounter++] = new EssenceBonus();     break;
+                    case "ElementalCrest": rewards[rewardsCounter++] = new ElementalCrest(); break;
+                    default: rewards[rewardsCounter++] =null; 
+                }
+            }
+        } catch (FileNotFoundException  e) {
+
+            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
+            rewards[0]=new TimeWarp();
+            rewards[1] = new ArcaneBoost();
+            rewards[2] = new TimeWarp();
+            rewards[3] = new EssenceBonus();
+            rewards[4] = null;
+            rewards[5] = null;            
+        } catch (IOException e) {
+            System.out.println("there has been an error in IO other than fileNotFound");
+            e.printStackTrace();
+        } finally{
+            if (rewardsFile != null)
+                rewardsFile.close();
+        }
+
+        return rewards;
+    }
+
+    public void startGame() throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        this.gameBoard = new GameBoard(player1Name, player2Name);
+
+        int [] temp = getSettings();
+        int numberOfRounds= temp[0]; 
+        int numebrOfTurnsPerRound=temp[1];
+        
+
+        System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
             if (choice == "i") {
@@ -81,40 +130,11 @@ public class CLIGameController {
         } while (true);
 
         //the following is taking in the round rewards from the properties file
-        BufferedReader rewardsFile=null;
-        ArrayList<String> rewards= new ArrayList<String>() ;
-        try {
-            // opening the file
-            FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
-            rewardsFile = new BufferedReader(rewardsFileReader);
-
-            // taking in input from the file which is currently only 2
-            String rewardsline ;
-            while ((rewardsline  = rewardsFile.readLine()) != null){
-                rewards.add(rewardsline.split("=")[1]);
-            }
-        } catch (FileNotFoundException  e) {
-
-            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
-            rewards.add("TimeWarp");
-            rewards.add("ArcaneBoost");
-            rewards.add("TimeWarp");
-            rewards.add("EssenceBonus");
-            rewards.add("null");
-            rewards.add("null");
-            
-        } catch (IOException e) {
-            System.out.println("there has been an error in IO other than fileNotFound");
-            e.printStackTrace();
-        } finally{
-            if (rewardsFile != null)
-                rewardsFile.close();
-        }
-  
+        Reward rewards [] = getRewards(numberOfRounds);
 
         //the following is trying to start the game loop:
 
-        for (int i=0; i<numberOfRounds; i++){
+        for (int i=0; i<numberOfRounds*2; i++){
             
             //the following is trying to start the round loop:
             for (int j=0; j<numebrOfTurnsPerRound; j++){
@@ -134,52 +154,55 @@ public class CLIGameController {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
 
-            //  1:B5  2:W6  3:Y3 4:B
-                System.out.println("please choose a number between 1 and "+ availableDice.length);
+                //  1:B5  2:W6  3:Y3 4:B
+                
                 Dice chosenDice=null;
                 do {
+                    System.out.println("please choose a number between 1 and "+ availableDice.length);
                     int choice = scanner.nextInt();
                     if (!(choice > availableDice.length || choice <= 0)){
                         chosenDice = availableDice[choice-1];
+                        try{
+                            if (makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                                break;
+                            }
+                        }catch(InvalidMoveException iException){
+                            System.out.println("this move cannot happen as per the realms rules");
+                        }
+                        
                     }else {
                         System.out.println("please choose a valid move");
                     }
                 } while (true);
 
-                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getCreatureByColor() )));
-
+                
             }
-
         }
-        
-
     }
 
-    public void getMove(Player player,Dice dice){
-        Move [] listOfMoves= player.getAllPossiblMoves();
-        
-    }
+ 
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
     }
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
-    public boolean makeMove(Player player, Move move) throws BonusException {
+    public boolean makeMove(Player player, Move move) throws InvalidMoveException {
         try {
-            if (move.getCreature() instanceof Dragon) {
-                System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
-                int dragonIndex = Integer.parseInt(System.console().readLine());
-                Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-                move.setCreature(dragon); // should be make move
-            } else if (move.getCreature() instanceof Gaia) {
+            // if (move.getCreature() instanceof Dragon) {
+            //     System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
+            //     int dragonIndex = Integer.parseInt(System.console().readLine());
+            //     Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
+            //     move.setCreature(dragon); // should be make move
+            // } else 
+            if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
                 Dice whiteDice = this.gameBoard.getGreen();
                 int greenVal = greenDice.getValue();
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
             }
-            move.getCreature().makeMove(move.getDice());
+            return move.getCreature().makeMove(move.getDice());
 
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor();
@@ -187,9 +210,8 @@ public class CLIGameController {
             int numberToAttackWith = Integer.parseInt(System.console().readLine());
             Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
             Move bonusmove = new Move(new Dice(numberToAttackWith), creature);
-            makeMove(player, bonusmove);
+            return makeMove(player, bonusmove);
         }
-        return true;
     }
 
     // gameboard getter:
