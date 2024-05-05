@@ -1,6 +1,6 @@
 package game.engine;
 
-import game.collectibles.TimeWarp;
+import game.collectibles.*;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 import game.dice.*;
@@ -63,10 +63,10 @@ public class CLIGameController {
         return temp;
     }
 
-    public String [] getRewards() throws IOException{
+    public Reward [] getRewards(int numberOfRounds) throws IOException{
 
         BufferedReader rewardsFile=null;
-        ArrayList<String> rewards= new ArrayList<String>() ;
+        Reward[] rewards= new Reward [numberOfRounds] ;
         try {
             // opening the file
             FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
@@ -74,19 +74,26 @@ public class CLIGameController {
 
             // taking in input from the file which is currently only 2
             String rewardsline ;
+            int rewardsCounter = 0;
             while ((rewardsline  = rewardsFile.readLine()) != null){
-                rewards.add(rewardsline.split("=")[1]);
+                String reward = rewardsline.split("=")[1];
+                switch (reward){
+                    case "TimeWarp" : rewards[rewardsCounter++] = new TimeWarp();            break;
+                    case "ArcaneBoost": rewards[rewardsCounter++] = new ArcaneBoost();       break;
+                    case "EssenceBonus": rewards[rewardsCounter++] = new EssenceBonus();     break;
+                    case "ElementalCrest": rewards[rewardsCounter++] = new ElementalCrest(); break;
+                    default: rewards[rewardsCounter++] =null; 
+                }
             }
         } catch (FileNotFoundException  e) {
 
             System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
-            rewards.add("TimeWarp");
-            rewards.add("ArcaneBoost");
-            rewards.add("TimeWarp");
-            rewards.add("EssenceBonus");
-            rewards.add("null");
-            rewards.add("null");
-            
+            rewards[0]=new TimeWarp();
+            rewards[1] = new ArcaneBoost();
+            rewards[2] = new TimeWarp();
+            rewards[3] = new EssenceBonus();
+            rewards[4] = null;
+            rewards[5] = null;            
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
@@ -95,7 +102,7 @@ public class CLIGameController {
                 rewardsFile.close();
         }
 
-        return rewards.stream().toArray(String[]::new);
+        return rewards;
     }
 
     public void startGame() throws IOException{
@@ -124,7 +131,7 @@ public class CLIGameController {
         } while (true);
 
         //the following is taking in the round rewards from the properties file
-        String rewards [] = getRewards();
+        Reward rewards [] = getRewards(numberOfRounds);
 
         //the following is trying to start the game loop:
 
