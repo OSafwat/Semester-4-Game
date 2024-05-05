@@ -8,7 +8,9 @@ import game.creatures.greenclasses.*;
 import game.engine.enums.*;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 public class CLIGameController {
     GameBoard gameBoard;
@@ -26,16 +28,15 @@ public class CLIGameController {
         String player2Name = scanner.nextLine();
         CLIGameController clicontroller = new CLIGameController(player1Name, player2Name);
         
-        
+        BufferedReader settings;
         int numberOfRounds;
         int numebrOfTurnsPerRound;
         try{
+        //opening the file 
         FileReader SettingsfileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsSettings.properties");
-        BufferedReader settings = new BufferedReader(SettingsfileReader);
-        }
-        catch(){
-       
-        //game loop
+        settings = new BufferedReader(SettingsfileReader);
+        
+        //taking in input from the file which is currently only 2 
         String line1=  settings.readLine();
         String [] lineOfRounds = line1.split("="); 
         numberOfRounds = Integer.parseInt(lineOfRounds[1]);
@@ -44,6 +45,20 @@ public class CLIGameController {
         String [] lineOfTurns = line1.split("="); 
         numebrOfTurnsPerRound = Integer.parseInt(lineOfTurns[1]);
         }
+        catch(FileNotFoundException f){
+       
+        System.err.println("the Settings file was not able to be accessed");
+        System.out.println("please enter the number of desired rounds:");
+        numberOfRounds = scanner.nextInt();
+        
+        System.out.println("please enter the number of desired turns per round:");
+        numebrOfTurnsPerRound = scanner.nextInt();
+        }
+        catch (IOException e) {
+            System.out.println("there has been an error in IO other than fileNotFound");
+            e.printStackTrace();
+        }
+        
     }
 
     // move methods
