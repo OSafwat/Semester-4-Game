@@ -118,8 +118,7 @@ public class CLIGameController {
         int numebrOfTurnsPerRound=temp[1];
         
 
-        System.out.println(
-                "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+        System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
             if (choice == "i") {
@@ -165,22 +164,20 @@ public class CLIGameController {
                         chosenDice = availableDice[choice-1];
                         try{
                             if (makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
-                                
+                                break;
                             }
                         }catch(InvalidMoveException iException){
+                            System.out.println("this move cannot happen as per the realms rules");
                         }
-                        break;
+                        
                     }else {
                         System.out.println("please choose a valid move");
                     }
                 } while (true);
+
+                
             }
-
-        
-
         }
-        
-
     }
 
  
