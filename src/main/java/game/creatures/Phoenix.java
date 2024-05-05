@@ -216,41 +216,41 @@ public class Phoenix extends Creature{
 
     public String getRedBonusString(int n) {
         String rewardName = "RedBonus";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "RB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "RB";
     }
 
     public String getGreenBonusString(int n) {
         String rewardName = "GreenBonus";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "GB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "GB";
     }
 
     public String getBlueBonusString(int n) {
         String rewardName = "BlueBonus";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "BB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "BB";
     }
 
     public String getMagentaBonusString(int n) {
         String rewardName = "MagentaBonus";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "MB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "MB";
     }
 
     public String getYellowBonusString(int n) {
         String rewardName = "YellowBonus";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "YB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "YB";
     }
 
     public String getElementalCrestString(int n) {
         String rewardName = "ElementalCrest";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "EC";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "EC";
     }
 
     public String getArcaneBoostString(int n) {
         String rewardName = "ArcaneBoost";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "AB";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "AB";
     }
 
     public String getTimeWarpString(int n) {
         String rewardName = "TimeWarp";
-        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X" : "TW";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName).get(n)] != null ? "X " : "TW";
     }
 }
