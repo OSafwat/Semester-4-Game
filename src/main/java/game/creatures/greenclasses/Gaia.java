@@ -427,8 +427,11 @@ public String getScoreSheet(){
     returnValue = returnValue +"|4    ";
     if(checkRow(0))
     returnValue = returnValue +"|X    |\n"+"|  2  ";
-    else
-    returnValue = returnValue +"|YB   |\n"+"|  2  ";
+    else{
+        String s = this.whichCollectableRow(0);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   |\n";
+    }
     Guardians G5 = this.getGuardians(5);
     if(G5.isDead())
     returnValue = returnValue +"|X    ";
@@ -451,8 +454,12 @@ public String getScoreSheet(){
     returnValue = returnValue +"|8    ";
     if(checkRow(1))
     returnValue = returnValue +"|X    |\n"+"|  3  ";
-    else
-    returnValue = returnValue +"|RB   |\n"+"|  3  ";
+    else{
+        String s = this.whichCollectableRow(1);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   |\n";
+    }
+  
     Guardians G9 = this.getGuardians(9);
     if(G9.isDead())
     returnValue = returnValue +"|X    ";
@@ -483,20 +490,32 @@ public String getScoreSheet(){
     returnValue=returnValue+"+-----------------------------------+\n"+"|  R  ";
     if(checkCol(0))
     returnValue = returnValue +"|X    ";
-    else
-    returnValue =returnValue+"|TW   ";
+    else{
+        String s = this.whichCollectableCol(0);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   ";
+    }
     if(checkCol(1))
     returnValue = returnValue +"|X    ";
-    else
-    returnValue =returnValue+"|BB   ";
+    else{
+        String s = this.whichCollectableCol(1);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   ";
+    }
     if(checkCol(2))
     returnValue = returnValue +"|X    ";
-    else
-    returnValue =returnValue+"|MP   ";
+    else{
+        String s = this.whichCollectableCol(2);
+        String f = this.getCorrectBonusInScore(s);
+    returnValue = returnValue +"|"+f+"   ";
+    }
     if(checkCol(3))
     returnValue = returnValue +"|X    " +"|     |\n";
-    else
-    returnValue =returnValue+"|AP   "+ "|     |\n";
+    else{
+        String s = this.whichCollectableCol(3);
+        String f = this.getCorrectBonusInScore(s);
+        returnValue =returnValue+"|"+f+"   "+ "|     |\n";
+    }
     returnValue =returnValue+ "+-----------------------------------------------------------------------+\n";
     returnValue =returnValue+"|  S  |1    |2    |4    |7    |11   |16   |22   |29   |37   |46   |56   |\n";
     returnValue =returnValue +"+-----------------------------------------------------------------------+\n\n";
