@@ -30,6 +30,10 @@ public class Player {
 
     }
 
+    public String getName(){
+        return this.name;   
+    }
+
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }

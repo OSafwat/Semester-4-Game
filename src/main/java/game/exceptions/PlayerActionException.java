@@ -1,5 +1,5 @@
 package game.exceptions;
 
-public class PlayerActionException {
+public class PlayerActionException extends Exception{
     
 }
