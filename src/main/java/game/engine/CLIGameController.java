@@ -118,10 +118,34 @@ public class CLIGameController {
             //the following is trying to start the round loop:
             for (int j=0; j<numebrOfTurnsPerRound; j++){
                 Player player1= getActivePlayer();
-                Player player2= getPassivePlayer();
+                //Player player2= getPassivePlayer();
 
-                System.out.println(player1.get"here is your score sheet:");
+                System.out.println(player1.getName()+", here is your score sheet:");
                 System.out.println(getScoreSheet(player1));
+
+                gameBoard.rollDice();
+
+                System.out.println("Here are your rolled dice: ");
+                
+                Dice [] availableDice= getAvailableDice();
+                int counter= 0;
+                for (Dice die : availableDice) {
+                    System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+                }
+
+            //  1:B5  2:W6  3:Y3 ...
+                System.out.println("please choose a number between 1 and "+ availableDice.length);
+                Dice chosenDice=null;
+                do {
+                    int choice = scanner.nextInt();
+                    if (!(choice > availableDice.length || choice <= 0)){
+                        chosenDice = availableDice[choice-1];
+                    }
+                } while (true);
+
+                Move moveToBeMade =
+
+                makeMove(player1, new  );
 
             }
 
@@ -130,6 +154,10 @@ public class CLIGameController {
 
     }
 
+    public void getMove(Player player,Dice dice){
+        Move [] listOfMoves= player.getAllPossiblMoves();
+        
+    }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
