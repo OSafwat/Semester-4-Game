@@ -11,168 +11,207 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+
 public class CLIGameController {
     GameBoard gameBoard;
-    
+    String rewardsArray[];
 
-    //constructor(s):
-    public CLIGameController(String player1Name, String player2Name){
-        this.gameBoard = new GameBoard(player1Name, player2Name);
+    // constructor(s):
+    public CLIGameController() {
     }
-    public void startGame(){
+
+    public void startGame() throws IOException{
         Scanner scanner = new Scanner(System.in);
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
-        CLIGameController clicontroller = new CLIGameController(player1Name, player2Name);
-        
-        BufferedReader settings;
+        this.gameBoard = new GameBoard(player1Name, player2Name);
+
+        BufferedReader settings=null;
         int numberOfRounds;
         int numebrOfTurnsPerRound;
-        try{
-        //opening the file 
-        FileReader SettingsfileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsSettings.properties");
-        settings = new BufferedReader(SettingsfileReader);
-        
-        //taking in input from the file which is currently only 2 
-        String line1=  settings.readLine();
-        String [] lineOfRounds = line1.split("="); 
-        numberOfRounds = Integer.parseInt(lineOfRounds[1]);
 
-        String line2=  settings.readLine();
-        String [] lineOfTurns = line1.split("="); 
-        numebrOfTurnsPerRound = Integer.parseInt(lineOfTurns[1]);
-        }
-        catch(FileNotFoundException f){
-       
-        System.err.println("the Settings file was not able to be accessed");
-        System.out.println("please enter the number of desired rounds:");
-        numberOfRounds = scanner.nextInt();
-        
-        System.out.println("please enter the number of desired turns per round:");
-        numebrOfTurnsPerRound = scanner.nextInt();
-        }
-        catch (IOException e) {
+        try {
+            // opening the file
+            FileReader SettingsfileReader = new FileReader(
+                    "dice-realms-game-dimension/src/main/resources/RoundsSettings.properties");
+            settings = new BufferedReader(SettingsfileReader);
+
+            // taking in input from the file which is currently only 2
+            String line1 = settings.readLine();
+            String[] lineOfRounds = line1.split("=");
+            numberOfRounds = Integer.parseInt(lineOfRounds[1]);
+
+            String line2 = settings.readLine();
+            String[] lineOfTurns = line1.split("=");
+            numebrOfTurnsPerRound = Integer.parseInt(lineOfTurns[1]);
+        } catch (FileNotFoundException f) {
+
+            System.err.println("the Settings file was not able to be accessed");
+            System.out.println("please enter the number of desired rounds:");
+            numberOfRounds = scanner.nextInt();
+
+            System.out.println("please enter the number of desired turns per round:");
+            numebrOfTurnsPerRound = scanner.nextInt();
+        } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
+        } finally{
+            if (settings != null)
+                settings.close();
         }
 
-        System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+        System.out.println(
+                "Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
-        String choice= scanner.nextLine();
-        if (choice == "i"){
-            System.out.println("Description goes here");
-            break;
-        }
-        else if (choice== "c"){
-            break;
-        }
+            String choice = scanner.nextLine();
+            if (choice == "i") {
+                System.out.println("Description goes here");
+                break;
+            } else if (choice == "c") {
+                break;
+            }
         } while (true);
+
+        BufferedReader rewardsFile=null;
+        ArrayList<String> rewards= new ArrayList<String>() ;
+        try {
+            // opening the file
+            FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
+            rewardsFile = new BufferedReader(rewardsFileReader);
+
+            // taking in input from the file which is currently only 2
+            String rewardsline ;
+            while ((rewardsline  = rewardsFile.readLine()) != null){
+                rewards.add(rewardsline.split("=")[1]);
+            }
+        } catch (FileNotFoundException  e) {
+
+            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
+            rewards.add("TimeWarp");
+            rewards.add("ArcaneBoost");
+            rewards.add("TimeWarp");
+            rewards.add("EssenceBonus");
+            rewards.add("null");
+            rewards.add("null");
+            
+        } catch (IOException e) {
+            System.out.println("there has been an error in IO other than fileNotFound");
+            e.printStackTrace();
+        } finally{
+            if (rewardsFile != null)
+                rewardsFile.close();
+        }
+  
+        
+
     }
 
     // move methods
-    public Move [] getAllPossibleMoves(Player player){
+    public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
     }
 
-    //makeMove(new player(), new Move(new RedDice(), new Gaia())) 
-    // public boolean makeMove(Player player, Move move)throws BonusException{
-    //     try{
-    //         if (move.getCreature() instanceof Dragon ){
-    //             System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
-    //             int dragonIndex = Integer.parseInt(System.console().readLine());
-    //             Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-    //             move.setCreature(dragon);  //should be make move
-    //         }else if (move.getCreature() instanceof Gaia){            
-    //             GreenDice greenDice= (GreenDice)this.gameBoard.getWhite();
-    //             Dice whiteDice= this.gameBoard.getGreen();
-    //             int greenVal= greenDice.getValue();
-    //             int whiteVal= whiteDice.getValue();
-    //             greenDice.setRealValue(greenVal+ whiteVal);
-    //         }
-    //         move.getCreature().makeMove(move.getDice());
-            
-    //     }catch (BonusException bException){
-    //         RealmColor theBonusColor= bException.getRealmColor();
-    //         System.out.println("please enter the number to attack the "+theBonusColor + " realm with: ");
-    //         int numberToAttackWith = Integer.parseInt(System.console().readLine());
-    //         Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
-    //         Move bonusmove = new Move(new Dice(numberToAttackWith), creature );
-    //         makeMove(player, bonusmove);
-    //     }
-    //     return true;
-    // }    
-    //gameboard getter:
-    public GameBoard getGameBoard() {   
+    // makeMove(new player(), new Move(new RedDice(), new Gaia()))
+    public boolean makeMove(Player player, Move move) throws BonusException {
+        try {
+            if (move.getCreature() instanceof Dragon) {
+                System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
+                int dragonIndex = Integer.parseInt(System.console().readLine());
+                Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
+                move.setCreature(dragon); // should be make move
+            } else if (move.getCreature() instanceof Gaia) {
+                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
+                Dice whiteDice = this.gameBoard.getGreen();
+                int greenVal = greenDice.getValue();
+                int whiteVal = whiteDice.getValue();
+                greenDice.setRealValue(greenVal + whiteVal);
+            }
+            move.getCreature().makeMove(move.getDice());
+
+        } catch (BonusException bException) {
+            RealmColor theBonusColor = bException.getRealmColor();
+            System.out.println("please enter the number to attack the " + theBonusColor + " realm with: ");
+            int numberToAttackWith = Integer.parseInt(System.console().readLine());
+            Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
+            Move bonusmove = new Move(new Dice(numberToAttackWith), creature);
+            makeMove(player, bonusmove);
+        }
+        return true;
+    }
+
+    // gameboard getter:
+    public GameBoard getGameBoard() {
         return gameBoard;
     }
-    public GameStatus getGameStatus(){
+
+    public GameStatus getGameStatus() {
         return this.gameBoard.getGameStatus();
     }
+
     // dice related methods:
-    public void rollDice(){
+    public void rollDice() {
         this.gameBoard.rollDice();
     }
-    public Dice [] getAllDice(){
+
+    public Dice[] getAllDice() {
         return this.gameBoard.getAllDice();
     }
-    public Dice [] getAvailableDice(){
+
+    public Dice[] getAvailableDice() {
         return this.gameBoard.getAvailableDice();
     }
-    public Dice [] getForgottenRealmDice(){
+
+    public Dice[] getForgottenRealmDice() {
         return this.gameBoard.getForgottenRealmDice();
     }
-    
-    
-    //player related methods: 
-    public boolean switchPlayer(){
-        try{
+
+    // player related methods:
+    public boolean switchPlayer() {
+        try {
             this.gameBoard.getPlayer1().switchStatus();
             this.gameBoard.getPlayer2().switchStatus();
             return true;
-        } 
-        catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public Player getActivePlayer(){
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE){
+    public Player getActivePlayer() {
+        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE) {
             return this.gameBoard.getPlayer1();
-        }else{
+        } else {
             return this.gameBoard.getPlayer2();
         }
     }
 
-    public Player getPassivePlayer(){
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE){
+    public Player getPassivePlayer() {
+        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE) {
             return this.gameBoard.getPlayer1();
-        }else{
+        } else {
             return this.gameBoard.getPlayer2();
         }
     }
 
-    //player attributes related methods
-    public ScoreSheet getScoreSheet(Player player){
+    // player attributes related methods
+    public ScoreSheet getScoreSheet(Player player) {
         return player.getScoresheet();
     }
 
-    public GameScore getGameScore(Player player){
+    public GameScore getGameScore(Player player) {
         return player.getGameScore();
     }
 
-    public  TimeWarp[] getTimeWarpPowers(Player player){
+    public TimeWarp[] getTimeWarpPowers(Player player) {
         return player.getTimeWarps();
     }
 
-    
     public static void main(String[] args) {
-        
+        CLIGameController controller = new CLIGameController();
     }
-
-
 
     // public abstract boolean switchPlayer(){
     // }
