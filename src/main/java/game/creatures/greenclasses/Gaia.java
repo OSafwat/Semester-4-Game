@@ -3,6 +3,8 @@ package game.creatures.greenclasses;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.creatures.Creature;
 import game.dice.Dice;
 import game.dice.GreenDice;
@@ -26,6 +28,8 @@ public class Gaia extends Creature{
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
+    private TimeWarp timeWarps [];
+    private ArcaneBoost arcaneBoosts [];
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
@@ -42,6 +46,39 @@ public class Gaia extends Creature{
 
         }
         gaiaGuardians[0][0].kill();
+        int timeWarpCounter=0;
+        for(int i=0;i<3;i++){
+            if(this.whichCollectableRow(i).equals("TimeWarp"))
+            timeWarpCounter++;
+        }
+        for(int i=0;i<4;i++){
+            if(this.whichCollectableCol(i).equals("TimeWarp"))
+            timeWarpCounter++;
+        }
+        timeWarps = new TimeWarp[timeWarpCounter];
+        for(int i =0;i<timeWarps.length;i++){
+            //ASUM TimWarp class is done
+            // IMP create as not accuired
+            timeWarps[i]= new TimeWarp();
+        }
+        int arcaneBoostCounter=0;
+        for(int i=0;i<3;i++){
+            if(this.whichCollectableRow(i).equals("ArcaneBoost"))
+            arcaneBoostCounter++;
+        }
+        for(int i=0;i<4;i++){
+            if(this.whichCollectableCol(i).equals("ArcaneBoost"))
+            arcaneBoostCounter++;
+        }
+        arcaneBoosts = new ArcaneBoost[arcaneBoostCounter];
+        for(int i =0;i<arcaneBoosts.length;i++){
+            //ASUM ArcaneBoost class is done
+            // IMP create as not accuired
+            arcaneBoosts[i]= new ArcaneBoost();
+        }
+
+
+        
 
     }
 
@@ -215,7 +252,8 @@ private  void updateRow(int r){
  // EXP gives the respective bonus for each col
     // IMP this will be changed when collectables classes are done
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
-    private String whichCollectableCol (int c)throws IOException{
+    private String whichCollectableCol (int c){
+        try{
          String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
         Properties prop ;
         String colReward;
@@ -226,12 +264,17 @@ private  void updateRow(int r){
         String whichReward = "column"+real+"Reward";
         colReward = prop.getProperty(whichReward);
         return colReward;
+        }
+        catch(IOException e){
+            return "Invalid";
+        }
       
     }
 
       // EXP gives the respective bonus for each row
     // IMP this will be changed when collectables classes are done
-      private String whichCollectableRow(int r) throws IOException{
+      private String whichCollectableRow(int r) {
+        try{
         String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
         Properties prop ;
         String rowReward;
@@ -242,12 +285,17 @@ private  void updateRow(int r){
         String whichReward = "row"+real+"Reward";
         rowReward = prop.getProperty(whichReward);
         return rowReward;
+        }
+        catch(IOException e ){
+            return "Invalid";
+        }
+        
 }
 
 
 
 // EXP executing a given move
-    public boolean makeMove(Dice dice){
+    public boolean makeMove(Dice dice)   {
         
         if(!checkMove(dice))
             return false;
@@ -268,14 +316,22 @@ private  void updateRow(int r){
             if(!checkRow(rowToCheck)  && !checkCol(colToCheck))
             return true;
             else if(checkRow(rowToCheck)  && !checkCol(colToCheck)){
-                String act = whichCollectableRow(rowToCheck);
+                String act="";
+                 act = whichCollectableRow(rowToCheck);
+                
+               
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will need to change in the whichCollectableRow(rowToCheck)
+                if(act.equals("TimeWarp")){
+
+                }
                 return true;
             }
             else if(!checkRow(rowToCheck)  && checkCol(colToCheck)){
-                String act = whichCollectableCol(colToCheck);
+                    String act = whichCollectableCol(colToCheck);
+                        System.out.println("Invaild");
+                    
                 // ADD THE CODE OF THE BONUS OR POWER RESPECTIVELY
                 // IMP this will be changed when collectables classes are done
                 // I will only need to change  in the whichCollectableCol(colToCheck);
