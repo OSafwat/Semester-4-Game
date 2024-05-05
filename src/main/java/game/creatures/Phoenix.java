@@ -32,6 +32,7 @@ public class Phoenix extends Creature{
         sb.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         sb.append("+-----------------------------------------------------------------------+\n");
 
+        sb.append("|  H  |");
         // for loop to loop on the phoenixsReceivedHP array which stored the hits received by each pheonix
         for (int i = 0; i < 11; i++) {
             if (phoenixsReceivedHP[i] == null) sb.append("0    |");
