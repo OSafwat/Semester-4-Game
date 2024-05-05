@@ -37,8 +37,8 @@ public class GameBoard {
         
         this.forgottenRealmDice = new ArrayList<>();
 
-        player1 = new Player(PlayerStatus.ACTIVE);
-        player2 = new Player(PlayerStatus.PASSIVE);
+        player1 = new Player(PlayerStatus.ACTIVE, player1name);
+        player2 = new Player(PlayerStatus.PASSIVE, player2Name);
 
         //this.gameStatus= <gamestatus>;
 

@@ -6,14 +6,29 @@ import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.*;
 import game.engine.enums.*;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Scanner;
 public class CLIGameController {
     GameBoard gameBoard;
     
 
     //constructor(s):
-    public CLIGameController(){
-        this.gameBoard = new GameBoard();
+    public CLIGameController(String player1Name, String player2Name){
+        this.gameBoard = new GameBoard(player1Name, player2Name);
+    }
+    public void startGame(){
+        BufferedReader br = null;
+        FileReader fileReader = new FileReader("dice-realms-game-dimension/src/main/resources/")
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("please input the name of player 1:");
+        String player1Name = scanner.nextLine();
+        System.out.println("please input the name of player 2:");
+        String player2Name = scanner.nextLine();
+        CLIGameController clicontroller = new CLIGameController(player1Name, player2Name);
+        //game loop
+        int numberOfLoops = 
     }
 
     // move methods
@@ -111,16 +126,7 @@ public class CLIGameController {
         return player.getTimeWarps();
     }
 
-    public void startGame(){
-        Scanner scanner = new Scanner(System.in);
-        CLIGameController clicontroller = new CLIGameController();
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-        Player 
-
-    }
+    
 
 
 
