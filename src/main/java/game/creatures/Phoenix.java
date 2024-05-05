@@ -21,8 +21,8 @@ public class Phoenix extends Creature{
 
     @Override
     public int getElementalCrest() {
-        String boostName = "ElementalCrest";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? 1 : 0;
+        String rewardName = "ElementalCrest";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? 1 : 0;
     }
 
     @Override
@@ -113,19 +113,19 @@ public class Phoenix extends Creature{
             String rewardString;
             switch(key) {
                 case "RedBonus":
-                    rewardString = getRedBoostString();
+                    rewardString = getRedBonusString();
                     break;
                 case "GreenBonus":
-                    rewardString = getGreenBoostString();
+                    rewardString = getGreenBonusString();
                     break;
                 case "BlueBonus":
-                    rewardString = getBlueBoostString();
+                    rewardString = getBlueBonusString();
                     break;
                 case "MagentaBonus":
-                    rewardString = getMagentaBoostString();
+                    rewardString = getMagentaBonusString();
                     break;
                 case "YellowBonus":
-                    rewardString = getYellowBoostString();
+                    rewardString = getYellowBonusString();
                     break;
                 case "ElementalCrest":
                     rewardString = getElementalCrestString();
@@ -144,43 +144,43 @@ public class Phoenix extends Creature{
         }
     }
 
-    public String getRedBoostString() {
-        String boostName = "RedBonus";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "RB";
+    public String getRedBonusString() {
+        String rewardName = "RedBonus";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "RB";
     }
 
-    public String getGreenBoostString() {
-        String boostName = "GreenBonus";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "GB";
+    public String getGreenBonusString() {
+        String rewardName = "GreenBonus";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "GB";
     }
 
-    public String getBlueBoostString() {
-        String boostName = "GreenBonus";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "BB";
+    public String getBlueBonusString() {
+        String rewardName = "BlueBonus";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "BB";
     }
 
-    public String getMagentaBoostString() {
-        String boostName = "MagentaBonus";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "MB";
+    public String getMagentaBonusString() {
+        String rewardName = "MagentaBonus";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "MB";
     }
 
-    public String getYellowBoostString() {
-        String boostName = "YellowBonus";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "YB";
+    public String getYellowBonusString() {
+        String rewardName = "YellowBonus";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "YB";
     }
 
     public String getElementalCrestString() {
-        String boostName = "ElementalCrest";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "EC";
+        String rewardName = "ElementalCrest";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "EC";
     }
 
     public String getArcaneBoostString(int n) {
-        String boostName = "ArcaneBoost";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "AB";
+        String rewardName = "ArcaneBoost";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "AB";
     }
 
     public String getTimeWarpString(int n) {
-        String boostName = "TimeWarp";
-        return phoenixsReceivedHP[rewardLocations.get(boostName)] != null ? "X" : "TW";
+        String rewardName = "TimeWarp";
+        return phoenixsReceivedHP[rewardLocations.get(rewardName)] != null ? "X" : "TW";
     }
 }
