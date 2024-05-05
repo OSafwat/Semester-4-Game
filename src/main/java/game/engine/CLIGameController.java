@@ -115,11 +115,12 @@ public class CLIGameController {
         //the following is trying to start the game loop:
 
         for (int i=0; i<numberOfRounds; i++){
+            
             //the following is trying to start the round loop:
             for (int j=0; j<numebrOfTurnsPerRound; j++){
                 Player player1= getActivePlayer();
                 //Player player2= getPassivePlayer();
-
+                ScoreSheet scoreSheet = getScoreSheet(getActivePlayer());
                 System.out.println(player1.getName()+", here is your score sheet:");
                 System.out.println(getScoreSheet(player1));
 
@@ -133,19 +134,19 @@ public class CLIGameController {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
 
-            //  1:B5  2:W6  3:Y3 ...
+            //  1:B5  2:W6  3:Y3 4:B
                 System.out.println("please choose a number between 1 and "+ availableDice.length);
                 Dice chosenDice=null;
                 do {
                     int choice = scanner.nextInt();
                     if (!(choice > availableDice.length || choice <= 0)){
                         chosenDice = availableDice[choice-1];
+                    }else {
+                        System.out.println("please choose a valid move");
                     }
                 } while (true);
 
-                Move moveToBeMade =
-
-                makeMove(player1, new  );
+                makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getCreatureByColor() )));
 
             }
 
