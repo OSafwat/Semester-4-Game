@@ -10,39 +10,49 @@ Dice-Realms/
 │   │   ├── java/
 │   │   │   └── game/
 │   │   │       ├── collectibles/   
-│   │   │       │   ├── TimeWarp.java
+│   │   │       │   ├── Reward.java
+│   │   │       │   ├── Power.java
+│   │   │       │   ├── Bonus.java
+│   │   │       │   ├── ElementalCrest.java
 │   │   │       │   ├── ArcaneBoost.java
-│   │   │       │   ├── ColorBonus.java
+│   │   │       │   ├── TimeWarp.java
+│   │   │       │   └── EssenceBonus.java
 │   │   │       │
 │   │   │       ├── creatures/
-│   │   │       │   ├── PyroDragon.java
-│   │   │       │   ├── GaiaGaurdian.java
-│   │   │       │   ├── HydraSerpent.java
-│   │   │       │   ├── MajesticPheonix.java
-│   │   │       │   ├── SolarLion.java
-│   │   │       │   ├── RedRealm.java
-│   │   │       │   ├── GreenRealm.java
-│   │   │       │   ├── BlueRealm.java
-│   │   │       │   ├── MagentaRealm.java
-│   │   │       │   └── YellowRealm.java
+│   │   │       │   ├── Creature.java
+│   │   │       │   ├── Dragon.java
+│   │   │       │   ├── Gaia.java
+│   │   │       │   ├── Hydra.java
+│   │   │       │   ├── Phoenix.java
+│   │   │       │   └── Lion.java
 │   │   │       │
 │   │   │       ├── dice/
 │   │   │       │   ├── Dice.java
-│   │   │       │   └── Move.java
+│   │   │       │   ├── RedDice.java
+│   │   │       │   ├── GreenDice.java
+│   │   │       │   ├── BlueDice.java
+│   │   │       │   ├── MagentaDice.java
+│   │   │       │   ├── YellowDice.java
+│   │   │       │   └── ArcanePrism.java
 │   │   │       │
 │   │   │       ├── engine/
 │   │   │       │   ├── GameController.java
+│   │   │       │   ├── CLIGameController.java
+│   │   │       │   ├── GameBoard.java
 │   │   │       │   ├── Player.java
-│   │   │       │   ├── Realm.java
-│   │   │       │   ├── enum/
-│   │   │       │   │  ├── DiceState.java
-│   │   │       │   │  ├── Color.java
-│   │   │       │   │  ├── PowerState.java
-│   │   │       │   │  └── PlayerState.java
-│   │   │       │   └── interface/
-│   │   │       │       └── Creature.java
+│   │   │       │   ├── ScoreSheet.java
+│   │   │       │   ├── GameStatus.java
+│   │   │       │   ├── GameScore.java
+│   │   │       │   └── Move.java
 │   │   │       │   
 │   │   │       ├── exceptions/
+│   │   │       │   ├── RewardException.java
+│   │   │       │   ├── PlayerActionException.java
+│   │   │       │   ├── InvalidMoveException.java
+│   │   │       │   ├── InvalidDiceSelectionException.java
+│   │   │       │   ├── DiceRollException.java
+│   │   │       │   ├── CommandFormatException.java
+│   │   │       │   └── ExhaustedResourceException.java
 │   │   │       │
 │   │   │       ├── gui/
 │   │   │       │
@@ -50,7 +60,16 @@ Dice-Realms/
 │   │   │         
 │   │   └── resources/
 │   │       ├── images/
-│   │       └── config/
+│   │       │   └── Project-UML-Diagram.png
+│   │       ├── config/
+│   │       │   ├── EmberfallDominionRewards.properties
+│   │       │   ├── RoundsRewards.properties
+│   │       │   ├── MysticalSkyRewards.properties
+│   │       │   ├── TerrasHeartlandRewards.properties
+│   │       │   ├── RadiantSvannaRewards.properties
+│   │       │   └── TideAbyssRewards.properties
+│   │       └── EmptyScoreSheet.txt
+│   │
 │   │
 │   └── test/
 │       └── java/

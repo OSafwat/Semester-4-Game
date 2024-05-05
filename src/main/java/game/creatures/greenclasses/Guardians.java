@@ -1,0 +1,41 @@
+package game.creatures.greenclasses;
+
+public class Guardians {
+
+    public static final int length = 0;
+    private  int guardianValue;
+    private boolean guardianStatus;
+
+    protected Guardians(int guardianValue){
+        this.guardianValue=guardianValue;
+        this.guardianStatus=true;
+    }
+
+
+    protected int getGuardianValue(){
+    return guardianValue;
+}
+
+protected boolean isDead(){
+
+    return !guardianStatus;
+}
+
+protected void  kill(){
+    guardianStatus=false;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    
+}
