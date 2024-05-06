@@ -64,7 +64,7 @@ public class Phoenix extends Creature{
 
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
-            if (rewardLocations == null) sb.append("     |");
+            if (rewardToken == null) sb.append("     |");
             else sb.append(rewardToken + "   |");
         }
 
