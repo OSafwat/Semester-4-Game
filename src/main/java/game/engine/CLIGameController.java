@@ -229,10 +229,6 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-
-            Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
-            Move bonusmove = new Move(new Dice(numberToAttackWith), creature);
-            return makeMove(player, bonusmove);
         }catch (BonusTwoException bonus2exception){
             RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
             RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
