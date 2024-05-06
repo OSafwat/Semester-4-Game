@@ -158,6 +158,7 @@ public class CLIGameController {
                             realmChoice= scanner.nextInt();
                             if (realmChoice >=1 && realmChoice <= 5)
                                 break;
+                            System.out.println("momken nebatal estehbal");
                         }while(true);
                         handleBonus(realmChoice);
                     case "RedBonus":    handleBonus(1);
