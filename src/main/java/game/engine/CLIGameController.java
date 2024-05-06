@@ -169,29 +169,59 @@ public class CLIGameController {
                     default: System.out.println("7azak en el round da mafhoosh bonus");
                 }
                 ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
-                for (int i=0; i< currentPlayersArcaneBoosts.size(); i++){
-                    if (currentPlayersArcaneBoosts.get(i).getStatus() == RewardStates.ACQUIRED){
-                        System.out.println("Would you like to use an arcane Boost (enter 'y' or 'n')");
-                        char choice = '7';
-                        do {
-                            choice =scanner.nextLine().charAt(0);
-                            if (choice == 'y' || choice == 'n')
-                                break;
-                        } while (true);
-                        
-                        if (choice == 'n')
-                            break;
-                        if (choice=='y'){
-                            currentPlayersArcaneBoosts.setStatus(i);
-                            i--;
-                        }
-                    }
-                }
+                handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost 
+
+
                 
                 gameBoard.resetForgottenRealm();
                 switchPlayer();
             }
 
+        }   
+    }
+
+    public void handleArcaneBoost(Player currentActivePlayer,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){
+        Scanner scanner = new Scanner(System.in);
+
+        for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
+            if (currentPlayersArcaneBoosts.get(arcaneBoostsIndex).getStatus() == RewardStates.ACQUIRED){
+                System.out.println("Would you like to use an arcane Boost (enter 'y' or 'n')");
+                char choice = '7';
+                do {
+                    choice =scanner.nextLine().charAt(0);
+                    if (choice == 'y' || choice == 'n')
+                        break;
+                } while (true);
+                
+                if (choice == 'n')
+                    break;
+                if (choice=='y'){
+                    currentPlayersArcaneBoosts.get(arcaneBoostsIndex).setStatus(RewardStates.USED);
+                    //the functionality of getting an arcane boost goes here
+                    Dice [] alldice= getAllDice();
+                    System.out.println("choose from the following dice one of them to make a move with");
+                    for (int diceIndex=0; diceIndex < alldice.length; diceIndex++){
+                        System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
+                    }
+                    
+                    while (true) {
+                        try {
+                            int arcaneboostChoice=0;
+                            do {
+                                arcaneboostChoice= scanner.nextInt();
+                                if (arcaneboostChoice >=1 && arcaneboostChoice <= 6)
+                                    break;
+                            } while (true);
+                            if (makeMove(currentActivePlayer, new Move(alldice[arcaneboostChoice],currentActivePlayer.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
+                                break;
+                        
+                        } catch (InvalidMoveException e) {
+                            System.out.println("sadly you will need to choose another move that is gonna be more correct we law enta zehe2t men kol el error checking da fa ana zehe2t aktar");
+                        }
+                    }
+
+                }
+            }
         }   
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
@@ -413,7 +443,7 @@ public class CLIGameController {
     }
 
     public TimeWarp[] getTimeWarpPowers(Player player) {
-        return player.getTimeWarps();
+        return player.getTimeWarps().toArray();
     }
 
     public static void main(String[] args) {
