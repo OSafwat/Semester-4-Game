@@ -11,7 +11,9 @@ import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
 
 public abstract class Creature {
-    private int score;
+    public int score;
+    public ArrayList<TimeWarp> timeWarps;
+    public ArrayList<ArcaneBoost> arcaneBoosts;
     public int getScore(){
         return this.score;  //return numerical score value for each realm
     }  
