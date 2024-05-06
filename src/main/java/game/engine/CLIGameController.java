@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -259,9 +260,38 @@ public class CLIGameController {
             }
         } while (true);
     }
-    public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus){
+    public void handlingTimeWarps(ArrayList<TimeWarp> timewarps){
         Scanner scanner = new Scanner(System.in);
-                //Player player2= getPassivePlayer();
+        if (timewarps.size()==0)
+            return;
+        
+
+        System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding press 'y' to use it or 'n' otherwise )"); 
+        char choice = '7';
+        do {
+            choice = scanner.next().charAt(0);
+            if (choice == 'y' || choice == 'n')
+                break;
+            System.out.println("please enter a valid choice ba2a");
+        } while (true );
+        if (choice == 'n')
+            return;
+        
+        for (int index = 0; index < timewarps.size(); index++) {
+            if (timewarps.get(index).getStatus()==RewardStates.ACQUIRED){
+                timewarps.get(index).setStatus(RewardStates.USED);
+                gameBoard.rollDice();
+                System.out.println("Here are your rolled dice: ");
+                int counter= 0;
+                for (Dice die : getAllDice()) {
+                    System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+                }
+            }
+        }
+        
+    }
+    public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
+        Scanner scanner = new Scanner(System.in);
                 ScoreSheet scoreSheet = controller.getScoreSheet(player);
                 System.out.println(player.getName()+", here is your score sheet:");
                 scoreSheet.displayScoreSheet();

@@ -66,6 +66,11 @@ public class GameBoard {
             die.rollDice();
         }
     }
+    public void rollAvailableDice(){
+        for (Dice die : availableDice) {
+            die.rollDice();
+        }
+    }
     public Dice [] getAllDice(){
         return this.allDice;
     } 
