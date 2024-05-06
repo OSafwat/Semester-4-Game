@@ -145,11 +145,11 @@ public class CLIGameController {
                 }
                 playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
                 //the following is resetting the dice:
-                gameBoard.resetForgottenRealm();
+                
                 // should assign the round rewards as well as use the arcaneboosts and time warps
                 // the following handles what to do with the rewards taken from the config file
                 switch (rewards[i]){
-                    case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost()); break;
+                    case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
                     case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp()); break;
                     case "EssenceBonus": 
                         int realmChoice =0;
@@ -168,8 +168,27 @@ public class CLIGameController {
                     case "YellowBonus": handleBonus(5);
                     default: System.out.println("7azak en el round da mafhoosh bonus");
                 }
-
+                ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
+                for (int i=0; i< currentPlayersArcaneBoosts.size(); i++){
+                    if (currentPlayersArcaneBoosts.get(i).getStatus() == RewardStates.ACQUIRED){
+                        System.out.println("Would you like to use an arcane Boost (enter 'y' or 'n')");
+                        char choice = '7';
+                        do {
+                            choice =scanner.nextLine().charAt(0);
+                            if (choice == 'y' || choice == 'n')
+                                break;
+                        } while (true);
+                        
+                        if (choice == 'n')
+                            break;
+                        if (choice=='y'){
+                            currentPlayersArcaneBoosts.setStatus(i);
+                            i--;
+                        }
+                    }
+                }
                 
+                gameBoard.resetForgottenRealm();
                 switchPlayer();
             }
 
