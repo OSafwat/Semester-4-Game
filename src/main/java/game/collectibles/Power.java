@@ -7,4 +7,11 @@ public class Power extends Reward {
     public Power(RewardStates status) {
         this.status = status;
     }
+    public RewardStates getStatus() {
+        return status;
+    }
+
+    public void setStatus(RewardStates status) {
+        this.status = status;
+    }
 }
