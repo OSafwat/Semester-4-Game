@@ -181,7 +181,7 @@ public class CLIGameController {
             case 3: return scoresheet.getCreatureByColor(RealmColor.BLUE);
             case 4: return scoresheet.getCreatureByColor(RealmColor.MAGENTA);
             case 5: return scoresheet.getCreatureByColor(RealmColor.YELLOW);
-            default: System.out.println("a7a ana mesh 3aref law dakhalna hena han7elaha ezay");
+            default: System.out.println("ok ana mesh 3aref law dakhalna hena han7elaha ezay");
                     return scoresheet.getCreatureByColor(RealmColor.RED);
 
         }
@@ -190,20 +190,20 @@ public class CLIGameController {
     public void handleBonus(int realmChoice){
         Scanner scanner = new Scanner(System.in);
         Player currentActivePlayer= getActivePlayer();
-        int numChoice =0;
-      
-
-        do{
-            System.out.println("please choose a number from 1-6 to attack with");
-            numChoice= scanner.nextInt();
-            if (realmChoice >=1 && realmChoice <= 5)
-                break;
-        }while(true);
         
         Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
         do {
             try {
-                makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature));
+                int numChoice =0;
+                do{
+                    System.out.println("please choose a number from 1-6 to attack with");
+                    numChoice= scanner.nextInt();
+                    if (realmChoice >=1 && realmChoice <= 5)
+                        break;
+                }while(true);
+                if (makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature)))
+                    break;
+                System.out.println("please enter try another move that will be valid ");
             } catch (InvalidMoveException e) {
                 System.out.println("batal estehbal -> invalid move");
             }
