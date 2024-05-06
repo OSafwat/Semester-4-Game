@@ -2,6 +2,8 @@ package game.creatures;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -26,6 +28,7 @@ public class Phoenix extends Creature{
         killedPhoenixes = 0;
         allTimeWarps = new ArrayList<>();
         allArcaneBoosts = new ArrayList<>();
+        allPossibleMoves = new ArrayList<>();
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
     }
@@ -137,7 +140,8 @@ public class Phoenix extends Creature{
 
     //implementing the config file reading
     public void populateRewardLocationFromConfigFile() {
-        try (InputStream input = new FileInputStream("../../../resources/config/MysticalSkyRewards.properties")) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/MysticalSkyRewards.properties")) {
+            if (input == null) throw new IOException("Config file not found, default configuration will be used");
 
             Properties prop = new Properties();
 
@@ -145,22 +149,30 @@ public class Phoenix extends Creature{
             prop.load(input);
 
             // get the property value and store them in the HashSet rewardLocation
-            ArrayList<Object> valueSet = new ArrayList<>();
-            valueSet.addAll(new LinkedHashSet<>(prop.values()));
-            if (valueSet.isEmpty() || valueSet.size() < 11) throw new IOException("The File is Empty or contains few hit rewards");
-            int counter = 0;
-            for (Object value : valueSet) {
-                // rewardLocations.put((String) value, counter++);
+            if (prop.isEmpty() || prop.size() < 11) throw new IOException("Properties file is empty or contains fewer than 11 properties");
+
+            for (String key : prop.stringPropertyNames()) {
+                String value = prop.getProperty(key);
+
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(key);
+                
+                int index = 0;
+                while (matcher.find()) {
+                    String number = matcher.group();
+                    index = Integer.parseInt(number) - 1;
+                }
+                
                 if (rewardLocations.containsKey((String) value)) {
-                    rewardLocations.get((String) value).add(counter++);
+                    rewardLocations.get((String) value).add(index);
                 } else {
-                    rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {counter++})));
+                    rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
                 }
             }
 
         } catch (IOException ex) {
             // Printing out a meaningful message to let the user know what will happen
-            System.out.println("Config file not found, deafult configuration will be used");
+            System.out.println(ex.getMessage());
 
             // Actual population of the HashMap
             rewardLocations.put(null, new ArrayList<>(Arrays.asList(new Integer[] {0, 1})));
