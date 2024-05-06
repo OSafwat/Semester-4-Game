@@ -5,6 +5,7 @@ import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 import game.dice.*;
 import game.creatures.*;
+import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
 import java.io.BufferedReader;
@@ -136,34 +137,44 @@ public class CLIGameController {
 
         for (int i=0; i<numberOfRounds*2; i++){
             
-            //the following is trying to start the round loop:
-            for (int j=0; j<numebrOfTurnsPerRound; j++){
-                Player player1= getActivePlayer();
+            //the following is playing 3 rounds with the eactive player then 1 round with the passive player:
+            for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
+                Dice [] availableDice= getAvailableDice();
+                playOneTurn(this, getActivePlayer(), this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
+            }
+            playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
+
+            //the following is resetting the dice:
+            gameBoard.rollDice();
+
+        }
+    }
+
+    public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus){
+        Scanner scanner = new Scanner(System.in);
                 //Player player2= getPassivePlayer();
-                ScoreSheet scoreSheet = getScoreSheet(getActivePlayer());
-                System.out.println(player1.getName()+", here is your score sheet:");
-                System.out.println(getScoreSheet(player1));
+                ScoreSheet scoreSheet = controller.getScoreSheet(player);
+                System.out.println(player.getName()+", here is your score sheet:");
+                scoreSheet.displayScoreSheet();
 
                 gameBoard.rollDice();
 
                 System.out.println("Here are your rolled dice: ");
                 
-                Dice [] availableDice= getAvailableDice();
                 int counter= 0;
-                for (Dice die : availableDice) {
+                for (Dice die : diceToBePlayedwith) {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
 
-                //  1:B5  2:W6  3:Y3 4:B
-                
+                //the following is choosing an correct valid move  
                 Dice chosenDice=null;
                 do {
-                    System.out.println("please choose a number between 1 and "+ availableDice.length);
+                    System.out.println("please choose a number between 1 and "+ diceToBePlayedwith.length);
                     int choice = scanner.nextInt();
-                    if (!(choice > availableDice.length || choice <= 0)){
-                        chosenDice = availableDice[choice-1];
+                    if (!(choice > diceToBePlayedwith.length || choice <= 0)){
+                        chosenDice = diceToBePlayedwith[choice-1];
                         try{
-                            if (makeMove(player1, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                            if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                                 break;
                             }
                         }catch(InvalidMoveException iException){
@@ -175,12 +186,18 @@ public class CLIGameController {
                     }
                 } while (true);
 
-                
-            }
-        }
-    }
+                System.out.println("here is your new scoresheet");
 
- 
+                //changing the available dice 
+                if (playerStatus== PlayerStatus.ACTIVE){
+                    for (Dice die : diceToBePlayedwith) {
+                        if ( chosenDice.getValue() > die.getValue()){
+                            gameBoard.moveToForgottenrealm(die);
+                        }
+                    }
+                }
+                scoreSheet.displayScoreSheet();
+    }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();

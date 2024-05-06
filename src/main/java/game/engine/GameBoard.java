@@ -75,4 +75,13 @@ public class GameBoard {
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
+    public void moveToForgottenrealm(Dice die){
+        for (Dice dice : availableDice) {
+            if (dice == die){
+                this.availableDice.remove(dice);
+                this.forgottenRealmDice.add(dice);
+                break;
+            }
+        }
+    }
 }

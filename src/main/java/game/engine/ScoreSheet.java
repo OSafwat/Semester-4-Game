@@ -38,7 +38,7 @@ public class ScoreSheet {
         return total;
     }
 
-    public String getScoreSheet(){
+    public void displayScoreSheet(){
         String res ="\n";
         res += dragon.getScoreSheet();
         res +="\n\n";
@@ -50,7 +50,7 @@ public class ScoreSheet {
         res +="\n\n";
         res += lion.getScoreSheet();
         res +="\n";
-        return res;
+        System.out.println(res);
 
     }
     //red    green  blue    magenta    yellow
