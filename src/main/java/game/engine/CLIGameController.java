@@ -132,7 +132,7 @@ public class CLIGameController {
         } while (true);
 
         //the following is taking in the round rewards from the properties file
-        Reward rewards [] = getRewards(numberOfRounds);
+        String rewards [] = getRewards(numberOfRounds);
 
         //the following is trying to start the game loop:
 
@@ -148,16 +148,58 @@ public class CLIGameController {
                 gameBoard.resetForgottenRealm();
                 // should assign the round rewards as well as use the arcaneboosts and time warps
 
-               if (rewards[i] instanceof ArcaneBoost){
-                    currentActivePlayer.getArcaneBoosts().add(rewards[i]);
-               }else if (rewards[i])
-
+                switch (rewards[i]){
+                    case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost()); break;
+                    case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp()); break;
+                    case "EssenceBonus": 
+                       
+                    case "RedBonus":    
+            //    if (rewards[i] == "ArcaneBoost"){
+            //         currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost());
+            //    }else if (rewards[i] == "a")
+                }
                 switchPlayer();
             }
 
+        }   
+    }
+    public Creature getCreatureToAttacByBonus(int choice, ScoreSheet scoresheet){
+        switch (choice){
+            case 1: return scoresheet.getCreatureByColor(RealmColor.RED);
+            case 2: return scoresheet.getCreatureByColor(RealmColor.GREEN);
+            case 3: return scoresheet.getCreatureByColor(RealmColor.BLUE);
+            case 4: return scoresheet.getCreatureByColor(RealmColor.MAGENTA);
+            case 5: return scoresheet.getCreatureByColor(RealmColor.YELLOW);
+            default: System.out.println("a7a ana mesh 3aref law dakhalna hena han7elaha ezay");
+                    return scoresheet.getCreatureByColor(RealmColor.RED);
+
+        }
+
+    }
+    public void handleEssenceBonus(){
+        int realmChoice =0;
+        int numChoice =0;
+        do{
+            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
+            realmChoice= scanner.nextInt();
+            if (realmChoice >=1 && realmChoice <= 5)
+                break;
+        }while(true);
+
+        do{
+            System.out.println("please choose a number from 1-6 to attack with");
+            numChoice= scanner.nextInt();
+            if (realmChoice >=1 && realmChoice <= 5)
+                break;
+        }while(true);
+        
+        Creature creature=getCreatureToAttacByBonus(realmChoice, getScoreSheet(getActivePlayer()));
+        try {
+            makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature));
+        } catch (InvalidMoveException e) {
+            System.out.println("batal estehbal");
         }
     }
-
     public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus){
         Scanner scanner = new Scanner(System.in);
                 //Player player2= getPassivePlayer();
