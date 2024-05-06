@@ -136,17 +136,21 @@ public class CLIGameController {
 
         //the following is trying to start the game loop:
 
-        for (int i=0; i<numberOfRounds*2; i++){
-            
-            //the following is playing 3 rounds with the eactive player then 1 round with the passive player:
-            for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
-                Dice [] availableDice= getAvailableDice();
-                playOneTurn(this, getActivePlayer(), this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
-            }
-            playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
+        for (int i=0; i<numberOfRounds; i++){
+            for (int k = 0; k < 2; k++) {
+                //the following is playing some number of rounds with the active player then 1 round with the passive player
+                for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
+                    playOneTurn(this, getActivePlayer(), this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
+                }
+                playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
+                //the following is resetting the dice:
+                gameBoard.resetForgottenRealm();
+                // should assign the round rewards as well as use the arcaneboosts and time warps
+                  
 
-            //the following is resetting the dice:
-            gameBoard.resetForgottenRealm();
+
+                switchPlayer();
+            }
 
         }
     }
