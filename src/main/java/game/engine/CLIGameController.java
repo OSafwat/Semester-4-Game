@@ -2,6 +2,7 @@ package game.engine;
 
 import game.collectibles.*;
 import game.exceptions.BonusException;
+import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
 import game.dice.*;
 import game.creatures.*;
@@ -145,7 +146,7 @@ public class CLIGameController {
             playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
 
             //the following is resetting the dice:
-            gameBoard.rollDice();
+            gameBoard.resetForgottenRealm();
 
         }
     }
@@ -204,14 +205,8 @@ public class CLIGameController {
     }
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
-    public boolean makeMove(Player player, Move move) throws InvalidMoveException {
+    public boolean makeMove(Player player, Move move) throws InvalidMoveException, BonusTwoException {
         try {
-            // if (move.getCreature() instanceof Dragon) {
-            //     System.out.println("which dragon 7adretak 3aiz temawet (choose from 1 to 4)");
-            //     int dragonIndex = Integer.parseInt(System.console().readLine());
-            //     Dragon dragon = ((Dragon) move.getCreature()).dragonSelector(dragonIndex);
-            //     move.setCreature(dragon); // should be make move
-            // } else 
             if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
                 Dice whiteDice = this.gameBoard.getGreen();
@@ -223,11 +218,69 @@ public class CLIGameController {
 
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor();
-            System.out.println("please enter the number to attack the " + theBonusColor + " realm with: ");
-            int numberToAttackWith = Integer.parseInt(System.console().readLine());
+            System.out.println("please enter the number to attack the " + theBonusColor + " realm with: "); 
+            int numberToAttackWith = Integer.parseInt(System.console().readLine()); // NEED TO VALIDATE THE INPUT
             Creature creature = player.getScoresheet().getCreatureByColor(theBonusColor);
             Move bonusmove = new Move(new Dice(numberToAttackWith), creature);
             return makeMove(player, bonusmove);
+        }catch (BonusTwoException bonus2exception){
+            RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
+            RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
+            /*
+             * handle bonus exception
+             * handling yedakhal input ghalat (>6 || <1)   TAMAM
+             * yedakhal invalid move
+             * 
+             */
+            int firstNumberToAttackWith=0;
+            do{
+                System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
+                firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
+                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
+                    Creature firstCreature = player.getScoresheet().getCreatureByColor(theFirstBonusColor);
+                    Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
+                    if (makeMove(player, firstBonusmove))
+                        break;
+                    else{
+                        System.out.println("please choose a valid move");
+                    }
+                    
+                }else{
+                    System.out.println("please enter a valid number");
+                }
+            } while (true);
+
+            int secondNumberToAttackWith =0;
+            do{
+                System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
+                secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
+                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
+                    Creature secondCreature = player.getScoresheet().getCreatureByColor(theSecondBonusColor);
+                    Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
+                    if (makeMove(player, secondBonusmove))
+                        break;
+                    else{
+                        System.out.println("please choose again but a valid move");
+                    }
+                    
+                }else{
+                    System.out.println("please enter a valid number");
+                }
+            } while (true);
+
+
+            Creature secondCreature = player.getScoresheet().getCreatureByColor(theSecondBonusColor);
+
+
+
+            // try{
+            //     if (!(makeMove(player, firstBonusmove))){
+                    
+            //     }
+            // }catch(BonusException bException){
+            //     makeMove(player, secondBonusmove);
+            // }
+
         }
     }
 
