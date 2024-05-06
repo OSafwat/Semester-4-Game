@@ -28,12 +28,12 @@ public class GameBoard {
         this.allDice[5]=new ArcanePrism();
 
         this.availableDice = new ArrayList<>();
-        this.availableDice .add(this.allDice[0]);
-        this.availableDice .add(this.allDice[1]);
-        this.availableDice .add(this.allDice[2]);
-        this.availableDice .add(this.allDice[3]);
-        this.availableDice .add(this.allDice[4]);
-        this.availableDice .add(this.allDice[5]);
+        this.availableDice.add(this.allDice[0]);
+        this.availableDice.add(this.allDice[1]);
+        this.availableDice.add(this.allDice[2]);
+        this.availableDice.add(this.allDice[3]);
+        this.availableDice.add(this.allDice[4]);
+        this.availableDice.add(this.allDice[5]);
         
         this.forgottenRealmDice = new ArrayList<>();
 
@@ -82,6 +82,12 @@ public class GameBoard {
                 this.forgottenRealmDice.add(dice);
                 break;
             }
+        }
+    }
+    public void resetForgottenRealm(){
+        for (Dice die : forgottenRealmDice) {
+            forgottenRealmDice.remove(die);
+            availableDice.add(die);
         }
     }
 }
