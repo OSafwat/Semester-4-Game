@@ -146,8 +146,10 @@ public class CLIGameController {
                 //the following is resetting the dice:
                 gameBoard.resetForgottenRealm();
                 // should assign the round rewards as well as use the arcaneboosts and time warps
-                  
 
+               if (rewards[i] instanceof ArcaneBoost){
+                
+               }
 
                 switchPlayer();
             }
