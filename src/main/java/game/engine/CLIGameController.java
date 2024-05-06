@@ -147,23 +147,34 @@ public class CLIGameController {
                 //the following is resetting the dice:
                 gameBoard.resetForgottenRealm();
                 // should assign the round rewards as well as use the arcaneboosts and time warps
-
+                // the following handles what to do with the rewards taken from the config file
                 switch (rewards[i]){
                     case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost()); break;
                     case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp()); break;
                     case "EssenceBonus": 
-                       
-                    case "RedBonus":    
-            //    if (rewards[i] == "ArcaneBoost"){
-            //         currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost());
-            //    }else if (rewards[i] == "a")
+                        int realmChoice =0;
+                        do{
+                            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
+                            realmChoice= scanner.nextInt();
+                            if (realmChoice >=1 && realmChoice <= 5)
+                                break;
+                        }while(true);
+                        handleBonus(realmChoice);
+                    case "RedBonus":    handleBonus(1);
+                    case "GreenBonus": handleBonus(2);
+                    case "BlueBonus": handleBonus(3);
+                    case "MagentaBonus": handleBonus(4);
+                    case "YellowBonus": handleBonus(5);
+                    default: System.out.println("7azak en el round da mafhoosh bonus");
                 }
+
+                
                 switchPlayer();
             }
 
         }   
     }
-    public Creature getCreatureToAttacByBonus(int choice, ScoreSheet scoresheet){
+    public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
         switch (choice){
             case 1: return scoresheet.getCreatureByColor(RealmColor.RED);
             case 2: return scoresheet.getCreatureByColor(RealmColor.GREEN);
@@ -176,15 +187,11 @@ public class CLIGameController {
         }
 
     }
-    public void handleEssenceBonus(){
-        int realmChoice =0;
+    public void handleBonus(int realmChoice){
+        Scanner scanner = new Scanner(System.in);
+        Player currentActivePlayer= getActivePlayer();
         int numChoice =0;
-        do{
-            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
-            realmChoice= scanner.nextInt();
-            if (realmChoice >=1 && realmChoice <= 5)
-                break;
-        }while(true);
+      
 
         do{
             System.out.println("please choose a number from 1-6 to attack with");
@@ -193,12 +200,14 @@ public class CLIGameController {
                 break;
         }while(true);
         
-        Creature creature=getCreatureToAttacByBonus(realmChoice, getScoreSheet(getActivePlayer()));
-        try {
-            makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature));
-        } catch (InvalidMoveException e) {
-            System.out.println("batal estehbal");
-        }
+        Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
+        do {
+            try {
+                makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature));
+            } catch (InvalidMoveException e) {
+                System.out.println("batal estehbal -> invalid move");
+            }
+        } while (true);
     }
     public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus){
         Scanner scanner = new Scanner(System.in);
