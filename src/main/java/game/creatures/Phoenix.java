@@ -35,11 +35,12 @@ public class Phoenix extends Creature{
         String rewardName = "ElementalCrest";
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
 
+        int counter = 0;
         for (int i = 0; i < rewardLocationsArray.size(); i++) {
-            if (phoenixsReceivedHP[rewardLocationsArray.get(i)] != null) return 1;
+            if (phoenixsReceivedHP[rewardLocationsArray.get(i)] != null) counter++;
         }
 
-        return 0;
+        return counter;
     }
 
     @Override
