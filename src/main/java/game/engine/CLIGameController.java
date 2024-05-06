@@ -75,14 +75,14 @@ public class CLIGameController {
             // taking in input from the file which is currently only 2
             String rewardsline ;
             int rewardsCounter = 0;
-            while ((rewardsline  = rewardsFile.readLine()) != null){
+            for  ( ; rewardsCounter< numberOfRounds && (rewardsline  = rewardsFile.readLine()) != null; rewardsCounter++){
                 String reward = rewardsline.split("=")[1];
                 switch (reward){
-                    case "TimeWarp" : rewards[rewardsCounter++] = new TimeWarp();            break;
-                    case "ArcaneBoost": rewards[rewardsCounter++] = new ArcaneBoost();       break;
-                    case "EssenceBonus": rewards[rewardsCounter++] = new EssenceBonus();     break;
-                    case "ElementalCrest": rewards[rewardsCounter++] = new ElementalCrest(); break;
-                    default: rewards[rewardsCounter++] =null; 
+                    case "TimeWarp" : rewards[rewardsCounter] = new TimeWarp();            break;
+                    case "ArcaneBoost": rewards[rewardsCounter] = new ArcaneBoost();       break;
+                    case "EssenceBonus": rewards[rewardsCounter] = new EssenceBonus();     break;
+                    case "ElementalCrest": rewards[rewardsCounter] = new ElementalCrest(); break;
+                    default: rewards[rewardsCounter] =null; 
                 }
             }
         } catch (FileNotFoundException  e) {
