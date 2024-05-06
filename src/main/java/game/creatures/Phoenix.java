@@ -147,6 +147,7 @@ public class Phoenix extends Creature{
             // get the property value and store them in the HashSet rewardLocation
             ArrayList<Object> valueSet = new ArrayList<>();
             valueSet.addAll(new LinkedHashSet<>(prop.values()));
+            if (valueSet.isEmpty() || valueSet.size() < 11) throw new IOException("The File is Empty or contains few hit rewards");
             int counter = 0;
             for (Object value : valueSet) {
                 // rewardLocations.put((String) value, counter++);
