@@ -65,10 +65,10 @@ public class CLIGameController {
         return temp;
     }
 
-    public Reward [] getRewards(int numberOfRounds) throws IOException{
+    public String [] getRewards(int numberOfRounds) throws IOException{
 
         BufferedReader rewardsFile=null;
-        Reward[] rewards= new Reward [numberOfRounds] ;
+        String[] rewards= new String [numberOfRounds] ;
         try {
             // opening the file
             FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
@@ -78,24 +78,24 @@ public class CLIGameController {
             String rewardsline ;
             int rewardsCounter = 0;
             for  ( ; rewardsCounter< numberOfRounds && (rewardsline  = rewardsFile.readLine()) != null; rewardsCounter++){
-                String reward = rewardsline.split("=")[1];
-                switch (reward){
-                    case "TimeWarp" : rewards[rewardsCounter] = new TimeWarp();            break;
-                    case "ArcaneBoost": rewards[rewardsCounter] = new ArcaneBoost();       break;
-                    case "EssenceBonus": rewards[rewardsCounter] = new EssenceBonus();     break;
-                    case "ElementalCrest": rewards[rewardsCounter] = new ElementalCrest(); break;
-                    default: rewards[rewardsCounter] =null; 
-                }
+                rewards[rewardsCounter] = rewardsline.split("=")[1];            // had to make it a string array cuz i cant switch case in the startGame() method when i should be making such decisions including the possibility of a colored bonus being included
+                // switch (reward){
+                //     case "TimeWarp" : rewards[rewardsCounter] = new TimeWarp();            break;
+                //     case "ArcaneBoost": rewards[rewardsCounter] = new ArcaneBoost();       break;
+                //     case "EssenceBonus": rewards[rewardsCounter] = new EssenceBonus();     break;
+                //     case "ElementalCrest": rewards[rewardsCounter] = new ElementalCrest(); break;
+                //     default: rewards[rewardsCounter] =null; 
+                // }
             }
         } catch (FileNotFoundException  e) {
 
-            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
-            rewards[0]=new TimeWarp();
-            rewards[1] = new ArcaneBoost();
-            rewards[2] = new TimeWarp();
-            rewards[3] = new EssenceBonus();
-            rewards[4] = null;
-            rewards[5] = null;            
+            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used"); 
+            rewards[0]="TimeWarp";           //new TimeWarp();
+            rewards[1] = "ArcaneBoost";      //new ArcaneBoost();
+            rewards[2] ="TimeWarp";          //new TimeWarp();
+            rewards[3] = "EssenceBonus";     //new EssenceBonus();
+            rewards[4] = "";
+            rewards[5] = "";            
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
@@ -139,8 +139,9 @@ public class CLIGameController {
         for (int i=0; i<numberOfRounds; i++){
             for (int k = 0; k < 2; k++) {
                 //the following is playing some number of rounds with the active player then 1 round with the passive player
+                Player currentActivePlayer= getActivePlayer();
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
-                    playOneTurn(this, getActivePlayer(), this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
+                    playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
                 }
                 playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
                 //the following is resetting the dice:
@@ -148,8 +149,8 @@ public class CLIGameController {
                 // should assign the round rewards as well as use the arcaneboosts and time warps
 
                if (rewards[i] instanceof ArcaneBoost){
-                
-               }
+                    currentActivePlayer.getArcaneBoosts().add(rewards[i]);
+               }else if (rewards[i])
 
                 switchPlayer();
             }
