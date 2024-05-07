@@ -78,6 +78,9 @@ public class GameBoard {
     public Dice[] getAvailableDice(){
         return this.availableDice.toArray(new Dice[this.availableDice.size()]);
     }
+    public Dice [] getUsedDice(){
+        return this.usedDice.toArray(new Dice[this.usedDice.size()]);
+    }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
@@ -104,4 +107,5 @@ public class GameBoard {
             availableDice.add(die);
         }
     }
+
 }

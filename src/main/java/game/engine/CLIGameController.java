@@ -218,8 +218,9 @@ public class CLIGameController {
                     //the functionality of getting an arcane boost goes here
                     //
                     Dice [] alldice= getAllDice();
+                    Dice [] usedDice= 
                     System.out.println("choose from the following dice one of them to make a move with");
-                    for (int diceIndex=0; diceIndex < alldice.length; diceIndex++){
+                    for (int diceIndex=0; diceIndex < alldice.length  && ; diceIndex++){
                         System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                     }
                     
