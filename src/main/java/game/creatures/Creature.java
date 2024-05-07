@@ -1,7 +1,6 @@
 package game.creatures;
 
 import game.collectibles.ArcaneBoost;
-import game.collectibles.Bonus;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;

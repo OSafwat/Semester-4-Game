@@ -1,5 +1,5 @@
 package game.engine;
-import game.collectibles.ArcaneBoost;
+import game.collectibles.*;
 import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
@@ -77,10 +77,22 @@ public class ScoreSheet {
         } 
     }
 
-    // public  getAllArcaneBoosts(){
-    //         // dragon.getAllArcaneBoosts().addAll(gaia.getAllArcaneBoosts().addAll(hydra.getAllArcaneBoosts().addAll(phoenix.getAllArcaneBoosts().addAll(lion.getAllArcaneBoosts()))));
-    //         // ArrayList<ArcaneBoost> allBoosts = dragon.getAllArcaneBoosts();
-    //         // allBoosts.addAll((ArrayList)gaia.getAllTimeWarps());
-    // }
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts(){
+            ArrayList<ArcaneBoost> allArcaneboosts= dragon.getAllArcaneBoosts();
+            allArcaneboosts.addAll(gaia.getAllArcaneBoosts());
+            allArcaneboosts.addAll(hydra.getAllArcaneBoosts());
+            allArcaneboosts.addAll(phoenix.getAllArcaneBoosts());
+            allArcaneboosts.addAll(lion.getAllArcaneBoosts());
+            return allArcaneboosts;
+    }
+    public ArrayList<TimeWarp> getAllTimeWarps(){
+        ArrayList<TimeWarp> allTimwarps= dragon.getAllTimeWarps();
+        allTimwarps.addAll(gaia.getAllTimeWarps());
+        allTimwarps.addAll(hydra.getAllTimeWarps());
+        allTimwarps.addAll(phoenix.getAllTimeWarps());
+        allTimwarps.addAll(lion.getAllTimeWarps());
+        return allTimwarps;
+}
+
 
 }
