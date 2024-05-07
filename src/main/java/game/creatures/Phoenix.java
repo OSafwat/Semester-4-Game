@@ -18,7 +18,9 @@ public class Phoenix extends Creature{
     public Integer[] phoenixsReceivedHP;
     int killedPhoenixes;
     public ArrayList<Move> allPossibleMoves;
+    // A hash map that maps the rewards to their respective phoenix's death amounts
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+    // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
     public static String[] mappedRewardLocations = new String[11];
     public ArrayList<TimeWarp> allTimeWarps;
     public ArrayList<ArcaneBoost> allArcaneBoosts;
@@ -106,8 +108,8 @@ public class Phoenix extends Creature{
                 if (TimeWarpArrayList.get(i) == killedPhoenixes) allTimeWarps.add(new TimeWarp());
             }
 
-            for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-                if (TimeWarpArrayList.get(i) == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
+            for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
+                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
             }
 
             return true;
@@ -140,20 +142,30 @@ public class Phoenix extends Creature{
 
     //implementing the config file reading
     public void populateRewardLocationFromConfigFile() {
+        // Trying to read from the config (.properties file) the realm configuration
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/MysticalSkyRewards.properties")) {
             if (input == null) throw new IOException("Config file not found, default configuration will be used");
 
+            /* Predefined java class that makes a HashMap with String keys and String values from the config
+             * file by making the keys the text before the equal sign, and the value the text after the equal
+             * sign in each line of the config file
+             */
             Properties prop = new Properties();
 
             // load a properties file
             prop.load(input);
 
-            // get the property value and store them in the HashSet rewardLocation
+            // get the property value and store them in the HashMap rewardLocation
             if (prop.isEmpty() || prop.size() < 11) throw new IOException("Properties file is empty or contains fewer than 11 properties");
 
             for (String key : prop.stringPropertyNames()) {
                 String value = prop.getProperty(key);
 
+                /* The Pattern and Matcher classes are predefined java classes. Pattern is a class that is used for defining regex expression
+                 * that would be matched later using the Matcher class to parse strings for desired values. In this case, to avoid any conflicts
+                 * upon changing the "hit Reward" identifying text in the config files, a regex expression is used to parse the text for the "hit"
+                 * number, to be able to store the index in the respective HashMap / Array depending on the use
+                 */
                 Pattern pattern = Pattern.compile("\\d+");
                 Matcher matcher = pattern.matcher(key);
                 
@@ -186,6 +198,7 @@ public class Phoenix extends Creature{
         }
     }
 
+    // This method is used to populate the MappedRewardLocation Array for faster and easier accessing of the "hit reward(s)" indices
     public void populateMappedRewardLocation() {
         // Iterate over the key-value pairs in the rewardLocations HashMap
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
