@@ -151,7 +151,7 @@ public class CLIGameController {
                 // the following handles what to do with the rewards taken from the config file
                 switch (rewards[i]){
                     case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
-                    case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp()); break;
+                    case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
                     case "EssenceBonus": 
                         int realmChoice =0;
                         do{
