@@ -9,6 +9,7 @@ public class GameBoard {
     Player player2;
     Dice [] allDice;
     List<Dice> availableDice;
+    List<Dice> usedDice ;
     List <Dice> forgottenRealmDice;
     public Dice getWhite(){
         return this.allDice[5];
@@ -35,6 +36,7 @@ public class GameBoard {
         this.availableDice.add(this.allDice[5]);
         
         this.forgottenRealmDice = new ArrayList<>();
+        this.usedDice = new ArrayList<>();
 
         player1 = new Player(PlayerStatus.ACTIVE, player1name);
         player2 = new Player(PlayerStatus.PASSIVE, player2Name);
@@ -85,6 +87,14 @@ public class GameBoard {
                 this.availableDice.remove(dice);
                 this.forgottenRealmDice.add(dice);
                 break;
+            }
+        }
+    }
+    public void moveToUsed(Dice chosenDice){
+        for (Dice die  : availableDice) {
+            if (chosenDice == die){
+                this.availableDice.remove(chosenDice);
+                this.usedDice.add(chosenDice);
             }
         }
     }

@@ -137,6 +137,7 @@ public class CLIGameController {
             for (int k = 0; k < 2; k++) {
                 //the following is playing some number of rounds with the active player then 1 round with the passive player
                 Player currentActivePlayer= getActivePlayer();
+                rollDice();
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
                     playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
                 }
@@ -215,6 +216,7 @@ public class CLIGameController {
                 if (choice=='y'){
                     currentPlayersArcaneBoosts.get(arcaneBoostsIndex).setStatus(RewardStates.USED);
                     //the functionality of getting an arcane boost goes here
+                    //
                     Dice [] alldice= getAllDice();
                     System.out.println("choose from the following dice one of them to make a move with");
                     for (int diceIndex=0; diceIndex < alldice.length; diceIndex++){
@@ -316,7 +318,7 @@ public class CLIGameController {
         System.out.println(player.getName()+", here is your score sheet:");
         scoreSheet.displayScoreSheet();
 
-        gameBoard.rollDice();
+        gameBoard.rollAvailableDice();
 
         System.out.println("Here are your rolled dice: ");
         
@@ -350,6 +352,7 @@ public class CLIGameController {
 
         //changing the available dice 
         if (playerStatus== PlayerStatus.ACTIVE){
+            chosenDice.
             for (Dice die : diceToBePlayedwith) {
                 if ( chosenDice.getValue() > die.getValue()){
                     gameBoard.moveToForgottenrealm(die);
