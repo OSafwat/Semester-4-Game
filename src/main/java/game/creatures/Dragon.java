@@ -159,6 +159,11 @@ public class Dragon extends Creature {
         return this.dragonNumber;
     }
 
+    //A method that selects the dragon
+    public Dragon selectsDragon(int number) {
+        return Dragons[number-1];
+    }
+
     //A method used to know whether a Dragon is dead or not
     public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
