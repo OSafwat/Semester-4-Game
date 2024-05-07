@@ -20,7 +20,8 @@ public class Player {
     public Player(PlayerStatus status, String name){
         this.playerStatus= status;
         this.name= name;
-        
+        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
+        this.timeWarps=scoreSheet.getAllTimeWarps();
     }
 
     public void initArcaneBoosts (){
