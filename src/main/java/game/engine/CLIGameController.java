@@ -41,7 +41,7 @@ public class CLIGameController {
             numberOfRounds = Integer.parseInt(lineOfRounds[1]);
 
             String line2 = settings.readLine();
-            String[] lineOfTurns = line1.split("=");
+            String[] lineOfTurns = line2.split("=");
             numebrOfTurnsPerRound = Integer.parseInt(lineOfTurns[1]);
         } catch (FileNotFoundException f) {
 
@@ -264,9 +264,10 @@ public class CLIGameController {
         scanner.close();
     }
     public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
-        Scanner scanner = new Scanner(System.in);
         if (timewarps.size()==0)
             return;
+        Scanner scanner = new Scanner(System.in);
+       
         System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");         
         for (int index = 0; index < timewarps.size(); index++) {
             if (timewarps.get(index).getStatus()==RewardStates.ACQUIRED){
@@ -279,8 +280,9 @@ public class CLIGameController {
                         break;
                     System.out.println("please enter a valid choice ba2a");
                 } while (true );
-                if (choice == 'n')
-                    return;
+                if (choice == 'n'){
+                    scanner.close();
+                    return;}
 
                 timewarps.get(index).setStatus(RewardStates.USED);
                 gameBoard.rollAvailableDice();
@@ -482,7 +484,7 @@ public class CLIGameController {
     }
 
     public static void main(String[] args) {
-        CLIGameController controller = new CLIGameController();
+        //CLIGameController controller = new CLIGameController();
     }
 
     // public abstract boolean switchPlayer(){
