@@ -142,9 +142,9 @@ public class CLIGameController {
                 //the following is playing some number of rounds with the active player then 1 round with the passive player
                 Player currentActivePlayer= getActivePlayer();
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
-                    playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE );     //playing an active turn
+                    playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
                 }
-                playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE);        //playing a passive turn
+                playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE, currentActivePlayer.getTimeWarps());        //playing a passive turn
                 //the following is resetting the dice:
                 
                 // should assign the round rewards as well as use the arcaneboosts and time warps
@@ -260,30 +260,30 @@ public class CLIGameController {
             }
         } while (true);
     }
-    public void handlingTimeWarps(ArrayList<TimeWarp> timewarps){
+    public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
         Scanner scanner = new Scanner(System.in);
         if (timewarps.size()==0)
             return;
-        
-
-        System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding press 'y' to use it or 'n' otherwise )"); 
-        char choice = '7';
-        do {
-            choice = scanner.next().charAt(0);
-            if (choice == 'y' || choice == 'n')
-                break;
-            System.out.println("please enter a valid choice ba2a");
-        } while (true );
-        if (choice == 'n')
-            return;
-        
+        System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");         
         for (int index = 0; index < timewarps.size(); index++) {
             if (timewarps.get(index).getStatus()==RewardStates.ACQUIRED){
+
+                System.out.println("choose whether you would like to use a timeWarp to reroll or not (enter 'y' or 'n')");
+                char choice='4';
+                do {
+                    choice = scanner.next().charAt(0);
+                    if (choice == 'y' || choice == 'n')
+                        break;
+                    System.out.println("please enter a valid choice ba2a");
+                } while (true );
+                if (choice == 'n')
+                    return;
+
                 timewarps.get(index).setStatus(RewardStates.USED);
-                gameBoard.rollDice();
+                gameBoard.rollAvailableDice();
                 System.out.println("Here are your rolled dice: ");
-                int counter= 0;
-                for (Dice die : getAllDice()) {
+                int counter=0;
+                for (Dice die : getAvailableDice()) {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
             }
@@ -299,12 +299,13 @@ public class CLIGameController {
                 gameBoard.rollDice();
 
                 System.out.println("Here are your rolled dice: ");
-                
+               
                 int counter= 0;
                 for (Dice die : diceToBePlayedwith) {
                     System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
                 }
-
+                if (playerStatus==PlayerStatus.ACTIVE)
+                    controller.handleTimeWarps(timewarps);
                 //the following is choosing an correct valid move  
                 Dice chosenDice=null;
                 do {
