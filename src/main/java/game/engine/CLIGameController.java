@@ -192,7 +192,7 @@ public class CLIGameController {
         scanner.close();
     }
 
-    public void handleArcaneBoost(Player currentActivePlayer,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ handle the possibility of several arcaneboosts used in succession
+    public void handleArcaneBoost(Player currentActivePlayer,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ 
         Scanner scanner = new Scanner(System.in);
 
         for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
