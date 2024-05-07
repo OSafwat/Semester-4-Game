@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -61,6 +60,7 @@ public class CLIGameController {
         } finally{
             if (settings != null)
                 settings.close();
+            scanner.close();
         }
         int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
         return temp;
@@ -179,6 +179,7 @@ public class CLIGameController {
             }
 
         }   
+        scanner.close();
     }
 
     public void handleArcaneBoost(Player currentActivePlayer,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){
@@ -224,6 +225,7 @@ public class CLIGameController {
                 }
             }
         }   
+        scanner.close();
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
         switch (choice){
@@ -259,6 +261,7 @@ public class CLIGameController {
                 System.out.println("batal estehbal -> invalid move");
             }
         } while (true);
+        scanner.close();
     }
     public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
         Scanner scanner = new Scanner(System.in);
@@ -288,55 +291,56 @@ public class CLIGameController {
                 }
             }
         }
-        
+        scanner.close();
     }
     public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
         Scanner scanner = new Scanner(System.in);
-                ScoreSheet scoreSheet = controller.getScoreSheet(player);
-                System.out.println(player.getName()+", here is your score sheet:");
-                scoreSheet.displayScoreSheet();
+        ScoreSheet scoreSheet = controller.getScoreSheet(player);
+        System.out.println(player.getName()+", here is your score sheet:");
+        scoreSheet.displayScoreSheet();
 
-                gameBoard.rollDice();
+        gameBoard.rollDice();
 
-                System.out.println("Here are your rolled dice: ");
-               
-                int counter= 0;
-                for (Dice die : diceToBePlayedwith) {
-                    System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
-                }
-                if (playerStatus==PlayerStatus.ACTIVE)
-                    controller.handleTimeWarps(timewarps);
-                //the following is choosing an correct valid move  
-                Dice chosenDice=null;
-                do {
-                    System.out.println("please choose a number between 1 and "+ diceToBePlayedwith.length);
-                    int choice = scanner.nextInt();
-                    if (!(choice > diceToBePlayedwith.length || choice <= 0)){
-                        chosenDice = diceToBePlayedwith[choice-1];
-                        try{
-                            if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
-                                break;
-                            }
-                        }catch(InvalidMoveException iException){
-                            System.out.println("this move cannot happen as per the realms rules // invalid move exception");
-                        }
-                        
-                    }else {
-                        System.out.println("please choose a valid move");
+        System.out.println("Here are your rolled dice: ");
+        
+        int counter= 0;
+        for (Dice die : diceToBePlayedwith) {
+            System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+        }
+        if (playerStatus==PlayerStatus.ACTIVE)
+            controller.handleTimeWarps(timewarps);
+        //the following is choosing an correct valid move  
+        Dice chosenDice=null;
+        do {
+            System.out.println("please choose a number between 1 and "+ diceToBePlayedwith.length);
+            int choice = scanner.nextInt();
+            if (!(choice > diceToBePlayedwith.length || choice <= 0)){
+                chosenDice = diceToBePlayedwith[choice-1];
+                try{
+                    if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                        break;
                     }
-                } while (true);
-
-                System.out.println("here is your new scoresheet");
-
-                //changing the available dice 
-                if (playerStatus== PlayerStatus.ACTIVE){
-                    for (Dice die : diceToBePlayedwith) {
-                        if ( chosenDice.getValue() > die.getValue()){
-                            gameBoard.moveToForgottenrealm(die);
-                        }
-                    }
+                }catch(InvalidMoveException iException){
+                    System.out.println("this move cannot happen as per the realms rules // invalid move exception");
                 }
-                scoreSheet.displayScoreSheet();
+                
+            }else {
+                System.out.println("please choose a valid move");
+            }
+        } while (true);
+
+        System.out.println("here is your new scoresheet");
+
+        //changing the available dice 
+        if (playerStatus== PlayerStatus.ACTIVE){
+            for (Dice die : diceToBePlayedwith) {
+                if ( chosenDice.getValue() > die.getValue()){
+                    gameBoard.moveToForgottenrealm(die);
+                }
+            }
+        }
+        scoreSheet.displayScoreSheet();
+        scanner.close();
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
@@ -474,7 +478,7 @@ public class CLIGameController {
     }
 
     public TimeWarp[] getTimeWarpPowers(Player player) {
-        return player.getTimeWarps().toArray();
+        return (TimeWarp [])player.getTimeWarps().toArray();
     }
 
     public static void main(String[] args) {
