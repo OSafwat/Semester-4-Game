@@ -2,7 +2,6 @@ package game.engine;
 import java.util.ArrayList;
 
 import game.collectibles.ArcaneBoost;
-import game.collectibles.ElementalCrest;
 import game.collectibles.TimeWarp;
 import game.engine.enums.*;
 
@@ -11,7 +10,7 @@ public class Player {
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
-    private ElementalCrest elementalCrest;
+    //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
     Move  allPossiblMoves [];

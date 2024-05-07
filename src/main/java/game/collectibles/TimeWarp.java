@@ -1,7 +1,5 @@
 package game.collectibles;
 
-import java.sql.Time;
-
 import game.engine.enums.RewardStates;
 
 public class TimeWarp extends Power{
