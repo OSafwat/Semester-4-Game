@@ -80,13 +80,6 @@ public class CLIGameController {
             int rewardsCounter = 0;
             for  ( ; rewardsCounter< numberOfRounds && (rewardsline  = rewardsFile.readLine()) != null; rewardsCounter++){
                 rewards[rewardsCounter] = rewardsline.split("=")[1];            // had to make it a string array cuz i cant switch case in the startGame() method when i should be making such decisions including the possibility of a colored bonus being included
-                // switch (reward){
-                //     case "TimeWarp" : rewards[rewardsCounter] = new TimeWarp();            break;
-                //     case "ArcaneBoost": rewards[rewardsCounter] = new ArcaneBoost();       break;
-                //     case "EssenceBonus": rewards[rewardsCounter] = new EssenceBonus();     break;
-                //     case "ElementalCrest": rewards[rewardsCounter] = new ElementalCrest(); break;
-                //     default: rewards[rewardsCounter] =null; 
-                // }
             }
         } catch (FileNotFoundException  e) {
 
@@ -210,6 +203,8 @@ public class CLIGameController {
                     choice =scanner.nextLine().charAt(0);
                     if (choice == 'y' || choice == 'n')
                         break;
+                    else 
+                        System.out.println("please enter a valid input");
                 } while (true);
                 
                 if (choice == 'n')
