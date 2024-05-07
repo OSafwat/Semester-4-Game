@@ -352,9 +352,9 @@ public class CLIGameController {
 
         //changing the available dice 
         if (playerStatus== PlayerStatus.ACTIVE){
-            chosenDice.
+            gameBoard.moveToUsed(chosenDice);
             for (Dice die : diceToBePlayedwith) {
-                if ( chosenDice.getValue() > die.getValue()){
+                if ( chosenDice.getValue() > die.getValue() ){
                     gameBoard.moveToForgottenrealm(die);
                 }
             }
