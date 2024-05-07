@@ -179,6 +179,23 @@ public class CLIGameController {
             }
 
         }   
+        Player player1= gameBoard.getPlayer1();
+        Player player2= gameBoard.getPlayer1();
+        System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
+        player1.getScoresheet().displayScoreSheet();
+        System.out.println( player1.getGameScore().toString());
+        int player1Score= player1.getGameScore().getTotalScore();
+
+        System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
+        player2.getScoresheet().displayScoreSheet();
+        System.out.println( player2.getGameScore().toString());
+        int player2Score= player2.getGameScore().getTotalScore();
+
+        if (player1Score > player2Score)
+            System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+        else 
+            System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+
         scanner.close();
     }
 
