@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLIGameController {
@@ -70,6 +71,7 @@ public class CLIGameController {
 
         BufferedReader rewardsFile=null;
         String[] rewards= new String [numberOfRounds] ;
+        Arrays.fill(rewards, "");
         try {
             // opening the file
             FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
@@ -120,9 +122,10 @@ public class CLIGameController {
             if (choice == "i") {
                 System.out.println("Description goes here");
                 break;
-            } else if (choice == "c") {
+            } else if (choice == "c") 
                 break;
-            }
+            else 
+                System.out.println("Please choose sth correct ");
         } while (true);
 
         //the following is taking in the round rewards from the properties file
