@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class CLIGameController {
@@ -218,10 +219,13 @@ public class CLIGameController {
                     //the functionality of getting an arcane boost goes here
                     //meow meow meow meow 
                     Dice [] alldice= getAllDice();
-                    ArrayList<Dice> usedDice= gameBoard.getUsedDice();
+                    ArrayList<Dice> usedDice = gameBoard.getUsedDice();
                     System.out.println("choose from the following dice one of them to make a move with");
-                    for (int diceIndex=0; diceIndex < alldice.length  ; diceIndex++){
-                        System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
+                    HashSet<Integer> hs = new HashSet<>();
+                    for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
+                        if (usedDice.contains(alldice[diceIndex])){
+                            hs.add(diceIndex);
+                            System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());}
                     }
                     
                     while (true) {
@@ -229,8 +233,9 @@ public class CLIGameController {
                             int arcaneboostChoice=0;
                             do {
                                 arcaneboostChoice= scanner.nextInt();
-                                if (arcaneboostChoice >=1 && arcaneboostChoice <= 6)
+                                if (hs.contains(arcaneboostChoice))
                                     break;
+                                else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
                             } while (true);
                             if (makeMove(currentActivePlayer, new Move(alldice[arcaneboostChoice],currentActivePlayer.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
