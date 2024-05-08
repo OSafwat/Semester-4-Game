@@ -216,11 +216,11 @@ public class CLIGameController {
                 if (choice=='y'){
                     currentPlayersArcaneBoosts.get(arcaneBoostsIndex).setStatus(RewardStates.USED);
                     //the functionality of getting an arcane boost goes here
-                    //
+                    //meow meow meow meow 
                     Dice [] alldice= getAllDice();
-                    Dice [] usedDice= 
+                    ArrayList<Dice> usedDice= gameBoard.getUsedDice();
                     System.out.println("choose from the following dice one of them to make a move with");
-                    for (int diceIndex=0; diceIndex < alldice.length  && ; diceIndex++){
+                    for (int diceIndex=0; diceIndex < alldice.length  ; diceIndex++){
                         System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                     }
                     

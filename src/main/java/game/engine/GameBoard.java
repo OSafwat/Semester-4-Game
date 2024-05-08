@@ -9,7 +9,7 @@ public class GameBoard {
     Player player2;
     Dice [] allDice;
     List<Dice> availableDice;
-    List<Dice> usedDice ;
+    ArrayList<Dice> usedDice ;
     List <Dice> forgottenRealmDice;
     public Dice getWhite(){
         return this.allDice[5];
@@ -78,8 +78,8 @@ public class GameBoard {
     public Dice[] getAvailableDice(){
         return this.availableDice.toArray(new Dice[this.availableDice.size()]);
     }
-    public Dice [] getUsedDice(){
-        return this.usedDice.toArray(new Dice[this.usedDice.size()]);
+    public ArrayList<Dice> getUsedDice(){
+        return this.usedDice;
     }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
