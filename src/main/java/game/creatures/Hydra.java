@@ -3,7 +3,7 @@ package game.creatures;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.util.Stack;
+import java.io.IOException;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -15,6 +15,7 @@ import game.exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Stack;
 import java.util.Scanner;
 
 public class Hydra extends Creature{
