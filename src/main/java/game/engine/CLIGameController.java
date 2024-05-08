@@ -169,7 +169,7 @@ public class CLIGameController {
                 }
                 ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
                 handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost 
-
+                
 
                 
                 gameBoard.resetForgottenRealm();
@@ -364,6 +364,8 @@ public class CLIGameController {
                     gameBoard.moveToForgottenrealm(die);
                 }
             }
+        }else{
+            gameBoard.getPassiveSelectedDice().add(chosenDice);
         }
         scoreSheet.displayScoreSheet();
         scanner.close();
