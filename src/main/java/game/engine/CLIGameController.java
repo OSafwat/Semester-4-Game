@@ -219,15 +219,16 @@ public class CLIGameController {
                     //the functionality of getting an arcane boost goes here
                     //meow meow meow meow 
                     Dice [] alldice= getAllDice();
-                    ArrayList<Dice> usedDice = gameBoard.getUsedDice();
-                    ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveSelectedDice();
+                    ArrayList<Dice> activeArcanDice = gameBoard.getActiveArcaneDice();
+                    ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveArcaneDice();
                     System.out.println("choose from the following dice one of them to make a move with");
                     HashSet<Integer> hs = new HashSet<>();
                     for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
                         if (player == getActivePlayer()){
-                            if (usedDice.contains(alldice[diceIndex])){
+                            if (activeArcanDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
-                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());}
+                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
+                            }
                         }else {
                             if (passivePlayerDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
@@ -246,9 +247,10 @@ public class CLIGameController {
                                 else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
                             } while (true);
                             if(player == getActivePlayer()){
-                            usedDice.add(alldice[arcaneboostChoice]);}
+                                activeArcanDice.add(alldice[arcaneboostChoice]);
+                            }
                             if (player == getPassivePlayer()){
-                                gameBoard.getPassiveSelectedDice().add(alldice[arcaneboostChoice]);
+                                gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
                             }
                             if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
@@ -371,14 +373,11 @@ public class CLIGameController {
 
         //changing the available dice 
         if (playerStatus== PlayerStatus.ACTIVE){
-            gameBoard.moveToUsed(chosenDice);
             for (Dice die : diceToBePlayedwith) {
                 if ( chosenDice.getValue() > die.getValue() ){
                     gameBoard.moveToForgottenrealm(die);
                 }
             }
-        }else{
-            gameBoard.getPassiveSelectedDice().add(chosenDice);
         }
         scoreSheet.displayScoreSheet();
         scanner.close();

@@ -9,9 +9,9 @@ public class GameBoard {
     Player player2;
     Dice [] allDice;
     List<Dice> availableDice;
-    ArrayList<Dice> usedDice ;
+    ArrayList<Dice> activeArcaneDice ;
     List <Dice> forgottenRealmDice;
-    ArrayList<Dice> passiveSelectedDice;
+    ArrayList<Dice> passiveArcaneDice;
     public Dice getWhite(){
         return this.allDice[5];
     }
@@ -37,8 +37,8 @@ public class GameBoard {
         this.availableDice.add(this.allDice[5]);
         
         this.forgottenRealmDice = new ArrayList<>();
-        this.usedDice = new ArrayList<>();
-        this.passiveSelectedDice= new ArrayList<>();
+        this.activeArcaneDice = new ArrayList<>();
+        this.passiveArcaneDice= new ArrayList<>();
 
         player1 = new Player(PlayerStatus.ACTIVE, player1name);
         player2 = new Player(PlayerStatus.PASSIVE, player2Name);
@@ -80,11 +80,11 @@ public class GameBoard {
     public Dice[] getAvailableDice(){
         return this.availableDice.toArray(new Dice[this.availableDice.size()]);
     }
-    public ArrayList<Dice> getUsedDice(){
-        return this.usedDice;
+    public ArrayList<Dice> getActiveArcaneDice(){
+        return this.activeArcaneDice;
     }
-    public ArrayList<Dice> getPassiveSelectedDice(){
-        return this.passiveSelectedDice;
+    public ArrayList<Dice> getPassiveArcaneDice(){
+        return this.passiveArcaneDice;
     }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
@@ -98,11 +98,11 @@ public class GameBoard {
             }
         }
     }
-    public void moveToUsed(Dice chosenDice){
+    public void moveToArcaneDice(Dice chosenDice){
         for (Dice die  : availableDice) {
             if (chosenDice == die){
                 this.availableDice.remove(chosenDice);
-                this.usedDice.add(chosenDice);
+                this.activeArcaneDice.add(chosenDice);
             }
         }
     }
