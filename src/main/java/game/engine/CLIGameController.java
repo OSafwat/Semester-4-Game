@@ -464,8 +464,10 @@ public class CLIGameController {
     }
 
     // dice related methods:
-    public void rollDice() {
-        this.gameBoard.rollDice();
+    public Dice [] rollDice() {
+        Dice []temp = gameBoard.getAllDice();
+        gameBoard.rollDice();
+        return temp;
     }
 
     public Dice[] getAllDice() {
