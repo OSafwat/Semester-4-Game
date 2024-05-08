@@ -386,10 +386,12 @@ public class CLIGameController {
         return player.getAllPossiblMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
-        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
-        for (Move  move : playerAllMoves) {
-            if (move.compareTo(playerAllMoves))
+        ArrayList<Move> result = new ArrayList<>();
+        Dice [] allDice = getAvailableDice();
+        for (Dice die : allDice) {
+            result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
         }
+        return (Move [])result.toArray();
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
         ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
