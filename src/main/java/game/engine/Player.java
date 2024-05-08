@@ -14,7 +14,7 @@ public class Player {
     //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
-    Move  allPossiblMoves [];
+    ArrayList <Move> allPossiblMoves ;
 
 
 
@@ -23,7 +23,7 @@ public class Player {
         this.name= name;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
-        ArrayList<Move> allMoves = getAllPossibleMoves();
+        allPossiblMoves = getAllPossibleMoves();
     }
 
     public ArrayList<Move> getAllPossibleMoves(){
