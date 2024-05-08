@@ -543,6 +543,16 @@ public class CLIGameController {
     public ArcaneBoost[] getArcaneBoostPowers(Player player){
         return (ArcaneBoost [])player.getArcaneBoosts().toArray();
     }
+    public boolean selectDice(Dice dice, Player player){
+        try{
+            for (Dice die : getAvailableDice()) {
+                if ( dice.getValue() > die.getValue() ){
+                    gameBoard.moveToForgottenrealm(die);
+                }
+            }
+            return true;
+        }catch (Exception e ){return false;}
+    }
 
 
     public static void main(String[] args) {
