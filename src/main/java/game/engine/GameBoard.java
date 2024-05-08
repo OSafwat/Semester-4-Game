@@ -11,6 +11,7 @@ public class GameBoard {
     List<Dice> availableDice;
     ArrayList<Dice> usedDice ;
     List <Dice> forgottenRealmDice;
+    ArrayList<Dice> passiveSelectedDice;
     public Dice getWhite(){
         return this.allDice[5];
     }
@@ -37,6 +38,7 @@ public class GameBoard {
         
         this.forgottenRealmDice = new ArrayList<>();
         this.usedDice = new ArrayList<>();
+        this.passiveSelectedDice= new ArrayList<>();
 
         player1 = new Player(PlayerStatus.ACTIVE, player1name);
         player2 = new Player(PlayerStatus.PASSIVE, player2Name);
@@ -80,6 +82,9 @@ public class GameBoard {
     }
     public ArrayList<Dice> getUsedDice(){
         return this.usedDice;
+    }
+    public ArrayList<Dice> getPassiveSelectedDice(){
+        return this.passiveSelectedDice;
     }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
