@@ -80,7 +80,7 @@ public class Hydra extends Creature{
                 elementalCrestCount = i
         }
 
-        if((int) this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
@@ -108,9 +108,9 @@ public class Hydra extends Creature{
         return scoreSheet;
     }
 
-    // Method that returns true if the move is possible.
+    // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
     public boolean checkMove(Dice dice) throws InvalidMoveException {
-        if(dice.getValue()<1 || dice.getValue>6) {
+        if(dice.getValue()<1 || dice.getValue()>6) {
             throw InvalidMoveException;
         }
         return dice.getValue() >= (int) CurrentSerpent.peek();
