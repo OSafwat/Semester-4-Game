@@ -66,7 +66,7 @@ public class Player {
     }
 
     public Move [] getAllPossiblMoves(){
-        return this.allPossiblMoves;
+        return (Move[])this.allPossiblMoves.toArray();
     }
     
 
