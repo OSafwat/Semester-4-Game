@@ -4,6 +4,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.util.Stack;
+
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
+import game.dice.Dice;
+import game.engine.Move;
+import game.exceptions.BonusException;
+import game.exceptions.BonusTwoException;
+import game.exceptions.InvalidMoveException;
+
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -117,6 +127,36 @@ public class Hydra extends Creature{
     }
     public static void main(String[] args) {
         System.out.println("test");
+    }
+
+    @Override
+    public boolean checkMove(Dice dice) throws InvalidMoveException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'checkMove'");
+    }
+
+    @Override
+    public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+
+    @Override
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
+    }
+
+    @Override
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
+    }
+
+    @Override
+    public Move[] getAllPossibleMoves() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
     }
     
 }
