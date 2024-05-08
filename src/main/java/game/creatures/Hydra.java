@@ -77,7 +77,7 @@ public class Hydra extends Creature{
         int elementalCrestCount = 0;
         for(int i = 0; i < properties.size(); i++){
             if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
-                elementalCrestCount = i
+                elementalCrestCount = i;
         }
 
         if(this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
@@ -95,7 +95,7 @@ public class Hydra extends Creature{
                 "+-----------------------------------------------------------------------+\n";
                 
         scoreSheet += "|  H  |" +diceUsed[0]+ " |" +diceUsed[1]+ " |" +diceUsed[2]+ " |" +diceUsed[3]+ " |" +diceUsed[4]+ 
-        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n" 
+        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n";
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
 
@@ -115,4 +115,8 @@ public class Hydra extends Creature{
         }
         return dice.getValue() >= (int) CurrentSerpent.peek();
     }
+    public static void main(String[] args) {
+        System.out.println("test");
+    }
+    
 }
