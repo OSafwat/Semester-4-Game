@@ -386,8 +386,22 @@ public class CLIGameController {
         return player.getAllPossiblMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
-        
+        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
+        for (Move  move : playerAllMoves) {
+            if (move.compareTo(playerAllMoves))
+        }
     }
+    public Move[] getPossibleMovesForADie(Player player, Dice dice){
+        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
+        ArrayList<Move> result = new ArrayList<>();
+        for (Move move : playerAllMoves) {
+            if (move.compareTo(dice)==0){
+                result.add(move);
+            }
+        }
+        return (Move [])result.toArray();
+    }
+
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move) throws InvalidMoveException {
