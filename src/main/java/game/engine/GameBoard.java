@@ -1,7 +1,6 @@
 package game.engine;
 import game.dice.*;
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 import game.engine.enums.PlayerStatus;
 public class GameBoard {
@@ -28,12 +27,12 @@ public class GameBoard {
         this.allDice[5]=new ArcanePrism();
 
         this.availableDice = new ArrayList<>();
-        this.availableDice .add(this.allDice[0]);
-        this.availableDice .add(this.allDice[1]);
-        this.availableDice .add(this.allDice[2]);
-        this.availableDice .add(this.allDice[3]);
-        this.availableDice .add(this.allDice[4]);
-        this.availableDice .add(this.allDice[5]);
+        this.availableDice.add(this.allDice[0]);
+        this.availableDice.add(this.allDice[1]);
+        this.availableDice.add(this.allDice[2]);
+        this.availableDice.add(this.allDice[3]);
+        this.availableDice.add(this.allDice[4]);
+        this.availableDice.add(this.allDice[5]);
         
         this.forgottenRealmDice = new ArrayList<>();
 
@@ -66,6 +65,11 @@ public class GameBoard {
             die.rollDice();
         }
     }
+    public void rollAvailableDice(){
+        for (Dice die : availableDice) {
+            die.rollDice();
+        }
+    }
     public Dice [] getAllDice(){
         return this.allDice;
     } 
@@ -74,5 +78,20 @@ public class GameBoard {
     }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
+    }
+    public void moveToForgottenrealm(Dice die){
+        for (Dice dice : availableDice) {
+            if (dice == die){
+                this.availableDice.remove(dice);
+                this.forgottenRealmDice.add(dice);
+                break;
+            }
+        }
+    }
+    public void resetForgottenRealm(){
+        for (Dice die : forgottenRealmDice) {
+            forgottenRealmDice.remove(die);
+            availableDice.add(die);
+        }
     }
 }
