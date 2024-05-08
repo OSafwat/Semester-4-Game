@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
+import game.creatures.Hydra;
 import game.engine.enums.*;
 
 public class Player {
@@ -22,14 +23,17 @@ public class Player {
         this.name= name;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
+        ArrayList<Move> allMoves = getAllPossibleMoves();
     }
 
-    public void initArcaneBoosts (){
-        
-    }
-
-    public void initTimeWarps () {
-
+    public ArrayList<Move> getAllPossibleMoves(){
+        ArrayList<Move> allMoves= new ArrayList<>();
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
+        return allMoves;
     }
 
     public String getName(){

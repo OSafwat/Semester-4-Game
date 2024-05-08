@@ -385,6 +385,9 @@ public class CLIGameController {
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossiblMoves();
     }
+    public Move [] getPossibleMovesForAvailableDice(Player player){
+        
+    }
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move) throws InvalidMoveException {

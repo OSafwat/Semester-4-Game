@@ -9,7 +9,8 @@ public class Move implements Comparable{
         this.dice = dice;
         this.creature= creature;
     }
-    public int compareTo(Move move){
+    public int compareTo(Object temp){
+        Move move = (Move) temp;
         if ( move.getCreature() == this.getCreature() && this.dice.getValue()== move.getDice().getValue() && move.getDice().getRealm() == this.dice.getRealm())  
             return 0;
         else return -1;
