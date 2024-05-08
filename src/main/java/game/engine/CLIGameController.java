@@ -225,12 +225,12 @@ public class CLIGameController {
                     HashSet<Integer> hs = new HashSet<>();
                     for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
                         if (player == getActivePlayer()){
-                            if (activeArcanDice.contains(alldice[diceIndex])){
+                            if (!activeArcanDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
                                 System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                             }
                         }else {
-                            if (passivePlayerDice.contains(alldice[diceIndex])){
+                            if (!passivePlayerDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
                                 System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                             }
@@ -248,8 +248,7 @@ public class CLIGameController {
                             } while (true);
                             if(player == getActivePlayer()){
                                 activeArcanDice.add(alldice[arcaneboostChoice]);
-                            }
-                            if (player == getPassivePlayer()){
+                            }else {
                                 gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
                             }
                             if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
