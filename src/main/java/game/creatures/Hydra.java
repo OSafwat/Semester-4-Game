@@ -19,11 +19,9 @@ import java.util.Scanner;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
-    private Stack<Integer>() FirstSerpent = new Stack<Integer>();
-    FirstSerpent.push(5); FirstSerpent.push(4); FirstSerpent.push(3); FirstSerpent.push(2); FirstSerpent.push(1); 
-    private Stack<Integer>() SecondSerpent = new Stack<Integer>();
-    SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
-    private Stack<Integer>() CurrentSerpent;
+    private Stack<Integer> firstSerpent = new Stack<Integer>();
+    private Stack<Integer> secondSerpent = new Stack<Integer>();
+    private Stack<Integer> currentSerpent;
 
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
@@ -41,16 +39,19 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
+        firstSerpent.push(5); firstSerpent.push(4); firstSerpent.push(3); firstSerpent.push(2); firstSerpent.push(1); 
+        secondSerpent.push(6); secondSerpent.push(5); secondSerpent.push(4); secondSerpent.push(3); secondSerpent.push(2); secondSerpent.push(1); 
+
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
         FileReader configReader = new FileReader(config);
         properties.load(configReader);
 
         this.score = 0;
-        this.CurrentSerpent = this.FirstSerpent;
+        this.currentSerpent = this.firstSerpent;
         this.regenerateFlag = false;
 
-        this.diceUsed = {1,2,3,4,5,1,2,3,4,5,6};
+        this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
     }
@@ -119,20 +120,12 @@ public class Hydra extends Creature{
     }
 
     // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
+    @Override
     public boolean checkMove(Dice dice) throws InvalidMoveException {
         if(dice.getValue()<1 || dice.getValue()>6) {
             throw InvalidMoveException;
         }
         return dice.getValue() >= (int) CurrentSerpent.peek();
-    }
-    public static void main(String[] args) {
-        System.out.println("test");
-    }
-
-    @Override
-    public boolean checkMove(Dice dice) throws InvalidMoveException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkMove'");
     }
 
     @Override
