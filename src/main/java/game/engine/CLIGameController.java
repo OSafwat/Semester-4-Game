@@ -197,7 +197,7 @@ public class CLIGameController {
         scanner.close();
     }
 
-    public void handleArcaneBoost(Player currentActivePlayer,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ 
+    public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ 
         Scanner scanner = new Scanner(System.in);
 
         for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
@@ -220,12 +220,20 @@ public class CLIGameController {
                     //meow meow meow meow 
                     Dice [] alldice= getAllDice();
                     ArrayList<Dice> usedDice = gameBoard.getUsedDice();
+                    ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveSelectedDice();
                     System.out.println("choose from the following dice one of them to make a move with");
                     HashSet<Integer> hs = new HashSet<>();
                     for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
-                        if (usedDice.contains(alldice[diceIndex])){
-                            hs.add(diceIndex);
-                            System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());}
+                        if (player == getActivePlayer()){
+                            if (usedDice.contains(alldice[diceIndex])){
+                                hs.add(diceIndex);
+                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());}
+                        }else {
+                            if (passivePlayerDice.contains(alldice[diceIndex])){
+                                hs.add(diceIndex);
+                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
+                            }
+                        }
                     }
                     
                     while (true) {
@@ -237,7 +245,12 @@ public class CLIGameController {
                                     break;
                                 else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
                             } while (true);
-                            if (makeMove(currentActivePlayer, new Move(alldice[arcaneboostChoice],currentActivePlayer.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
+                            if(player == getActivePlayer()){
+                            usedDice.add(alldice[arcaneboostChoice]);}
+                            if (player == getPassivePlayer()){
+                                gameBoard.getPassiveSelectedDice().add(alldice[arcaneboostChoice]);
+                            }
+                            if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
                         
                         } catch (InvalidMoveException e) {
