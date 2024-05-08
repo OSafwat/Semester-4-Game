@@ -62,7 +62,7 @@ public class Hydra extends Creature{
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward.equals("null"))
             return "  ";
-        else if(diceUsed[value]!=0)
+        else if(Integer.parseInt(diceUsed[value])!=0)
             return "X ";
         else{
             if(reward.equals("ArcaneBoost")) return "AB";
@@ -92,7 +92,7 @@ public class Hydra extends Creature{
                 elementalCrestCount = i;
         }
 
-        if(this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.currentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
@@ -114,9 +114,9 @@ public class Hydra extends Creature{
         scoreSheet += "|  R  |" +getBonus(0)+ "  |" +getBonus(1)+ "  |" +getBonus(2)+ "  |" +getBonus(3)+ "  |" +getBonus(4)+ 
         "  |" +getBonus(5)+ "  |" +getBonus(6)+ "  |" +getBonus(7)+ "  |" +getBonus(8)+ "  |" +getBonus(9)+ "  |" +getBonus(10)+ "  |\n"; 
 
-        scoreSheet += "+-----------------------------------------------------------------------+\n
-                       |  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n
-                       +-----------------------------------------------------------------------+\n";
+        scoreSheet += "+-----------------------------------------------------------------------+\n" +
+                      "|  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n" +
+                      "+-----------------------------------------------------------------------+\n";
         return scoreSheet;
     }
 
