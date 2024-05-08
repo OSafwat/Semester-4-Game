@@ -540,6 +540,10 @@ public class CLIGameController {
     public TimeWarp[] getTimeWarpPowers(Player player) {
         return (TimeWarp [])player.getTimeWarps().toArray();
     }
+    public ArcaneBoost[] getArcaneBoostPowers(Player player){
+        return (ArcaneBoost [])player.getArcaneBoosts().toArray();
+    }
+
 
     public static void main(String[] args) {
         //CLIGameController controller = new CLIGameController();
