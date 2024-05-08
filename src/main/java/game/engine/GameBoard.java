@@ -111,6 +111,8 @@ public class GameBoard {
             forgottenRealmDice.remove(die);
             availableDice.add(die);
         }
+        this.activeArcaneDice = new ArrayList<>();
+        this.passiveArcaneDice = new ArrayList<>();
     }
 
 }

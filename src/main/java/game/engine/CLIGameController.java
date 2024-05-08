@@ -170,9 +170,9 @@ public class CLIGameController {
                 ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
                 handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost 
                 
-
+                handleArcaneBoost(getPassivePlayer(), currentPlayersArcaneBoosts);
                 
-                gameBoard.resetForgottenRealm();
+                gameBoard.resetForgottenRealm();  // this moves all thats in the forgotten realm to the available dice and empties the activeArcaneDice and passiveArcaneDice
                 switchPlayer();
             }
 
