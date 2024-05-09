@@ -356,7 +356,29 @@ public class CLIGameController {
             if (!(choice > diceToBePlayedwith.length || choice <= 0)){
                 chosenDice = diceToBePlayedwith[choice-1];
                 try{
-                    if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                    if(chosenDice instanceof ArcanePrism){
+                        System.out.println("please a realm to attack:");
+                        int realmChoice = -1;
+                        do{
+                            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
+                            realmChoice= scanner.nextInt();
+                            if (realmChoice >=1 && realmChoice <= 5)
+                                break;
+                            System.out.println("momken nebatal estehbal");
+                        }while(true);
+                        Dice tempDice ;
+                        switch (realmChoice) {
+                            case 1: tempDice = new RedDice(chosenDice.getValue()); break;
+                            case 2: tempDice = new GreenDice(chosenDice.getValue()); break;
+                            case 3: tempDice = new BlueDice(chosenDice.getValue()); break;
+                            case 4: tempDice = new MagentaDice(chosenDice.getValue()); break;
+                            case 5: tempDice = new YellowDice(chosenDice.getValue()); break;
+                            default: System.out.println("we have a problem"); tempDice = null;
+                        }
+                        if (controller.makeMove(player, new Move(tempDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
+                            break;
+                    }
+                    else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
                     }
                 }catch(InvalidMoveException iException){
