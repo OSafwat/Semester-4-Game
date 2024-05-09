@@ -217,15 +217,18 @@ public class Lion extends Creature{
             return true;
         }
     @Override
-    public Move[] getAllPossibleMoves() {
-            if(deadLions==11) return null;
-            Move[] possibleMoves=new Move[6];
-            for(int i=0;i<6;i++){
-                Move idk=new Move(new Dice(i+1),this);
-                possibleMoves[i]=idk;
-            }
-            return possibleMoves;
+    public ArrayList<Move> getAllPossibleMoves() {
+    if(deadLions == 11) return null;
+    
+    ArrayList<Move> possibleMoves = new ArrayList<>();
+    
+    for(int i = 0; i < 6; i++) {
+        Move idk = new Move(new Dice(i + 1), this);
+        possibleMoves.add(idk);
     }
+    
+    return possibleMoves;
+}
     
     public void populateRewardLocationFromConfigFile() {
         try (InputStream input = new FileInputStream("../../../resources/config/MysticalSkyRewards.properties")) {
