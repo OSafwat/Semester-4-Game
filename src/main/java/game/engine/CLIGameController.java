@@ -24,6 +24,7 @@ public class CLIGameController {
 
     // constructor(s):
     public CLIGameController() {
+        this.gameBoard= new GameBoard();
     }
     public int [] getSettings() throws IOException{
         Scanner scanner = new Scanner(System.in);
@@ -108,10 +109,11 @@ public class CLIGameController {
         Scanner scanner = new Scanner(System.in);
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
+        getActivePlayer().setName(player1Name);
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
-        this.gameBoard = new GameBoard(player1Name, player2Name);
-
+        getPassivePlayer().setName(player2Name);
+        
         int [] temp = getSettings();
         int numberOfRounds= temp[0]; 
         int numebrOfTurnsPerRound=temp[1];

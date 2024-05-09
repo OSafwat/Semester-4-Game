@@ -16,11 +16,12 @@ public class Player {
     private ArrayList<TimeWarp> timeWarps;
     ArrayList <Move> allPossiblMoves ;
 
-
-
-    public Player(PlayerStatus status, String name){
-        this.playerStatus= status;
+    
+    public void setName(String name){
         this.name= name;
+    }
+    public Player(PlayerStatus status){
+        this.playerStatus= status;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         allPossiblMoves = getAllPossibleMoves();
