@@ -19,6 +19,13 @@ public class Move implements Comparable{
     //     creature.checkMove();
     // }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        Move m = (Move) obj;
+        return m.creature.equals(creature) && m.dice.equals(dice);
+    }
+
     Creature getCreature(){
         return creature;
     }
