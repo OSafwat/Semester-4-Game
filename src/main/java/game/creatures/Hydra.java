@@ -2,7 +2,6 @@ package game.creatures;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import game.collectibles.ArcaneBoost;
@@ -39,14 +38,28 @@ public class Hydra extends Creature{
     private int timeWarpsUsed;
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
-    public Hydra() throws IOException {
+    public Hydra() {
         serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
-
+        
         properties = new Properties();
-        File config = new File("src/main/resources/config/TideAbyssRewards.properties");
-        FileReader configReader = new FileReader(config);
-        properties.load(configReader);
-
+        try {
+            File config = new File("src/main/resources/config/TideAbyssRewards.properties");
+            FileReader configReader = new FileReader(config);
+            properties.load(configReader);
+        } catch (IOException e) {
+            properties.setProperty("hit1Reward", "null");
+            properties.setProperty("hit2Reward", "null");
+            properties.setProperty("hit3Reward", "null");
+            properties.setProperty("hit4Reward", "ArcaneBoost");
+            properties.setProperty("hit5Reward", "null");
+            properties.setProperty("hit6Reward", "GreenBonus");
+            properties.setProperty("hit7Reward", "ElementalCrest");
+            properties.setProperty("hit8Reward", "null");
+            properties.setProperty("hit9Reward", "MagentaBonus");
+            properties.setProperty("hit10Reward", "TimeWarp");
+            properties.setProperty("hit11Reward", "null");
+        }
+        
         this.score = 0;
         this.regenerateFlag = false;
 
