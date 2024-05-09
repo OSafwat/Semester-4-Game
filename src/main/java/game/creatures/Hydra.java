@@ -20,9 +20,7 @@ import java.util.Scanner;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
-    private Stack<Integer> firstSerpent = new Stack<Integer>();
-    private Stack<Integer> secondSerpent = new Stack<Integer>();
-    private Stack<Integer> currentSerpent;
+    private Stack<Integer> serpent;
 
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
@@ -39,9 +37,7 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
-        firstSerpent.push(5); firstSerpent.push(4); firstSerpent.push(3); firstSerpent.push(2); firstSerpent.push(1); 
-        secondSerpent.push(6); secondSerpent.push(5); secondSerpent.push(4); secondSerpent.push(3); secondSerpent.push(2); secondSerpent.push(1); 
-        currentSerpent = firstSerpent;
+        serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
 
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
@@ -49,7 +45,6 @@ public class Hydra extends Creature{
         properties.load(configReader);
 
         this.score = 0;
-        this.currentSerpent = this.firstSerpent;
         this.regenerateFlag = false;
 
         headsKilled = 0;
@@ -90,7 +85,7 @@ public class Hydra extends Creature{
                 elementalCrestCount = i;
         }
 
-        if(this.currentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.serpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
@@ -120,32 +115,36 @@ public class Hydra extends Creature{
 
     // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
     @Override
-    public boolean checkMove(Dice dice) throws InvalidMoveException {
-        if(dice.getValue()<1 || dice.getValue()>6) {
-            throw InvalidMoveException;
-        }
-        return dice.getValue() >= (int) currentSerpent.peek();
+    public boolean checkMove(Dice dice) {
+        return dice.getValue() >= serpent.peek();
     }
 
     @Override
-    public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
-        int currentHead = currentSerpent.peek();
+    public boolean makeMove(Dice dice) throws BonusException{
         int diceValue = dice.getValue();
-        if(!checkMove(dice) || currentSerpent.isEmpty())
-            throw InvalidMoveException;
 
-        if(diceValue >= currentHead) {
-            currentSerpent.pop();
-            diceUsed[headsKilled++] = "" + diceValue;
+        if(!checkMove(dice) || serpent.isEmpty()) {
+            return false;
         }
 
-        if(currentSerpent.isEmpty()) {
+        serpent.pop();
+        diceUsed[headsKilled++] = "" + diceValue;
+
+        if(serpent.isEmpty()) {
             regenerateSerpent();
         }
+        return true;
     }
 
+    // Method that adds 6 new heads onto the serpent to "regenerate" it, should be called after the 5 heads of the first serpent all die.
     private void regenerateSerpent() {
-        currentSerpent
+        // This is just in case this method gets called when the serpent still has heads, in theory this block should never activate.
+        while(!serpent.isEmpty()) {
+            serpent.pop();
+        }
+
+        serpent.push(6); serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
+        regenerateFlag = true;
     }
 
     @Override
