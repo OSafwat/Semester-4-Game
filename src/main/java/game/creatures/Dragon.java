@@ -95,10 +95,10 @@ public class Dragon extends Creature {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
-                timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
+                timeWarps.add(new TimeWarp());
             }
             if (current.equals("AB")) {
-                arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
+                arcaneBoosts.add(new ArcaneBoost());
             }
         }
     }
