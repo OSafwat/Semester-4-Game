@@ -109,7 +109,7 @@ public class Lion extends Creature{
         this.scoresheet=scoreSheet;
     }
     private void initScoreSheet(){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
@@ -126,7 +126,7 @@ public class Lion extends Creature{
         temp.append("+-----------------------------------------------------------------------+\n");
     }
     private void updateScoreSheet(Dice dice){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
