@@ -10,6 +10,7 @@ import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 
 import java.util.ArrayList;
@@ -33,6 +34,10 @@ public class Hydra extends Creature{
     // Define array for the score values and an integer for the current score.
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
 
+    // The number of arcane boost and time warps that have been used.
+    private int arcaneBoostsUsed;
+    private int timeWarpsUsed;
+
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
         serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
@@ -45,10 +50,22 @@ public class Hydra extends Creature{
         this.score = 0;
         this.regenerateFlag = false;
 
-        headsKilled = 0;
+        this.arcaneBoostsUsed = 0;
+        this.timeWarpsUsed = 0;
+
+        this.headsKilled = 0;
         this.diceUsed = new String[11];
-        for(int i = 0; i < 11; i++)
+        for(int i = 0; i < 11; i++) {
             diceUsed[i] = "---";
+            if(properties.getProperty("hit"+i+"Reward") == "ArcaneBoost"){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                arcaneBoosts.add(ac);
+            }
+            if(properties.getProperty("hit"+i+"Reward") == "TimeWarp") {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                timeWarps.add(tw);
+            }
+        }
     }
 
     // Method that returns the value of the bonus that should be printed in the scoresheet.
@@ -137,11 +154,15 @@ public class Hydra extends Creature{
         diceUsed[headsKilled++] = "" + diceValue;
         updateScore();
         
+        timeWarps.set(timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED));
+        arcaneBoosts.set(arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED));
+
         if(serpent.isEmpty()) {
             regenerateSerpent();
         }
         
         switch(properties.getProperty("hit"+headsKilled+"Reward")){
+            case "ArcaneBoost": 
             case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "RedBonus": throw new BonusException(RealmColor.RED);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
@@ -177,5 +198,4 @@ public class Hydra extends Creature{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
     }
-    
 }
