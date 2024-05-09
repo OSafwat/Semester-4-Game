@@ -3,17 +3,26 @@ package game.creatures;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.util.Stack;
+import java.io.IOException;
+
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
+import game.dice.Dice;
+import game.engine.Move;
+import game.exceptions.BonusException;
+import game.exceptions.BonusTwoException;
+import game.exceptions.InvalidMoveException;
+
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Stack;
 import java.util.Scanner;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
-    private Stack<Integer>() FirstSerpent = new Stack<Integer>();
-    FirstSerpent.push(5); FirstSerpent.push(4); FirstSerpent.push(3); FirstSerpent.push(2); FirstSerpent.push(1); 
-    private Stack<Integer>() SecondSerpent = new Stack<Integer>();
-    SecondSerpent.push(6); SecondSerpent.push(5); SecondSerpent.push(4); SecondSerpent.push(3); SecondSerpent.push(2); SecondSerpent.push(1); 
-    private Stack<Integer>() CurrentSerpent;
+    private Stack<Integer> firstSerpent = new Stack<Integer>();
+    private Stack<Integer> secondSerpent = new Stack<Integer>();
+    private Stack<Integer> currentSerpent;
 
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
@@ -31,26 +40,31 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
+        firstSerpent.push(5); firstSerpent.push(4); firstSerpent.push(3); firstSerpent.push(2); firstSerpent.push(1); 
+        secondSerpent.push(6); secondSerpent.push(5); secondSerpent.push(4); secondSerpent.push(3); secondSerpent.push(2); secondSerpent.push(1); 
+        currentSerpent = firstSerpent;
+
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
         FileReader configReader = new FileReader(config);
         properties.load(configReader);
 
         this.score = 0;
-        this.CurrentSerpent = this.FirstSerpent;
+        this.currentSerpent = this.firstSerpent;
         this.regenerateFlag = false;
 
-        this.diceUsed = {1,2,3,4,5,1,2,3,4,5,6};
+        this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
     }
 
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
+        String[] defaultProperties = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward.equals("null"))
             return "  ";
-        else if(diceUsed[value]!=0)
+        else if(Integer.parseInt(diceUsed[value])!=0)
             return "X ";
         else{
             if(reward.equals("ArcaneBoost")) return "AB";
@@ -58,7 +72,7 @@ public class Hydra extends Creature{
             else if(reward.equals("ElementalCrest")) return "EC";
             else if(reward.equals("MagentaBonus")) return "MB";
             else if(reward.equals("TimeWarp")) return "TW";
-            // Add a case for the else later.
+            else return defaultProperties[value];
         }
     }
 
@@ -77,10 +91,10 @@ public class Hydra extends Creature{
         int elementalCrestCount = 0;
         for(int i = 0; i < properties.size(); i++){
             if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
-                elementalCrestCount = i
+                elementalCrestCount = i;
         }
 
-        if((int) this.CurrentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.currentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
             return 1;
         else   
             return 0;
@@ -95,24 +109,50 @@ public class Hydra extends Creature{
                 "+-----------------------------------------------------------------------+\n";
                 
         scoreSheet += "|  H  |" +diceUsed[0]+ " |" +diceUsed[1]+ " |" +diceUsed[2]+ " |" +diceUsed[3]+ " |" +diceUsed[4]+ 
-        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n" 
+        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n";
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
 
         scoreSheet += "|  R  |" +getBonus(0)+ "  |" +getBonus(1)+ "  |" +getBonus(2)+ "  |" +getBonus(3)+ "  |" +getBonus(4)+ 
         "  |" +getBonus(5)+ "  |" +getBonus(6)+ "  |" +getBonus(7)+ "  |" +getBonus(8)+ "  |" +getBonus(9)+ "  |" +getBonus(10)+ "  |\n"; 
 
-        scoreSheet += "+-----------------------------------------------------------------------+\n
-                       |  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n
-                       +-----------------------------------------------------------------------+\n";
+        scoreSheet += "+-----------------------------------------------------------------------+\n" +
+                      "|  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n" +
+                      "+-----------------------------------------------------------------------+\n";
         return scoreSheet;
     }
 
-    // Method that returns true if the move is possible.
+    // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
+    @Override
     public boolean checkMove(Dice dice) throws InvalidMoveException {
-        if(dice.getValue()<1 || dice.getValue>6) {
+        if(dice.getValue()<1 || dice.getValue()>6) {
             throw InvalidMoveException;
         }
-        return dice.getValue() >= (int) CurrentSerpent.peek();
+        return dice.getValue() >= (int) currentSerpent.peek();
     }
+
+    @Override
+    public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+
+    @Override
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
+    }
+
+    @Override
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
+    }
+
+    @Override
+    public Move[] getAllPossibleMoves() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
+    }
+    
 }

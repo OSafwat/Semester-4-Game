@@ -178,15 +178,9 @@ public class Dragon extends Creature {
     }
 
     //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
-    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
-        int dragonIndex = sc.nextInt();
-        while (dragonIndex < 1 || dragonIndex > 4) {
-            System.out.println("The value you have entered is invalid.\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
-            dragonIndex = sc.nextInt();
-        }
-        sc.close();
+    public boolean makeMove(Dice inputDice) throws BonusException, InvalidMoveException {
+        RedDice dice = (RedDice)inputDice;
+        int dragonIndex = dice.getDragonNumber();
         Dragon targetDragon = Dragons[dragonIndex-1];
         targetDragon.checkMove(dice);
         int targetValue = dice.getValue();
@@ -337,7 +331,7 @@ public class Dragon extends Creature {
         }
         //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
         if (!doMove) {
-            throw new InvalidMoveException("message");
+            throw new InvalidMoveException();
         }
         return valid;
     }
