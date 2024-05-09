@@ -240,6 +240,16 @@ public class Phoenix extends Creature{
         }
     }
 
+    public void updateAllPossibleMoves() {
+        allPossibleMoves.clear();
+        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes];
+        if (latestReceivedHit == 6) return;
+
+        for (int i = latestReceivedHit; i <= 6; i++) {
+            allPossibleMoves.add(new Move(new MagentaDice(i), this));
+        }
+    }
+
     public String getRedBonusString(int n) {
         String rewardName = "RedBonus";
         String output = "X ";
