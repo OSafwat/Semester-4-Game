@@ -1,7 +1,9 @@
 package game.engine;
+import java.util.ArrayList;
+
 import game.collectibles.ArcaneBoost;
-import game.collectibles.ElementalCrest;
 import game.collectibles.TimeWarp;
+import game.creatures.Hydra;
 import game.engine.enums.*;
 
 public class Player {
@@ -9,25 +11,29 @@ public class Player {
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
-    private ElementalCrest elementalCrest;
-    private ArcaneBoost [] arcaneBoosts;
-    private TimeWarp [] timeWarp;
-    Move  allPossiblMoves [];
+    //private ElementalCrest elementalCrest;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private ArrayList<TimeWarp> timeWarps;
+    ArrayList <Move> allPossiblMoves ;
 
 
 
     public Player(PlayerStatus status, String name){
         this.playerStatus= status;
         this.name= name;
-        
+        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
+        this.timeWarps=scoreSheet.getAllTimeWarps();
+        allPossiblMoves = getAllPossibleMoves();
     }
 
-    public void initArcaneBoosts (){
-        
-    }
-
-    public void initTimeWarps () {
-
+    public ArrayList<Move> getAllPossibleMoves(){
+        ArrayList<Move> allMoves= new ArrayList<>();
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
+        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
+        return allMoves;
     }
 
     public String getName(){
@@ -52,11 +58,15 @@ public class Player {
     public GameScore getGameScore(){
         return this.gameScore;
     }
-    public TimeWarp [] getTimeWarps(){
-        return this.timeWarp;
+    public ArrayList<TimeWarp> getTimeWarps(){
+        return this.timeWarps;
     }
+    public ArrayList<ArcaneBoost> getArcaneBoosts(){
+        return this.arcaneBoosts;
+    }
+
     public Move [] getAllPossiblMoves(){
-        return this.allPossiblMoves;
+        return (Move[])this.allPossiblMoves.toArray();
     }
     
 

@@ -1,7 +1,6 @@
 package game.engine;
 import game.dice.*;
 import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
 import game.engine.enums.PlayerStatus;
 public class GameBoard {
@@ -10,7 +9,9 @@ public class GameBoard {
     Player player2;
     Dice [] allDice;
     List<Dice> availableDice;
+    ArrayList<Dice> activeArcaneDice ;
     List <Dice> forgottenRealmDice;
+    ArrayList<Dice> passiveArcaneDice;
     public Dice getWhite(){
         return this.allDice[5];
     }
@@ -28,14 +29,16 @@ public class GameBoard {
         this.allDice[5]=new ArcanePrism();
 
         this.availableDice = new ArrayList<>();
-        this.availableDice .add(this.allDice[0]);
-        this.availableDice .add(this.allDice[1]);
-        this.availableDice .add(this.allDice[2]);
-        this.availableDice .add(this.allDice[3]);
-        this.availableDice .add(this.allDice[4]);
-        this.availableDice .add(this.allDice[5]);
+        this.availableDice.add(this.allDice[0]);
+        this.availableDice.add(this.allDice[1]);
+        this.availableDice.add(this.allDice[2]);
+        this.availableDice.add(this.allDice[3]);
+        this.availableDice.add(this.allDice[4]);
+        this.availableDice.add(this.allDice[5]);
         
         this.forgottenRealmDice = new ArrayList<>();
+        this.activeArcaneDice = new ArrayList<>();
+        this.passiveArcaneDice= new ArrayList<>();
 
         player1 = new Player(PlayerStatus.ACTIVE, player1name);
         player2 = new Player(PlayerStatus.PASSIVE, player2Name);
@@ -66,13 +69,50 @@ public class GameBoard {
             die.rollDice();
         }
     }
+    public void rollAvailableDice(){
+        for (Dice die : availableDice) {
+            die.rollDice();
+        }
+    }
     public Dice [] getAllDice(){
         return this.allDice;
     } 
     public Dice[] getAvailableDice(){
         return this.availableDice.toArray(new Dice[this.availableDice.size()]);
     }
+    public ArrayList<Dice> getActiveArcaneDice(){
+        return this.activeArcaneDice;
+    }
+    public ArrayList<Dice> getPassiveArcaneDice(){
+        return this.passiveArcaneDice;
+    }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
+    public void moveToForgottenrealm(Dice die){
+        for (Dice dice : availableDice) {
+            if (dice == die){
+                this.availableDice.remove(dice);
+                this.forgottenRealmDice.add(dice);
+                break;
+            }
+        }
+    }
+    public void moveToArcaneDice(Dice chosenDice){
+        for (Dice die  : availableDice) {
+            if (chosenDice == die){
+                this.availableDice.remove(chosenDice);
+                this.activeArcaneDice.add(chosenDice);
+            }
+        }
+    }
+    public void resetForgottenRealm(){
+        for (Dice die : forgottenRealmDice) {
+            forgottenRealmDice.remove(die);
+            availableDice.add(die);
+        }
+        this.activeArcaneDice = new ArrayList<>();
+        this.passiveArcaneDice = new ArrayList<>();
+    }
+
 }
