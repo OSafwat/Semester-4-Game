@@ -19,6 +19,14 @@ public class ScoreSheet {
     GameScore gamescore;
 //red    green  blue    magenta    yellow
 //dragon gaia   hydra   phoenix  lion
+    public ScoreSheet(){
+        hydra= new Hydra();
+        phoenix = new Phoenix();
+        lion = new Lion();
+        dragon= new Dragon();
+        gaia = new Gaia();
+        gamescore = new GameScore();
+    }
     public int [] getScores(){
         int [] Scores = new int [5];
         Scores[0]= this.dragon.getScore();
