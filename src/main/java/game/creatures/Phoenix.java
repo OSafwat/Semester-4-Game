@@ -86,18 +86,13 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public boolean checkMove(Dice dice) throws InvalidDiceSelectionException, InvalidMoveException {
+    public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-            if (killedPhoenixes == 0) {
-                return true;
-            } else {
-                if (diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) {
-                    return true;
-                }
-                else throw new InvalidMoveException();
-            }
-        } else throw new InvalidDiceSelectionException();
+            if (killedPhoenixes == 0 || diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) return true;
+        }
+
+        return false;
     }
 
     @Override
