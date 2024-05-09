@@ -7,6 +7,7 @@ import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
@@ -94,10 +95,10 @@ public class Dragon extends Creature {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
-                timeWarps.add(new TimeWarp());
+                timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
             }
             if (current.equals("AB")) {
-                arcaneBoosts.add(new ArcaneBoost());
+                arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
             }
         }
     }
@@ -139,9 +140,8 @@ public class Dragon extends Creature {
     }
 
     //Method used to get all possible moves at any stage in the game
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 
     //A method to get all the time warp powers
@@ -219,12 +219,16 @@ public class Dragon extends Creature {
 
     //Method that updates TimeWarps
     public void initNextTimeWarp() {
-        //Is supposed to change the enum for the timewarp obtained
+        TimeWarp currentTimewarp = timeWarps.get(0);
+        currentTimewarp.setStatus(RewardStates.ACQUIRED);
+        timeWarps.remove(currentTimewarp);
     }
 
     //Method that updates ArcaneBoosts
     public void initNextArcaneBoost() {
-        //Is supposed to change the enum for the arcane boost obtained
+        ArcaneBoost currentArcaneBoost = arcaneBoosts.get(0);
+        currentArcaneBoost.setStatus(RewardStates.ACQUIRED);
+        arcaneBoosts.remove(currentArcaneBoost);
     }
 
     //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
