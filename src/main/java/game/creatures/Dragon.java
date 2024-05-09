@@ -92,6 +92,8 @@ public class Dragon extends Creature {
 
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
     public void initTimeWarpsAndArcaneBoosts () {
+        arcaneBoosts = new ArrayList<>();
+        timeWarps = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
