@@ -195,7 +195,14 @@ public class Hydra extends Creature{
 
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
+        ArrayList<Move> moves = new ArrayList<Move>();
+        for(int i = 1; i <= 6; i++) {
+            Dice dice = new Dice(i);
+            if(checkMove(dice)){
+                Move move = new Move(dice, this);
+                moves.add(move);
+            }
+        }
+        return moves;
     }
 }
