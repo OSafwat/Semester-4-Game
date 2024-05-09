@@ -9,5 +9,4 @@ public class ArcaneBoost extends Power{
     public ArcaneBoost(RewardStates status){
         super(status);
     }
-
 }
