@@ -123,7 +123,7 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     private void updateScoreSheet(Dice dice){
         StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");

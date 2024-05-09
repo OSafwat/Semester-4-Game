@@ -59,6 +59,19 @@ public class ScoreSheet {
         res += lion.getScoreSheet();
         System.out.print(res);
     }
+    public String toString(){
+        String res ="\n\nScoreSheet\n\n";
+        res += dragon.getScoreSheet();
+        res +="\n";
+        res += gaia.getScoreSheet();
+        res +="\n";
+        res += hydra.getScoreSheet();
+        res +="\n";
+        res += phoenix.getScoreSheet();
+        res +="\n";
+        res += lion.getScoreSheet();
+        return res;
+    }
 
     //red    green  blue    magenta    yellow
     //dragon gaia   hydra   phoenix  lion

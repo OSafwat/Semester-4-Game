@@ -592,7 +592,8 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-        //CLIGameController controller = new CLIGameController();
+        CLIGameController controller = new CLIGameController();
+        System.out.println(controller.getActivePlayer().getScoreSheet());
     }
 
     // public abstract boolean switchPlayer(){
