@@ -37,6 +37,8 @@ public class Lion extends Creature{
     private static final String[] mappedRewardLocations = new String[11];
 
     public Lion(){
+        arcaneBoosts= new ArrayList<>();
+        timeWarps = new ArrayList<>();
         initLions();
         this.deadLions=0;
         this.score=0;
