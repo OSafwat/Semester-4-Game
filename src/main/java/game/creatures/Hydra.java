@@ -42,6 +42,7 @@ public class Hydra extends Creature{
     public Hydra() throws IOException {
         firstSerpent.push(5); firstSerpent.push(4); firstSerpent.push(3); firstSerpent.push(2); firstSerpent.push(1); 
         secondSerpent.push(6); secondSerpent.push(5); secondSerpent.push(4); secondSerpent.push(3); secondSerpent.push(2); secondSerpent.push(1); 
+        currentSerpent = firstSerpent;
 
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
@@ -59,6 +60,7 @@ public class Hydra extends Creature{
 
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
+        String[] defaultProperties = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward.equals("null"))
             return "  ";
@@ -70,7 +72,7 @@ public class Hydra extends Creature{
             else if(reward.equals("ElementalCrest")) return "EC";
             else if(reward.equals("MagentaBonus")) return "MB";
             else if(reward.equals("TimeWarp")) return "TW";
-            // Add a case for the else later.
+            else return defaultProperties[value];
         }
     }
 
@@ -126,7 +128,7 @@ public class Hydra extends Creature{
         if(dice.getValue()<1 || dice.getValue()>6) {
             throw InvalidMoveException;
         }
-        return dice.getValue() >= (int) CurrentSerpent.peek();
+        return dice.getValue() >= (int) currentSerpent.peek();
     }
 
     @Override
