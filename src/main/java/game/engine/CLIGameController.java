@@ -366,17 +366,24 @@ public class CLIGameController {
                                 break;
                             System.out.println("momken nebatal estehbal");
                         }while(true);
-                        Dice tempDice ;
                         switch (realmChoice) {
-                            case 1: tempDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: tempDice = new GreenDice(chosenDice.getValue()); break;
-                            case 3: tempDice = new BlueDice(chosenDice.getValue()); break;
-                            case 4: tempDice = new MagentaDice(chosenDice.getValue()); break;
-                            case 5: tempDice = new YellowDice(chosenDice.getValue()); break;
-                            default: System.out.println("we have a problem"); tempDice = null;
+                            case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
+                            case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
+                            case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
+                            case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
+                            case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
                         }
-                        if (controller.makeMove(player, new Move(tempDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
-                            break;
+                    }
+                    if (chosenDice instanceof RedDice){
+                        int dragonChoice = 0;
+                        do {
+                            System.out.println("please choose a proper dragon to attack in the red realm");
+                            dragonChoice = scanner.nextInt();
+                            if (dragonChoice>= 1 && dragonChoice <= 4){
+                                ((RedDice)chosenDice).selectsDragon(dragonChoice); 
+                                break;
+                            }
+                        } while (true);
                     }
                     else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
