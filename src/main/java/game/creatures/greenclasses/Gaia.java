@@ -2,6 +2,7 @@ package game.creatures.greenclasses;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import game.collectibles.ArcaneBoost;
@@ -11,6 +12,7 @@ import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
@@ -30,12 +32,12 @@ public class Gaia extends Creature{
     private Guardians [][]  gaiaGuardians;
     private int alliveGuardians;
     private int deadGuardians;
-    private int score;
+   // private int score;
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
-    private ArrayList<TimeWarp> timeWarps ;
-    private ArrayList<ArcaneBoost> arcaneBoosts;
+    //private ArrayList<TimeWarp> timeWarps ;
+    //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
 
     public Gaia(){
@@ -57,7 +59,7 @@ public class Gaia extends Creature{
          
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("TimeWarp"))
-            timeWarps.add(new TimeWarp());
+            timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
         }
         //ASUM TimWarp class is done
          // IMP create as not accuired
@@ -65,13 +67,13 @@ public class Gaia extends Creature{
          // ASUM waiting for set and get to be made in TimeWarp class
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("TimeWarp"))
-            timeWarps.add(new TimeWarp());
+            timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
         }
         
         
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("ArcaneBoost"))
-            arcaneBoosts.add(new ArcaneBoost());
+            arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
         }
         //ASUM ArcaneBoost class is done
          // IMP create as not accuired
@@ -80,16 +82,13 @@ public class Gaia extends Creature{
             
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("ArcaneBoost"))
-            arcaneBoosts.add(new ArcaneBoost());
+            arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
         }
 
     }
 
 
-     // EXP mehtod to get the score of the realm
-     public int getScore(){
-        return score;
-    }
+ 
 
     // EXP method to update the score of the realm
     private void updateScore(){
@@ -407,16 +406,14 @@ private  void updateRow(int r){
     }
 
 // EXP method to get all possible moves
-public Move[] getAllPossibleMoves() {
+public ArrayList<Move> getAllPossibleMoves() {
 
-    Move [] allMoves = new Move[this.getAlliveGuardians()];
-    int c=0;
+    ArrayList<Move> allMoves = new ArrayList<Move>();
     for(int i=2;i<13;i++){
         GreenDice greenDice = new GreenDice(i);
         if(checkMove1(greenDice)){
         // ASUM assuming move constructor is done
-        allMoves[c]= new Move(greenDice,this);
-        c++;
+        allMoves.add( new Move(greenDice,this));
         }
 
     }
@@ -604,11 +601,28 @@ private String getCorrectBonusInScore(String s){
 //EXP apply powers 
 private boolean applyNotBonusCollectable(String s){
     if(s.equals("TimeWarp")){
-        //IMP set as Aqquired
+        Iterator it = timeWarps.iterator();
+        while(it.hasNext()){
+            TimeWarp t = (TimeWarp)(it.next());
+            if(t.getStatus()==RewardStates.UNACQUIRED){
+                t.setStatus(RewardStates.ACQUIRED);
+                break;
+            }
+
+        }
         return true;
     }
     else if(s.equals("ArcaneBoost")){
-        // Imp set ass Aqquired
+        Iterator it = arcaneBoosts.iterator();
+        while(it.hasNext()){
+            ArcaneBoost a = (ArcaneBoost)(it.next());
+            if(a.getStatus()==RewardStates.UNACQUIRED){
+                a.setStatus(RewardStates.ACQUIRED);
+                break;
+            }
+
+        }
+
         return true;
     }
     else if(s.equals("ElementalCrest")){

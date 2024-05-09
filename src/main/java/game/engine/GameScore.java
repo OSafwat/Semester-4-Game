@@ -5,13 +5,33 @@ public class GameScore {
     int elementalCrestCounter;
 
     public GameScore(){
-        allScores= new int[6];
+        allScores= new int[5];
         elementalCrestCounter =0;
     }
     
     public void updateScores(int [] scores, int elementalCrests ){
         this.allScores = scores;
         this.elementalCrestCounter=elementalCrests;
+    }
+
+    public int getRedRealmScore() {
+        return allScores[0];
+    }
+
+    public int getGreenRealmScore() {
+        return allScores[1];
+    }
+
+    public int getBlueRealmScore() {
+        return allScores[2];
+    }
+
+    public int getMagentaRealmScore() {
+        return allScores[3];
+    }
+
+    public int getYellowRealmScore() {
+        return allScores[4];
     }
     
     public int getTotalScore(){

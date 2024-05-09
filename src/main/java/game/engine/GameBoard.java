@@ -86,6 +86,9 @@ public class GameBoard {
     public ArrayList<Dice> getPassiveArcaneDice(){
         return this.passiveArcaneDice;
     }
+    public Dice [] getDice(){
+        return getAllDice();
+    }
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
