@@ -218,6 +218,11 @@ public class Dragon extends Creature {
         return true;
     }
 
+    public boolean equals(Object obj) {
+        Dragon dragon = (Dragon) obj;
+        return dragon.heart.equals(heart) && dragon.face.equals(face) && dragon.wings.equals(wings) && dragon.tail.equals(tail);
+    }
+
     //Method that updates TimeWarps
     public void initNextTimeWarp() {
         TimeWarp currentTimewarp = timeWarps.get(0);
