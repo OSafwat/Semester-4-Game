@@ -68,6 +68,9 @@ public class Player {
     public Move [] getAllPossiblMoves(){
         return (Move[])this.allPossiblMoves.toArray();
     }
+    public void updateAllPossibleMoves(){
+        this.allPossiblMoves = getAllPossibleMoves();
+    }
     
 
 

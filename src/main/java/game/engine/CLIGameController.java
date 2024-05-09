@@ -436,6 +436,7 @@ public class CLIGameController {
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
+        player.updateAllPossibleMoves();
         try {
             if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
