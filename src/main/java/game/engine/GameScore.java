@@ -5,7 +5,7 @@ public class GameScore {
     int elementalCrestCounter;
 
     public GameScore(){
-        allScores= new int[6];
+        allScores= new int[5];
         elementalCrestCounter =0;
     }
     

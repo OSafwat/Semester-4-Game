@@ -180,12 +180,12 @@ public class CLIGameController {
         Player player1= gameBoard.getPlayer1();
         Player player2= gameBoard.getPlayer1();
         System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
-        player1.getScoresheet().displayScoreSheet();
+        player1.getScoreSheet().displayScoreSheet();
         System.out.println( player1.getGameScore().toString());
         int player1Score= player1.getGameScore().getTotalScore();
 
         System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
-        player2.getScoresheet().displayScoreSheet();
+        player2.getScoreSheet().displayScoreSheet();
         System.out.println( player2.getGameScore().toString());
         int player2Score= player2.getGameScore().getTotalScore();
 
@@ -251,7 +251,7 @@ public class CLIGameController {
                             }else {
                                 gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
                             }
-                            if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
+                            if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoreSheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
                         
                         } catch (Exception e) {
@@ -452,7 +452,7 @@ public class CLIGameController {
                 System.out.println("please enter the number to attack the " + theBonusColor + " realm with: "); 
                 numberToAttackWith = Integer.parseInt(System.console().readLine()); // NEED TO VALIDATE THE INPUT
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoresheet().getCreatureByColor(theBonusColor);
+                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
                     Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
                     return makeMove(player, firstBonusmove);    
                 }else{
@@ -468,7 +468,7 @@ public class CLIGameController {
                 System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
                 firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
                 if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoresheet().getCreatureByColor(theFirstBonusColor);
+                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
                     Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
                     if (makeMove(player, firstBonusmove))
                         break;
@@ -486,7 +486,7 @@ public class CLIGameController {
                 System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
                 secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
                 if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature secondCreature = player.getScoresheet().getCreatureByColor(theSecondBonusColor);
+                    Creature secondCreature = player.getScoreSheet().getCreatureByColor(theSecondBonusColor);
                     Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
                     if (makeMove(player, secondBonusmove))
                         break;
@@ -563,7 +563,7 @@ public class CLIGameController {
 
     // player attributes related methods
     public ScoreSheet getScoreSheet(Player player) {
-        return player.getScoresheet();
+        return player.getScoreSheet();
     }
 
     public GameScore getGameScore(Player player) {
