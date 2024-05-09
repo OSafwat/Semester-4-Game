@@ -43,7 +43,7 @@ public class Player {
     public PlayerStatus getPlayerStatus(){
         return this.playerStatus;
     }
-    public ScoreSheet getScoresheet(){
+    public ScoreSheet getScoreSheet(){
         return this.scoreSheet;
     }
     public void switchStatus(){
