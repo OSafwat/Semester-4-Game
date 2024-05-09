@@ -97,6 +97,7 @@ public class Phoenix extends Creature{
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
             phoenixsReceivedHP[killedPhoenixes++] = diceValue;
+            score += diceValue;
 
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
