@@ -254,8 +254,8 @@ public class CLIGameController {
                             if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoresheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
                         
-                        } catch (InvalidMoveException e) {
-                            System.out.println("sadly you will need to choose another move that is gonna be more correct we law enta zehe2t men kol el error checking da fa ana zehe2t aktar");
+                        } catch (Exception e) {
+                            System.out.println("we have an unknown");
                         }
                     }
 
@@ -294,8 +294,8 @@ public class CLIGameController {
                 if (makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature)))
                     break;
                 System.out.println("please enter try another move that will be valid ");
-            } catch (InvalidMoveException e) {
-                System.out.println("batal estehbal -> invalid move");
+            } catch (Exception e) {
+                System.out.println("batal estehbal we have an unknown Exception");
             }
         } while (true);
         scanner.close();
@@ -388,8 +388,8 @@ public class CLIGameController {
                     else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
                     }
-                }catch(InvalidMoveException iException){
-                    System.out.println("this move cannot happen as per the realms rules // invalid move exception");
+                }catch(Exception e){
+                    System.out.println();
                 }
                 
             }else {
@@ -435,7 +435,7 @@ public class CLIGameController {
 
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
-    public boolean makeMove(Player player, Move move) throws InvalidMoveException {
+    public boolean makeMove(Player player, Move move)  {
         try {
             if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
@@ -499,6 +499,10 @@ public class CLIGameController {
                 }
             } while (true);
             return true;
+        }
+        catch (InvalidMoveException Im){
+            System.out.println("i dont get why we would get here");
+            return false;
         }
     }
 
