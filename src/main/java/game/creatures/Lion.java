@@ -202,7 +202,7 @@ public class Lion extends Creature{
             return false;
     }
     @Override
-    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException { 
+    public boolean makeMove(Dice dice) throws BonusException{ 
             if(!checkMove(dice)){
                 System.out.print("erm what the sigma");
                 return false;
