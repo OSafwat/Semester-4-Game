@@ -26,14 +26,12 @@ public class Phoenix extends Creature{
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
     public static String[] mappedRewardLocations = new String[11];
-    public ArrayList<TimeWarp> allTimeWarps;
-    public ArrayList<ArcaneBoost> allArcaneBoosts;
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
         killedPhoenixes = 0;
-        allTimeWarps = new ArrayList<>();
-        allArcaneBoosts = new ArrayList<>();
+        timeWarps = new ArrayList<>();
+        arcaneBoosts = new ArrayList<>();
         allPossibleMoves = new ArrayList<>();
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
@@ -104,11 +102,11 @@ public class Phoenix extends Creature{
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
             
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-                if (TimeWarpArrayList.get(i) == killedPhoenixes) allTimeWarps.add(new TimeWarp());
+                if (TimeWarpArrayList.get(i) == killedPhoenixes) timeWarps.add(new TimeWarp());
             }
 
             for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
+                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) arcaneBoosts.add(new ArcaneBoost());
             }
 
             updateAllPossibleMoves();
@@ -126,12 +124,12 @@ public class Phoenix extends Creature{
 
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
-        return allTimeWarps;
+        return timeWarps;
     }
 
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        return allArcaneBoosts;
+        return arcaneBoosts;
     }
 
     public void initPossibleMoves() {
