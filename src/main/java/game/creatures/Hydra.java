@@ -36,7 +36,6 @@ public class Hydra extends Creature{
 
     // Define array for the score values and an integer for the current score.
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
-    private int score;
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
@@ -76,17 +75,13 @@ public class Hydra extends Creature{
         }
     }
 
-    // Getter for the "score" variable.
-    public int getScore() {
-        return this.score;
-    }
-
     // Setter for the "score" variable.
     public void updateScore(int score) {
         this.score += score;
     }
 
     // Method that returns 1 if if the second head of the regenerated serpent is killed.
+    @Override
     public int getElementalCrest() {
         int elementalCrestCount = 0;
         for(int i = 0; i < properties.size(); i++){
@@ -100,8 +95,8 @@ public class Hydra extends Creature{
             return 0;
     }
 
-
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
+    @Override
     public String getScoreSheet() {
         String scoreSheet = "Tide Abyss: Hydra Serpents (BLUE REALM):\n" +
                 "+-----------------------------------------------------------------------+\n" +
@@ -133,7 +128,6 @@ public class Hydra extends Creature{
 
     @Override
     public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
     }
 
@@ -150,7 +144,7 @@ public class Hydra extends Creature{
     }
 
     @Override
-    public Move[] getAllPossibleMoves() {
+    public ArrayList<Move> getAllPossibleMoves() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
     }
