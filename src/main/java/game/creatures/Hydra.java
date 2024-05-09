@@ -60,12 +60,17 @@ public class Hydra extends Creature{
         else if(Integer.parseInt(diceUsed[value])!=0)
             return "X ";
         else{
-            if(reward.equals("ArcaneBoost")) return "AB";
-            else if(reward.equals("GreenBonus")) return "GB";
-            else if(reward.equals("ElementalCrest")) return "EC";
-            else if(reward.equals("MagentaBonus")) return "MB";
-            else if(reward.equals("TimeWarp")) return "TW";
-            else return defaultValues[value];
+            switch (reward) {
+                case "ArcaneBoost": return "AB";
+                case "RedBonus": return "RB";
+                case "GreenBonus": return "GB";
+                case "BlueBonus": return "BB";
+                case "MagentaBonus": return "MB";
+                case "YellowBonus": return "YB";
+                case "ElementalCrest": return "EC";
+                case "TimeWarp": return "TW";
+                default: return defaultValues[value];
+            }
         }
     }
 
@@ -142,8 +147,8 @@ public class Hydra extends Creature{
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
             case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
             case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+            default: return true;
         }
-        return true;
     }
 
     // Method that adds 6 new heads onto the serpent to "regenerate" it, should be called after the 5 heads of the first serpent all die.
