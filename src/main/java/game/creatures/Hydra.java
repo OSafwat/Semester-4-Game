@@ -52,6 +52,7 @@ public class Hydra extends Creature{
         this.currentSerpent = this.firstSerpent;
         this.regenerateFlag = false;
 
+        headsKilled = 0;
         this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++)
             diceUsed[i] = "---";
@@ -128,7 +129,23 @@ public class Hydra extends Creature{
 
     @Override
     public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+        int currentHead = currentSerpent.peek();
+        int diceValue = dice.getValue();
+        if(!checkMove(dice) || currentSerpent.isEmpty())
+            throw InvalidMoveException;
+
+        if(diceValue >= currentHead) {
+            currentSerpent.pop();
+            diceUsed[headsKilled++] = "" + diceValue;
+        }
+
+        if(currentSerpent.isEmpty()) {
+            regenerateSerpent();
+        }
+    }
+
+    private void regenerateSerpent() {
+        currentSerpent
     }
 
     @Override
