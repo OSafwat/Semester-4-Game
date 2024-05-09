@@ -96,7 +96,7 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public boolean makeMove(Dice dice) throws InvalidDiceSelectionException, InvalidMoveException {
+    public boolean makeMove(Dice dice) throws InvalidMoveException {
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
             phoenixsReceivedHP[killedPhoenixes++] = diceValue;
