@@ -64,7 +64,9 @@ public class Hydra extends Creature{
         this.score = 0;
         this.regenerateFlag = false;
 
+        this.arcaneBoosts = new ArrayList<ArcaneBoost>();
         this.arcaneBoostsUsed = 0;
+        this.timeWarps = new ArrayList<TimeWarp>();
         this.timeWarpsUsed = 0;
 
         this.headsKilled = 0;
