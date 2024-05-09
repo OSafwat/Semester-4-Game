@@ -111,6 +111,8 @@ public class Phoenix extends Creature{
                 if (ArcaneBoostArrayList.get(i) == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
             }
 
+            updateAllPossibleMoves();
+
             return true;
         }
 
