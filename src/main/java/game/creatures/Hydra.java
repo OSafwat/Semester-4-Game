@@ -10,13 +10,10 @@ import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
-import game.exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Stack;
-import java.util.Scanner;
 
 public class Hydra extends Creature{
     // Create two stacks representing the two serpents, and stack that points to the current active serpent.
@@ -55,7 +52,7 @@ public class Hydra extends Creature{
 
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
-        String[] defaultProperties = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
+        String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward.equals("null"))
             return "  ";
@@ -67,7 +64,7 @@ public class Hydra extends Creature{
             else if(reward.equals("ElementalCrest")) return "EC";
             else if(reward.equals("MagentaBonus")) return "MB";
             else if(reward.equals("TimeWarp")) return "TW";
-            else return defaultProperties[value];
+            else return defaultValues[value];
         }
     }
 
@@ -76,16 +73,18 @@ public class Hydra extends Creature{
         this.score += score;
     }
 
-    // Method that returns 1 if if the second head of the regenerated serpent is killed.
+    // Method that checks which serpent head gives you an elemental crest and returns 1 if this head is dead and 0 otherwise.
     @Override
     public int getElementalCrest() {
         int elementalCrestCount = 0;
-        for(int i = 0; i < properties.size(); i++){
+        boolean isRewardOnSecondHead = false;
+        for(int i = 1; i < properties.size(); i++){
             if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
-                elementalCrestCount = i;
+                elementalCrestCount = (i==5)? 5: i%5;
+                isRewardOnSecondHead = (i>5);
         }
 
-        if(this.serpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == regenerateFlag) 
             return 1;
         else   
             return 0;
@@ -113,12 +112,13 @@ public class Hydra extends Creature{
         return scoreSheet;
     }
 
-    // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
+    // Method that checks if the move is possible.
     @Override
     public boolean checkMove(Dice dice) {
         return dice.getValue() >= serpent.peek();
     }
 
+    // Method that attacks the top hydra head of possible, and updates the variables of class to match that.
     @Override
     public boolean makeMove(Dice dice) throws BonusException{
         int diceValue = dice.getValue();
