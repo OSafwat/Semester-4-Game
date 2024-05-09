@@ -18,7 +18,7 @@ import java.util.Properties;
 import java.util.Stack;
 
 public class Hydra extends Creature{
-    // Create two stacks representing the two serpents, and stack that points to the current active serpent.
+    // Stack that represents the hydra with the heads stored inside of it.
     private Stack<Integer> serpent;
 
     // Define an array containing the hit reward for each hydra head.
@@ -183,16 +183,19 @@ public class Hydra extends Creature{
         regenerateFlag = true;
     }
 
+    // Getter for the timeWarps ArrayList.
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
-
+    
+    // Getter for the arcaneBoosts ArrayList.
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
 
+    // Method that return an ArrayList containing all of the moves that the player can currently do.
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
         ArrayList<Move> moves = new ArrayList<Move>();
