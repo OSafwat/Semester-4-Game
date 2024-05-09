@@ -346,7 +346,8 @@ public class Dragon extends Creature {
     //Method that returns the scoreSheet at any point in the game
     @Override
     public String getScoreSheet() {
-        StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
+        StringBuilder scoreSheet =  new StringBuilder("Emberfall Dominion: Pyroclast Dragon (RED REALM):\n");
+        scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  #  |D1   |D2   |D3   |D4   |R    |\n");
         scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  F  |");
@@ -374,7 +375,7 @@ public class Dragon extends Creature {
             scoreSheet.append(pointMap[i]).append("  |");
         }
         scoreSheet.append(suppliers[4].get()).append("   |\n");
-        scoreSheet.append("+-----------------------------------+");
+        scoreSheet.append("+-----------------------------------+\n\n");
         return scoreSheet.toString();
     }
 
