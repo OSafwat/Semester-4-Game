@@ -9,6 +9,7 @@ import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
+import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 
 import java.util.ArrayList;
@@ -69,8 +70,8 @@ public class Hydra extends Creature{
     }
 
     // Setter for the "score" variable.
-    public void updateScore(int score) {
-        this.score += score;
+    public void updateScore() {
+        score += scores[headsKilled];
     }
 
     // Method that checks which serpent head gives you an elemental crest and returns 1 if this head is dead and 0 otherwise.
@@ -129,9 +130,18 @@ public class Hydra extends Creature{
 
         serpent.pop();
         diceUsed[headsKilled++] = "" + diceValue;
-
+        updateScore();
+        
         if(serpent.isEmpty()) {
             regenerateSerpent();
+        }
+        
+        switch(properties.getProperty("hit"+headsKilled+"Reward")){
+            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+            case "RedBonus": throw new BonusException(RealmColor.RED);
+            case "BlueBonus": throw new BonusException(RealmColor.BLUE);
+            case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
+            case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
         }
         return true;
     }
