@@ -19,7 +19,7 @@ public class GameBoard {
         return this.allDice[1];
     }
     //constructor
-    public GameBoard(String player1name, String player2Name){
+    public GameBoard(){
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
         this.allDice[1]=new GreenDice();
@@ -40,8 +40,8 @@ public class GameBoard {
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice= new ArrayList<>();
 
-        player1 = new Player(PlayerStatus.ACTIVE, player1name);
-        player2 = new Player(PlayerStatus.PASSIVE, player2Name);
+        player1 = new Player(PlayerStatus.ACTIVE);
+        player2 = new Player(PlayerStatus.PASSIVE);
 
         //this.gameStatus= <gamestatus>;
 

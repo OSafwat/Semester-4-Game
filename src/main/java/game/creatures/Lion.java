@@ -46,7 +46,14 @@ public class Lion extends Creature{
         this.timeWarp=0;
         populateMappedRewardLocation();
     }
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        return timeWarps;
+    }
 
+    //A method to get all the arcane boost powers
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
     public int[] getLions(){
         return this.lions;
     }

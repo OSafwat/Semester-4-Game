@@ -17,10 +17,12 @@ public class Player {
     ArrayList <Move> allPossiblMoves ;
 
 
-
-    public Player(PlayerStatus status, String name){
-        this.playerStatus= status;
+    public void setName(String name){
         this.name= name;
+    }
+    public Player(PlayerStatus status){
+        this.scoreSheet= new ScoreSheet();
+        this.playerStatus= status;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         allPossiblMoves = getAllPossibleMoves();
@@ -67,6 +69,9 @@ public class Player {
 
     public Move [] getAllPossiblMoves(){
         return (Move[])this.allPossiblMoves.toArray();
+    }
+    public void updateAllPossibleMoves(){
+        this.allPossiblMoves = getAllPossibleMoves();
     }
     
 
