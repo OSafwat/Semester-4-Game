@@ -39,6 +39,7 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() {
+        serpent = new Stack<Integer>();
         serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
         
         properties = new Properties();
