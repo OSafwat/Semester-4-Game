@@ -16,7 +16,6 @@ import game.dice.ArcanePrism;
 import game.dice.Dice;
 import game.dice.MagentaDice;
 import game.engine.Move;
-import game.exceptions.InvalidDiceSelectionException;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
