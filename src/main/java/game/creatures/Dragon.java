@@ -178,13 +178,14 @@ public class Dragon extends Creature {
     }
 
     //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
-    public boolean makeMove(Dice inputDice) throws BonusException, InvalidMoveException {
+    public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
         Dragon targetDragon = Dragons[dragonIndex-1];
-        targetDragon.checkMove(dice);
+        boolean valid = targetDragon.checkMove(dice);
+        if (!valid)
+            return false;
         int targetValue = dice.getValue();
-
         String[] oldRewardStatus = new String[5];
         for (int i = 0; i < 5; i++) {
             oldRewardStatus[i] = suppliers[i].get();
@@ -256,14 +257,13 @@ public class Dragon extends Creature {
     }
 
     //Method that checks if a move can be done
-    public boolean checkMove(Dice dice) throws InvalidMoveException {
+    public boolean checkMove(Dice dice) {
         int targetValue = dice.getValue();
-        moveHelper(targetValue, false);
-        return true;
+        return moveHelper(targetValue, false);
     }
 
     //Method to reduce code redundancy
-    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
+    public boolean moveHelper(int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -332,10 +332,6 @@ public class Dragon extends Creature {
                 if (doMove)
                     heart = null;
             }
-        }
-        //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
-        if (!doMove) {
-            throw new InvalidMoveException();
         }
         return valid;
     }
