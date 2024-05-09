@@ -22,5 +22,5 @@ public abstract class Creature {
     public abstract boolean makeMove(Dice dice) throws BonusException  , BonusTwoException, InvalidMoveException ;  // the bonusTwoException was added for the gaia class otherwise you wont need it so please just throw it on your side 
     public abstract ArrayList<TimeWarp> getAllTimeWarps();
     public abstract ArrayList<ArcaneBoost> getAllArcaneBoosts();
-    public abstract Move[] getAllPossibleMoves();
+    public abstract ArrayList<Move> getAllPossibleMoves();
 }
