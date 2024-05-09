@@ -95,10 +95,10 @@ public class Dragon extends Creature {
         for (int i = 0; i < 5; i++) {
             String current = suppliers[i].get();
             if (current.equals("TW")) {
-                timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
+                timeWarps.add(new TimeWarp());
             }
             if (current.equals("AB")) {
-                arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
+                arcaneBoosts.add(new ArcaneBoost());
             }
         }
     }
@@ -216,6 +216,11 @@ public class Dragon extends Creature {
             }
         }
         return true;
+    }
+
+    public boolean equals(Object obj) {
+        Dragon dragon = (Dragon) obj;
+        return dragon.heart.equals(heart) && dragon.face.equals(face) && dragon.wings.equals(wings) && dragon.tail.equals(tail);
     }
 
     //Method that updates TimeWarps

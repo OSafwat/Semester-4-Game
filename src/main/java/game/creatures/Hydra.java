@@ -9,20 +9,17 @@ import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
+import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
-import game.exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Stack;
-import java.util.Scanner;
 
 public class Hydra extends Creature{
-    // Create two stacks representing the two serpents, and stack that points to the current active serpent.
-    private Stack<Integer> firstSerpent = new Stack<Integer>();
-    private Stack<Integer> secondSerpent = new Stack<Integer>();
-    private Stack<Integer> currentSerpent;
+    // Stack that represents the hydra with the heads stored inside of it.
+    private Stack<Integer> serpent;
 
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
@@ -36,13 +33,14 @@ public class Hydra extends Creature{
 
     // Define array for the score values and an integer for the current score.
     private int[] scores = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
-    private int score;
+
+    // The number of arcane boost and time warps that have been used.
+    private int arcaneBoostsUsed;
+    private int timeWarpsUsed;
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() throws IOException {
-        firstSerpent.push(5); firstSerpent.push(4); firstSerpent.push(3); firstSerpent.push(2); firstSerpent.push(1); 
-        secondSerpent.push(6); secondSerpent.push(5); secondSerpent.push(4); secondSerpent.push(3); secondSerpent.push(2); secondSerpent.push(1); 
-        currentSerpent = firstSerpent;
+        serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
 
         properties = new Properties();
         File config = new File("src/main/resources/config/TideAbyssRewards.properties");
@@ -50,58 +48,73 @@ public class Hydra extends Creature{
         properties.load(configReader);
 
         this.score = 0;
-        this.currentSerpent = this.firstSerpent;
         this.regenerateFlag = false;
 
+        this.arcaneBoostsUsed = 0;
+        this.timeWarpsUsed = 0;
+
+        this.headsKilled = 0;
         this.diceUsed = new String[11];
-        for(int i = 0; i < 11; i++)
+        for(int i = 0; i < 11; i++) {
             diceUsed[i] = "---";
+            if(properties.getProperty("hit"+i+"Reward") == "ArcaneBoost"){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                arcaneBoosts.add(ac);
+            }
+            if(properties.getProperty("hit"+i+"Reward") == "TimeWarp") {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                timeWarps.add(tw);
+            }
+        }
     }
 
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
-        String[] defaultProperties = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
+        String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward.equals("null"))
             return "  ";
         else if(Integer.parseInt(diceUsed[value])!=0)
             return "X ";
         else{
-            if(reward.equals("ArcaneBoost")) return "AB";
-            else if(reward.equals("GreenBonus")) return "GB";
-            else if(reward.equals("ElementalCrest")) return "EC";
-            else if(reward.equals("MagentaBonus")) return "MB";
-            else if(reward.equals("TimeWarp")) return "TW";
-            else return defaultProperties[value];
+            switch (reward) {
+                case "ArcaneBoost": return "AB";
+                case "RedBonus": return "RB";
+                case "GreenBonus": return "GB";
+                case "BlueBonus": return "BB";
+                case "MagentaBonus": return "MB";
+                case "YellowBonus": return "YB";
+                case "ElementalCrest": return "EC";
+                case "TimeWarp": return "TW";
+                default: return defaultValues[value];
+            }
         }
-    }
-
-    // Getter for the "score" variable.
-    public int getScore() {
-        return this.score;
     }
 
     // Setter for the "score" variable.
-    public void updateScore(int score) {
-        this.score += score;
+    public void updateScore() {
+        score += scores[headsKilled];
     }
 
-    // Method that returns 1 if if the second head of the regenerated serpent is killed.
+    // Method that checks which serpent head gives you an elemental crest and returns 1 if this head is dead and 0 otherwise.
+    @Override
     public int getElementalCrest() {
         int elementalCrestCount = 0;
-        for(int i = 0; i < properties.size(); i++){
+        boolean isRewardOnSecondHead = false;
+        for(int i = 1; i < properties.size(); i++){
             if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
-                elementalCrestCount = i;
+                elementalCrestCount = (i==5)? 5: i%5;
+                isRewardOnSecondHead = (i>5);
         }
 
-        if(this.currentSerpent.peek() > elementalCrestCount && this.regenerateFlag == true) 
+        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == regenerateFlag) 
             return 1;
         else   
             return 0;
     }
 
-
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
+    @Override
     public String getScoreSheet() {
         String scoreSheet = "Tide Abyss: Hydra Serpents (BLUE REALM):\n" +
                 "+-----------------------------------------------------------------------+\n" +
@@ -122,37 +135,77 @@ public class Hydra extends Creature{
         return scoreSheet;
     }
 
-    // Method that returns true if the move is possible and throws an exception if the move on the dice isn't possible.
+    // Method that checks if the move is possible.
     @Override
-    public boolean checkMove(Dice dice) throws InvalidMoveException {
-        if(dice.getValue()<1 || dice.getValue()>6) {
-            throw InvalidMoveException;
+    public boolean checkMove(Dice dice) {
+        return dice.getValue() >= serpent.peek();
+    }
+
+    // Method that attacks the top hydra head of possible, and updates the variables of class to match that.
+    @Override
+    public boolean makeMove(Dice dice) throws BonusException{
+        int diceValue = dice.getValue();
+
+        if(!checkMove(dice) || serpent.isEmpty()) {
+            return false;
         }
-        return dice.getValue() >= (int) currentSerpent.peek();
+
+        serpent.pop();
+        diceUsed[headsKilled++] = "" + diceValue;
+        updateScore();
+        
+        timeWarps.set(timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED));
+        arcaneBoosts.set(arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED));
+
+        if(serpent.isEmpty()) {
+            regenerateSerpent();
+        }
+        
+        switch(properties.getProperty("hit"+headsKilled+"Reward")){
+            case "ArcaneBoost": 
+            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+            case "RedBonus": throw new BonusException(RealmColor.RED);
+            case "BlueBonus": throw new BonusException(RealmColor.BLUE);
+            case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
+            case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+            default: return true;
+        }
     }
 
-    @Override
-    public boolean makeMove(Dice dice) throws BonusException, BonusTwoException, InvalidMoveException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    // Method that adds 6 new heads onto the serpent to "regenerate" it, should be called after the 5 heads of the first serpent all die.
+    private void regenerateSerpent() {
+        // This is just in case this method gets called when the serpent still has heads, in theory this block should never activate.
+        while(!serpent.isEmpty()) {
+            serpent.pop();
+        }
+
+        serpent.push(6); serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
+        regenerateFlag = true;
     }
 
+    // Getter for the timeWarps ArrayList.
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
-    }
-
-    @Override
-    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
-    }
-
-    @Override
-    public Move[] getAllPossibleMoves() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllPossibleMoves'");
+        return timeWarps;
     }
     
+    // Getter for the arcaneBoosts ArrayList.
+    @Override
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
+
+    // Method that return an ArrayList containing all of the moves that the player can currently do.
+    @Override
+    public ArrayList<Move> getAllPossibleMoves() {
+        ArrayList<Move> moves = new ArrayList<Move>();
+        for(int i = 1; i <= 6; i++) {
+            Dice dice = new Dice(i);
+            if(checkMove(dice)){
+                Move move = new Move(dice, this);
+                moves.add(move);
+            }
+        }
+        return moves;
+    }
 }

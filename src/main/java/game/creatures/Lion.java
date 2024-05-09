@@ -196,13 +196,10 @@ public class Lion extends Creature{
     @Override
     public boolean checkMove(Dice dice){
         int diceValue=dice.getValue();
-            if ((dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-                return true;
-                }
-            return false;
+            return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0;
     }
     @Override
-    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException { 
+    public boolean makeMove(Dice dice) throws BonusException{ 
             if(!checkMove(dice)){
                 System.out.print("erm what the sigma");
                 return false;
@@ -218,15 +215,12 @@ public class Lion extends Creature{
         }
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
-    if(deadLions == 11) return null;
-    
+    if(deadLions == 11) return new ArrayList<>();
     ArrayList<Move> possibleMoves = new ArrayList<>();
-    
-    for(int i = 0; i < 6; i++) {
-        Move idk = new Move(new Dice(i + 1), this);
+    for(int i = 0; i < 6; i++) { 
+        Move idk = new Move(new YellowDice(i + 1), this);
         possibleMoves.add(idk);
     }
-    
     return possibleMoves;
 }
     

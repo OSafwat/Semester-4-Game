@@ -16,7 +16,6 @@ import game.dice.ArcanePrism;
 import game.dice.Dice;
 import game.dice.MagentaDice;
 import game.engine.Move;
-import game.exceptions.InvalidDiceSelectionException;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
@@ -27,14 +26,12 @@ public class Phoenix extends Creature{
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
     public static String[] mappedRewardLocations = new String[11];
-    public ArrayList<TimeWarp> allTimeWarps;
-    public ArrayList<ArcaneBoost> allArcaneBoosts;
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
         killedPhoenixes = 0;
-        allTimeWarps = new ArrayList<>();
-        allArcaneBoosts = new ArrayList<>();
+        timeWarps = new ArrayList<>();
+        arcaneBoosts = new ArrayList<>();
         allPossibleMoves = new ArrayList<>();
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
@@ -86,36 +83,34 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public boolean checkMove(Dice dice) throws InvalidDiceSelectionException, InvalidMoveException {
+    public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-            if (killedPhoenixes == 0) {
-                return true;
-            } else {
-                if (diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) {
-                    return true;
-                }
-                else throw new InvalidMoveException("Invalid Move Exception");
-            }
-        } else throw new InvalidDiceSelectionException("Invalid Dice used for the Magenta Class");
+            if (killedPhoenixes == 0 || diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) return true;
+        }
+
+        return false;
     }
 
     @Override
-    public boolean makeMove(Dice dice) throws InvalidDiceSelectionException, InvalidMoveException {
+    public boolean makeMove(Dice dice) throws InvalidMoveException {
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
             phoenixsReceivedHP[killedPhoenixes++] = diceValue;
+            score += diceValue;
 
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
             
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-                if (TimeWarpArrayList.get(i) == killedPhoenixes) allTimeWarps.add(new TimeWarp());
+                if (TimeWarpArrayList.get(i) == killedPhoenixes) timeWarps.add(new TimeWarp());
             }
 
             for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) allArcaneBoosts.add(new ArcaneBoost());
+                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) arcaneBoosts.add(new ArcaneBoost());
             }
+
+            updateAllPossibleMoves();
 
             return true;
         }
@@ -124,19 +119,18 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
-        return allTimeWarps;
+        return timeWarps;
     }
 
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        return allArcaneBoosts;
+        return arcaneBoosts;
     }
 
     public void initPossibleMoves() {
@@ -244,6 +238,16 @@ public class Phoenix extends Creature{
 
                 mappedRewardLocations[value.get(i)] = rewardString;
             }
+        }
+    }
+
+    public void updateAllPossibleMoves() {
+        allPossibleMoves.clear();
+        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes];
+        if (latestReceivedHit == 6) return;
+
+        for (int i = latestReceivedHit; i <= 6; i++) {
+            allPossibleMoves.add(new Move(new MagentaDice(i), this));
         }
     }
 
