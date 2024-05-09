@@ -145,7 +145,7 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     
     public int getElementalCrest(){
