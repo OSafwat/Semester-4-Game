@@ -95,9 +95,9 @@ public class Phoenix extends Creature{
                 if (diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) {
                     return true;
                 }
-                else throw new InvalidMoveException("Invalid Move Exception");
+                else throw new InvalidMoveException();
             }
-        } else throw new InvalidDiceSelectionException("Invalid Dice used for the Magenta Class");
+        } else throw new InvalidDiceSelectionException();
     }
 
     @Override
@@ -124,9 +124,8 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 
     @Override
