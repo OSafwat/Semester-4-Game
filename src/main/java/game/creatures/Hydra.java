@@ -122,9 +122,10 @@ public class Hydra extends Creature{
         int elementalCrestCount = 0;
         boolean isRewardOnSecondHead = false;
         for(int i = 1; i < this.properties.size(); i++){
-            if(properties.getProperty("hit"+i+"Reward").equals("ElementalCrest")) 
+            if(properties.getProperty("hit"+i+"Reward").equals("ElementalCrest")) {
                 elementalCrestCount = (i==5)? 5: i%5;
                 isRewardOnSecondHead = (i>5);
+            }
         }
 
         if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
