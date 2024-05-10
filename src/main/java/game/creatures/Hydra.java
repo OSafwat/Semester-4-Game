@@ -49,19 +49,6 @@ public class Hydra extends Creature{
             this.properties.load(configReader);
         } catch (IOException e) {
             System.out.println("Properties file reading failed.");
-<<<<<<< HEAD
-            properties.setProperty("hit1Reward", null);
-            properties.setProperty("hit2Reward", null);
-            properties.setProperty("hit3Reward", null);
-            properties.setProperty("hit4Reward", "ArcaneBoost");
-            properties.setProperty("hit5Reward", null);
-            properties.setProperty("hit6Reward", "GreenBonus");
-            properties.setProperty("hit7Reward", "ElementalCrest");
-            properties.setProperty("hit8Reward", null);
-            properties.setProperty("hit9Reward", "MagentaBonus");
-            properties.setProperty("hit10Reward", "TimeWarp");
-            properties.setProperty("hit11Reward", null);
-=======
             this.properties.setProperty("hit1Reward", null);
             this.properties.setProperty("hit2Reward", null);
             this.properties.setProperty("hit3Reward", null);
@@ -73,7 +60,6 @@ public class Hydra extends Creature{
             this.properties.setProperty("hit9Reward", "MagentaBonus");
             this.properties.setProperty("hit10Reward", "TimeWarp");
             this.properties.setProperty("hit11Reward", null);
->>>>>>> Tide-Abyss-Hamed
         }
         
         this.score = 0;
@@ -108,11 +94,7 @@ public class Hydra extends Creature{
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward == null)
             return "  ";
-<<<<<<< HEAD
-        else if(!diceUsed[--value].equals("---"))
-=======
         else if(!this.diceUsed[--value].equals("---"))
->>>>>>> Tide-Abyss-Hamed
             return "X ";
         else{
             switch (reward) {
@@ -159,13 +141,8 @@ public class Hydra extends Creature{
                 "|  #  |H11  |H12  |H13  |H14  |H15  |H21  |H22  |H23  |H24  |H25  |H26  |\n" +
                 "+-----------------------------------------------------------------------+\n";
                 
-<<<<<<< HEAD
-        scoreSheet += "|  H  |" +diceUsed[0]+ "  |" +diceUsed[1]+ "  |" +diceUsed[2]+ "  |" +diceUsed[3]+ "  |" +diceUsed[4]+ 
-        "  |" +diceUsed[5]+ "  |" +diceUsed[6]+ "  |" +diceUsed[7]+ "  |" +diceUsed[8]+ "  |" +diceUsed[9]+ "  |" +diceUsed[10]+ "  |\n";
-=======
         scoreSheet += "|  H  |" +this.diceUsed[0]+ "  |" +this.diceUsed[1]+ "  |" +this.diceUsed[2]+ "  |" +this.diceUsed[3]+ "  |" +this.diceUsed[4]+ 
         "  |" +this.diceUsed[5]+ "  |" +this.diceUsed[6]+ "  |" +this.diceUsed[7]+ "  |" +this.diceUsed[8]+ "  |" +this.diceUsed[9]+ "  |" +this.diceUsed[10]+ "  |\n";
->>>>>>> Tide-Abyss-Hamed
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
 
@@ -249,5 +226,4 @@ public class Hydra extends Creature{
         }
         return moves;
     }
-    
 }
