@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -111,16 +112,16 @@ public class Dragon extends Creature {
         for (int i = 0; i < 4; i++)
         {
             if (Dragons[i].face != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face), this));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
             }
             if (Dragons[i].wings != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings), this));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
             }
             if (Dragons[i].tail != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail), this));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
             }
             if (Dragons[i].heart != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart), this));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
             }
         }
     }
@@ -183,7 +184,7 @@ public class Dragon extends Creature {
     public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
-        Dragon targetDragon = Dragons[dragonIndex-1];
+        Dragon targetDragon = Dragons[dragonIndex];
         boolean valid = targetDragon.checkMove(dice);
         if (!valid)
             return false;
@@ -222,7 +223,7 @@ public class Dragon extends Creature {
 
     public boolean equals(Object obj) {
         Dragon dragon = (Dragon) obj;
-        return dragon.heart.equals(heart) && dragon.face.equals(face) && dragon.wings.equals(wings) && dragon.tail.equals(tail);
+        return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
     }
 
     //Method that updates TimeWarps
