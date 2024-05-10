@@ -53,6 +53,7 @@ public class Lion extends Creature{
         this.elementalCrest=0;
         this.arcaneBoost=0;
         this.timeWarp=0;
+        populateRewardLocationFromConfigFile();
         populateMappedRewardLocation();
 
         properties = new Properties();
