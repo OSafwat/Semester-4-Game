@@ -9,6 +9,8 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
+//import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -422,7 +424,11 @@ public class CLIGameController {
         for (Dice die : allDice) {
             result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
         }
-        return (Move [])result.toArray();
+        Move [] temp = new Move[result.size()];
+        for (int index = 0; index < result.size(); index++) {
+            temp[index]= result.get(index);
+        }
+        return temp;
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
         ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
@@ -598,8 +604,16 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-        CLIGameController controller = new CLIGameController();
-        System.out.println(controller.getActivePlayer().getScoreSheet());
+    //    CLIGameController controller = new CLIGameController();
+    //     GameBoard gameBoard = controller.getGameBoard();
+    //     Player player = controller.getActivePlayer();
+    //     Dice greenDie = controller.getGameBoard().getDice()[1];
+    //     greenDie.setValue(2);
+    //     Dice whiteDie = controller.getGameBoard().getDice()[5];
+    //     whiteDie.setValue(4);
+    //     Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
+    //     System.out.println();possibleMoves
+        //assertEquals("There should be 6 possible moves", 6, possibleMoves.length);
     }
 
     // public abstract boolean switchPlayer(){
