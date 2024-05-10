@@ -264,6 +264,7 @@ public class CLIGameController {
                 }
             }
         }   
+        
         scanner.close();
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
@@ -414,7 +415,12 @@ public class CLIGameController {
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
-        return player.getAllPossiblMoves();
+        ArrayList<Move> temp = player.getAllPossiblMoves();
+        Move [] moves = new Move[temp.size()];
+        for (int index = 0; index < temp.size(); index++) {
+            moves[index] = temp.get(index);
+        }
+        return moves;
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
@@ -442,11 +448,12 @@ public class CLIGameController {
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
-        player.updateAllPossibleMoves();
+        player.updateAllPossibleMoves();  //may need to be changed
         try {
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
-                Dice whiteDice = this.gameBoard.getGreen();
+                GreenDice greenDice = (GreenDice) this.gameBoard.getGreen();
+                ArcanePrism whiteDice = (ArcanePrism) this.gameBoard.getWhite(); 
+
                 int greenVal = greenDice.getValue();
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
@@ -463,6 +470,7 @@ public class CLIGameController {
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
                     Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
+                    player.updateGameScore();
                     return makeMove(player, firstBonusmove);    
                 }else{
                     System.out.println("please enter a valid number");
@@ -479,8 +487,9 @@ public class CLIGameController {
                 if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
                     Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
-                    if (makeMove(player, firstBonusmove))
-                        break;
+                    if (makeMove(player, firstBonusmove)){
+
+                        break;}
                     else{
                         System.out.println("please choose a valid move");
                     }
@@ -489,7 +498,7 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-
+            //player.updateGameScore();
             int secondNumberToAttackWith =0;
             do{
                 System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
@@ -507,10 +516,12 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
+            player.updateGameScore();
             return true;
         }
         catch (InvalidMoveException Im){
             System.out.println("i dont get why we would get here");
+            player.updateGameScore();
             return false;
         }
     }
@@ -536,7 +547,12 @@ public class CLIGameController {
     }
 
     public Dice[] getAvailableDice() {
-        return this.gameBoard.getAvailableDice();
+        ArrayList<Dice> temp= this.gameBoard.getAvailableDice();
+        Dice []temp2 = new Dice[temp.size()];
+        for (int index = 0; index < temp.size(); index++) {
+            temp2[index]= temp.get(index);
+        }
+        return temp2;
     }
 
     public Dice[] getForgottenRealmDice() {
