@@ -86,7 +86,7 @@ public class Phoenix extends Creature{
     public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-            if (killedPhoenixes == 0 || diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) return true;
+            if (killedPhoenixes == 0 || phoenixsReceivedHP[killedPhoenixes - 1] == 6 || diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) return true;
         }
 
         return false;
