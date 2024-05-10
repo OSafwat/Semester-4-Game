@@ -243,7 +243,7 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes];
+        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes] == null? 0 : phoenixsReceivedHP[killedPhoenixes];
         if (latestReceivedHit == 6) return;
 
         for (int i = latestReceivedHit; i <= 6; i++) {
