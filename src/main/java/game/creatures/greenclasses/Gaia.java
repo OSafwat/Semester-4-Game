@@ -329,7 +329,7 @@ private  void updateRow(int r){
             int greenValue = greendie.getRealValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
-            score=scores[deadGuardians];
+            score=scores[deadGuardians-1];
             int colToCheck = this.getGuardiansCol(greenValue);
             int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
