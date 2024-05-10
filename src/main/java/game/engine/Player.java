@@ -26,6 +26,7 @@ public class Player {
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         allPossiblMoves = getAllPossibleMoves();
+        this.gameScore = new GameScore();
     }
 
     public ArrayList<Move> getAllPossibleMoves(){

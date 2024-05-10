@@ -445,8 +445,9 @@ public class CLIGameController {
         player.updateAllPossibleMoves();
         try {
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
-                Dice whiteDice = this.gameBoard.getGreen();
+                GreenDice greenDice = (GreenDice) this.gameBoard.getGreen();
+                ArcanePrism whiteDice = (ArcanePrism) this.gameBoard.getWhite(); 
+
                 int greenVal = greenDice.getValue();
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
