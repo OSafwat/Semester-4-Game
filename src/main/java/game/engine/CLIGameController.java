@@ -451,7 +451,9 @@ public class CLIGameController {
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
             }
-            return move.getCreature().makeMove(move.getDice());
+            boolean temp = move.getCreature().makeMove(move.getDice());
+            player.updateGameScore();
+            return temp;
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor();
             int numberToAttackWith =0;

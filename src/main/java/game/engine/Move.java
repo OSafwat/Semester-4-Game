@@ -1,6 +1,8 @@
 package game.engine;
 import game.creatures.*;
 import game.dice.*;
+import game.engine.enums.RealmColor;
+
 public class Move implements Comparable{
     Creature creature;
     Dice dice;
@@ -11,6 +13,9 @@ public class Move implements Comparable{
     }
     public int compareTo(Object temp){
         Dice dice = (Dice) temp;
+        if (this.getDice() instanceof RedDice && dice instanceof RedDice) {
+            return this.dice.getValue()== dice.getValue() && dice.getRealm() == this.dice.getRealm() && ((RedDice) this.getDice()).getDragonNumber() == ((RedDice) dice).getDragonNumber() ? 0 : -1;
+        }
         if (  this.dice.getValue()== dice.getValue() && dice.getRealm() == this.dice.getRealm())  
             return 0;
         else return -1;
@@ -23,6 +28,7 @@ public class Move implements Comparable{
     @Override
     public boolean equals(Object obj) {
         Move m = (Move) obj;
+        Creature targetCreature = m.getCreature();
         return m.creature.equals(creature) && m.dice.equals(dice);
     }
 
