@@ -216,8 +216,6 @@ private void killGaiaGuardian(Guardians g){
     System.out.println("Invalid Allready Killed");
     else{
         g.kill();
-        alliveGuardians--;
-        deadGuardians++;
     }
 }
 
@@ -328,7 +326,7 @@ private  void updateRow(int r){
             int greenValue = greendie.getRealValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
-            updateScore();
+            score=scores[deadGuardians];
             int colToCheck = this.getGuardiansCol(greenValue);
             int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
