@@ -40,8 +40,6 @@ public class Lion extends Creature{
     private int score;
     private String scoresheet;
     private int elementalCrest;
-    private int arcaneBoost;
-    private int timeWarp;
     private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>(); 
     private static final String[] mappedRewardLocations = new String[11];
     private final Properties properties;
@@ -54,11 +52,8 @@ public class Lion extends Creature{
         this.score=0;
         initScoreSheet();
         this.elementalCrest=0;
-        this.arcaneBoost=0;
-        this.timeWarp=0;
         populateRewardLocationFromConfigFile();
         populateMappedRewardLocation();
-        //populateRewardLocationFromConfigFile();
 
         properties = new Properties();
         try {
@@ -192,58 +187,17 @@ public class Lion extends Creature{
         temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     
-    public int getElementalCrest(){
-        return this.elementalCrest;
-    }
-    private void setElementalCrest(int elementalCrest){
-        this.elementalCrest=elementalCrest;
-    }
-    private void updateElementalCrest(){
+    @Override
+    public int getElementalCrest() {
         String rewardName = "ElementalCrest";
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
-        int size=rewardLocationsArray.size(); // to avoid dynamic changes to the size after removing/adding
-        for (Integer integer : rewardLocationsArray) {
-            if (lions[integer] != 0) {
-                this.elementalCrest = 1; //ISSUE if the number of elemental crests in the config file is more than one
-                return;
-            }
-        }
-    }
-    
-    public int getArcaneBoost(){
-        return this.arcaneBoost;
-    }
-    private void setArcaneBoost(int arcaneBoost){
-        this.arcaneBoost=arcaneBoost;
-    }
-    private void updateArcaneBoost(){
-        String rewardName = "ArcaneBoost";
-        ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
-        int size=rewardLocationsArray.size(); // to avoid dynamic changes to the size after removing/adding
-        for (Integer integer : rewardLocationsArray) {
-            if (lions[integer] != 0) {
-                this.arcaneBoost = 1; //ISSUE if the number of arcane boosts in the config file is more than one
-                return;
-            }
-        }
-    }
 
-    public int getTimeWarp(){
-        return this.timeWarp;
-    }
-    private void setTimeWarp(int timeWarp){
-        this.timeWarp=timeWarp;
-    }
-    private void updateTimeWarp(){
-        String rewardName = "TimeWarp";
-        ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
-        int size=rewardLocationsArray.size(); // to avoid dynamic changes to the size after removing/adding
-        for (Integer integer : rewardLocationsArray) {
-            if (lions[integer] != 0) {
-                this.timeWarp = 1; //ISSUE if the number of time warps in the config file is more than one
-                break;
-            }
+        int counter = 0;
+        for (int i = 0; i < rewardLocationsArray.size(); i++) {
+            if (lions[rewardLocationsArray.get(i)] != 0) counter++;
         }
+
+        return counter;
     }
     
     @Override
@@ -260,9 +214,6 @@ public class Lion extends Creature{
             updateLions(dice);
             updateScore(dice);
             updateDeadLions(); //leave this after the updatescoresheet method bc you change the deadlions number here
-            updateElementalCrest();
-            updateArcaneBoost();
-            updateTimeWarp();
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
                 ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
                 
