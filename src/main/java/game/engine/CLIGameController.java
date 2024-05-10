@@ -428,7 +428,11 @@ public class CLIGameController {
         for (Dice die : allDice) {
             result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
         }
-        return (Move [])result.toArray();
+        Move [] temp = new Move[result.size()];
+        for (int index = 0; index < result.size(); index++) {
+            temp[index]= result.get(index);
+        }
+        return temp;
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
         ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
@@ -458,7 +462,7 @@ public class CLIGameController {
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
             }
-            Boolean temp=  move.getCreature().makeMove(move.getDice());
+            boolean temp=  move.getCreature().makeMove(move.getDice());
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {

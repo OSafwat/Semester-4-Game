@@ -195,7 +195,6 @@ public class Lion extends Creature{
     private void updateElementalCrest(){
         String rewardName = "ElementalCrest";
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
-        int size=rewardLocationsArray.size(); // to avoid dynamic changes to the size after removing/adding
         for (Integer integer : rewardLocationsArray) {
             if (lions[integer] != 0) {
                 this.elementalCrest = 1; //ISSUE if the number of elemental crests in the config file is more than one
