@@ -432,7 +432,11 @@ public class CLIGameController {
                 result.add(move);
             }
         }
-        return (Move [])result.toArray();
+        Move [] finalResult = new Move[result.size()];
+        for (int i=0; i<result.size(); i++) {
+            finalResult[i] = result.get(i);
+        }
+        return finalResult;
     }
 
 
@@ -441,8 +445,9 @@ public class CLIGameController {
         player.updateAllPossibleMoves();
         try {
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
-                Dice whiteDice = this.gameBoard.getGreen();
+                GreenDice greenDice = (GreenDice) this.gameBoard.getGreen();
+                ArcanePrism whiteDice = (ArcanePrism) this.gameBoard.getWhite(); 
+
                 int greenVal = greenDice.getValue();
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
