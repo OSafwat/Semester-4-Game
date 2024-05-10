@@ -2,10 +2,16 @@ package game.dice;
 
 import game.engine.enums.RealmColor;
 
-public class Dice {
+public class Dice implements Comparable{
     private int num;
     public void rollDice(){
         this.num= (int) (Math.random() * 6 + 1);
+    }
+
+    public int compareTo(Dice die){
+        if (die.getValue()== this.getValue() && die.getRealm() == this.getRealm())
+            return 0;
+        else return -1;
     }
 
     public void setValue(int num){
