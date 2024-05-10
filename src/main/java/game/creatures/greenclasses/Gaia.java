@@ -110,7 +110,7 @@ public class Gaia extends Creature{
         throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -123,7 +123,7 @@ public class Gaia extends Creature{
     private boolean checkMove1(Dice dice){
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -302,7 +302,7 @@ private  void updateRow(int r){
             GreenDice greendie = (GreenDice) dice;
             
             // ASUM assuming getValue done in the dice class
-            int greenValue = greendie.getRealValue();
+            int greenValue = greendie.getValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
             score=scores[deadGuardians-1];
