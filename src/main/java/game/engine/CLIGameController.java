@@ -416,7 +416,7 @@ public class CLIGameController {
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
-        return player.getAllPossiblMoves();
+        return  player.getAllPossibleMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
@@ -431,7 +431,7 @@ public class CLIGameController {
         return temp;
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
-        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
+        Move [] playerAllMoves= player.getAllPossibleMoves();
         ArrayList<Move> result = new ArrayList<>();
         for (Move move : playerAllMoves) {
             if (move.compareTo(dice)==0){
@@ -542,7 +542,13 @@ public class CLIGameController {
     }
 
     public Dice[] getAvailableDice() {
-        return this.gameBoard.getAvailableDice();
+        
+        ArrayList<Dice> temp=  this.gameBoard.getAvailableDice();
+        Dice [] res = new Dice[temp.size()];
+        for (int index = 0; index < temp.size(); index++) {
+            res[index]= temp.get(index);
+        }
+        return res;
     }
 
     public Dice[] getForgottenRealmDice() {
