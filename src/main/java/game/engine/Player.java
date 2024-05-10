@@ -13,7 +13,7 @@ public class Player {
     //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
-    ArrayList <Move> allPossiblMoves ;
+    Move[] allPossibleMoves ;
 
 
     public void setName(String name){
@@ -24,18 +24,23 @@ public class Player {
         this.playerStatus= status;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
-        allPossiblMoves = getAllPossibleMoves();
+        allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
     }
 
-    public ArrayList<Move> getAllPossibleMoves(){
+    public Move[] getAllPossibleMoves(){
         ArrayList<Move> allMoves= new ArrayList<>();
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
-        return allMoves;
+        Move[] res = new Move[allMoves.size()];
+        for (int i = 0; i < allMoves.size(); i++) {
+            res[i] = allMoves.get(i);
+        }
+        allPossibleMoves = res;
+        return res;
     }
 
     public String getName(){
@@ -66,12 +71,8 @@ public class Player {
     public ArrayList<ArcaneBoost> getArcaneBoosts(){
         return this.arcaneBoosts;
     }
-
-    public ArrayList<Move> getAllPossiblMoves(){
-        return this.allPossiblMoves;
-    }
     public void updateAllPossibleMoves(){
-        this.allPossiblMoves = getAllPossibleMoves();
+        this.allPossibleMoves = getAllPossibleMoves();
     }
     
 
