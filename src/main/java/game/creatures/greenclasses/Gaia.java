@@ -136,27 +136,20 @@ public class Gaia extends Creature{
 
 // EXP gets a specific guardian in the Gaia
     private Guardians getGuardians(int c){
-
-        int row =0;
-        int col =0;
         if(c<2 || c>12)
         return null;
-        int index =1;
+        //int index =1;
         for(int i=0;i<gaiaGuardians.length;i++){
             for(int j=0;j<gaiaGuardians[i].length;j++){
-                if(c==index){
-                    row=i;
-                    col=j;
-                    break;
-
-                }
                 
-                index++;
+                if(c== gaiaGuardians[i][j].getGuardianValue())
+                return gaiaGuardians[i][j];  
+                //index++;
             }
             
 
     }
-    return gaiaGuardians[row][col];
+    return null;
 
 
 }
@@ -164,24 +157,17 @@ public class Gaia extends Creature{
 // EXP gets a specific guardian row position in the Gaia
 private int getGuardiansRow(int c){
 
-    int row =0;
     if(c<2 || c>12)
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                row=i;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return i; 
         }
         
 
 }
-    return row;
+    return 0;
 
 
 }
@@ -190,24 +176,17 @@ private int getGuardiansRow(int c){
 // EXP gets a specific guardian col position in the Gaia
 private int getGuardiansCol(int c){
 
-    int col =0;
     if(c<2 || c>12)
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                col=j;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return j; 
         }
         
 
 }
-    return col;
+    return 0;
 
 
 }
@@ -318,7 +297,7 @@ private  void updateRow(int r){
      public boolean makeMove(Dice dice) throws BonusException , BonusTwoException,InvalidMoveException   {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
-       else  if(!checkMove(dice))
+       else  if(!checkMove1(dice))
             return false;
         else{
             alliveGuardians--;
@@ -451,7 +430,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(0);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  2  ";
     }
     Guardians G5 = this.getGuardians(5);
     if(G5.isDead())
@@ -478,7 +457,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(1);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  3  ";
     }
   
     Guardians G9 = this.getGuardians(9);
@@ -635,13 +614,20 @@ private boolean applyNotBonusCollectable(String s){
     }
     return false;
 
+    
+
 }
 
+public static void main(String[] args)throws Throwable {
+    
+    GreenDice dice = new GreenDice(10);
+    Gaia g = new Gaia();
+    g.makeMove(dice);
+   //System.out.println(g.getGuardiansCol(5));
+    System.out.println(g.getScoreSheet());
 
 
-
-
-
+}
 
 
 
