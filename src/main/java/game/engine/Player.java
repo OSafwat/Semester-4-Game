@@ -68,8 +68,8 @@ public class Player {
         return this.arcaneBoosts;
     }
 
-    public Move [] getAllPossiblMoves(){
-        return (Move[])this.allPossiblMoves.toArray();
+    public ArrayList<Move> getAllPossiblMoves(){
+        return this.allPossiblMoves;
     }
     public void updateAllPossibleMoves(){
         this.allPossiblMoves = getAllPossibleMoves();

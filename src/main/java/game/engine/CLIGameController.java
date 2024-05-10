@@ -415,7 +415,12 @@ public class CLIGameController {
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
-        return player.getAllPossiblMoves();
+        ArrayList<Move> temp = player.getAllPossiblMoves();
+        Move [] moves = new Move[temp.size()];
+        for (int index = 0; index < temp.size(); index++) {
+            moves[index] = temp.get(index);
+        }
+        return moves;
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
