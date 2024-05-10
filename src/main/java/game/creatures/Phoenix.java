@@ -202,7 +202,7 @@ public class Phoenix extends Creature{
         // Iterate over the key-value pairs in the rewardLocations HashMap
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
             String key = entry.getKey();
-            System.out.println(key);
+            //System.out.println(key);
             ArrayList<Integer> value = entry.getValue();
 
             for (int i = 0; i < value.size(); i++) {

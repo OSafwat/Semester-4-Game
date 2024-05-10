@@ -431,6 +431,15 @@ public class CLIGameController {
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
         Move[] playerAllMoves= player.getAllPossibleMoves();
+        for (Move move : playerAllMoves) {
+            if (move.getDice() instanceof GreenDice){
+                GreenDice temp = (GreenDice) move.getDice();
+                System.out.println(temp.getRealm()+" "+temp.getRealValue());
+            }
+            else 
+                System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
+            
+        }
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             for (int i = 0; i < playerAllMoves.length; i++) {

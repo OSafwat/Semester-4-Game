@@ -617,48 +617,13 @@ private boolean applyNotBonusCollectable(String s){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public static void main(String[] args) {
+    // Gaia gaia = new Gaia();
+    // ArrayList<Move> moves= gaia.getAllPossibleMoves();
+    // for (int index = 0; index < moves.size(); index++) {
+    //     Move move= moves.get(index);
+    //     System.out.println(move.get);
+    // }
+}
 
 }
