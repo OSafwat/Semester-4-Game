@@ -140,14 +140,11 @@ public class Gaia extends Creature{
         return null;
         //int index =1;
         for(int i=0;i<gaiaGuardians.length;i++){
-            for(int j=0;j<gaiaGuardians[i].length;j++){
-                
+            for(int j=0;j<gaiaGuardians[i].length;j++){   
                 if(c== gaiaGuardians[i][j].getGuardianValue())
                 return gaiaGuardians[i][j];  
                 //index++;
             }
-            
-
     }
     return null;
 
@@ -157,7 +154,7 @@ public class Gaia extends Creature{
 // EXP gets a specific guardian row position in the Gaia
 private int getGuardiansRow(int c){
 
-    if(c<2 || c>12)
+    if(c<2 || c>12)//here
     return 0;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
@@ -618,12 +615,12 @@ private boolean applyNotBonusCollectable(String s){
 }
 
 public static void main(String[] args) {
-    // Gaia gaia = new Gaia();
-    // ArrayList<Move> moves= gaia.getAllPossibleMoves();
-    // for (int index = 0; index < moves.size(); index++) {
-    //     Move move= moves.get(index);
-    //     System.out.println(move.get);
-    // }
+    Gaia gaia = new Gaia();
+    ArrayList<Move> moves= gaia.getAllPossibleMoves();
+    for (int index = 0; index < moves.size(); index++) {
+        Move move= moves.get(index);
+        System.out.println();
+    }
 }
 
 }

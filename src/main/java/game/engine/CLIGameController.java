@@ -9,6 +9,7 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
+///import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -434,10 +435,10 @@ public class CLIGameController {
         for (Move move : playerAllMoves) {
             if (move.getDice() instanceof GreenDice){
                 GreenDice temp = (GreenDice) move.getDice();
-                System.out.println(temp.getRealm()+" "+temp.getRealValue());
+                //System.out.println(temp.getRealm()+" "+temp.getRealValue());
             }
-            else 
-                System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
+             
+                //System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
             
         }
         ArrayList<Move> result = new ArrayList<>();
@@ -472,14 +473,15 @@ public class CLIGameController {
     public boolean makeMove(Player player, Move move)  {
         player.updateAllPossibleMoves();
         try {
+            Dice diceToBeMovedWith= move.getDice();
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
-                Dice whiteDice = this.gameBoard.getGreen();
+                GreenDice greenDice = (GreenDice) gameBoard.getGreen();
+                Dice arcanePrism = (ArcanePrism) gameBoard.getWhite();
                 int greenVal = greenDice.getValue();
-                int whiteVal = whiteDice.getValue();
-                greenDice.setRealValue(greenVal + whiteVal);
+                int whiteVal = arcanePrism.getValue();
+                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
-            boolean temp = move.getCreature().makeMove(move.getDice());
+            boolean temp = move.getCreature().makeMove(diceToBeMovedWith);
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
@@ -635,22 +637,12 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-        CLIGameController controller = new CLIGameController();
-        GameBoard gameBoard = controller.getGameBoard();
-        Player player = controller.getActivePlayer();
-        Dice greenDie = controller.getGameBoard().getDice()[1];
-        greenDie.setValue(2);
-        Dice whiteDie = controller.getGameBoard().getDice()[5];
-        whiteDie.setValue(4);
-        Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
-        for (Move move : possibleMoves) {
-            System.out.println(move.getDice().getValue()+ " "+move.getDice().getRealm() );
-        }
-        System.out.println(possibleMoves.length);
-
+       
     }
+
+}
 
     // public abstract boolean switchPlayer(){
     // }
 
-}
+
