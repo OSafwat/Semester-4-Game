@@ -12,14 +12,17 @@ public class Move implements Comparable{
         this.creature= creature;
     }
     public int compareTo(Object temp){
-        Dice dice = (Dice) temp;
+        Move move = (Move)temp;
+       return compareTo(move.getDice());
+    } 
+    public int compareTo(Dice dice){
         if (this.getDice() instanceof RedDice && dice instanceof RedDice) {
             return this.dice.getValue()== dice.getValue() && dice.getRealm() == this.dice.getRealm() && ((RedDice) this.getDice()).getDragonNumber() == ((RedDice) dice).getDragonNumber() ? 0 : -1;
         }
         if (  this.dice.getValue()== dice.getValue() && dice.getRealm() == this.dice.getRealm())  
             return 0;
         else return -1;
-    } 
+    }
     // public boolean makeMove(Dice dice, Creature creature){
     //     creature.checkMove();
     // }

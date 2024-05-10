@@ -432,16 +432,30 @@ public class CLIGameController {
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
         Move[] playerAllMoves= player.getAllPossibleMoves();
         ArrayList<Move> result = new ArrayList<>();
-        for (int i = 0; i < playerAllMoves.length; i++) {
-            if (playerAllMoves[i].compareTo(dice)==0){
-                result.add(playerAllMoves[i]);
+        if (dice instanceof ArcanePrism){
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                if (playerAllMoves[i].getDice().getValue() == dice.getValue() && playerAllMoves[i].getDice().getRealm()!= RealmColor.GREEN){
+                    result.add(playerAllMoves[i]);
+                }
             }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
         }
-        Move [] finalResult = new Move[result.size()];
-        for (int i=0; i<result.size(); i++) {
-            finalResult[i] = result.get(i);
+        else{
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                if (playerAllMoves[i].compareTo(dice)==0){
+                    result.add(playerAllMoves[i]);
+                }
+            }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
         }
-        return finalResult;
     }
 
 
@@ -612,25 +626,18 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-  CLIGameController controller = new CLIGameController();
-
-        Dice[] dice = controller.getGameBoard().getDice();
-        dice[0].setValue(2);
-        dice[1].setValue(3);
-        dice[2].setValue(4);
-        dice[3].setValue(5);
-        dice[4].setValue(6);
-        dice[5].setValue(6);
-
-        controller.selectDice(dice[4], controller.getActivePlayer());
-
-        Dice[] testAllDice = controller.getAllDice();
-
-        Dice[] availableDice = controller.getAvailableDice();
-        for (Dice die : availableDice) {
-            System.out.println(die.getValue()+ " "+die.getRealm() );
+        CLIGameController controller = new CLIGameController();
+        GameBoard gameBoard = controller.getGameBoard();
+        Player player = controller.getActivePlayer();
+        Dice greenDie = controller.getGameBoard().getDice()[1];
+        greenDie.setValue(2);
+        Dice whiteDie = controller.getGameBoard().getDice()[5];
+        whiteDie.setValue(4);
+        Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
+        for (Move move : possibleMoves) {
+            System.out.println(move.getDice().getValue()+ " "+move.getDice().getRealm() );
         }
-        System.out.println(availableDice.length);
+        System.out.println(possibleMoves.length);
 
     }
 
