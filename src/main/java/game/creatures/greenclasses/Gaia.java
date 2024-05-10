@@ -88,6 +88,9 @@ public class Gaia extends Creature{
         }
 
     }
+    public int getScore(){
+        return this.score;
+    }
 
 
  
