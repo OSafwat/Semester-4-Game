@@ -45,6 +45,8 @@ public class Gaia extends Creature{
         alliveGuardians = 11;
         deadGuardians=0;
         elementalCrestCount = 0;
+        timeWarps= new ArrayList<>();
+        arcaneBoosts= new ArrayList<>();
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){

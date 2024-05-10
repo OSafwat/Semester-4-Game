@@ -37,6 +37,8 @@ public class Lion extends Creature{
     private static final String[] mappedRewardLocations = new String[11];
 
     public Lion(){
+        arcaneBoosts= new ArrayList<>();
+        timeWarps = new ArrayList<>();
         initLions();
         this.deadLions=0;
         this.score=0;
@@ -46,7 +48,14 @@ public class Lion extends Creature{
         this.timeWarp=0;
         populateMappedRewardLocation();
     }
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        return timeWarps;
+    }
 
+    //A method to get all the arcane boost powers
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
     public int[] getLions(){
         return this.lions;
     }
@@ -100,7 +109,7 @@ public class Lion extends Creature{
         this.scoresheet=scoreSheet;
     }
     private void initScoreSheet(){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
@@ -114,10 +123,10 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     private void updateScoreSheet(Dice dice){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
@@ -136,7 +145,7 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     
     public int getElementalCrest(){
