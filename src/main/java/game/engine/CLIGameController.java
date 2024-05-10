@@ -9,7 +9,6 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
-//import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -542,7 +541,7 @@ public class CLIGameController {
     }
 
     public Dice[] getAvailableDice() {
-        
+
         ArrayList<Dice> temp=  this.gameBoard.getAvailableDice();
         Dice [] res = new Dice[temp.size()];
         for (int index = 0; index < temp.size(); index++) {
@@ -600,7 +599,7 @@ public class CLIGameController {
     public boolean selectDice(Dice dice, Player player){
         try{
             for (Dice die : getAvailableDice()) {
-                if ( dice.getValue() > die.getValue() ){
+                if ( dice.getValue() > die.getValue()  ){
                     gameBoard.moveToForgottenrealm(die);
                 }
             }
@@ -610,16 +609,26 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-    //    CLIGameController controller = new CLIGameController();
-    //     GameBoard gameBoard = controller.getGameBoard();
-    //     Player player = controller.getActivePlayer();
-    //     Dice greenDie = controller.getGameBoard().getDice()[1];
-    //     greenDie.setValue(2);
-    //     Dice whiteDie = controller.getGameBoard().getDice()[5];
-    //     whiteDie.setValue(4);
-    //     Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
-    //     System.out.println();possibleMoves
-        //assertEquals("There should be 6 possible moves", 6, possibleMoves.length);
+  CLIGameController controller = new CLIGameController();
+
+        Dice[] dice = controller.getGameBoard().getDice();
+        dice[0].setValue(2);
+        dice[1].setValue(3);
+        dice[2].setValue(4);
+        dice[3].setValue(5);
+        dice[4].setValue(6);
+        dice[5].setValue(6);
+
+        controller.selectDice(dice[4], controller.getActivePlayer());
+
+        Dice[] testAllDice = controller.getAllDice();
+
+        Dice[] availableDice = controller.getAvailableDice();
+        for (Dice die : availableDice) {
+            System.out.println(die.getValue()+ " "+die.getRealm() );
+        }
+        System.out.println(availableDice.length);
+
     }
 
     // public abstract boolean switchPlayer(){
