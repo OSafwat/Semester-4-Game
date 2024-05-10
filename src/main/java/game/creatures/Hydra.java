@@ -8,7 +8,6 @@ import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.BlueDice;
 import game.dice.Dice;
-import game.dice.BlueDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
@@ -228,4 +227,5 @@ public class Hydra extends Creature{
         }
         return moves;
     }
+
 }
