@@ -414,7 +414,7 @@ public class CLIGameController {
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
-        return player.getAllPossiblMoves();
+        return player.getAllPossibleMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
@@ -425,11 +425,11 @@ public class CLIGameController {
         return (Move [])result.toArray();
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
-        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
+        Move[] playerAllMoves= player.getAllPossibleMoves();
         ArrayList<Move> result = new ArrayList<>();
-        for (Move move : playerAllMoves) {
-            if (move.compareTo(dice)==0){
-                result.add(move);
+        for (int i = 0; i < playerAllMoves.length; i++) {
+            if (playerAllMoves[i].compareTo(dice)==0){
+                result.add(playerAllMoves[i]);
             }
         }
         Move [] finalResult = new Move[result.size()];
