@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
+import game.engine.enums.*;
 import game.dice.*;
 
 public class CLIGameControllerTest {
@@ -257,7 +257,9 @@ public class CLIGameControllerTest {
                 "|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n" +
                 "|  R  |     |     |TW   |     |RB   |AB   |     |EC   |     |MB   |     |\n" +
                 "+-----------------------------------------------------------------------+\n\n";
-
+             //emptyScoreSheet+="\n";
+             System.out.println(expectedScoreSheet);
+             System.out.println(emptyScoreSheet);
         assertEquals("ScoreSheet display is wrong", expectedScoreSheet, emptyScoreSheet);
     }
 

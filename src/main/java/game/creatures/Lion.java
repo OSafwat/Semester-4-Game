@@ -1,10 +1,13 @@
 package game.creatures;
 
+import java.io.File;
+
 /* ISSUES:-
  *  - taking care of incrementing and decrementing abs/tws/ecs type shit
  */
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -22,6 +26,8 @@ import game.dice.MagentaDice;
 import game.dice.YellowDice;
 import game.engine.Move;
 import game.engine.ScoreSheet;
+import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
@@ -35,8 +41,11 @@ public class Lion extends Creature{
     private int timeWarp;
     private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>(); 
     private static final String[] mappedRewardLocations = new String[11];
+    private final Properties properties;
 
     public Lion(){
+        arcaneBoosts= new ArrayList<>();
+        timeWarps = new ArrayList<>();
         initLions();
         this.deadLions=0;
         this.score=0;
@@ -45,8 +54,45 @@ public class Lion extends Creature{
         this.arcaneBoost=0;
         this.timeWarp=0;
         populateMappedRewardLocation();
+
+        properties = new Properties();
+        try {
+            File config = new File("src/main/resources/config/RadiantSvannaRewards.properties");
+            FileReader configReader = new FileReader(config);
+            properties.load(configReader);
+        } catch (IOException e) {
+            properties.setProperty("hit1Reward", "null");
+            properties.setProperty("hit2Reward", "null");
+            properties.setProperty("hit3Reward", "TimeWarp");
+            properties.setProperty("hit4Reward", "null");
+            properties.setProperty("hit5Reward", "RedBonus");
+            properties.setProperty("hit6Reward", "ArcaneBoost");
+            properties.setProperty("hit7Reward", "null");
+            properties.setProperty("hit8Reward", "ElementalCrest");
+            properties.setProperty("hit9Reward", "null");
+            properties.setProperty("hit10Reward", "MagentaBonus");
+            properties.setProperty("hit11Reward", "null");
+        }
+        for(int i = 0; i < 11; i++) {
+            if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                arcaneBoosts.add(ac);
+            }
+            if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "TimeWarp")) {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                timeWarps.add(tw);
+            }
+        }
+
+    }
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        return timeWarps;
     }
 
+    //A method to get all the arcane boost powers
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        return arcaneBoosts;
+    }
     public int[] getLions(){
         return this.lions;
     }
@@ -100,7 +146,7 @@ public class Lion extends Creature{
         this.scoresheet=scoreSheet;
     }
     private void initScoreSheet(){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
@@ -114,10 +160,10 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     private void updateScoreSheet(Dice dice){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):        \n");
+        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
@@ -136,7 +182,7 @@ public class Lion extends Creature{
             if (rewardToken == null) temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
-        temp.append("+-----------------------------------------------------------------------+\n");
+        temp.append("+-----------------------------------------------------------------------+\n\n");
     }
     
     public int getElementalCrest(){
@@ -196,10 +242,7 @@ public class Lion extends Creature{
     @Override
     public boolean checkMove(Dice dice){
         int diceValue=dice.getValue();
-            if ((dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-                return true;
-                }
-            return false;
+            return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions<11;
     }
     @Override
     public boolean makeMove(Dice dice) throws BonusException{ 
@@ -214,19 +257,23 @@ public class Lion extends Creature{
             updateElementalCrest();
             updateArcaneBoost();
             updateTimeWarp();
-            return true;
-        }
+            switch(properties.getProperty("hit"+deadLions+"Reward")){
+                case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+                case "RedBonus": throw new BonusException(RealmColor.RED);
+                case "BlueBonus": throw new BonusException(RealmColor.BLUE);
+                case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
+                case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+                default: return true;
+                }
+            }
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
-    if(deadLions == 11) return null;
-    
+    if(deadLions == 11) return new ArrayList<>();
     ArrayList<Move> possibleMoves = new ArrayList<>();
-    
-    for(int i = 0; i < 6; i++) {
-        Move idk = new Move(new Dice(i + 1), this);
+    for(int i = 0; i < 6; i++) { 
+        Move idk = new Move(new YellowDice(i + 1), this);
         possibleMoves.add(idk);
     }
-    
     return possibleMoves;
 }
     

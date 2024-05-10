@@ -45,6 +45,8 @@ public class Gaia extends Creature{
         alliveGuardians = 11;
         deadGuardians=0;
         elementalCrestCount = 0;
+        timeWarps= new ArrayList<>();
+        arcaneBoosts= new ArrayList<>();
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){
@@ -214,8 +216,6 @@ private void killGaiaGuardian(Guardians g){
     System.out.println("Invalid Allready Killed");
     else{
         g.kill();
-        alliveGuardians--;
-        deadGuardians++;
     }
 }
 
@@ -326,7 +326,7 @@ private  void updateRow(int r){
             int greenValue = greendie.getRealValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
-            updateScore();
+            score=scores[deadGuardians];
             int colToCheck = this.getGuardiansCol(greenValue);
             int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
