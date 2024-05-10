@@ -253,7 +253,7 @@ private  void updateRow(int r){
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
     private String whichCollectableCol (int c){
         try{
-         String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+         String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
         Properties prop ;
         String colReward;
         prop = new Properties();
@@ -274,7 +274,7 @@ private  void updateRow(int r){
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r) {
         try{
-        String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+        String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
         Properties prop ;
         String rowReward;
         prop = new Properties();
@@ -574,6 +574,7 @@ private String getCorrectBonusInScore(String s){
         case "YellowBonus":return "YB";
         case "TimeWarp" : return"TW";
         case "ArcaneBoost" : return"AB";
+        case "ElementalCrest": return"EC";
         default: return "";
             
     }
@@ -614,21 +615,7 @@ private boolean applyNotBonusCollectable(String s){
     }
     return false;
 
-    
-
 }
-
-public static void main(String[] args)throws Throwable {
-    
-    GreenDice dice = new GreenDice(10);
-    Gaia g = new Gaia();
-    g.makeMove(dice);
-   //System.out.println(g.getGuardiansCol(5));
-    System.out.println(g.getScoreSheet());
-
-
-}
-
 
 
 
