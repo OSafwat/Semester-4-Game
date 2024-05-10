@@ -8,9 +8,9 @@ public class GameBoard {
     Player player1;
     Player player2;
     Dice [] allDice;
-    List<Dice> availableDice;
+    ArrayList<Dice> availableDice;
     ArrayList<Dice> activeArcaneDice ;
-    List <Dice> forgottenRealmDice;
+    ArrayList<Dice> forgottenRealmDice;
     ArrayList<Dice> passiveArcaneDice;
     public Dice getWhite(){
         return this.allDice[5];
@@ -77,8 +77,8 @@ public class GameBoard {
     public Dice [] getAllDice(){
         return this.allDice;
     } 
-    public Dice[] getAvailableDice(){
-        return this.availableDice.toArray(new Dice[this.availableDice.size()]);
+    public ArrayList<Dice> getAvailableDice(){
+        return this.availableDice;
     }
     public ArrayList<Dice> getActiveArcaneDice(){
         return this.activeArcaneDice;
