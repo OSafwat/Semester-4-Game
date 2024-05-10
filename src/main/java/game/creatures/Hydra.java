@@ -227,4 +227,5 @@ public class Hydra extends Creature{
         }
         return moves;
     }
+
 }
