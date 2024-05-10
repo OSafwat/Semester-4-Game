@@ -9,7 +9,7 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -620,15 +620,15 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-       CLIGameController controller = new CLIGameController();
-        GameBoard gameBoard = controller.getGameBoard();
-        Player player = controller.getActivePlayer();
-        Dice greenDie = controller.getGameBoard().getDice()[1];
-        greenDie.setValue(2);
-        Dice whiteDie = controller.getGameBoard().getDice()[5];
-        whiteDie.setValue(4);
-        Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
-        System.out.println();possibleMoves
+    //    CLIGameController controller = new CLIGameController();
+    //     GameBoard gameBoard = controller.getGameBoard();
+    //     Player player = controller.getActivePlayer();
+    //     Dice greenDie = controller.getGameBoard().getDice()[1];
+    //     greenDie.setValue(2);
+    //     Dice whiteDie = controller.getGameBoard().getDice()[5];
+    //     whiteDie.setValue(4);
+    //     Move[] possibleMoves = controller.getPossibleMovesForADie(player, whiteDie);
+    //     System.out.println();possibleMoves
         //assertEquals("There should be 6 possible moves", 6, possibleMoves.length);
     }
 

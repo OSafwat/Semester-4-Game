@@ -135,7 +135,7 @@ public class Lion extends Creature{
             return ans;
     }
     private void updateScore(Dice dice){
-        this.score=calculateScore(dice);
+        this.score+=calculateScore(dice);
     }
     
     @Override
