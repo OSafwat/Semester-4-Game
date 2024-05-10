@@ -48,17 +48,18 @@ public class Hydra extends Creature{
             FileReader configReader = new FileReader(config);
             properties.load(configReader);
         } catch (IOException e) {
-            properties.setProperty("hit1Reward", "null");
-            properties.setProperty("hit2Reward", "null");
-            properties.setProperty("hit3Reward", "null");
+            System.out.println("Properties file reading failed.");
+            properties.setProperty("hit1Reward", null);
+            properties.setProperty("hit2Reward", null);
+            properties.setProperty("hit3Reward", null);
             properties.setProperty("hit4Reward", "ArcaneBoost");
-            properties.setProperty("hit5Reward", "null");
+            properties.setProperty("hit5Reward", null);
             properties.setProperty("hit6Reward", "GreenBonus");
             properties.setProperty("hit7Reward", "ElementalCrest");
-            properties.setProperty("hit8Reward", "null");
+            properties.setProperty("hit8Reward", null);
             properties.setProperty("hit9Reward", "MagentaBonus");
             properties.setProperty("hit10Reward", "TimeWarp");
-            properties.setProperty("hit11Reward", "null");
+            properties.setProperty("hit11Reward", null);
         }
         
         this.score = 0;
@@ -88,9 +89,9 @@ public class Hydra extends Creature{
     private String getBonus(int value) {
         String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
-        if(reward.equals("null"))
+        if(reward == null)
             return "  ";
-        else if(Integer.parseInt(diceUsed[value])!=0)
+        else if(!diceUsed[--value].equals("---"))
             return "X ";
         else{
             switch (reward) {
@@ -137,13 +138,13 @@ public class Hydra extends Creature{
                 "|  #  |H11  |H12  |H13  |H14  |H15  |H21  |H22  |H23  |H24  |H25  |H26  |\n" +
                 "+-----------------------------------------------------------------------+\n";
                 
-        scoreSheet += "|  H  |" +diceUsed[0]+ " |" +diceUsed[1]+ " |" +diceUsed[2]+ " |" +diceUsed[3]+ " |" +diceUsed[4]+ 
-        " |" +diceUsed[5]+ " |" +diceUsed[6]+ " |" +diceUsed[7]+ " |" +diceUsed[8]+ " |" +diceUsed[9]+ " |" +diceUsed[10]+ " |\n";
+        scoreSheet += "|  H  |" +diceUsed[0]+ "  |" +diceUsed[1]+ "  |" +diceUsed[2]+ "  |" +diceUsed[3]+ "  |" +diceUsed[4]+ 
+        "  |" +diceUsed[5]+ "  |" +diceUsed[6]+ "  |" +diceUsed[7]+ "  |" +diceUsed[8]+ "  |" +diceUsed[9]+ "  |" +diceUsed[10]+ "  |\n";
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
 
-        scoreSheet += "|  R  |" +getBonus(0)+ "  |" +getBonus(1)+ "  |" +getBonus(2)+ "  |" +getBonus(3)+ "  |" +getBonus(4)+ 
-        "  |" +getBonus(5)+ "  |" +getBonus(6)+ "  |" +getBonus(7)+ "  |" +getBonus(8)+ "  |" +getBonus(9)+ "  |" +getBonus(10)+ "  |\n"; 
+        scoreSheet += "|  R  |" +getBonus(1)+ "   |" +getBonus(2)+ "   |" +getBonus(3)+ "   |" +getBonus(4)+ "   |" +getBonus(5)+ 
+        "   |" +getBonus(6)+ "   |" +getBonus(7)+ "   |" +getBonus(8)+ "   |" +getBonus(9)+ "   |" +getBonus(10)+ "   |" +getBonus(11)+ "   |\n"; 
 
         scoreSheet += "+-----------------------------------------------------------------------+\n" +
                       "|  S  |1    |3    |6    |10   |15   |21   |28   |36   |45   |55   |66   |\n" +
@@ -224,4 +225,5 @@ public class Hydra extends Creature{
         }
         return moves;
     }
+    
 }
