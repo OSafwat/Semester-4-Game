@@ -39,16 +39,17 @@ public class Hydra extends Creature{
 
     // Constructor that initializes the score to 0 , the serpent to the first serpent with 5 heads, and sets up the properties.
     public Hydra() {
-        serpent = new Stack<Integer>();
-        serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
+        this.serpent = new Stack<Integer>();
+        this.serpent.push(5); this.serpent.push(4); this.serpent.push(3); this.serpent.push(2); this.serpent.push(1); 
         
-        properties = new Properties();
+        this.properties = new Properties();
         try {
             File config = new File("src/main/resources/config/TideAbyssRewards.properties");
             FileReader configReader = new FileReader(config);
-            properties.load(configReader);
+            this.properties.load(configReader);
         } catch (IOException e) {
             System.out.println("Properties file reading failed.");
+<<<<<<< HEAD
             properties.setProperty("hit1Reward", null);
             properties.setProperty("hit2Reward", null);
             properties.setProperty("hit3Reward", null);
@@ -60,10 +61,24 @@ public class Hydra extends Creature{
             properties.setProperty("hit9Reward", "MagentaBonus");
             properties.setProperty("hit10Reward", "TimeWarp");
             properties.setProperty("hit11Reward", null);
+=======
+            this.properties.setProperty("hit1Reward", null);
+            this.properties.setProperty("hit2Reward", null);
+            this.properties.setProperty("hit3Reward", null);
+            this.properties.setProperty("hit4Reward", "ArcaneBoost");
+            this.properties.setProperty("hit5Reward", null);
+            this.properties.setProperty("hit6Reward", "GreenBonus");
+            this.properties.setProperty("hit7Reward", "ElementalCrest");
+            this.properties.setProperty("hit8Reward", null);
+            this.properties.setProperty("hit9Reward", "MagentaBonus");
+            this.properties.setProperty("hit10Reward", "TimeWarp");
+            this.properties.setProperty("hit11Reward", null);
+>>>>>>> Tide-Abyss-Hamed
         }
         
         this.score = 0;
         this.regenerateFlag = false;
+        this.isDead = false;
 
         this.arcaneBoosts = new ArrayList<ArcaneBoost>();
         this.arcaneBoostsUsed = 0;
@@ -73,14 +88,16 @@ public class Hydra extends Creature{
         this.headsKilled = 0;
         this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++) {
-            diceUsed[i] = "---";
-            if(properties.getProperty("hit"+i+"Reward") == "ArcaneBoost"){
+            this.diceUsed[i] = "---";
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
-                arcaneBoosts.add(ac);
+                this.arcaneBoosts.add(ac);
             }
-            if(properties.getProperty("hit"+i+"Reward") == "TimeWarp") {
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("TimeWarp")) {
                 TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
-                timeWarps.add(tw);
+                this.timeWarps.add(tw);
             }
         }
     }
@@ -91,7 +108,11 @@ public class Hydra extends Creature{
         String reward = properties.getProperty("hit"+value+"Reward");
         if(reward == null)
             return "  ";
+<<<<<<< HEAD
         else if(!diceUsed[--value].equals("---"))
+=======
+        else if(!this.diceUsed[--value].equals("---"))
+>>>>>>> Tide-Abyss-Hamed
             return "X ";
         else{
             switch (reward) {
@@ -110,7 +131,7 @@ public class Hydra extends Creature{
 
     // Setter for the "score" variable.
     public void updateScore() {
-        score += scores[headsKilled];
+        this.score += this.scores[this.headsKilled];
     }
 
     // Method that checks which serpent head gives you an elemental crest and returns 1 if this head is dead and 0 otherwise.
@@ -118,13 +139,13 @@ public class Hydra extends Creature{
     public int getElementalCrest() {
         int elementalCrestCount = 0;
         boolean isRewardOnSecondHead = false;
-        for(int i = 1; i < properties.size(); i++){
-            if(properties.getProperty("hit"+i+"Reward") == "ElementalCrest") 
+        for(int i = 1; i < this.properties.size(); i++){
+            if(properties.getProperty("hit"+i+"Reward").equals("ElementalCrest")) 
                 elementalCrestCount = (i==5)? 5: i%5;
                 isRewardOnSecondHead = (i>5);
         }
 
-        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == regenerateFlag) 
+        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
             return 1;
         else   
             return 0;
@@ -138,8 +159,13 @@ public class Hydra extends Creature{
                 "|  #  |H11  |H12  |H13  |H14  |H15  |H21  |H22  |H23  |H24  |H25  |H26  |\n" +
                 "+-----------------------------------------------------------------------+\n";
                 
+<<<<<<< HEAD
         scoreSheet += "|  H  |" +diceUsed[0]+ "  |" +diceUsed[1]+ "  |" +diceUsed[2]+ "  |" +diceUsed[3]+ "  |" +diceUsed[4]+ 
         "  |" +diceUsed[5]+ "  |" +diceUsed[6]+ "  |" +diceUsed[7]+ "  |" +diceUsed[8]+ "  |" +diceUsed[9]+ "  |" +diceUsed[10]+ "  |\n";
+=======
+        scoreSheet += "|  H  |" +this.diceUsed[0]+ "  |" +this.diceUsed[1]+ "  |" +this.diceUsed[2]+ "  |" +this.diceUsed[3]+ "  |" +this.diceUsed[4]+ 
+        "  |" +this.diceUsed[5]+ "  |" +this.diceUsed[6]+ "  |" +this.diceUsed[7]+ "  |" +this.diceUsed[8]+ "  |" +this.diceUsed[9]+ "  |" +this.diceUsed[10]+ "  |\n";
+>>>>>>> Tide-Abyss-Hamed
         
         scoreSheet += "|  C  |≥1   |≥2   |≥3   |≥4   |≥5   |≥1   |≥2   |≥3   |≥4   |≥5   |≥6   |\n";
 
@@ -155,7 +181,7 @@ public class Hydra extends Creature{
     // Method that checks if the move is possible.
     @Override
     public boolean checkMove(Dice dice) {
-        return dice.getValue() >= serpent.peek();
+        return dice.getValue() >= this.serpent.peek();
     }
 
     // Method that attacks the top hydra head of possible, and updates the variables of class to match that.
@@ -163,53 +189,51 @@ public class Hydra extends Creature{
     public boolean makeMove(Dice dice) throws BonusException{
         int diceValue = dice.getValue();
 
-        if(!checkMove(dice) || serpent.isEmpty()) {
+        if(this.serpent.isEmpty() || !checkMove(dice)) {
             return false;
         }
 
-        serpent.pop();
-        diceUsed[headsKilled++] = "" + diceValue;
+        this.serpent.pop();
         updateScore();
+        this.diceUsed[this.headsKilled++] = "" + diceValue;
         
-        timeWarps.set(timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED));
-        arcaneBoosts.set(arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED));
 
-        if(serpent.isEmpty()) {
+        if(serpent.isEmpty() && !regenerateFlag) 
             regenerateSerpent();
-        }
-        
+
         switch(properties.getProperty("hit"+headsKilled+"Reward")){
-            case "ArcaneBoost": 
+            case "ArcaneBoost": this.arcaneBoosts.set(this.arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp": this.timeWarps.set(this.timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED)); break;
             case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "RedBonus": throw new BonusException(RealmColor.RED);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
             case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
             case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
-            default: return true;
         }
+        return true;
     }
 
     // Method that adds 6 new heads onto the serpent to "regenerate" it, should be called after the 5 heads of the first serpent all die.
     private void regenerateSerpent() {
         // This is just in case this method gets called when the serpent still has heads, in theory this block should never activate.
-        while(!serpent.isEmpty()) {
-            serpent.pop();
+        while(!this.serpent.isEmpty()) {
+            this.serpent.pop();
         }
 
-        serpent.push(6); serpent.push(5); serpent.push(4); serpent.push(3); serpent.push(2); serpent.push(1); 
-        regenerateFlag = true;
+        this.serpent.push(6); this.serpent.push(5); this.serpent.push(4); this.serpent.push(3); this.serpent.push(2); this.serpent.push(1); 
+        this.regenerateFlag = true;
     }
 
     // Getter for the timeWarps ArrayList.
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
-        return timeWarps;
+        return this.timeWarps;
     }
     
     // Getter for the arcaneBoosts ArrayList.
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        return arcaneBoosts;
+        return this.arcaneBoosts;
     }
 
     // Method that return an ArrayList containing all of the moves that the player can currently do.
