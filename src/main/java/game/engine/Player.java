@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
-import game.creatures.Hydra;
 import game.engine.enums.*;
 
 public class Player {
