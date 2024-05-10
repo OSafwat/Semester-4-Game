@@ -432,7 +432,11 @@ public class CLIGameController {
                 result.add(move);
             }
         }
-        return (Move [])result.toArray();
+        Move [] finalResult = new Move[result.size()];
+        for (int i=0; i<result.size(); i++) {
+            finalResult[i] = result.get(i);
+        }
+        return finalResult;
     }
 
 
