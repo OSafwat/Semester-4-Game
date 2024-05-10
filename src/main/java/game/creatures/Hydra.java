@@ -20,8 +20,6 @@ public class Hydra extends Creature{
     // Stack that represents the hydra with the heads stored inside of it.
     private Stack<Integer> serpent;
 
-    private ArrayList<
-
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
 
