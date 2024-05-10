@@ -20,6 +20,8 @@ public class Hydra extends Creature{
     // Stack that represents the hydra with the heads stored inside of it.
     private Stack<Integer> serpent;
 
+    private ArrayList<
+
     // Define an array containing the hit reward for each hydra head.
     private final Properties properties;
 
@@ -74,11 +76,13 @@ public class Hydra extends Creature{
         this.diceUsed = new String[11];
         for(int i = 0; i < 11; i++) {
             diceUsed[i] = "---";
-            if(properties.getProperty("hit"+i+"Reward") == "ArcaneBoost"){
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
                 arcaneBoosts.add(ac);
             }
-            if(properties.getProperty("hit"+i+"Reward") == "TimeWarp") {
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("TimeWarp")) {
                 TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
                 timeWarps.add(tw);
             }
