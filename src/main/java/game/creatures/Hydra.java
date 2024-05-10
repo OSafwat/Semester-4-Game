@@ -7,6 +7,7 @@ import java.io.IOException;
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
+import game.dice.BlueDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
@@ -218,7 +219,7 @@ public class Hydra extends Creature{
     public ArrayList<Move> getAllPossibleMoves() {
         ArrayList<Move> moves = new ArrayList<Move>();
         for(int i = 1; i <= 6; i++) {
-            Dice dice = new Dice(i);
+            BlueDice dice = new BlueDice(i);
             if(checkMove(dice)){
                 Move move = new Move(dice, this);
                 moves.add(move);
