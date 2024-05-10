@@ -26,7 +26,9 @@ protected void  kill(){
 
 }
 
-
+public String toString(){
+    return "Value:" + this.guardianValue + "Status" +this.guardianStatus;
+}
 
 
 
