@@ -599,7 +599,10 @@ public class CLIGameController {
     public boolean selectDice(Dice dice, Player player){
         try{
             for (Dice die : getAvailableDice()) {
-                if ( dice.getValue() > die.getValue()  ){
+                if (0 == die.compareTo(dice)){
+                    this.gameBoard.removeFromAvailable(die);
+                }
+                if ( dice.getValue() > die.getValue() ){
                     gameBoard.moveToForgottenrealm(die);
                 }
             }

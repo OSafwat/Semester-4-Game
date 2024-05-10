@@ -117,5 +117,11 @@ public class GameBoard {
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice = new ArrayList<>();
     }
+    public void removeFromAvailable(Dice die){
+        for (Dice dice : availableDice) {
+            if (die.compareTo(dice)==0)
+                this.availableDice.remove(dice);
+        }
+    }
 
 }
