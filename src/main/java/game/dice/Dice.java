@@ -8,7 +8,8 @@ public class Dice implements Comparable{
         this.num= (int) (Math.random() * 6 + 1);
     }
 
-    public int compareTo(Dice die){
+    public int compareTo(Object dice){
+        Dice die = (Dice) dice;
         if (die.getValue()== this.getValue() && die.getRealm() == this.getRealm())
             return 0;
         else return -1;
