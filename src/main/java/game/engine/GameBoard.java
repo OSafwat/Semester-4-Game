@@ -23,7 +23,7 @@ public class GameBoard {
         this.allDice= new Dice [6];
         this.allDice[0]=new RedDice();
         this.allDice[1]=new GreenDice();
-        this.allDice[2]=new RedDice();
+        this.allDice[2]=new BlueDice();
         this.allDice[3]=new MagentaDice();
         this.allDice[4]=new YellowDice();
         this.allDice[5]=new ArcanePrism();
@@ -116,6 +116,12 @@ public class GameBoard {
         }
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice = new ArrayList<>();
+    }
+    public void removeFromAvailable(Dice die){
+        for (Dice dice : availableDice) {
+            if (die.compareTo(dice)==0)
+                this.availableDice.remove(dice);
+        }
     }
 
 }

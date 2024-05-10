@@ -9,6 +9,7 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -264,7 +265,6 @@ public class CLIGameController {
                 }
             }
         }   
-        
         scanner.close();
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
@@ -415,7 +415,7 @@ public class CLIGameController {
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
-        return player.getAllPossiblMoves();
+        return player.getAllPossibleMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
@@ -423,14 +423,18 @@ public class CLIGameController {
         for (Dice die : allDice) {
             result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
         }
-        return (Move [])result.toArray();
+        Move [] temp = new Move[result.size()];
+        for (int index = 0; index < result.size(); index++) {
+            temp[index]= result.get(index);
+        }
+        return temp;
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){
-        ArrayList<Move> playerAllMoves= player.getAllPossibleMoves();
+        Move[] playerAllMoves= player.getAllPossibleMoves();
         ArrayList<Move> result = new ArrayList<>();
-        for (Move move : playerAllMoves) {
-            if (move.compareTo(dice)==0){
-                result.add(move);
+        for (int i = 0; i < playerAllMoves.length; i++) {
+            if (playerAllMoves[i].compareTo(dice)==0){
+                result.add(playerAllMoves[i]);
             }
         }
         Move [] finalResult = new Move[result.size()];
@@ -443,17 +447,16 @@ public class CLIGameController {
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
-        player.updateAllPossibleMoves();  //may need to be changed
+        player.updateAllPossibleMoves();
         try {
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getGreen();
-                ArcanePrism whiteDice = (ArcanePrism) this.gameBoard.getWhite(); 
-
+                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
+                Dice whiteDice = this.gameBoard.getGreen();
                 int greenVal = greenDice.getValue();
                 int whiteVal = whiteDice.getValue();
                 greenDice.setRealValue(greenVal + whiteVal);
             }
-            Boolean temp=  move.getCreature().makeMove(move.getDice());
+            boolean temp = move.getCreature().makeMove(move.getDice());
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
@@ -465,7 +468,6 @@ public class CLIGameController {
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
                     Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
-                    player.updateGameScore();
                     return makeMove(player, firstBonusmove);    
                 }else{
                     System.out.println("please enter a valid number");
@@ -482,9 +484,8 @@ public class CLIGameController {
                 if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
                     Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
-                    if (makeMove(player, firstBonusmove)){
-
-                        break;}
+                    if (makeMove(player, firstBonusmove))
+                        break;
                     else{
                         System.out.println("please choose a valid move");
                     }
@@ -493,7 +494,7 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-            //player.updateGameScore();
+
             int secondNumberToAttackWith =0;
             do{
                 System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
@@ -511,12 +512,10 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-            player.updateGameScore();
             return true;
         }
         catch (InvalidMoveException Im){
             System.out.println("i dont get why we would get here");
-            player.updateGameScore();
             return false;
         }
     }
@@ -542,12 +541,13 @@ public class CLIGameController {
     }
 
     public Dice[] getAvailableDice() {
-        ArrayList<Dice> temp= this.gameBoard.getAvailableDice();
-        Dice []temp2 = new Dice[temp.size()];
+
+        ArrayList<Dice> temp=  this.gameBoard.getAvailableDice();
+        Dice [] res = new Dice[temp.size()];
         for (int index = 0; index < temp.size(); index++) {
-            temp2[index]= temp.get(index);
+            res[index]= temp.get(index);
         }
-        return temp2;
+        return res;
     }
 
     public Dice[] getForgottenRealmDice() {
@@ -599,6 +599,9 @@ public class CLIGameController {
     public boolean selectDice(Dice dice, Player player){
         try{
             for (Dice die : getAvailableDice()) {
+                if (0 == die.compareTo(dice)){
+                    this.gameBoard.removeFromAvailable(die);
+                }
                 if ( dice.getValue() > die.getValue() ){
                     gameBoard.moveToForgottenrealm(die);
                 }
@@ -609,8 +612,26 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-        CLIGameController controller = new CLIGameController();
-        System.out.println(controller.getActivePlayer().getScoreSheet());
+  CLIGameController controller = new CLIGameController();
+
+        Dice[] dice = controller.getGameBoard().getDice();
+        dice[0].setValue(2);
+        dice[1].setValue(3);
+        dice[2].setValue(4);
+        dice[3].setValue(5);
+        dice[4].setValue(6);
+        dice[5].setValue(6);
+
+        controller.selectDice(dice[4], controller.getActivePlayer());
+
+        Dice[] testAllDice = controller.getAllDice();
+
+        Dice[] availableDice = controller.getAvailableDice();
+        for (Dice die : availableDice) {
+            System.out.println(die.getValue()+ " "+die.getRealm() );
+        }
+        System.out.println(availableDice.length);
+
     }
 
     // public abstract boolean switchPlayer(){
