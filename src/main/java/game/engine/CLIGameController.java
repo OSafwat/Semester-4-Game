@@ -435,9 +435,10 @@ public class CLIGameController {
     public Move [] getPossibleMovesForAvailableDice(Player player){
         ArrayList<Move> result = new ArrayList<>();
         Dice [] allDice = getAvailableDice();
-        for (Dice die : allDice) {
+        outer: for (Dice die : allDice) {
             result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
         }
+        removeGreenDuplicate(result);
         Move [] temp = new Move[result.size()];
         for (int index = 0; index < result.size(); index++) {
             temp[index]= result.get(index);
@@ -445,7 +446,30 @@ public class CLIGameController {
         Arrays.sort(temp);
         return temp;
     }
+    public void removeGreenDuplicate(ArrayList<Move> result) {
+        int index1 = -1;
+        int index2 = -1;
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getDice().getRealm() == RealmColor.GREEN)
+            {
+                if (index1 == -1)
+                    index1 = i;
+                else
+                    index2 = i;
+            }
+        }
+        if (index1 != -1 && index2 != -1) {
+            result.remove(index2);
+        }
+    }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
+        Dice[] rolledDice = gameBoard.getAllDice();
+
+
+        if (dice instanceof GreenDice) {
+            GreenDice correctedDice = new GreenDice(dice.getValue() + rolledDice[5].getValue());
+            dice = correctedDice; 
+        }
         Move[] playerAllMoves= player.getAllPossibleMoves();
         System.out.println(playerAllMoves.length);
         for (Move move : playerAllMoves) {             
@@ -453,14 +477,11 @@ public class CLIGameController {
         }
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
-            for (int i = 0; i < playerAllMoves.length; i++) {
-                // if (playerAllMoves[i].getDice().getRealm()==RealmColor.GREEN){
-                //     if (playerAllMoves[i].getDice().getValue() == (dice.getValue() + gameBoard.getAllDice()[1].getValue()))
-                //         result.add(playerAllMoves[i]);
-                // }
-                if (playerAllMoves[i].getDice().getValue() == dice.getValue()){
-                    result.add(playerAllMoves[i]);
-                }
+            Dice[] possibleDice = {new RedDice(dice.getValue()), rolledDice[1], new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
+            for (int i = 0; i < 5; i++) {
+                Move[] thisDiceMoves = getPossibleMovesForADie(player, possibleDice[i]);
+                for (int j = 0; j < thisDiceMoves.length; j++)
+                    result.add(thisDiceMoves[j]);
             }
             Move [] finalResult = new Move[result.size()];
             for (int i=0; i<result.size(); i++) {
@@ -652,7 +673,20 @@ public class CLIGameController {
 
     public static void main(String[] args)throws IOException {
         CLIGameController controller = new CLIGameController();
-        controller.startGame();
+        Player player = controller.getActivePlayer();
+
+        Dice[] dice = controller.getGameBoard().getDice();
+        dice[0].setValue(2);
+        dice[1].setValue(3);
+        dice[2].setValue(4);
+        dice[3].setValue(5);
+        dice[4].setValue(6);
+        dice[5].setValue(1);
+
+        Move[] allPossibleMoves = controller.getPossibleMovesForAvailableDice(player);
+        for (Move move : allPossibleMoves) {
+            System.out.println(move.getDice().getRealm()+" "+ move.getDice().getValue());
+        }
     }
 
 }
