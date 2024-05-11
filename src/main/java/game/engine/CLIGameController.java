@@ -432,6 +432,7 @@ public class CLIGameController {
         for (int index = 0; index < result.size(); index++) {
             temp[index]= result.get(index);
         }
+        Arrays.sort(temp);
         return temp;
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
