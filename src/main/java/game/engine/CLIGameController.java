@@ -37,7 +37,7 @@ public class CLIGameController {
         try {
             // opening the file
             FileReader SettingsfileReader = new FileReader(
-                    "dice-realms-game-dimension/src/main/resources/RoundsSettings.properties");
+                    "src/main/resources/config/RoundsSettings.properties");
             settings = new BufferedReader(SettingsfileReader);
 
             // taking in input from the file which is currently only 2
@@ -65,7 +65,7 @@ public class CLIGameController {
         } finally{
             if (settings != null)
                 settings.close();
-            scanner.close();
+            //scanner.close();
         }
         int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
         return temp;
@@ -78,7 +78,7 @@ public class CLIGameController {
         Arrays.fill(rewards, "");
         try {
             // opening the file
-            FileReader rewardsFileReader = new FileReader("dice-realms-game-dimension/src/main/resources/RoundsRewards.properties");
+            FileReader rewardsFileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");
             rewardsFile = new BufferedReader(rewardsFileReader);
 
             // taking in input from the file which is currently only 2
@@ -108,7 +108,7 @@ public class CLIGameController {
     }
 
     public void startGame() throws IOException{
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);   //scanner is here
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
         getActivePlayer().setName(player1Name);
@@ -124,10 +124,10 @@ public class CLIGameController {
         System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
-            if (choice == "i") {
+            if ('i' == choice.charAt(0)) {
                 System.out.println("Description goes here");
                 break;
-            } else if (choice == "c") 
+            } else if (choice.charAt(0)=='c') 
                 break;
             else 
                 System.out.println("Please choose sth correct ");
@@ -198,7 +198,7 @@ public class CLIGameController {
         else 
             System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
 
-        scanner.close();
+        //scanner.close();
     }
 
     public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ 
@@ -266,7 +266,7 @@ public class CLIGameController {
                 }
             }
         }   
-        scanner.close();
+        //scanner.close();
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
         switch (choice){
@@ -302,7 +302,7 @@ public class CLIGameController {
                 System.out.println("batal estehbal we have an unknown Exception");
             }
         } while (true);
-        scanner.close();
+        //scanner.close();
     }
     public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
         if (timewarps.size()==0)
@@ -322,7 +322,7 @@ public class CLIGameController {
                     System.out.println("please enter a valid choice ba2a");
                 } while (true );
                 if (choice == 'n'){
-                    scanner.close();
+                    //scanner.close();
                     return;}
 
                 timewarps.get(index).setStatus(RewardStates.USED);
@@ -334,7 +334,7 @@ public class CLIGameController {
                 }
             }
         }
-        scanner.close();
+        //scanner.close();
     }
     public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
         Scanner scanner = new Scanner(System.in);
@@ -635,22 +635,9 @@ public class CLIGameController {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)throws IOException {
         CLIGameController controller = new CLIGameController();
-        Player player = controller.getActivePlayer();
-
-        Dice[] dice = controller.getGameBoard().getDice();
-        dice[0].setValue(2);
-        dice[1].setValue(3);
-        dice[2].setValue(4);
-        dice[3].setValue(5);
-        dice[4].setValue(6);
-        dice[5].setValue(1);
-
-        Move[] allPossibleMoves = controller.getPossibleMovesForAvailableDice(player);
-        for (Move move : allPossibleMoves) {
-            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
-        }
+        controller.startGame();
     }
 
 }

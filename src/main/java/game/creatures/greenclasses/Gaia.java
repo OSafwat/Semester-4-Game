@@ -406,6 +406,7 @@ public String getScoreSheet(){
     String returnValue = "Terra's Heartland: Gaia Guardians (GREEN REALM):\n" +
     "+-----------------------------------+\n" +
     "|  #  |1    |2    |3    |4    |R    |\n" +
+    "+-----------------------------------+\n" +
     "|  1  |X    " ;
     Guardians G2 = this.getGuardians(2);
     if(G2.isDead())
