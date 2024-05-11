@@ -188,7 +188,7 @@ public class CLIGameController {
                 handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost 
                 
                 handleArcaneBoost(getPassivePlayer(), currentPlayersArcaneBoosts);
-                
+                System.out.println("weselna hena ");
                 gameBoard.resetForgottenRealm();  // this moves all thats in the forgotten realm to the available dice and empties the activeArcaneDice and passiveArcaneDice
                 switchPlayer();
             }
@@ -353,16 +353,25 @@ public class CLIGameController {
         Scanner scanner = new Scanner(System.in);
         ScoreSheet scoreSheet = controller.getScoreSheet(player);
         System.out.println(player.getName()+", here is your score sheet:");
-        // scoreSheet.displayScoreSheet();
+        scoreSheet.displayScoreSheet();
 
         gameBoard.rollAvailableDice();
+        if (player == controller.getPassivePlayer()){
+            ArrayList<Dice> temp = new ArrayList<>();
+            for (Dice die : gameBoard.getAvailableDice()) {
+                temp.add(die);
+            }
+            for (Dice die : temp) {
+                controller.gameBoard.moveToForgottenrealm(die);
+            }
+        }
 
-        System.out.println("Here are your rolled dice: ");
+        System.out.println(player.getName()+", Here are your rolled dice: ");
         
         int counter= 0;
         for (Dice die : diceToBePlayedwith) {
-            if (die != null)
-            System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+            if (die == null) System.err.println("hya leh be null");
+                System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
         }
         if (playerStatus==PlayerStatus.ACTIVE)
             controller.handleTimeWarps(timewarps);
@@ -403,7 +412,7 @@ public class CLIGameController {
                             }
                         } while (true);
                     }
-                    else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                    if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
                     }
                 }catch(Exception e){
@@ -415,7 +424,7 @@ public class CLIGameController {
             }
         } while (true);
 
-        System.out.println("here is your new scoresheet");
+        //System.out.println("here is your new scoresheet");
 
         //changing the available dice 
         if (playerStatus== PlayerStatus.ACTIVE){
@@ -430,7 +439,8 @@ public class CLIGameController {
             }
             gameBoard.removeFromAvailable(chosenDice);
         }
-        //scoreSheet.displayScoreSheet();
+        System.out.println("here is your new scoresheet  ==>");
+        scoreSheet.displayScoreSheet();
         //scanner.close();
     }
     // move methods
