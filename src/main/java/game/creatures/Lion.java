@@ -281,7 +281,7 @@ public class Lion extends Creature{
     public void populateMappedRewardLocation() {
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
             String key = entry.getKey();
-            System.out.println(key);
+            //System.out.println(key);
             ArrayList<Integer> value = entry.getValue();
 
             for (int i = 0; i < value.size(); i++) {

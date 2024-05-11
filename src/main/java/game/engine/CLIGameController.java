@@ -9,6 +9,7 @@ import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
+///import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -429,19 +430,41 @@ public class CLIGameController {
         }
         return temp;
     }
-    public Move[] getPossibleMovesForADie(Player player, Dice dice){
+    public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
         Move[] playerAllMoves= player.getAllPossibleMoves();
+        System.out.println(playerAllMoves.length);
+        for (Move move : playerAllMoves) {             
+              //  System.out.println(move.getDice().getRealm()+" hello "+move.getDice().getValue());
+        }
         ArrayList<Move> result = new ArrayList<>();
-        for (int i = 0; i < playerAllMoves.length; i++) {
-            if (playerAllMoves[i].compareTo(dice)==0){
-                result.add(playerAllMoves[i]);
+        if (dice instanceof ArcanePrism){
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                // if (playerAllMoves[i].getDice().getRealm()==RealmColor.GREEN){
+                //     if (playerAllMoves[i].getDice().getValue() == (dice.getValue() + gameBoard.getAllDice()[1].getValue()))
+                //         result.add(playerAllMoves[i]);
+                // }
+                if (playerAllMoves[i].getDice().getValue() == dice.getValue()){
+                    result.add(playerAllMoves[i]);
+                }
             }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
         }
-        Move [] finalResult = new Move[result.size()];
-        for (int i=0; i<result.size(); i++) {
-            finalResult[i] = result.get(i);
+        else{
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                if (playerAllMoves[i].compareTo(dice)==0){
+                    result.add(playerAllMoves[i]);
+                }
+            }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
         }
-        return finalResult;
     }
 
 
@@ -449,14 +472,15 @@ public class CLIGameController {
     public boolean makeMove(Player player, Move move)  {
         player.updateAllPossibleMoves();
         try {
+            Dice diceToBeMovedWith= move.getDice();
             if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) this.gameBoard.getWhite();
-                Dice whiteDice = this.gameBoard.getGreen();
+                GreenDice greenDice = (GreenDice) gameBoard.getGreen();
+                Dice arcanePrism = (ArcanePrism) gameBoard.getWhite();
                 int greenVal = greenDice.getValue();
-                int whiteVal = whiteDice.getValue();
-                greenDice.setRealValue(greenVal + whiteVal);
+                int whiteVal = arcanePrism.getValue();
+                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
-            boolean temp = move.getCreature().makeMove(move.getDice());
+            boolean temp = move.getCreature().makeMove(diceToBeMovedWith);
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
@@ -612,7 +636,8 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-  CLIGameController controller = new CLIGameController();
+        CLIGameController controller = new CLIGameController();
+        Player player = controller.getActivePlayer();
 
         Dice[] dice = controller.getGameBoard().getDice();
         dice[0].setValue(2);
@@ -620,21 +645,17 @@ public class CLIGameController {
         dice[2].setValue(4);
         dice[3].setValue(5);
         dice[4].setValue(6);
-        dice[5].setValue(6);
+        dice[5].setValue(1);
 
-        controller.selectDice(dice[4], controller.getActivePlayer());
-
-        Dice[] testAllDice = controller.getAllDice();
-
-        Dice[] availableDice = controller.getAvailableDice();
-        for (Dice die : availableDice) {
-            System.out.println(die.getValue()+ " "+die.getRealm() );
+        Move[] allPossibleMoves = controller.getPossibleMovesForAvailableDice(player);
+        for (Move move : allPossibleMoves) {
+            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
         }
-        System.out.println(availableDice.length);
-
     }
+
+}
 
     // public abstract boolean switchPlayer(){
     // }
 
-}
+
