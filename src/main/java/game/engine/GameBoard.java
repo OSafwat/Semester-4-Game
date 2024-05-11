@@ -90,13 +90,8 @@ public class GameBoard {
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
     public void moveToForgottenrealm(Dice die){
-        for (Dice dice : availableDice) {
-            if (dice == die){
-                this.availableDice.remove(dice);
-                this.forgottenRealmDice.add(dice);
-                break;
-            }
-        }
+        availableDice.remove(die);
+        forgottenRealmDice.add(die);
     }
     public void moveToArcaneDice(Dice chosenDice){
         for (Dice die  : availableDice) {
@@ -108,17 +103,16 @@ public class GameBoard {
     }
     public void resetForgottenRealm(){
         for (Dice die : forgottenRealmDice) {
-            forgottenRealmDice.remove(die);
             availableDice.add(die);
+        }
+        for (Dice dice : availableDice) {
+            forgottenRealmDice.remove(dice);
         }
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice = new ArrayList<>();
     }
     public void removeFromAvailable(Dice die){
-        for (Dice dice : availableDice) {
-            if (die.compareTo(dice)==0)
-                this.availableDice.remove(dice);
-        }
+        availableDice.remove(die);
     }
 
 }
