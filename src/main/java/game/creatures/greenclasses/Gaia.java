@@ -110,7 +110,7 @@ public class Gaia extends Creature{
         throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -123,7 +123,7 @@ public class Gaia extends Creature{
     private boolean checkMove1(Dice dice){
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -136,27 +136,17 @@ public class Gaia extends Creature{
 
 // EXP gets a specific guardian in the Gaia
     private Guardians getGuardians(int c){
-
-        int row =0;
-        int col =0;
         if(c<2 || c>12)
         return null;
-        int index =1;
+        //int index =1;
         for(int i=0;i<gaiaGuardians.length;i++){
-            for(int j=0;j<gaiaGuardians[i].length;j++){
-                if(c==index){
-                    row=i;
-                    col=j;
-                    break;
-
-                }
-                
-                index++;
+            for(int j=0;j<gaiaGuardians[i].length;j++){   
+                if(c== gaiaGuardians[i][j].getGuardianValue())
+                return gaiaGuardians[i][j];  
+                //index++;
             }
-            
-
     }
-    return gaiaGuardians[row][col];
+    return null;
 
 
 }
@@ -164,24 +154,17 @@ public class Gaia extends Creature{
 // EXP gets a specific guardian row position in the Gaia
 private int getGuardiansRow(int c){
 
-    int row =0;
-    if(c<2 || c>12)
+    if(c<2 || c>12)//here
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                row=i;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return i; 
         }
         
 
 }
-    return row;
+    return 0;
 
 
 }
@@ -190,24 +173,17 @@ private int getGuardiansRow(int c){
 // EXP gets a specific guardian col position in the Gaia
 private int getGuardiansCol(int c){
 
-    int col =0;
     if(c<2 || c>12)
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                col=j;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return j; 
         }
         
 
 }
-    return col;
+    return 0;
 
 
 }
@@ -274,7 +250,7 @@ private  void updateRow(int r){
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
     private String whichCollectableCol (int c){
         try{
-         String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+         String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
         Properties prop ;
         String colReward;
         prop = new Properties();
@@ -295,7 +271,7 @@ private  void updateRow(int r){
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r) {
         try{
-        String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+        String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
         Properties prop ;
         String rowReward;
         prop = new Properties();
@@ -318,7 +294,7 @@ private  void updateRow(int r){
      public boolean makeMove(Dice dice) throws BonusException , BonusTwoException,InvalidMoveException   {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
-       else  if(!checkMove(dice))
+       else  if(!checkMove1(dice))
             return false;
         else{
             alliveGuardians--;
@@ -326,7 +302,7 @@ private  void updateRow(int r){
             GreenDice greendie = (GreenDice) dice;
             
             // ASUM assuming getValue done in the dice class
-            int greenValue = greendie.getRealValue();
+            int greenValue = greendie.getValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
             score=scores[deadGuardians-1];
@@ -430,6 +406,7 @@ public String getScoreSheet(){
     String returnValue = "Terra's Heartland: Gaia Guardians (GREEN REALM):\n" +
     "+-----------------------------------+\n" +
     "|  #  |1    |2    |3    |4    |R    |\n" +
+    "+-----------------------------------+\n" +
     "|  1  |X    " ;
     Guardians G2 = this.getGuardians(2);
     if(G2.isDead())
@@ -451,7 +428,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(0);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  2  ";
     }
     Guardians G5 = this.getGuardians(5);
     if(G5.isDead())
@@ -478,7 +455,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(1);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  3  ";
     }
   
     Guardians G9 = this.getGuardians(9);
@@ -595,6 +572,7 @@ private String getCorrectBonusInScore(String s){
         case "YellowBonus":return "YB";
         case "TimeWarp" : return"TW";
         case "ArcaneBoost" : return"AB";
+        case "ElementalCrest": return"EC";
         default: return "";
             
     }
@@ -637,55 +615,13 @@ private boolean applyNotBonusCollectable(String s){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public static void main(String[] args) {
+    Gaia gaia = new Gaia();
+    ArrayList<Move> moves= gaia.getAllPossibleMoves();
+    for (int index = 0; index < moves.size(); index++) {
+        Move move= moves.get(index);
+        System.out.println();
+    }
+}
 
 }

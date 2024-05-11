@@ -113,7 +113,7 @@ public class Hydra extends Creature{
 
     // Setter for the "score" variable.
     public void updateScore() {
-        this.score += this.scores[this.headsKilled];
+        this.score = this.scores[this.headsKilled];
     }
 
     // Method that checks which serpent head gives you an elemental crest and returns 1 if this head is dead and 0 otherwise.
@@ -226,5 +226,17 @@ public class Hydra extends Creature{
             }
         }
         return moves;
+    }
+    public static void main(String[] args) {
+        Hydra hydra = new Hydra();
+        BlueDice dice = new BlueDice(6);
+        for(int i = 0; i < 2; i++) {
+            try {
+                System.out.println(hydra.makeMove(dice));
+            } catch (BonusException e) {
+                System.out.println("Bonus");
+            }
+        }
+        System.out.println(hydra.getScore());
     }
 }

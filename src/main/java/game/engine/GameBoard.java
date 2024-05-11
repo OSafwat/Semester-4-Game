@@ -46,9 +46,6 @@ public class GameBoard {
         //this.gameStatus= <gamestatus>;
 
     }
-    public void setGreenValue(){            //any makemove check move and so on use the real value
-        ((GreenDice)this.allDice[1]).setRealValue(this.allDice[1].getValue()+this.allDice[5].getValue());
-    }
     //player methods:
     public Player getPlayer1() {
         return player1;
@@ -116,6 +113,12 @@ public class GameBoard {
         }
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice = new ArrayList<>();
+    }
+    public void removeFromAvailable(Dice die){
+        for (Dice dice : availableDice) {
+            if (die.compareTo(dice)==0)
+                this.availableDice.remove(dice);
+        }
     }
 
 }

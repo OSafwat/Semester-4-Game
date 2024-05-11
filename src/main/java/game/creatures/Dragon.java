@@ -353,27 +353,27 @@ public class Dragon extends Creature {
         scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  F  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].face)).append("    |");
         }
         scoreSheet.append(suppliers[0].get()).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].wings)).append("    |");
         }
         scoreSheet.append(suppliers[1].get()).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].tail)).append("    |");
         }
         scoreSheet.append(suppliers[2].get()).append("   |\n");
-        scoreSheet.append("|  W  |");
+        scoreSheet.append("|  H  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].heart)).append("    |");
         }
         scoreSheet.append(suppliers[3].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(pointMap[i]).append("  |");
+            scoreSheet.append(pointMap[i]).append("   |");
         }
         scoreSheet.append(suppliers[4].get()).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n\n");
@@ -382,7 +382,7 @@ public class Dragon extends Creature {
 
     //This and the methods below it assist in the scoresheet and other methods
     public String changeToString(Integer integer) {
-        return integer == null ? "X" : "" + integer;
+        return  Objects.equals(null, integer) ? "X" : "" + integer;
     }
 
     public String getFirstRowRewardString() {
