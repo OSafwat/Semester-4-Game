@@ -430,21 +430,20 @@ public class CLIGameController {
         }
         return temp;
     }
-    public Move[] getPossibleMovesForADie(Player player, Dice dice){
+    public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
         Move[] playerAllMoves= player.getAllPossibleMoves();
-        for (Move move : playerAllMoves) {
-            if (move.getDice() instanceof GreenDice){
-                GreenDice temp = (GreenDice) move.getDice();
-                //System.out.println(temp.getRealm()+" "+temp.getRealValue());
-            }
-             
-                //System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
-            
+        System.out.println(playerAllMoves.length);
+        for (Move move : playerAllMoves) {             
+              //  System.out.println(move.getDice().getRealm()+" hello "+move.getDice().getValue());
         }
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             for (int i = 0; i < playerAllMoves.length; i++) {
-                if (playerAllMoves[i].getDice().getValue() == dice.getValue() && playerAllMoves[i].getDice().getRealm()!= RealmColor.GREEN){
+                // if (playerAllMoves[i].getDice().getRealm()==RealmColor.GREEN){
+                //     if (playerAllMoves[i].getDice().getValue() == (dice.getValue() + gameBoard.getAllDice()[1].getValue()))
+                //         result.add(playerAllMoves[i]);
+                // }
+                if (playerAllMoves[i].getDice().getValue() == dice.getValue()){
                     result.add(playerAllMoves[i]);
                 }
             }
@@ -637,7 +636,21 @@ public class CLIGameController {
 
 
     public static void main(String[] args) {
-       
+        CLIGameController controller = new CLIGameController();
+        Player player = controller.getActivePlayer();
+
+        Dice[] dice = controller.getGameBoard().getDice();
+        dice[0].setValue(2);
+        dice[1].setValue(3);
+        dice[2].setValue(4);
+        dice[3].setValue(5);
+        dice[4].setValue(6);
+        dice[5].setValue(1);
+
+        Move[] allPossibleMoves = controller.getPossibleMovesForAvailableDice(player);
+        for (Move move : allPossibleMoves) {
+            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
+        }
     }
 
 }

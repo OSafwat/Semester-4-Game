@@ -44,4 +44,7 @@ public class Move implements Comparable{
     Dice getDice(){
         return this.dice;
     }
+    public String toString(){
+        return getDice().getRealm()+" "+getDice().getValue();
+    }
 }
