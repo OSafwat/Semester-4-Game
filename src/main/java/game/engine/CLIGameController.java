@@ -408,7 +408,7 @@ public class CLIGameController {
                             dragonChoice = scanner.nextInt();
                             if (dragonChoice>= 1 && dragonChoice <= 4){
                                 ((RedDice)chosenDice).selectsDragon(dragonChoice); 
-                                if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))));
+                                if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
                                     break outer;
                             }
                         } while (true);
