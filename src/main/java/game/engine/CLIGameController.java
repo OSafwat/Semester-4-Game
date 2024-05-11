@@ -84,8 +84,12 @@ public class CLIGameController {
             // taking in input from the file which is currently only 2
             String rewardsline ;
             int rewardsCounter = 0;
-            for  ( ; rewardsCounter< numberOfRounds && (rewardsline  = rewardsFile.readLine()) != null; rewardsCounter++){
-                rewards[rewardsCounter] = rewardsline.split("=")[1];            // had to make it a string array cuz i cant switch case in the startGame() method when i should be making such decisions including the possibility of a colored bonus being included
+            for  ( ; rewardsCounter< numberOfRounds ; rewardsCounter++){
+                rewardsline = rewardsFile.readLine();
+                if ( rewardsline != null)
+                    rewards[rewardsCounter] = rewardsline.split("=")[1];
+                else 
+                    rewards[rewardsCounter] = "null";            // had to make it a string array cuz i cant switch case in the startGame() method when i should be making such decisions including the possibility of a colored bonus being included
             }
         } catch (FileNotFoundException  e) {
 

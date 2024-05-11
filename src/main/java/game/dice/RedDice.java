@@ -7,6 +7,7 @@ public class RedDice extends Dice{
     int dragonNumber;
     public RedDice(int num){
         super(num);
+        dragonNumber = -1;
     }
     public RedDice(int num, int dragonNumber) {
         super(num);
@@ -19,5 +20,6 @@ public class RedDice extends Dice{
     public int getDragonNumber() {return dragonNumber;}
     public RedDice(){
         super();
+        dragonNumber = -1;
     }
 }
