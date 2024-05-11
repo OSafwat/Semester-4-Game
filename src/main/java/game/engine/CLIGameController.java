@@ -138,12 +138,11 @@ public class CLIGameController {
         do {
             String choice = scanner.nextLine();
             if (choice.length() !=0 && 'i' == choice.charAt(0)) {
-                System.out.println("Description goes here");
-                break;
+                System.out.println("Description goes here\n");
             } else if (choice.charAt(0)=='c') 
                 break;
             else 
-                System.out.println("Please choose sth correct ");
+                System.out.println("Please choose sth correct\n");
         } while (true);
 
         //the following is taking in the round rewards from the properties file
@@ -403,14 +402,13 @@ public class CLIGameController {
                     }
                     if (chosenDice instanceof RedDice){
                         int dragonChoice = 0;
-                        do {
-                            System.out.println("please choose a proper dragon to attack in the red realm");
+                        System.out.println("please choose a proper dragon to attack in the red realm");
+                        dragonChoice = scanner.nextInt();
+                        while (dragonChoice < 1 || dragonChoice > 4) {
+                            System.out.println("Please enter a correct dragon number.");
                             dragonChoice = scanner.nextInt();
-                            if (dragonChoice>= 1 && dragonChoice <= 4){
-                                ((RedDice)chosenDice).selectsDragon(dragonChoice); 
-                                break;
-                            }
-                        } while (true);
+                        }
+                        ((RedDice)chosenDice).selectsDragon(dragonChoice);
                     }
                     if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
