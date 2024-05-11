@@ -364,9 +364,9 @@ public class CLIGameController {
                 controller.gameBoard.moveToForgottenrealm(die);
             }
         }
-
-        System.out.println(player.getName()+", Here are your rolled dice: ");
-        
+        if (player == controller.getActivePlayer())
+            System.out.println(player.getName()+", Here are your rolled dice: ");
+        else System.out.println(player.getName()+", Here are your passive turn dice: ");
         int counter= 0;
         for (Dice die : diceToBePlayedwith) {
             if (die == null) System.err.println("hya leh be null");
@@ -376,7 +376,7 @@ public class CLIGameController {
             controller.handleTimeWarps(timewarps);
         //the following is choosing an correct valid move  
         Dice chosenDice=null;
-        do {
+        outer: do {
             System.out.println("please choose a number between 1 and "+ diceToBePlayedwith.length);
             int choice = scanner.nextInt();
             if (!(choice > diceToBePlayedwith.length || choice <= 0)){
@@ -402,15 +402,17 @@ public class CLIGameController {
                     }
                     if (chosenDice instanceof RedDice){
                         int dragonChoice = 0;
-                        System.out.println("please choose a proper dragon to attack in the red realm");
-                        dragonChoice = scanner.nextInt();
-                        while (dragonChoice < 1 || dragonChoice > 4) {
-                            System.out.println("Please enter a correct dragon number.");
+                        do {
+                            System.out.println("please choose a proper dragon to attack in the red realm");
                             dragonChoice = scanner.nextInt();
-                        }
-                        ((RedDice)chosenDice).selectsDragon(dragonChoice);
+                            if (dragonChoice>= 1 && dragonChoice <= 4){
+                                ((RedDice)chosenDice).selectsDragon(dragonChoice); 
+                                if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))));
+                                    break outer;
+                            }
+                        } while (true);
                     }
-                    if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
+                    else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
                         break;
                     }
                 }catch(Exception e){
