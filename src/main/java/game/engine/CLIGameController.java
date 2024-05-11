@@ -84,13 +84,22 @@ public class CLIGameController {
             // taking in input from the file which is currently only 2
             String rewardsline ;
             int rewardsCounter = 0;
+            rewardsline = rewardsFile.readLine();
             for  ( ; rewardsCounter< numberOfRounds ; rewardsCounter++){
                 rewardsline = rewardsFile.readLine();
-                if ( rewardsline != null)
-                    rewards[rewardsCounter] = rewardsline.split("=")[1];
-                else 
-                    rewards[rewardsCounter] = "null";            // had to make it a string array cuz i cant switch case in the startGame() method when i should be making such decisions including the possibility of a colored bonus being included
-            }
+                if ( rewardsline != null){
+                    
+                    String temp [] = rewardsline.split("=");
+                    for (int i = 0; i < temp.length ; i++) {
+                     //   System.out.println(temp[i]);
+                        rewards[rewardsCounter] = temp[1];
+                    }
+                }
+                else{ 
+                    rewards[rewardsCounter] = "null2";
+                }   
+                 System.out.println(rewards[rewardsCounter]);
+                }
         } catch (FileNotFoundException  e) {
 
             System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used"); 
@@ -128,7 +137,7 @@ public class CLIGameController {
         System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
-            if ('i' == choice.charAt(0)) {
+            if (choice.length() !=0 && 'i' == choice.charAt(0)) {
                 System.out.println("Description goes here");
                 break;
             } else if (choice.charAt(0)=='c') 
@@ -352,6 +361,7 @@ public class CLIGameController {
         
         int counter= 0;
         for (Dice die : diceToBePlayedwith) {
+            if (die != null)
             System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
         }
         if (playerStatus==PlayerStatus.ACTIVE)
@@ -376,7 +386,7 @@ public class CLIGameController {
                         }while(true);
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
+                            case 2: chosenDice = new GreenDice(chosenDice.getValue()+ gameBoard.getGreen().getValue()); break;
                             case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
                             case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
                             case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
@@ -416,7 +426,7 @@ public class CLIGameController {
             }
         }
         scoreSheet.displayScoreSheet();
-        scanner.close();
+        //scanner.close();
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
