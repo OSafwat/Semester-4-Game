@@ -195,6 +195,8 @@ public class Phoenix extends Creature{
             rewardLocations.put("BlueBonus", new ArrayList<>(Arrays.asList(new Integer[] {8})));
             rewardLocations.put("YellowBonus", new ArrayList<>(Arrays.asList(new Integer[] {9})));
         }
+
+        populateMappedRewardLocation();
     }
 
     // This method is used to populate the MappedRewardLocation Array for faster and easier accessing of the "hit reward(s)" indices
