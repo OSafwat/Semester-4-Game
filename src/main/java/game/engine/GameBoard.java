@@ -103,6 +103,7 @@ public class GameBoard {
     }
     public void resetAllDice(){
         availableDice.addAll(forgottenRealmDice);
+        forgottenRealmDice.clear();
         this.activeArcaneDice = new ArrayList<>();
         this.passiveArcaneDice = new ArrayList<>();
         availableDice.addAll(getPlayer1().getPlayedDice());
