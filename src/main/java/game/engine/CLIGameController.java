@@ -607,48 +607,40 @@ public class CLIGameController {
     }
 
     public Dice[] getAllDice() {
-        return this.gameBoard.getAllDice();
+        return gameBoard.getAllDice();
     }
 
     public Dice[] getAvailableDice() {
-
-        ArrayList<Dice> temp=  this.gameBoard.getAvailableDice();
-        Dice [] res = new Dice[temp.size()];
-        for (int index = 0; index < temp.size(); index++) {
-            res[index]= temp.get(index);
+        ArrayList<Dice> availableDiceAsList = gameBoard.getAvailableDice();
+        Dice[] availableDiceAsArray = new Dice[availableDiceAsList.size()];
+        for (int i = 0, size = availableDiceAsList.size(); i < size; i++) {
+            availableDiceAsArray[i] = availableDiceAsList.get(i);
         }
-        return res;
+        Arrays.sort(availableDiceAsArray);
+        return availableDiceAsArray;
     }
 
     public Dice[] getForgottenRealmDice() {
-        return this.gameBoard.getForgottenRealmDice();
+        return gameBoard.getForgottenRealmDice();
     }
 
     // player related methods:
     public boolean switchPlayer() {
         try {
-            this.gameBoard.getPlayer1().switchStatus();
-            this.gameBoard.getPlayer2().switchStatus();
-            return true;
+            gameBoard.getPlayer1().switchStatus();
+            gameBoard.getPlayer2().switchStatus();
         } catch (Exception e) {
             return false;
         }
+        return true;
     }
 
     public Player getActivePlayer() {
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE) {
-            return this.gameBoard.getPlayer1();
-        } else {
-            return this.gameBoard.getPlayer2();
-        }
+        return gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE ? gameBoard.getPlayer1() : gameBoard.getPlayer2();
     }
 
     public Player getPassivePlayer() {
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE) {
-            return this.gameBoard.getPlayer1();
-        } else {
-            return this.gameBoard.getPlayer2();
-        }
+        return gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE ? gameBoard.getPlayer1() : gameBoard.getPlayer2();
     }
 
     // player attributes related methods
