@@ -483,9 +483,6 @@ public class CLIGameController {
         }
         Move[] playerAllMoves= player.getAllPossibleMoves();
         System.out.println(playerAllMoves.length);
-        for (Move move : playerAllMoves) {
-            //  System.out.println(move.getDice().getRealm()+" hello "+move.getDice().getValue());
-        }
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
