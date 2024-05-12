@@ -28,7 +28,7 @@ public class CLIGameController {
     public CLIGameController() {
         this.gameBoard= new GameBoard();
     }
-    public int [] getSettings() throws IOException{
+    public int [] getSettings(){
         Scanner scanner = new Scanner(System.in);
         int numberOfRounds;
         int numebrOfTurnsPerRound;
@@ -63,15 +63,19 @@ public class CLIGameController {
             numebrOfTurnsPerRound= 3;
 
         } finally{
-            if (settings != null)
-                settings.close();
-            //scanner.close();
+            if (settings != null) {
+                try {
+                    settings.close();
+                } catch (IOException e) {
+                    //Unreachable code
+                }
+            }
         }
         int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
         return temp;
     }
 
-    public String [] getRewards(int numberOfRounds) throws IOException{
+    public String [] getRewards(int numberOfRounds){
 
         BufferedReader rewardsFile=null;
         String[] rewards= new String [numberOfRounds] ;
@@ -88,39 +92,44 @@ public class CLIGameController {
             for  ( ; rewardsCounter< numberOfRounds ; rewardsCounter++){
                 rewardsline = rewardsFile.readLine();
                 if ( rewardsline != null){
-                    
+
                     String temp [] = rewardsline.split("=");
                     for (int i = 0; i < temp.length ; i++) {
-                     //   System.out.println(temp[i]);
+                        //   System.out.println(temp[i]);
                         rewards[rewardsCounter] = temp[1];
                     }
                 }
-                else{ 
+                else{
                     rewards[rewardsCounter] = "null2";
-                }   
-                 //System.out.println(rewards[rewardsCounter]);
                 }
+                //System.out.println(rewards[rewardsCounter]);
+            }
         } catch (FileNotFoundException  e) {
 
-            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used"); 
+            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
             rewards[0]="TimeWarp";           //new TimeWarp();
             rewards[1] = "ArcaneBoost";      //new ArcaneBoost();
             rewards[2] ="TimeWarp";          //new TimeWarp();
             rewards[3] = "EssenceBonus";     //new EssenceBonus();
             rewards[4] = "";
-            rewards[5] = "";            
+            rewards[5] = "";
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
         } finally{
-            if (rewardsFile != null)
-                rewardsFile.close();
+            if (rewardsFile != null) {
+                try {
+                    rewardsFile.close();
+                } catch (IOException e) {
+                    //Unreachable code
+                }
+            }
         }
 
         return rewards;
     }
 
-    public void startGame() throws IOException{
+    public void startGame(){
         Scanner scanner = new Scanner(System.in);   //scanner is here
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
@@ -128,20 +137,20 @@ public class CLIGameController {
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
         getPassivePlayer().setName(player2Name);
-        
+
         int [] temp = getSettings();
-        int numberOfRounds= temp[0]; 
+        int numberOfRounds= temp[0];
         int numebrOfTurnsPerRound=temp[1];
-        
+
 
         System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
             if (choice.length() !=0 && 'i' == choice.charAt(0)) {
                 System.out.println("Description goes here\n");
-            } else if (choice.charAt(0)=='c') 
+            } else if (choice.charAt(0)=='c')
                 break;
-            else 
+            else
                 System.out.println("Please choose sth correct\n");
         } while (true);
 
@@ -158,15 +167,16 @@ public class CLIGameController {
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
                     playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
                 }
+                moveAllIntoForgotten();
                 playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE, currentActivePlayer.getTimeWarps());        //playing a passive turn
                 //the following is resetting the dice:
-                
+
                 // should assign the round rewards as well as use the arcaneboosts and time warps
                 // the following handles what to do with the rewards taken from the config file
                 switch (rewards[i]){
                     case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
                     case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
-                    case "EssenceBonus": 
+                    case "EssenceBonus":
                         int realmChoice =0;
                         do{
                             System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
@@ -184,15 +194,15 @@ public class CLIGameController {
                     default: System.out.println("7azak en el round da mafhoosh bonus");
                 }
                 ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
-                handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost 
-                
+                handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost
+
                 handleArcaneBoost(getPassivePlayer(), currentPlayersArcaneBoosts);
                 System.out.println("weselna hena ");
-                gameBoard.resetForgottenRealm();  // this moves all thats in the forgotten realm to the available dice and empties the activeArcaneDice and passiveArcaneDice
+                gameBoard.resetAllDice();// this moves all thats in the forgotten realm to the available dice and empties the activeArcaneDice and passiveArcaneDice
                 switchPlayer();
             }
 
-        }   
+        }
         Player player1= gameBoard.getPlayer1();
         Player player2= gameBoard.getPlayer1();
         System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
@@ -207,13 +217,13 @@ public class CLIGameController {
 
         if (player1Score > player2Score)
             System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
-        else 
+        else
             System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
 
         //scanner.close();
     }
 
-    public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){ 
+    public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){
         Scanner scanner = new Scanner(System.in);
 
         for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
@@ -224,24 +234,24 @@ public class CLIGameController {
                     choice =scanner.nextLine().charAt(0);
                     if (choice == 'y' || choice == 'n')
                         break;
-                    else 
+                    else
                         System.out.println("please enter a valid input");
                 } while (true);
-                
+
                 if (choice == 'n')
                     break;
                 if (choice=='y'){
                     currentPlayersArcaneBoosts.get(arcaneBoostsIndex).setStatus(RewardStates.USED);
                     //the functionality of getting an arcane boost goes here
-                    //meow meow meow meow 
+                    //meow meow meow meow
                     Dice [] alldice= getAllDice();
-                    ArrayList<Dice> activeArcanDice = gameBoard.getActiveArcaneDice();
+                    ArrayList<Dice> activeArcaneDice = gameBoard.getActiveArcaneDice();
                     ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveArcaneDice();
                     System.out.println("choose from the following dice one of them to make a move with");
                     HashSet<Integer> hs = new HashSet<>();
                     for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
                         if (player == getActivePlayer()){
-                            if (!activeArcanDice.contains(alldice[diceIndex])){
+                            if (!activeArcaneDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
                                 System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                             }
@@ -252,7 +262,7 @@ public class CLIGameController {
                             }
                         }
                     }
-                    
+
                     while (true) {
                         try {
                             int arcaneboostChoice=0;
@@ -263,13 +273,13 @@ public class CLIGameController {
                                 else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
                             } while (true);
                             if(player == getActivePlayer()){
-                                activeArcanDice.add(alldice[arcaneboostChoice]);
+                                activeArcaneDice.add(alldice[arcaneboostChoice]);
                             }else {
                                 gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
                             }
                             if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoreSheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
                                 break;
-                        
+
                         } catch (Exception e) {
                             System.out.println("we have an unknown");
                         }
@@ -277,7 +287,7 @@ public class CLIGameController {
 
                 }
             }
-        }   
+        }
         //scanner.close();
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
@@ -288,7 +298,7 @@ public class CLIGameController {
             case 4: return scoresheet.getCreatureByColor(RealmColor.MAGENTA);
             case 5: return scoresheet.getCreatureByColor(RealmColor.YELLOW);
             default: System.out.println("ok ana mesh 3aref law dakhalna hena han7elaha ezay");
-                    return scoresheet.getCreatureByColor(RealmColor.RED);
+                return scoresheet.getCreatureByColor(RealmColor.RED);
 
         }
 
@@ -296,7 +306,7 @@ public class CLIGameController {
     public void handleBonus(int realmChoice){
         Scanner scanner = new Scanner(System.in);
         Player currentActivePlayer= getActivePlayer();
-        
+
         Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
         do {
             try {
@@ -320,10 +330,10 @@ public class CLIGameController {
         if (timewarps.size()==0)
             return;
         Scanner scanner = new Scanner(System.in);
-       
-       // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");         
+
+        // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         for (int index = 0; index < timewarps.size(); index++) {
-          //  System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");         
+            //  System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
             if (timewarps.get(index).getStatus()==RewardStates.ACQUIRED){
                 System.out.println("choose whether you would like to use a timeWarp to reroll or not (enter 'y' or 'n')");
                 char choice='4';
@@ -354,16 +364,9 @@ public class CLIGameController {
         System.out.println(player.getName()+", here is your score sheet:");
         scoreSheet.displayScoreSheet();
 
+
         gameBoard.rollAvailableDice();
-        if (player == controller.getPassivePlayer()){
-            ArrayList<Dice> temp = new ArrayList<>();
-            for (Dice die : gameBoard.getAvailableDice()) {
-                temp.add(die);
-            }
-            for (Dice die : temp) {
-                controller.gameBoard.moveToForgottenrealm(die);
-            }
-        }
+
         if (player == controller.getActivePlayer())
             System.out.println(player.getName()+", Here are your rolled dice: ");
         else System.out.println(player.getName()+", Here are your passive turn dice: ");
@@ -378,6 +381,7 @@ public class CLIGameController {
             controller.handleTimeWarps(timewarps);
         //the following is choosing a correct valid move
         Dice chosenDice=null;
+        boolean alreadySelected = false;
         outer: do {
             System.out.println("Please choose a number between 1 and "+ diceToBePlayedwith.length);
             int choice = scanner.nextInt();
@@ -394,10 +398,11 @@ public class CLIGameController {
                                 break;
                             System.out.println("momken nebatal estehbal");
                         }while(true);
-                        gameBoard.removeFromAvailable(chosenDice);
+                        controller.selectDice(chosenDice, player);
+                        alreadySelected = true;
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
+                            case 2: chosenDice = new GreenDice(gameBoard.getGreen().getValue()); break;
                             case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
                             case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
                             case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
@@ -409,7 +414,7 @@ public class CLIGameController {
                             System.out.println("Please choose a proper dragon to attack in the Red Realm");
                             dragonChoice = scanner.nextInt();
                             if (dragonChoice>= 1 && dragonChoice <= 4){
-                                ((RedDice)chosenDice).selectsDragon(dragonChoice); 
+                                ((RedDice)chosenDice).selectsDragon(dragonChoice);
                                 if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
                                     break outer;
                             }
@@ -421,7 +426,7 @@ public class CLIGameController {
                 }catch(Exception e){
                     System.out.println();
                 }
-                
+
             }else {
                 System.out.println("Please choose a valid move");
             }
@@ -429,18 +434,9 @@ public class CLIGameController {
 
         //System.out.println("here is your new scoresheet");
 
-        //changing the available dice 
-        if (playerStatus== PlayerStatus.ACTIVE){
-            ArrayList<Dice> temp = new ArrayList<>(); 
-            for (int i = 0; i < diceToBePlayedwith.length; i++){    
-                if ( chosenDice.getValue() > diceToBePlayedwith[i].getValue() ){
-                    temp.add(diceToBePlayedwith[i]);
-                }                
-            }
-            for (Dice dice : temp) {
-                gameBoard.moveToForgottenrealm(dice);
-            }
-            gameBoard.removeFromAvailable(chosenDice);
+        //changing the available dice
+        if (playerStatus== PlayerStatus.ACTIVE && !alreadySelected){
+            controller.selectDice(chosenDice, player);
         }
         System.out.println("Here is your new score sheet  ==>");
         scoreSheet.displayScoreSheet();
@@ -481,25 +477,18 @@ public class CLIGameController {
         }
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
-        Dice[] rolledDice = gameBoard.getAllDice();
-
-
         if (dice instanceof GreenDice) {
-            GreenDice correctedDice = new GreenDice(dice.getValue() + rolledDice[5].getValue());
-            dice = correctedDice; 
+            GreenDice correctedDice = new GreenDice(dice.getValue() + gameBoard.getWhite().getValue());
+            dice = correctedDice;
         }
         Move[] playerAllMoves= player.getAllPossibleMoves();
         System.out.println(playerAllMoves.length);
-        for (Move move : playerAllMoves) {             
-              //  System.out.println(move.getDice().getRealm()+" hello "+move.getDice().getValue());
-        }
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
-            Dice[] possibleDice = {new RedDice(dice.getValue()), rolledDice[1], new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
+            Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
             for (int i = 0; i < 5; i++) {
                 Move[] thisDiceMoves = getPossibleMovesForADie(player, possibleDice[i]);
-                for (int j = 0; j < thisDiceMoves.length; j++)
-                    result.add(thisDiceMoves[j]);
+                result.addAll(Arrays.asList(thisDiceMoves));
             }
             Move [] finalResult = new Move[result.size()];
             for (int i=0; i<result.size(); i++) {
@@ -546,7 +535,9 @@ public class CLIGameController {
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
                     Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
-                    return makeMove(player, firstBonusmove);    
+                    boolean result = makeMove(player, firstBonusmove);
+                    player.updateGameScore();
+                    return result;
                 }else{
                     System.out.println("please enter a valid number");
                 }
@@ -567,7 +558,7 @@ public class CLIGameController {
                     else{
                         System.out.println("please choose a valid move");
                     }
-                    
+
                 }else{
                     System.out.println("please enter a valid number");
                 }
@@ -585,11 +576,12 @@ public class CLIGameController {
                     else{
                         System.out.println("please choose again but a valid move");
                     }
-                    
+
                 }else{
                     System.out.println("please enter a valid number");
                 }
             } while (true);
+            player.updateGameScore();
             return true;
         }
         catch (InvalidMoveException Im){
@@ -609,54 +601,46 @@ public class CLIGameController {
 
     // dice related methods:
     public Dice [] rollDice() {
-        Dice []temp = gameBoard.getAllDice();
+        Dice[] temp = gameBoard.getAllDice();
         gameBoard.rollDice();
         return temp;
     }
 
     public Dice[] getAllDice() {
-        return this.gameBoard.getAllDice();
+        return gameBoard.getAllDice();
     }
 
     public Dice[] getAvailableDice() {
-
-        ArrayList<Dice> temp=  this.gameBoard.getAvailableDice();
-        Dice [] res = new Dice[temp.size()];
-        for (int index = 0; index < temp.size(); index++) {
-            res[index]= temp.get(index);
+        ArrayList<Dice> availableDiceAsList = gameBoard.getAvailableDice();
+        Dice[] availableDiceAsArray = new Dice[availableDiceAsList.size()];
+        for (int i = 0, size = availableDiceAsList.size(); i < size; i++) {
+            availableDiceAsArray[i] = availableDiceAsList.get(i);
         }
-        return res;
+        Arrays.sort(availableDiceAsArray);
+        return availableDiceAsArray;
     }
 
     public Dice[] getForgottenRealmDice() {
-        return this.gameBoard.getForgottenRealmDice();
+        return gameBoard.getForgottenRealmDice();
     }
 
     // player related methods:
     public boolean switchPlayer() {
         try {
-            this.gameBoard.getPlayer1().switchStatus();
-            this.gameBoard.getPlayer2().switchStatus();
-            return true;
+            gameBoard.getPlayer1().switchStatus();
+            gameBoard.getPlayer2().switchStatus();
         } catch (Exception e) {
             return false;
         }
+        return true;
     }
 
     public Player getActivePlayer() {
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE) {
-            return this.gameBoard.getPlayer1();
-        } else {
-            return this.gameBoard.getPlayer2();
-        }
+        return gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.ACTIVE ? gameBoard.getPlayer1() : gameBoard.getPlayer2();
     }
 
     public Player getPassivePlayer() {
-        if (this.gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE) {
-            return this.gameBoard.getPlayer1();
-        } else {
-            return this.gameBoard.getPlayer2();
-        }
+        return gameBoard.getPlayer1().getPlayerStatus() == PlayerStatus.PASSIVE ? gameBoard.getPlayer1() : gameBoard.getPlayer2();
     }
 
     // player attributes related methods
@@ -669,34 +653,47 @@ public class CLIGameController {
     }
 
     public TimeWarp[] getTimeWarpPowers(Player player) {
-        return (TimeWarp [])player.getTimeWarps().toArray();
+        ArrayList<TimeWarp> timeWarpsAsList = player.getTimeWarps();
+        TimeWarp[] timeWarpsAsArray = new TimeWarp[timeWarpsAsList.size()];
+        for (int i = 0, size = timeWarpsAsList.size(); i < size; i++) {
+            timeWarpsAsArray[i] = timeWarpsAsList.get(i);
+        }
+        return timeWarpsAsArray;
     }
     public ArcaneBoost[] getArcaneBoostPowers(Player player){
-        return (ArcaneBoost [])player.getArcaneBoosts().toArray();
+        ArrayList<ArcaneBoost> arcaneBoostsAsList = player.getArcaneBoosts();
+        ArcaneBoost[] arcaneBoostsAsArray = new ArcaneBoost[arcaneBoostsAsList.size()];
+        for (int i = 0, size = arcaneBoostsAsList.size(); i < size; i++) {
+            arcaneBoostsAsArray[i] = arcaneBoostsAsList.get(i);
+        }
+        return arcaneBoostsAsArray;
     }
     public boolean selectDice(Dice dice, Player player){
         try{
-            for (Dice die : getAvailableDice()) {
-                if (0 == die.compareTo(dice)){
-                    this.gameBoard.removeFromAvailable(die);
-                }
-                if ( dice.getValue() > die.getValue() ){
-                    gameBoard.moveToForgottenrealm(die);
-                }
+            player.selectDice(dice);
+            gameBoard.removeFromAvailable(dice);
+            Dice[] availableDice = getAvailableDice();
+            for (int i = 0, size = availableDice.length; i < size; i++) {
+                if (availableDice[i].getValue() < dice.getValue())
+                    gameBoard.moveToForgottenrealm(availableDice[i]);
             }
             return true;
         }catch (Exception e ){return false;}
     }
 
+    //new method
+    public void moveAllIntoForgotten() {
+        for (Dice die: getAvailableDice()) {
+            gameBoard.removeFromAvailable(die);
+            gameBoard.moveToForgottenrealm(die);
+        }
+    }
 
-    public static void main(String[] args)throws IOException {
+    public static void main(String[] args)  {
         CLIGameController controller = new CLIGameController();
         controller.startGame();
     }
 
 }
-
-    // public abstract boolean switchPlayer(){
-    // }
 
 
