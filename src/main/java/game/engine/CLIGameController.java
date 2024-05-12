@@ -167,6 +167,7 @@ public class CLIGameController {
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
                     playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
                 }
+                moveAllIntoForgotten();
                 playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE, currentActivePlayer.getTimeWarps());        //playing a passive turn
                 //the following is resetting the dice:
                 
