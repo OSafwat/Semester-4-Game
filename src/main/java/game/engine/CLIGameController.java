@@ -653,10 +653,20 @@ public class CLIGameController {
     }
 
     public TimeWarp[] getTimeWarpPowers(Player player) {
-        return (TimeWarp [])player.getTimeWarps().toArray();
+        ArrayList<TimeWarp> timeWarpsAsList = player.getTimeWarps();
+        TimeWarp[] timeWarpsAsArray = new TimeWarp[timeWarpsAsList.size()];
+        for (int i = 0, size = timeWarpsAsList.size(); i < size; i++) {
+            timeWarpsAsArray[i] = timeWarpsAsList.get(i);
+        }
+        return timeWarpsAsArray;
     }
     public ArcaneBoost[] getArcaneBoostPowers(Player player){
-        return (ArcaneBoost [])player.getArcaneBoosts().toArray();
+        ArrayList<ArcaneBoost> arcaneBoostsAsList = player.getArcaneBoosts();
+        ArcaneBoost[] arcaneBoostsAsArray = new ArcaneBoost[arcaneBoostsAsList.size()];
+        for (int i = 0, size = arcaneBoostsAsList.size(); i < size; i++) {
+            arcaneBoostsAsArray[i] = arcaneBoostsAsList.get(i);
+        }
+        return arcaneBoostsAsArray;
     }
     public boolean selectDice(Dice dice, Player player){
         try{
