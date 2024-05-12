@@ -488,8 +488,7 @@ public class CLIGameController {
             Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
             for (int i = 0; i < 5; i++) {
                 Move[] thisDiceMoves = getPossibleMovesForADie(player, possibleDice[i]);
-                for (int j = 0; j < thisDiceMoves.length; j++)
-                    result.add(thisDiceMoves[j]);
+                result.addAll(Arrays.asList(thisDiceMoves));
             }
             Move [] finalResult = new Move[result.size()];
             for (int i=0; i<result.size(); i++) {
