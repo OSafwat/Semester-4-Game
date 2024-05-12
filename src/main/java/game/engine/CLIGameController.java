@@ -535,7 +535,9 @@ public class CLIGameController {
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
                     Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
-                    return makeMove(player, firstBonusmove);    
+                    boolean result = makeMove(player, firstBonusmove);
+                    player.updateGameScore();
+                    return result;
                 }else{
                     System.out.println("please enter a valid number");
                 }
