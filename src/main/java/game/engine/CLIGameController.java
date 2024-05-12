@@ -414,7 +414,7 @@ public class CLIGameController {
                             System.out.println("Please choose a proper dragon to attack in the Red Realm");
                             dragonChoice = scanner.nextInt();
                             if (dragonChoice>= 1 && dragonChoice <= 4){
-                                ((RedDice)chosenDice).selectsDragon(dragonChoice); 
+                                ((RedDice)chosenDice).selectsDragon(dragonChoice);
                                 if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
                                     break outer;
                             }
