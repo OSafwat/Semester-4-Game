@@ -245,13 +245,13 @@ public class CLIGameController {
                     //the functionality of getting an arcane boost goes here
                     //meow meow meow meow
                     Dice [] alldice= getAllDice();
-                    ArrayList<Dice> activeArcanDice = gameBoard.getActiveArcaneDice();
+                    ArrayList<Dice> activeArcaneDice = gameBoard.getActiveArcaneDice();
                     ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveArcaneDice();
                     System.out.println("choose from the following dice one of them to make a move with");
                     HashSet<Integer> hs = new HashSet<>();
                     for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
                         if (player == getActivePlayer()){
-                            if (!activeArcanDice.contains(alldice[diceIndex])){
+                            if (!activeArcaneDice.contains(alldice[diceIndex])){
                                 hs.add(diceIndex);
                                 System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
                             }
@@ -273,7 +273,7 @@ public class CLIGameController {
                                 else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
                             } while (true);
                             if(player == getActivePlayer()){
-                                activeArcanDice.add(alldice[arcaneboostChoice]);
+                                activeArcaneDice.add(alldice[arcaneboostChoice]);
                             }else {
                                 gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
                             }
