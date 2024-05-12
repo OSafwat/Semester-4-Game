@@ -381,6 +381,7 @@ public class CLIGameController {
             controller.handleTimeWarps(timewarps);
         //the following is choosing a correct valid move
         Dice chosenDice=null;
+        boolean alreadySelected = false;
         outer: do {
             System.out.println("Please choose a number between 1 and "+ diceToBePlayedwith.length);
             int choice = scanner.nextInt();
@@ -397,7 +398,8 @@ public class CLIGameController {
                                 break;
                             System.out.println("momken nebatal estehbal");
                         }while(true);
-                        gameBoard.removeFromAvailable(chosenDice);
+                        controller.selectDice(chosenDice, player);
+                        alreadySelected = true;
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
                             case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
@@ -432,18 +434,9 @@ public class CLIGameController {
 
         //System.out.println("here is your new scoresheet");
 
-        //changing the available dice 
-        if (playerStatus== PlayerStatus.ACTIVE){
-            ArrayList<Dice> temp = new ArrayList<>(); 
-            for (int i = 0; i < diceToBePlayedwith.length; i++){    
-                if ( chosenDice.getValue() > diceToBePlayedwith[i].getValue() ){
-                    temp.add(diceToBePlayedwith[i]);
-                }                
-            }
-            for (Dice dice : temp) {
-                gameBoard.moveToForgottenrealm(dice);
-            }
-            gameBoard.removeFromAvailable(chosenDice);
+        //changing the available dice
+        if (playerStatus== PlayerStatus.ACTIVE && !alreadySelected){
+            controller.selectDice(chosenDice, player);
         }
         System.out.println("Here is your new score sheet  ==>");
         scoreSheet.displayScoreSheet();
