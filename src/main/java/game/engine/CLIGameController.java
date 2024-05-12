@@ -681,6 +681,7 @@ public class CLIGameController {
         }catch (Exception e ){return false;}
     }
 
+    //new method
     public void moveAllIntoForgotten() {
         for (Dice die: getAvailableDice()) {
             gameBoard.removeFromAvailable(die);
