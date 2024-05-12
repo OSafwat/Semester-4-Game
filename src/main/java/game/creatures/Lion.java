@@ -148,7 +148,7 @@ public class Lion extends Creature{
         sb.append("|  H  |");
         for (int i = 0; i < 11; i++) {
             if (this.lions[i] == 0) sb.append("0    |");
-            else sb.append(i + "    |" );
+            else sb.append(lions[i]).append("    |");
         }
         sb.append("\n");
         sb.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
@@ -245,7 +245,7 @@ public class Lion extends Creature{
         }
         return possibleMoves;
     }
-    
+
     public void populateRewardLocationFromConfigFile() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/RadiantSvannaRewards.properties")) {
             if (input == null) throw new IOException("config file not found crodie default config shall be put into use");
