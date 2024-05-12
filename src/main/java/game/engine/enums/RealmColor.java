@@ -1,5 +1,10 @@
 package game.engine.enums;
+import java.util.HashMap;
 
 public enum RealmColor {
-        WHITE, RED,GREEN,BLUE, MAGENTA, YELLOW, PARENT
+        RED, GREEN, BLUE, MAGENTA, YELLOW, WHITE, PARENT;
+
+        public int compare(Object o) {
+                return ordinal() - ((RealmColor)o).ordinal();
+        }
 }
