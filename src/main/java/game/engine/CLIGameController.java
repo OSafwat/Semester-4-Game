@@ -402,7 +402,7 @@ public class CLIGameController {
                         alreadySelected = true;
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
+                            case 2: chosenDice = new GreenDice(gameBoard.getGreen().getValue()); break;
                             case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
                             case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
                             case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
@@ -477,11 +477,8 @@ public class CLIGameController {
         }
     }
     public Move[] getPossibleMovesForADie(Player player, Dice dice){    // here
-        Dice[] rolledDice = gameBoard.getAllDice();
-
-
         if (dice instanceof GreenDice) {
-            GreenDice correctedDice = new GreenDice(dice.getValue() + rolledDice[5].getValue());
+            GreenDice correctedDice = new GreenDice(dice.getValue() + gameBoard.getWhite().getValue());
             dice = correctedDice;
         }
         Move[] playerAllMoves= player.getAllPossibleMoves();
