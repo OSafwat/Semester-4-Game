@@ -250,7 +250,7 @@ private  void updateRow(int r){
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
     private String whichCollectableCol (int c){
         try{
-         String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
+         String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
         Properties prop ;
         String colReward;
         prop = new Properties();
@@ -271,7 +271,7 @@ private  void updateRow(int r){
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r) {
         try{
-        String filePath = "src\\main\\resources\\config\\TerrasHeartlandRewards.properties";
+        String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
         Properties prop ;
         String rowReward;
         prop = new Properties();
