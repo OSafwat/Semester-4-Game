@@ -366,15 +366,7 @@ public class CLIGameController {
 
 
         gameBoard.rollAvailableDice();
-        if (player == controller.getPassivePlayer()){
-            ArrayList<Dice> temp = new ArrayList<>();
-            for (Dice die : gameBoard.getAvailableDice()) {
-                temp.add(die);
-            }
-            for (Dice die : temp) {
-                controller.gameBoard.moveToForgottenrealm(die);
-            }
-        }
+
         if (player == controller.getActivePlayer())
             System.out.println(player.getName()+", Here are your rolled dice: ");
         else System.out.println(player.getName()+", Here are your passive turn dice: ");
