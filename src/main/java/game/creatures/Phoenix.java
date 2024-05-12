@@ -62,7 +62,7 @@ public class Phoenix extends Creature{
         // for loop to loop on the phoenixsReceivedHP array which stored the hits received by each pheonix
         for (int i = 0; i < 11; i++) {
             if (phoenixsReceivedHP[i] == null) sb.append("0    |");
-            else sb.append(i + "    |" );
+            else sb.append(phoenixsReceivedHP[i]).append("    |");
         }
         sb.append("\n");
 
@@ -101,7 +101,7 @@ public class Phoenix extends Creature{
 
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
-            
+
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
                 if (TimeWarpArrayList.get(i) == killedPhoenixes) timeWarps.add(new TimeWarp());
             }
@@ -167,13 +167,13 @@ public class Phoenix extends Creature{
                  */
                 Pattern pattern = Pattern.compile("\\d+");
                 Matcher matcher = pattern.matcher(key);
-                
+
                 int index = 0;
                 while (matcher.find()) {
                     String number = matcher.group();
                     index = Integer.parseInt(number) - 1;
                 }
-                
+
                 if (rewardLocations.containsKey((String) value)) {
                     rewardLocations.get((String) value).add(index);
                 } else {

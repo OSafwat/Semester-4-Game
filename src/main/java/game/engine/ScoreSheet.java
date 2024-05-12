@@ -17,7 +17,7 @@ public class ScoreSheet {
     Dragon dragon;
     Gaia gaia;
     GameScore gamescore;
-//red    green  blue    magenta    yellow
+    //red    green  blue    magenta    yellow
 //dragon gaia   hydra   phoenix  lion
     public ScoreSheet(){
         hydra= new Hydra();
@@ -47,17 +47,7 @@ public class ScoreSheet {
     }
 
     public void displayScoreSheet(){
-        String res ="\n\nScoreSheet\n\n";
-        res += dragon.getScoreSheet();
-        res +="\n";
-        res += gaia.getScoreSheet();
-        res +="\n";
-        res += hydra.getScoreSheet();
-        res +="\n";
-        res += phoenix.getScoreSheet();
-        res +="\n";
-        res += lion.getScoreSheet();
-        System.out.print(res);
+        System.out.print(this);
     }
     public String toString(){
         String res ="\n\nScoreSheet\n\n";
@@ -83,7 +73,7 @@ public class ScoreSheet {
             case MAGENTA:  return this.phoenix;
             case YELLOW: return this.lion;
             default: return null;
-        } 
+        }
 
     }
     public Creature getCreatureByColor(RealmColor color){
@@ -94,16 +84,16 @@ public class ScoreSheet {
             case MAGENTA:  return this.phoenix;
             case YELLOW: return this.lion;
             default: return null;
-        } 
+        }
     }
 
     public ArrayList<ArcaneBoost> getAllArcaneBoosts(){
-            ArrayList<ArcaneBoost> allArcaneboosts= dragon.getAllArcaneBoosts();
-            allArcaneboosts.addAll(gaia.getAllArcaneBoosts());
-            allArcaneboosts.addAll(hydra.getAllArcaneBoosts());
-            allArcaneboosts.addAll(phoenix.getAllArcaneBoosts());
-            allArcaneboosts.addAll(lion.getAllArcaneBoosts());
-            return allArcaneboosts;
+        ArrayList<ArcaneBoost> allArcaneboosts= dragon.getAllArcaneBoosts();
+        allArcaneboosts.addAll(gaia.getAllArcaneBoosts());
+        allArcaneboosts.addAll(hydra.getAllArcaneBoosts());
+        allArcaneboosts.addAll(phoenix.getAllArcaneBoosts());
+        allArcaneboosts.addAll(lion.getAllArcaneBoosts());
+        return allArcaneboosts;
     }
     public ArrayList<TimeWarp> getAllTimeWarps(){
         ArrayList<TimeWarp> allTimwarps= dragon.getAllTimeWarps();
@@ -112,7 +102,7 @@ public class ScoreSheet {
         allTimwarps.addAll(phoenix.getAllTimeWarps());
         allTimwarps.addAll(lion.getAllTimeWarps());
         return allTimwarps;
-}
+    }
 
 
 }

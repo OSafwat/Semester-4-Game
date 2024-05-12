@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
+import game.dice.Dice;
 import game.engine.enums.*;
 
 public class Player {
@@ -14,6 +15,7 @@ public class Player {
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
     Move[] allPossibleMoves ;
+    ArrayList<Dice> playedDice;
 
 
     public void setName(String name){
@@ -26,6 +28,7 @@ public class Player {
         this.timeWarps=scoreSheet.getAllTimeWarps();
         allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
+        playedDice = new ArrayList<>();
     }
 
     public Move[] getAllPossibleMoves(){
@@ -43,8 +46,18 @@ public class Player {
         return res;
     }
 
+    public void selectDice (Dice dice) {
+        playedDice.add(dice);
+    }
+
+    public ArrayList<Dice> getPlayedDice () {
+        ArrayList<Dice> playedDice = new ArrayList<>(this.playedDice);
+        this.playedDice.clear();
+        return playedDice;
+    }
+
     public String getName(){
-        return this.name;   
+        return this.name;
     }
 
     public PlayerStatus getPlayerStatus(){
@@ -56,8 +69,8 @@ public class Player {
     public void switchStatus(){
         if (this.playerStatus == PlayerStatus.ACTIVE)
             this.playerStatus = PlayerStatus.PASSIVE;
-        else 
-            this.playerStatus = PlayerStatus.ACTIVE; 
+        else
+            this.playerStatus = PlayerStatus.ACTIVE;
     }
     public void updateGameScore(){
         gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests() );
@@ -74,7 +87,7 @@ public class Player {
     public void updateAllPossibleMoves(){
         this.allPossibleMoves = getAllPossibleMoves();
     }
-    
+
 
 
 }

@@ -175,7 +175,8 @@ public class Lion extends Creature{
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  H  |");
-        temp.append("0    |".repeat(11));
+        for (int i = 0; i < 11; i++)
+            temp.append("0    |");
         temp.append("\n");
         temp.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
         temp.append("|  R  |");

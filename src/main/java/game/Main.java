@@ -7,10 +7,6 @@ public class Main {
         System.out.println("Dice Realms: Quest for the Elemental Crests!");
 
         CLIGameController cliGameController = new CLIGameController();
-        try {
-            cliGameController.startGame();
-        } catch (IOException e) {
-            System.out.println("Error");
-        }    
+        cliGameController.startGame();
     }
 }
