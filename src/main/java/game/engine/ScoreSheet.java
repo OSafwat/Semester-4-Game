@@ -46,6 +46,20 @@ public class ScoreSheet {
         return total;
     }
 
+    public void displayColoredScoreSheet() {
+        String res ="\n\nScoreSheet\n\n";
+        res += "\u001B[31m" + dragon.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[32m" + gaia.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[34m" + hydra.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[35m" + phoenix.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[33m" + lion.getScoreSheet() + "\u001B[0m";
+        System.out.println(res);
+    }
+
     public void displayScoreSheet(){
         System.out.print(this);
     }
