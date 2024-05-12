@@ -581,6 +581,7 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
+            player.updateGameScore();
             return true;
         }
         catch (InvalidMoveException Im){
