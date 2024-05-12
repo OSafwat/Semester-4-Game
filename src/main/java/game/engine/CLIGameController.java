@@ -670,16 +670,22 @@ public class CLIGameController {
     }
     public boolean selectDice(Dice dice, Player player){
         try{
-            for (Dice die : getAvailableDice()) {
-                if (0 == die.compareTo(dice)){
-                    this.gameBoard.removeFromAvailable(die);
-                }
-                if ( dice.getValue() > die.getValue() ){
-                    gameBoard.moveToForgottenrealm(die);
-                }
+            player.selectDice(dice);
+            gameBoard.removeFromAvailable(dice);
+            Dice[] availableDice = getAvailableDice();
+            for (int i = 0, size = availableDice.length; i < size; i++) {
+                if (availableDice[i].getValue() < dice.getValue())
+                    gameBoard.moveToForgottenrealm(availableDice[i]);
             }
             return true;
         }catch (Exception e ){return false;}
+    }
+
+    public void moveAllIntoForgotten() {
+        for (Dice die: getAvailableDice()) {
+            gameBoard.removeFromAvailable(die);
+            gameBoard.moveToForgottenrealm(die);
+        }
     }
 
     public static void main(String[] args)  {
