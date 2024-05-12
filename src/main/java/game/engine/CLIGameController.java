@@ -398,8 +398,10 @@ public class CLIGameController {
                                 break;
                             System.out.println("momken nebatal estehbal");
                         }while(true);
-                        controller.selectDice(chosenDice, player);
-                        alreadySelected = true;
+                        if (player.getPlayerStatus() == PlayerStatus.ACTIVE) {
+                            controller.selectDice(chosenDice, player);
+                            alreadySelected = true;
+                        }
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
                             case 2: chosenDice = new GreenDice(gameBoard.getGreen().getValue()); break;
@@ -435,7 +437,7 @@ public class CLIGameController {
         //System.out.println("here is your new scoresheet");
 
         //changing the available dice
-        if (playerStatus== PlayerStatus.ACTIVE && !alreadySelected){
+        if (playerStatus == PlayerStatus.ACTIVE && !alreadySelected){
             controller.selectDice(chosenDice, player);
         }
         System.out.println("Here is your new score sheet  ==>");
