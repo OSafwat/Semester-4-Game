@@ -258,15 +258,17 @@ public class Dragon extends Creature {
 
     //Method that, using a character, can identify what realm a boost belongs to
     public RealmColor decodeLetterToRealmColor (char c) {
-        return switch (c) {
-            case 'G' -> RealmColor.GREEN;
-            case 'B' -> RealmColor.BLUE;
-            case 'R' -> RealmColor.RED;
-            case 'M' -> RealmColor.MAGENTA;
-            case 'E' -> RealmColor.WHITE;
-            case 'Y' -> RealmColor.YELLOW;
-            default -> null;
-        };
+        RealmColor result;
+        switch (c) {
+            case 'G': result =  RealmColor.GREEN; break;
+            case 'B': result = RealmColor.BLUE; break;
+            case 'R': result = RealmColor.RED; break;
+            case 'M': result = RealmColor.MAGENTA; break;
+            case 'E': result = RealmColor.WHITE; break;
+            case 'Y': result = RealmColor.YELLOW; break;
+            default: result = null;
+        }
+        return result;
     }
 
     //Method that checks if a move can be done
