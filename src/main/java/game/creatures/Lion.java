@@ -34,13 +34,13 @@ import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
-public class Lion extends Creature{ 
+public class Lion extends Creature{
     private int[] lions;
     private int deadLions;
     private int score;
     private String scoresheet;
     private int elementalCrest;
-    private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>(); 
+    private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     private static final String[] mappedRewardLocations = new String[11];
     private final Properties properties;
 
@@ -130,14 +130,14 @@ public class Lion extends Creature{
             ans=value*3;
         }
         else{
-        ans=value;
-            }
-            return ans;
+            ans=value;
+        }
+        return ans;
     }
     private void updateScore(Dice dice){
         this.score+=calculateScore(dice);
     }
-    
+
     @Override
     public String getScoreSheet(){
         StringBuilder sb= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
@@ -157,14 +157,14 @@ public class Lion extends Creature{
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
             if (rewardToken == null) sb.append("     |");
-            else sb.append(rewardToken + "   |");
+            else sb.append(rewardToken).append("   |");
         }
 
         sb.append("\n");
 
         sb.append("+-----------------------------------------------------------------------+\n\n");
 
-        return (sb.toString());  
+        return (sb.toString());
     }
     private void setScoreSheet(String scoreSheet){
         this.scoresheet=scoreSheet;
@@ -187,7 +187,7 @@ public class Lion extends Creature{
         }
         temp.append("+-----------------------------------------------------------------------+\n\n");
     }
-    
+
     @Override
     public int getElementalCrest() {
         String rewardName = "ElementalCrest";
@@ -200,50 +200,50 @@ public class Lion extends Creature{
 
         return counter;
     }
-    
+
     @Override
     public boolean checkMove(Dice dice){
         int diceValue=dice.getValue();
-            return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions<11;
+        return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions<11;
     }
     @Override
-    public boolean makeMove(Dice dice) throws BonusException{ 
-            if(!checkMove(dice)){
-                System.out.print("erm what the sigma");
-                return false;
-            }
-            updateLions(dice);
-            updateScore(dice);
-            updateDeadLions(); //leave this after the updatescoresheet method bc you change the deadlions number here
-            ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
-                ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
-                
-                for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-                    if (TimeWarpArrayList.get(i) == deadLions) timeWarps.add(new TimeWarp());
-                }
-    
-                for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-                    if (ArcaneBoostArrayList.get(i) == deadLions) arcaneBoosts.add(new ArcaneBoost());
-                }
-            switch(properties.getProperty("hit"+deadLions+"Reward")){
-                case "GreenBonus": throw new BonusException(RealmColor.GREEN);
-                case "RedBonus": throw new BonusException(RealmColor.RED);
-                case "BlueBonus": throw new BonusException(RealmColor.BLUE);
-                case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
-                case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
-                default: return true;
-                }
-            
-            }
+    public boolean makeMove(Dice dice) throws BonusException{
+        if(!checkMove(dice)){
+            System.out.print("erm what the sigma");
+            return false;
+        }
+        updateLions(dice);
+        updateScore(dice);
+        updateDeadLions(); //leave this after the updatescoresheet method bc you change the deadlions number here
+        ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
+        ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
+
+        for (int i = 0; i < TimeWarpArrayList.size(); i++) {
+            if (TimeWarpArrayList.get(i) == deadLions) timeWarps.add(new TimeWarp());
+        }
+
+        for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
+            if (ArcaneBoostArrayList.get(i) == deadLions) arcaneBoosts.add(new ArcaneBoost());
+        }
+        switch(properties.getProperty("hit"+deadLions+"Reward")){
+            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+            case "RedBonus": throw new BonusException(RealmColor.RED);
+            case "BlueBonus": throw new BonusException(RealmColor.BLUE);
+            case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
+            case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+            default: return true;
+        }
+
+    }
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
-    if(deadLions == 11) return new ArrayList<>();
-    ArrayList<Move> possibleMoves = new ArrayList<>();
-    for(int i = 0; i < 6; i++) { 
-        Move idk = new Move(new YellowDice(i + 1), this);
-        possibleMoves.add(idk);
-    }
-    return possibleMoves;
+        if(deadLions == 11) return new ArrayList<>();
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            Move idk = new Move(new YellowDice(i + 1), this);
+            possibleMoves.add(idk);
+        }
+        return possibleMoves;
     }
     
     public void populateRewardLocationFromConfigFile() {
@@ -267,7 +267,7 @@ public class Lion extends Creature{
                     rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
                 }
             }
-            
+
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
