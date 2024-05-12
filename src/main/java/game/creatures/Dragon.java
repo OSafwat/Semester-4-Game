@@ -31,7 +31,6 @@ public class Dragon extends Creature {
     public ArrayList<TimeWarp> timeWarps;
     public ArrayList<ArcaneBoost> arcaneBoosts;
     public String[] rewards;
-    public Supplier<String>[] suppliers;
     public int elementalCrestCount;
 
 
@@ -60,7 +59,6 @@ public class Dragon extends Creature {
         initPointMap();
         initPossibleMoves();
         initRewards();
-        initSuppliers();
         initTimeWarpsAndArcaneBoosts();
     }
 
@@ -96,7 +94,7 @@ public class Dragon extends Creature {
         arcaneBoosts = new ArrayList<>();
         timeWarps = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            String current = suppliers[i].get();
+            String current = getRewardStringDependingOnIndex(i);
             if (current.equals("TW")) {
                 timeWarps.add(new TimeWarp());
             }
@@ -180,6 +178,24 @@ public class Dragon extends Creature {
         return dead;
     }
 
+    public String getRewardStringDependingOnIndex(int index){
+        //0 -> FirstRow
+        //1 -> SecondRow
+        //2 -> ThirdRow
+        //3 -> FourthRow
+        //4 -> Corner
+        String current;
+        switch (index) {
+            case 0: current = getFirstRowRewardString(); break;
+            case 1: current = getSecondRowRewardString(); break;
+            case 2: current = getThirdRowRewardString(); break;
+            case 3: current = getFourthRowRewardString(); break;
+            case 4: current = getCornerRewardString(); break;
+            default: current = "X"; //We shouldn't reach this point
+        }
+        return current;
+    }
+
     //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
     public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
@@ -191,7 +207,7 @@ public class Dragon extends Creature {
         int targetValue = dice.getValue();
         String[] oldRewardStatus = new String[5];
         for (int i = 0; i < 5; i++) {
-            oldRewardStatus[i] = suppliers[i].get();
+            oldRewardStatus[i] = getRewardStringDependingOnIndex(i);
         }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
@@ -202,7 +218,7 @@ public class Dragon extends Creature {
             }
         }
         for (int i = 0; i < 5; i++) {
-            String newRewardStatus = suppliers[i].get();
+            String newRewardStatus = getRewardStringDependingOnIndex(i);
             if (!oldRewardStatus[i].equals(newRewardStatus)) {
                 if (oldRewardStatus[i].contains("C")) {
                     elementalCrestCount++;
@@ -238,17 +254,6 @@ public class Dragon extends Creature {
         ArcaneBoost currentArcaneBoost = arcaneBoosts.get(0);
         currentArcaneBoost.setStatus(RewardStates.ACQUIRED);
         arcaneBoosts.remove(currentArcaneBoost);
-    }
-
-    //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
-    public void initSuppliers () {
-        suppliers = new Supplier[]{
-                this::getFirstRowRewardString,
-                this::getSecondRowRewardString,
-                this::getThirdRowRewardString,
-                this::getFourthRowRewardString,
-                this::getCornerRewardString,
-        };
     }
 
     //Method that, using a character, can identify what realm a boost belongs to
@@ -355,27 +360,27 @@ public class Dragon extends Creature {
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(changeToString(Dragons[i].face)).append("    |");
         }
-        scoreSheet.append(suppliers[0].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(0)).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(changeToString(Dragons[i].wings)).append("    |");
         }
-        scoreSheet.append(suppliers[1].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(1)).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(changeToString(Dragons[i].tail)).append("    |");
         }
-        scoreSheet.append(suppliers[2].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(2)).append("   |\n");
         scoreSheet.append("|  H  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(changeToString(Dragons[i].heart)).append("    |");
         }
-        scoreSheet.append(suppliers[3].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(3)).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
         for (int i = 0; i < 4; i++) {
             scoreSheet.append(pointMap[i]).append("   |");
         }
-        scoreSheet.append(suppliers[4].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(4)).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n\n");
         return scoreSheet.toString();
     }
