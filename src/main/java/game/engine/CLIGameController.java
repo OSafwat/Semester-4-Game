@@ -28,7 +28,7 @@ public class CLIGameController {
     public CLIGameController() {
         this.gameBoard= new GameBoard();
     }
-    public int [] getSettings() throws IOException{
+    public int [] getSettings(){
         Scanner scanner = new Scanner(System.in);
         int numberOfRounds;
         int numebrOfTurnsPerRound;
@@ -63,15 +63,19 @@ public class CLIGameController {
             numebrOfTurnsPerRound= 3;
 
         } finally{
-            if (settings != null)
-                settings.close();
-            //scanner.close();
+            if (settings != null) {
+                try {
+                    settings.close();
+                } catch (IOException e) {
+                    //Unreachable code
+                }
+            }
         }
         int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
         return temp;
     }
 
-    public String [] getRewards(int numberOfRounds) throws IOException{
+    public String [] getRewards(int numberOfRounds){
 
         BufferedReader rewardsFile=null;
         String[] rewards= new String [numberOfRounds] ;
@@ -88,39 +92,44 @@ public class CLIGameController {
             for  ( ; rewardsCounter< numberOfRounds ; rewardsCounter++){
                 rewardsline = rewardsFile.readLine();
                 if ( rewardsline != null){
-                    
+
                     String temp [] = rewardsline.split("=");
                     for (int i = 0; i < temp.length ; i++) {
-                     //   System.out.println(temp[i]);
+                        //   System.out.println(temp[i]);
                         rewards[rewardsCounter] = temp[1];
                     }
                 }
-                else{ 
+                else{
                     rewards[rewardsCounter] = "null2";
-                }   
-                 //System.out.println(rewards[rewardsCounter]);
                 }
+                //System.out.println(rewards[rewardsCounter]);
+            }
         } catch (FileNotFoundException  e) {
 
-            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used"); 
+            System.err.println("the Rewards file was not able to be accessed therefore default rewards will be used");
             rewards[0]="TimeWarp";           //new TimeWarp();
             rewards[1] = "ArcaneBoost";      //new ArcaneBoost();
             rewards[2] ="TimeWarp";          //new TimeWarp();
             rewards[3] = "EssenceBonus";     //new EssenceBonus();
             rewards[4] = "";
-            rewards[5] = "";            
+            rewards[5] = "";
         } catch (IOException e) {
             System.out.println("there has been an error in IO other than fileNotFound");
             e.printStackTrace();
         } finally{
-            if (rewardsFile != null)
-                rewardsFile.close();
+            if (rewardsFile != null) {
+                try {
+                    rewardsFile.close();
+                } catch (IOException e) {
+                    //Unreachable code
+                }
+            }
         }
 
         return rewards;
     }
 
-    public void startGame() throws IOException{
+    public void startGame(){
         Scanner scanner = new Scanner(System.in);   //scanner is here
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
@@ -688,8 +697,7 @@ public class CLIGameController {
         }catch (Exception e ){return false;}
     }
 
-
-    public static void main(String[] args)throws IOException {
+    public static void main(String[] args)  {
         CLIGameController controller = new CLIGameController();
         controller.startGame();
     }
