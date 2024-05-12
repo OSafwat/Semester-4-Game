@@ -102,10 +102,10 @@ public class GameBoard {
         }
     }
     public void resetForgottenRealm(){
-        for (Dice die : this.allDice) {
+        for (Dice die : forgottenRealmDice) {
             availableDice.add(die);
         }
-        for (Dice dice : allDice) {
+        for (Dice dice : availableDice) {
             forgottenRealmDice.remove(dice);
         }
         this.activeArcaneDice = new ArrayList<>();

@@ -138,12 +138,11 @@ public class CLIGameController {
         do {
             String choice = scanner.nextLine();
             if (choice.length() !=0 && 'i' == choice.charAt(0)) {
-                System.out.println("Description goes here");
-                break;
+                System.out.println("Description goes here\n");
             } else if (choice.charAt(0)=='c') 
                 break;
             else 
-                System.out.println("Please choose sth correct ");
+                System.out.println("Please choose sth correct\n");
         } while (true);
 
         //the following is taking in the round rewards from the properties file
@@ -370,21 +369,23 @@ public class CLIGameController {
         else System.out.println(player.getName()+", Here are your passive turn dice: ");
         int counter= 0;
         for (Dice die : diceToBePlayedwith) {
-            if (die == null) System.err.println("hya leh be null");
-                System.out.println(++counter +":"+die.getRealm()+""+die.getValue());
+            if (die == null) {
+                return;
+            }
+            System.out.println(++counter +":"+die.getRealm()+" "+die.getValue());
         }
         if (playerStatus==PlayerStatus.ACTIVE)
             controller.handleTimeWarps(timewarps);
-        //the following is choosing an correct valid move  
+        //the following is choosing a correct valid move
         Dice chosenDice=null;
         outer: do {
-            System.out.println("please choose a number between 1 and "+ diceToBePlayedwith.length);
+            System.out.println("Please choose a number between 1 and "+ diceToBePlayedwith.length);
             int choice = scanner.nextInt();
             if (!(choice > diceToBePlayedwith.length || choice <= 0)){
                 chosenDice = diceToBePlayedwith[choice-1];
                 try{
                     if(chosenDice instanceof ArcanePrism){
-                        System.out.println("please a realm to attack:");
+                        System.out.println("Please a realm to attack:");
                         int realmChoice = -1;
                         do{
                             System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
@@ -393,9 +394,10 @@ public class CLIGameController {
                                 break;
                             System.out.println("momken nebatal estehbal");
                         }while(true);
+                        gameBoard.removeFromAvailable(chosenDice);
                         switch (realmChoice) {
                             case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: chosenDice = new GreenDice(chosenDice.getValue()+ gameBoard.getGreen().getValue()); break;
+                            case 2: chosenDice = new GreenDice(chosenDice.getValue()); break;
                             case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
                             case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
                             case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
@@ -404,7 +406,7 @@ public class CLIGameController {
                     if (chosenDice instanceof RedDice){
                         int dragonChoice = 0;
                         do {
-                            System.out.println("please choose a proper dragon to attack in the red realm");
+                            System.out.println("Please choose a proper dragon to attack in the Red Realm");
                             dragonChoice = scanner.nextInt();
                             if (dragonChoice>= 1 && dragonChoice <= 4){
                                 ((RedDice)chosenDice).selectsDragon(dragonChoice); 
@@ -421,7 +423,7 @@ public class CLIGameController {
                 }
                 
             }else {
-                System.out.println("please choose a valid move");
+                System.out.println("Please choose a valid move");
             }
         } while (true);
 
@@ -440,7 +442,7 @@ public class CLIGameController {
             }
             gameBoard.removeFromAvailable(chosenDice);
         }
-        System.out.println("here is your new scoresheet  ==>");
+        System.out.println("Here is your new score sheet  ==>");
         scoreSheet.displayScoreSheet();
         //scanner.close();
     }
@@ -539,7 +541,7 @@ public class CLIGameController {
             RealmColor theBonusColor = bException.getRealmColor();
             int numberToAttackWith =0;
             do{
-                System.out.println("please enter the number to attack the " + theBonusColor + " realm with: "); 
+                System.out.println("Please enter the number to attack the " + theBonusColor + " realm with: ");
                 numberToAttackWith = Integer.parseInt(System.console().readLine()); // NEED TO VALIDATE THE INPUT
                 if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
                     Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
