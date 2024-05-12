@@ -8,7 +8,7 @@ public class GameScore {
         allScores= new int[5];
         elementalCrestCounter =0;
     }
-    
+
     public void updateScores(int [] scores, int elementalCrests ){
         this.allScores = scores;
         this.elementalCrestCounter=elementalCrests;
@@ -33,7 +33,7 @@ public class GameScore {
     public int getYellowRealmScore() {
         return allScores[4];
     }
-    
+
     public int getTotalScore(){
         int total=0;
         int min= Integer.MAX_VALUE;
@@ -45,7 +45,7 @@ public class GameScore {
         total+= elementalCrestCounter*min;
         return total;
     }
-    
+
     public String toString(){
         String res="";
         // Print top border
@@ -58,7 +58,7 @@ public class GameScore {
         res+=("|   " + allScores[0] + "    |   " +  allScores[1] + "    |   " +  allScores[2] + "   |   " +  allScores[3] + "   |  " +  allScores[4] + "   |   " +
                 (getTotalScore()) + "   |");
         // Print bottom border
-        res+=("+--------+--------+-------+-------+------+-------+"); 
+        res+=("+--------+--------+-------+-------+------+-------+");
         return res;
     }
 }
