@@ -441,23 +441,23 @@ public class Dragon extends Creature {
     }
 
     public String getFirstRowRewardString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
+        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X " : encode(rewards[0]);
     }
 
     public String getSecondRowRewardString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
+        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X " : encode(rewards[1]);
     }
 
     public String getThirdRowRewardString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
+        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X " : encode(rewards[2]);
     }
 
     public String getFourthRowRewardString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
+        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X " : encode(rewards[3]);
     }
 
     public String getCornerRewardString() {
-        return allDead() ? "X" : encode(rewards[4]);
+        return allDead() ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
