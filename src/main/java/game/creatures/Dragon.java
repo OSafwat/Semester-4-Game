@@ -219,7 +219,7 @@ public class Dragon extends Creature {
     }
 
     //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
-    public boolean makeMove(Dice inputDice) throws BonusException, BonusTwoException {
+    public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
         Dragon targetDragon = Dragons[dragonIndex];
@@ -279,7 +279,7 @@ public class Dragon extends Creature {
                     firstBonus = secondBonus;
                     secondBonus = temporary;
                 }
-                throw new BonusTwoException(firstBonus, secondBonus);
+                throw new BonusException(firstBonus, secondBonus);
             }
         }
         return true;

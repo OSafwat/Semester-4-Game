@@ -291,7 +291,7 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-     public boolean makeMove(Dice dice) throws BonusException , BonusTwoException,InvalidMoveException   {
+     public boolean makeMove(Dice dice) throws BonusException,InvalidMoveException   {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
        else  if(!checkMove1(dice))
@@ -362,12 +362,12 @@ private  void updateRow(int r){
                 else if(act1Prtority>act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act1);
                     RealmColor realm2 = this.getCorrectRealm(act2);
-                    throw new BonusTwoException(realm1, realm2);
+                    throw new BonusException(realm1, realm2);
                 }
                 else if(act1Prtority<act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act2);
                     RealmColor realm2 = this.getCorrectRealm(act1);
-                    throw new BonusTwoException(realm1, realm2);
+                    throw new BonusException(realm1, realm2);
                 }     
                 return true;
             }
