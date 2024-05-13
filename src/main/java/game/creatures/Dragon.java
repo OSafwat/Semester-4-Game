@@ -265,12 +265,12 @@ public class Dragon extends Creature {
         if (index1 != -1)
         {
             if (index2 == -1) {
-                throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(1)));
+                throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0)));
             }
             else
             {
-                RealmColor firstBonus = decodeLetterToRealmColor(oldRewardStatus[index1].charAt(1));
-                RealmColor secondBonus = decodeLetterToRealmColor(oldRewardStatus[index2].charAt(1));
+                RealmColor firstBonus = decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0));
+                RealmColor secondBonus = decodeLetterToRealmColor(oldRewardStatus[index2].charAt(0));
                 //.ordinal() returns the index of the enum in the enum list in the class
                 //since red is of highest prio, and it has ordinal 0, then the one with the LESSER ordinal should be applied first
                 //so, if firstBonus had a higher ordinal, it's switch with secondBonus such that firstBonus has the lower ordinal (and thus higher prio)

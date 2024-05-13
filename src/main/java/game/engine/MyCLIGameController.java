@@ -133,7 +133,7 @@ public class MyCLIGameController {
             case "EssenceBonus":
                 RealmColor theBonusColor = RealmColor.WHITE;
                 Dice chosenDie = handleColorBonusException(theBonusColor, player);
-                if (chosenDie.getValue() == 1000)
+                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                     break;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
@@ -197,7 +197,7 @@ public class MyCLIGameController {
             switchPlayer();
         }
         Player player1= gameBoard.getPlayer1();
-        Player player2= gameBoard.getPlayer1();
+        Player player2= gameBoard.getPlayer2();
         System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
         player1.getScoreSheet().displayColoredScoreSheet();
         System.out.println( player1.getGameScore().toString());
@@ -484,11 +484,11 @@ public class MyCLIGameController {
     public void displayDice (Dice dice) {
         switch (dice.getRealm()) {
             case RED: System.out.print("\u001B[31m" + dice.getRealm() + "      " + dice.getValue() + "\u001B[0m"); break;
-            case GREEN: System.out.print("\u001B[32m" + dice.getRealm() + "    " + dice.getValue() + "  " + "(" + (dice.getValue() + gameBoard.getWhite().getValue()) + ")" + "\u001B[0m"); break;
+            case GREEN: System.out.print("\u001B[32m" + dice.getRealm() + "    " + dice.getValue() + "  (" + (dice.getValue() + gameBoard.getWhite().getValue()) + ")\u001B[0m"); break;
             case BLUE: System.out.print("\u001B[34m" + dice.getRealm() + "     " + dice.getValue() + "\u001B[0m"); break;
             case MAGENTA: System.out.print("\u001B[35m" + dice.getRealm() + "  " + dice.getValue() + "\u001B[0m"); break;
             case YELLOW: System.out.print("\u001B[33m" + dice.getRealm() + "   " + dice.getValue() + "\u001B[0m"); break;
-            case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[0m"); break;
+            case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
         }
     }
     public boolean handleArcaneBoost(ArrayList<ArcaneBoost> arcaneBoosts){
@@ -698,7 +698,7 @@ public class MyCLIGameController {
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor1();
             Dice chosenDie = handleColorBonusException(theBonusColor, player);
-            if (chosenDie.getValue() == 1000)
+            if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                 return true;
             while (Objects.equals(chosenDie, null)) {
                 chosenDie = handleColorBonusException(theBonusColor, player);
@@ -709,7 +709,7 @@ public class MyCLIGameController {
             if (!Objects.equals(bException.getRealmColor2(), null)) {
                 theBonusColor = bException.getRealmColor2();
                 chosenDie = handleColorBonusException(theBonusColor, player);
-                if (chosenDie.getValue() == 1000)
+                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                     return true;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
@@ -733,7 +733,7 @@ public class MyCLIGameController {
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
                 System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
-                System.out.println("1." + "\u001B[31m" +  " Red Realm " + "\u001B[0m" + "\n" +
+                System.out.println("1. \u001B[31m" +  "Red Realm " + "\u001B[0m" + "\n" +
                         "2. \u001B[32m" + "Green Realm" + "\u001B[0m" + "\n" +
                         "3. \u001B[34m" + "Blue Realm" + "\u001B[0m" + "\n" +
                         "4. \u001B[35m" + "Magenta Realm" + "\u001B[0m" + "\n" +
