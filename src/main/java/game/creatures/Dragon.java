@@ -7,6 +7,7 @@ import game.dice.RedDice;
 import game.engine.Move;
 import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -29,7 +31,6 @@ public class Dragon extends Creature {
     public ArrayList<TimeWarp> timeWarps;
     public ArrayList<ArcaneBoost> arcaneBoosts;
     public String[] rewards;
-    public Supplier<String>[] suppliers;
     public int elementalCrestCount;
 
 
@@ -58,7 +59,6 @@ public class Dragon extends Creature {
         initPointMap();
         initPossibleMoves();
         initRewards();
-        initSuppliers();
         initTimeWarpsAndArcaneBoosts();
     }
 
@@ -91,8 +91,10 @@ public class Dragon extends Creature {
 
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
     public void initTimeWarpsAndArcaneBoosts () {
+        arcaneBoosts = new ArrayList<>();
+        timeWarps = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            String current = suppliers[i].get();
+            String current = getRewardStringDependingOnIndex(i);
             if (current.equals("TW")) {
                 timeWarps.add(new TimeWarp());
             }
@@ -108,16 +110,16 @@ public class Dragon extends Creature {
         for (int i = 0; i < 4; i++)
         {
             if (Dragons[i].face != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face), Dragons[i]));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
             }
             if (Dragons[i].wings != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings), Dragons[i]));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
             }
             if (Dragons[i].tail != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail), Dragons[i]));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
             }
             if (Dragons[i].heart != null) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart), Dragons[i]));
+                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
             }
         }
     }
@@ -139,9 +141,8 @@ public class Dragon extends Creature {
     }
 
     //Method used to get all possible moves at any stage in the game
-    public Move[] getAllPossibleMoves() {
-        Move[] returnedArray = new Move[allPossibleMoves.size()];
-        return allPossibleMoves.toArray(returnedArray);
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 
     //A method to get all the time warp powers
@@ -159,6 +160,11 @@ public class Dragon extends Creature {
         return this.dragonNumber;
     }
 
+    //A method that selects the dragon
+    public Dragon selectsDragon(int number) {
+        return Dragons[number-1];
+    }
+
     //A method used to know whether a Dragon is dead or not
     public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
@@ -172,23 +178,36 @@ public class Dragon extends Creature {
         return dead;
     }
 
-    //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
-    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Which dragon would you like to attack?\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
-        int dragonIndex = sc.nextInt();
-        while (dragonIndex < 1 || dragonIndex > 4) {
-            System.out.println("The value you have entered is invalid.\nPlease enter a number from 1 to 4 to indicate which dragon you would like to attack.");
-            dragonIndex = sc.nextInt();
+    public String getRewardStringDependingOnIndex(int index){
+        //0 -> FirstRow
+        //1 -> SecondRow
+        //2 -> ThirdRow
+        //3 -> FourthRow
+        //4 -> Corner
+        String current;
+        switch (index) {
+            case 0: current = getFirstRowRewardString(); break;
+            case 1: current = getSecondRowRewardString(); break;
+            case 2: current = getThirdRowRewardString(); break;
+            case 3: current = getFourthRowRewardString(); break;
+            case 4: current = getCornerRewardString(); break;
+            default: current = "X"; //We shouldn't reach this point
         }
-        sc.close();
-        Dragon targetDragon = Dragons[dragonIndex-1];
-        targetDragon.checkMove(dice);
-        int targetValue = dice.getValue();
+        return current;
+    }
 
+    //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
+    public boolean makeMove(Dice inputDice) throws BonusException {
+        RedDice dice = (RedDice)inputDice;
+        int dragonIndex = dice.getDragonNumber();
+        Dragon targetDragon = Dragons[dragonIndex];
+        boolean valid = targetDragon.checkMove(dice);
+        if (!valid)
+            return false;
+        int targetValue = dice.getValue();
         String[] oldRewardStatus = new String[5];
         for (int i = 0; i < 5; i++) {
-            oldRewardStatus[i] = suppliers[i].get();
+            oldRewardStatus[i] = getRewardStringDependingOnIndex(i);
         }
         targetDragon.moveHelper(targetValue, true);
         Move move = new Move(dice, targetDragon);
@@ -199,7 +218,7 @@ public class Dragon extends Creature {
             }
         }
         for (int i = 0; i < 5; i++) {
-            String newRewardStatus = suppliers[i].get();
+            String newRewardStatus = getRewardStringDependingOnIndex(i);
             if (!oldRewardStatus[i].equals(newRewardStatus)) {
                 if (oldRewardStatus[i].contains("C")) {
                     elementalCrestCount++;
@@ -218,49 +237,48 @@ public class Dragon extends Creature {
         return true;
     }
 
+    public boolean equals(Object obj) {
+        Dragon dragon = (Dragon) obj;
+        return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
+    }
+
     //Method that updates TimeWarps
     public void initNextTimeWarp() {
-        //Is supposed to change the enum for the timewarp obtained
+        TimeWarp currentTimewarp = timeWarps.get(0);
+        currentTimewarp.setStatus(RewardStates.ACQUIRED);
+        timeWarps.remove(currentTimewarp);
     }
 
     //Method that updates ArcaneBoosts
     public void initNextArcaneBoost() {
-        //Is supposed to change the enum for the arcane boost obtained
-    }
-
-    //Method that initializes the suppliers instance variables to make some method calls easier and decrease code
-    public void initSuppliers () {
-        suppliers = new Supplier[]{
-                this::getFirstRowRewardString,
-                this::getSecondRowRewardString,
-                this::getThirdRowRewardString,
-                this::getFourthRowRewardString,
-                this::getCornerRewardString,
-        };
+        ArcaneBoost currentArcaneBoost = arcaneBoosts.get(0);
+        currentArcaneBoost.setStatus(RewardStates.ACQUIRED);
+        arcaneBoosts.remove(currentArcaneBoost);
     }
 
     //Method that, using a character, can identify what realm a boost belongs to
     public RealmColor decodeLetterToRealmColor (char c) {
-        return switch (c) {
-            case 'G' -> RealmColor.GREEN;
-            case 'B' -> RealmColor.BLUE;
-            case 'R' -> RealmColor.RED;
-            case 'M' -> RealmColor.MAGENTA;
-            case 'E' -> RealmColor.WHITE;
-            case 'Y' -> RealmColor.YELLOW;
-            default -> null;
-        };
+        RealmColor result;
+        switch (c) {
+            case 'G': result =  RealmColor.GREEN; break;
+            case 'B': result = RealmColor.BLUE; break;
+            case 'R': result = RealmColor.RED; break;
+            case 'M': result = RealmColor.MAGENTA; break;
+            case 'E': result = RealmColor.WHITE; break;
+            case 'Y': result = RealmColor.YELLOW; break;
+            default: result = null;
+        }
+        return result;
     }
 
     //Method that checks if a move can be done
-    public boolean checkMove(Dice dice) throws InvalidMoveException {
+    public boolean checkMove(Dice dice) {
         int targetValue = dice.getValue();
-        moveHelper(targetValue, false);
-        return true;
+        return moveHelper(targetValue, false);
     }
 
     //Method to reduce code redundancy
-    public boolean moveHelper(int targetValue, boolean doMove) throws InvalidMoveException {
+    public boolean moveHelper(int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -330,51 +348,48 @@ public class Dragon extends Creature {
                     heart = null;
             }
         }
-        //If !doMove is true, then this was called from checkMove, and hence should throw InvalidMoveException
-        if (!doMove) {
-            throw new InvalidMoveException("message");
-        }
         return valid;
     }
 
     //Method that returns the scoreSheet at any point in the game
     @Override
     public String getScoreSheet() {
-        StringBuilder scoreSheet =  new StringBuilder("+-----------------------------------+\n");
+        StringBuilder scoreSheet =  new StringBuilder("Emberfall Dominion: Pyroclast Dragon (RED REALM):\n");
+        scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  #  |D1   |D2   |D3   |D4   |R    |\n");
         scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  F  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(face)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].face)).append("    |");
         }
-        scoreSheet.append(suppliers[0].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(0)).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(wings)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].wings)).append("    |");
         }
-        scoreSheet.append(suppliers[1].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(1)).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(tail)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].tail)).append("    |");
         }
-        scoreSheet.append(suppliers[2].get()).append("   |\n");
-        scoreSheet.append("|  W  |");
+        scoreSheet.append(getRewardStringDependingOnIndex(2)).append("   |\n");
+        scoreSheet.append("|  H  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(Dragons[0].changeToString(heart)).append("    |");
+            scoreSheet.append(changeToString(Dragons[i].heart)).append("    |");
         }
-        scoreSheet.append(suppliers[3].get()).append("   |\n");
+        scoreSheet.append(getRewardStringDependingOnIndex(3)).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(pointMap[i]).append("  |");
+            scoreSheet.append(pointMap[i]).append("   |");
         }
-        scoreSheet.append(suppliers[4].get()).append("   |\n");
-        scoreSheet.append("+-----------------------------------+");
+        scoreSheet.append(getRewardStringDependingOnIndex(4)).append("   |\n");
+        scoreSheet.append("+-----------------------------------+\n\n");
         return scoreSheet.toString();
     }
 
     //This and the methods below it assist in the scoresheet and other methods
     public String changeToString(Integer integer) {
-        return integer == null ? "X" : "" + integer;
+        return  Objects.equals(null, integer) ? "X" : "" + integer;
     }
 
     public String getFirstRowRewardString() {

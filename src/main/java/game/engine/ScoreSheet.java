@@ -1,5 +1,5 @@
 package game.engine;
-import game.collectibles.ArcaneBoost;
+import game.collectibles.*;
 import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
@@ -17,8 +17,16 @@ public class ScoreSheet {
     Dragon dragon;
     Gaia gaia;
     GameScore gamescore;
-//red    green  blue    magenta    yellow
+    //red    green  blue    magenta    yellow
 //dragon gaia   hydra   phoenix  lion
+    public ScoreSheet(){
+        hydra= new Hydra();
+        phoenix = new Phoenix();
+        lion = new Lion();
+        dragon= new Dragon();
+        gaia = new Gaia();
+        gamescore = new GameScore();
+    }
     public int [] getScores(){
         int [] Scores = new int [5];
         Scores[0]= this.dragon.getScore();
@@ -38,21 +46,37 @@ public class ScoreSheet {
         return total;
     }
 
-    public String getScoreSheet(){
-        String res ="\n";
-        res += dragon.getScoreSheet();
-        res +="\n\n";
-        res += gaia.getScoreSheet();
-        res +="\n\n";
-        res += hydra.getScoreSheet();
-        res +="\n\n";
-        res += phoenix.getScoreSheet();
-        res +="\n\n";
-        res += lion.getScoreSheet();
+    public void displayColoredScoreSheet() {
+        String res ="\n\nScoreSheet\n\n";
+        res += "\u001B[31m" + dragon.getScoreSheet() + "\u001B[0m";
         res +="\n";
-        return res;
-
+        res += "\u001B[32m" + gaia.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[34m" + hydra.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[35m" + phoenix.getScoreSheet() + "\u001B[0m";
+        res +="\n";
+        res += "\u001B[33m" + lion.getScoreSheet() + "\u001B[0m";
+        System.out.println(res);
     }
+
+    public void displayScoreSheet(){
+        System.out.print(this);
+    }
+    public String toString(){
+        String res ="\n\nScoreSheet\n\n";
+        res += dragon.getScoreSheet();
+        res +="\n";
+        res += gaia.getScoreSheet();
+        res +="\n";
+        res += hydra.getScoreSheet();
+        res +="\n";
+        res += phoenix.getScoreSheet();
+        res +="\n";
+        res += lion.getScoreSheet();
+        return res;
+    }
+
     //red    green  blue    magenta    yellow
     //dragon gaia   hydra   phoenix  lion
     public Creature getCreatureByRealm(Dice dice){
@@ -63,7 +87,7 @@ public class ScoreSheet {
             case MAGENTA:  return this.phoenix;
             case YELLOW: return this.lion;
             default: return null;
-        } 
+        }
 
     }
     public Creature getCreatureByColor(RealmColor color){
@@ -74,13 +98,25 @@ public class ScoreSheet {
             case MAGENTA:  return this.phoenix;
             case YELLOW: return this.lion;
             default: return null;
-        } 
+        }
     }
 
-    // public  getAllArcaneBoosts(){
-    //         // dragon.getAllArcaneBoosts().addAll(gaia.getAllArcaneBoosts().addAll(hydra.getAllArcaneBoosts().addAll(phoenix.getAllArcaneBoosts().addAll(lion.getAllArcaneBoosts()))));
-    //         // ArrayList<ArcaneBoost> allBoosts = dragon.getAllArcaneBoosts();
-    //         // allBoosts.addAll((ArrayList)gaia.getAllTimeWarps());
-    // }
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts(){
+        ArrayList<ArcaneBoost> allArcaneboosts= dragon.getAllArcaneBoosts();
+        allArcaneboosts.addAll(gaia.getAllArcaneBoosts());
+        allArcaneboosts.addAll(hydra.getAllArcaneBoosts());
+        allArcaneboosts.addAll(phoenix.getAllArcaneBoosts());
+        allArcaneboosts.addAll(lion.getAllArcaneBoosts());
+        return allArcaneboosts;
+    }
+    public ArrayList<TimeWarp> getAllTimeWarps(){
+        ArrayList<TimeWarp> allTimwarps= dragon.getAllTimeWarps();
+        allTimwarps.addAll(gaia.getAllTimeWarps());
+        allTimwarps.addAll(hydra.getAllTimeWarps());
+        allTimwarps.addAll(phoenix.getAllTimeWarps());
+        allTimwarps.addAll(lion.getAllTimeWarps());
+        return allTimwarps;
+    }
+
 
 }

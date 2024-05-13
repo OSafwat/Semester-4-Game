@@ -2,6 +2,7 @@ package game.creatures.greenclasses;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import game.collectibles.ArcaneBoost;
@@ -11,6 +12,7 @@ import game.dice.Dice;
 import game.dice.GreenDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
@@ -30,12 +32,12 @@ public class Gaia extends Creature{
     private Guardians [][]  gaiaGuardians;
     private int alliveGuardians;
     private int deadGuardians;
-    private int score;
+   // private int score;
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
-    private ArrayList<TimeWarp> timeWarps ;
-    private ArrayList<ArcaneBoost> arcaneBoosts;
+    //private ArrayList<TimeWarp> timeWarps ;
+    //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
 
     public Gaia(){
@@ -43,6 +45,8 @@ public class Gaia extends Creature{
         alliveGuardians = 11;
         deadGuardians=0;
         elementalCrestCount = 0;
+        timeWarps= new ArrayList<>();
+        arcaneBoosts= new ArrayList<>();
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){
@@ -57,7 +61,7 @@ public class Gaia extends Creature{
          
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("TimeWarp"))
-            timeWarps.add(new TimeWarp());
+            timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
         }
         //ASUM TimWarp class is done
          // IMP create as not accuired
@@ -65,13 +69,13 @@ public class Gaia extends Creature{
          // ASUM waiting for set and get to be made in TimeWarp class
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("TimeWarp"))
-            timeWarps.add(new TimeWarp());
+            timeWarps.add(new TimeWarp(RewardStates.UNACQUIRED));
         }
         
         
         for(int i=0;i<3;i++){
             if(this.whichCollectableRow(i).equals("ArcaneBoost"))
-            arcaneBoosts.add(new ArcaneBoost());
+            arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
         }
         //ASUM ArcaneBoost class is done
          // IMP create as not accuired
@@ -80,16 +84,16 @@ public class Gaia extends Creature{
             
         for(int i=0;i<4;i++){
             if(this.whichCollectableCol(i).equals("ArcaneBoost"))
-            arcaneBoosts.add(new ArcaneBoost());
+            arcaneBoosts.add(new ArcaneBoost(RewardStates.UNACQUIRED));
         }
 
     }
-
-
-     // EXP mehtod to get the score of the realm
-     public int getScore(){
-        return score;
+    public int getScore(){
+        return this.score;
     }
+
+
+ 
 
     // EXP method to update the score of the realm
     private void updateScore(){
@@ -106,7 +110,7 @@ public class Gaia extends Creature{
         throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -119,7 +123,7 @@ public class Gaia extends Creature{
     private boolean checkMove1(Dice dice){
         GreenDice greendie = (GreenDice) dice;
         // ASUM assuming getRealValue done in the dice class add white
-        int greenValue = greendie.getRealValue();
+        int greenValue = greendie.getValue();
         Guardians speceficGuardian = this.getGuardians(greenValue);
         if(speceficGuardian.isDead())
             return false;
@@ -132,27 +136,17 @@ public class Gaia extends Creature{
 
 // EXP gets a specific guardian in the Gaia
     private Guardians getGuardians(int c){
-
-        int row =0;
-        int col =0;
         if(c<2 || c>12)
         return null;
-        int index =1;
+        //int index =1;
         for(int i=0;i<gaiaGuardians.length;i++){
-            for(int j=0;j<gaiaGuardians[i].length;j++){
-                if(c==index){
-                    row=i;
-                    col=j;
-                    break;
-
-                }
-                
-                index++;
+            for(int j=0;j<gaiaGuardians[i].length;j++){   
+                if(c== gaiaGuardians[i][j].getGuardianValue())
+                return gaiaGuardians[i][j];  
+                //index++;
             }
-            
-
     }
-    return gaiaGuardians[row][col];
+    return null;
 
 
 }
@@ -160,24 +154,17 @@ public class Gaia extends Creature{
 // EXP gets a specific guardian row position in the Gaia
 private int getGuardiansRow(int c){
 
-    int row =0;
-    if(c<2 || c>12)
+    if(c<2 || c>12)//here
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                row=i;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return i; 
         }
         
 
 }
-    return row;
+    return 0;
 
 
 }
@@ -186,24 +173,17 @@ private int getGuardiansRow(int c){
 // EXP gets a specific guardian col position in the Gaia
 private int getGuardiansCol(int c){
 
-    int col =0;
     if(c<2 || c>12)
     return 0;
-    int index =1;
     for(int i=0;i<gaiaGuardians.length;i++){
         for(int j=0;j<gaiaGuardians[i].length;j++){
-            if(c==index){
-                col=j;
-                break;
-
-            }
-            
-            index++;
+            if(c== gaiaGuardians[i][j].getGuardianValue())
+            return j; 
         }
         
 
 }
-    return col;
+    return 0;
 
 
 }
@@ -215,8 +195,6 @@ private void killGaiaGuardian(Guardians g){
     System.out.println("Invalid Allready Killed");
     else{
         g.kill();
-        alliveGuardians--;
-        deadGuardians++;
     }
 }
 
@@ -272,7 +250,7 @@ private  void updateRow(int r){
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
     private String whichCollectableCol (int c){
         try{
-         String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+         String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
         Properties prop ;
         String colReward;
         prop = new Properties();
@@ -293,7 +271,7 @@ private  void updateRow(int r){
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r) {
         try{
-        String filePath = "src\\main\\resources\\config\\TerrasHeartlanRewards.properties";
+        String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
         Properties prop ;
         String rowReward;
         prop = new Properties();
@@ -316,7 +294,7 @@ private  void updateRow(int r){
      public boolean makeMove(Dice dice) throws BonusException , BonusTwoException,InvalidMoveException   {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
-       else  if(!checkMove(dice))
+       else  if(!checkMove1(dice))
             return false;
         else{
             alliveGuardians--;
@@ -324,10 +302,10 @@ private  void updateRow(int r){
             GreenDice greendie = (GreenDice) dice;
             
             // ASUM assuming getValue done in the dice class
-            int greenValue = greendie.getRealValue();
+            int greenValue = greendie.getValue();
             Guardians speceficGuardian = this.getGuardians(greenValue);
             this.killGaiaGuardian(speceficGuardian);
-            updateScore();
+            score=scores[deadGuardians-1];
             int colToCheck = this.getGuardiansCol(greenValue);
             int rowToCheck = this.getGuardiansRow(greenValue);
             updateCol(colToCheck);
@@ -407,16 +385,14 @@ private  void updateRow(int r){
     }
 
 // EXP method to get all possible moves
-public Move[] getAllPossibleMoves() {
+public ArrayList<Move> getAllPossibleMoves() {
 
-    Move [] allMoves = new Move[this.getAlliveGuardians()];
-    int c=0;
+    ArrayList<Move> allMoves = new ArrayList<Move>();
     for(int i=2;i<13;i++){
         GreenDice greenDice = new GreenDice(i);
         if(checkMove1(greenDice)){
         // ASUM assuming move constructor is done
-        allMoves[c]= new Move(greenDice,this);
-        c++;
+        allMoves.add( new Move(greenDice,this));
         }
 
     }
@@ -430,6 +406,7 @@ public String getScoreSheet(){
     String returnValue = "Terra's Heartland: Gaia Guardians (GREEN REALM):\n" +
     "+-----------------------------------+\n" +
     "|  #  |1    |2    |3    |4    |R    |\n" +
+    "+-----------------------------------+\n" +
     "|  1  |X    " ;
     Guardians G2 = this.getGuardians(2);
     if(G2.isDead())
@@ -451,7 +428,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(0);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  2  ";
     }
     Guardians G5 = this.getGuardians(5);
     if(G5.isDead())
@@ -478,7 +455,7 @@ public String getScoreSheet(){
     else{
         String s = this.whichCollectableRow(1);
         String f = this.getCorrectBonusInScore(s);
-    returnValue = returnValue +"|"+f+"   |\n";
+    returnValue = returnValue +"|"+f+"   |\n"+"|  3  ";
     }
   
     Guardians G9 = this.getGuardians(9);
@@ -595,6 +572,7 @@ private String getCorrectBonusInScore(String s){
         case "YellowBonus":return "YB";
         case "TimeWarp" : return"TW";
         case "ArcaneBoost" : return"AB";
+        case "ElementalCrest": return"EC";
         default: return "";
             
     }
@@ -604,11 +582,28 @@ private String getCorrectBonusInScore(String s){
 //EXP apply powers 
 private boolean applyNotBonusCollectable(String s){
     if(s.equals("TimeWarp")){
-        //IMP set as Aqquired
+        Iterator it = timeWarps.iterator();
+        while(it.hasNext()){
+            TimeWarp t = (TimeWarp)(it.next());
+            if(t.getStatus()==RewardStates.UNACQUIRED){
+                t.setStatus(RewardStates.ACQUIRED);
+                break;
+            }
+
+        }
         return true;
     }
     else if(s.equals("ArcaneBoost")){
-        // Imp set ass Aqquired
+        Iterator it = arcaneBoosts.iterator();
+        while(it.hasNext()){
+            ArcaneBoost a = (ArcaneBoost)(it.next());
+            if(a.getStatus()==RewardStates.UNACQUIRED){
+                a.setStatus(RewardStates.ACQUIRED);
+                break;
+            }
+
+        }
+
         return true;
     }
     else if(s.equals("ElementalCrest")){
@@ -620,55 +615,13 @@ private boolean applyNotBonusCollectable(String s){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public static void main(String[] args) {
+    Gaia gaia = new Gaia();
+    ArrayList<Move> moves= gaia.getAllPossibleMoves();
+    for (int index = 0; index < moves.size(); index++) {
+        Move move= moves.get(index);
+        System.out.println();
+    }
+}
 
 }
