@@ -101,12 +101,7 @@ public class GameBoard {
         forgottenRealmDice.add(die);
     }
     public void moveToArcaneDice(Dice chosenDice){
-        for (Dice die  : availableDice) {
-            if (chosenDice == die){
-                this.availableDice.remove(chosenDice);
-                this.activeArcaneDice.add(chosenDice);
-            }
-        }
+        arcaneDice.add(chosenDice);
     }
     public void resetAllDice(){
         forgottenRealmDice.clear();
