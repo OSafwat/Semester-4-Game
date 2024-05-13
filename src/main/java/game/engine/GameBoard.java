@@ -31,6 +31,17 @@ public class GameBoard {
         }
         return null;
     }
+
+    public void setGreen(int greenValue) {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                allDice[index].setValue(greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                allDice[index].setValue(0);
+            }
+        }
+    }
     //constructor
     public GameBoard(){
         this.allDice= new Dice [6];
