@@ -64,6 +64,7 @@ public class Dragon extends Creature {
     public void initRewards() {
         rewards = new String[5];
         int pointer = 0;
+        String[] defaultRewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
         String filePath = "../../../main/resources/config/EmberFallDominionRewards.properties";
         try (BufferedReader br = new BufferedReader( new FileReader(filePath))) {
             String nextLine;
@@ -73,12 +74,19 @@ public class Dragon extends Creature {
                     int separatorIndex = nextLine.indexOf('=');
                     if (separatorIndex != -1) {
                         String value = nextLine.substring(separatorIndex + 1).trim();
-                        rewards[pointer++] = value;
+                        if (value.isEmpty())
+                            rewards[pointer] = defaultRewards[pointer++];
+                        else if (checkValidityOfReward(value))
+                            rewards[pointer++] = value;
+                        else
+                        {
+                            throw new IOException();
+                        }
                     }
                 }
             }
         } catch (IOException e) {
-            rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+            rewards = defaultRewards;
         }
     }
 
