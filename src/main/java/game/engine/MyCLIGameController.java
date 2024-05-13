@@ -211,7 +211,6 @@ public class MyCLIGameController {
         else
             System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
         scanner.close();
-        System.out.print("\033[H\033[2J");
     }
 
     public void playForgottenTurn(Player player) {
@@ -767,6 +766,7 @@ public class MyCLIGameController {
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
+            gameBoard.setGreen(value);
         }
         else if (color == RealmColor.RED) {
             input = "";
@@ -809,8 +809,8 @@ public class MyCLIGameController {
             int value = Integer.parseInt(input);
             switch (color) {
                 case BLUE: finalDie= new BlueDice(value); break;
-                case MAGENTA: finalDie = new MagentaDice(); break;
-                case YELLOW: finalDie = new YellowDice();
+                case MAGENTA: finalDie = new MagentaDice(value); break;
+                case YELLOW: finalDie = new YellowDice(value);
             };
         }
         Move[] possibleMoveset = getPossibleMovesForADie(player, finalDie);

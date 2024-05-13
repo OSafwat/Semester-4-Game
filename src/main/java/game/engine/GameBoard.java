@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import game.engine.enums.PlayerStatus;
+import game.engine.enums.RealmColor;
+
 public class GameBoard {
     GameStatus gameStatus;
     Player player1;
@@ -16,10 +18,29 @@ public class GameBoard {
     ArrayList<Dice> passiveArcaneDice;
     ArrayList<Dice> arcaneDice;
     public Dice getWhite(){
-        return this.allDice[5];
+        for (Dice die: allDice) {
+            if (die.getRealm().equals(RealmColor.WHITE))
+                return die;
+        }
+        return null;
     }
     public Dice getGreen(){
-        return this.allDice[1];
+        for (Dice die: allDice) {
+            if (die.getRealm().equals(RealmColor.GREEN))
+                return die;
+        }
+        return null;
+    }
+
+    public void setGreen(int greenValue) {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                allDice[index].setValue(greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                allDice[index].setValue(0);
+            }
+        }
     }
     //constructor
     public GameBoard(){
