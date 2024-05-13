@@ -138,14 +138,14 @@ public class MyCLIGameController {
                         "\u001B[34m" + "3. Blue Realm" + "\u001B[0m" + "\n" +
                         "\u001B[35m" + "4. Magenta Realm" + "\u001B[0m" + "\n" +
                         "\u001B[33m" + "5. Yellow Realm" + "\u001B[0m" + "\n");
-                    String input = scanner.next();
-                    while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
-                        System.out.println("Invalid input.");
-                        System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
-                        input = scanner.next();
-                    }
-                    realmChosen = Integer.parseInt(input);
-                    handleBonus(realmChosen); break;
+                String input = scanner.next();
+                while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
+                    System.out.println("Invalid input.");
+                    System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
+                    input = scanner.next();
+                }
+                realmChosen = Integer.parseInt(input);
+                handleBonus(realmChosen); break;
             case "RedBonus":    handleBonus(1); break;
             case "GreenBonus": handleBonus(2); break;
             case "BlueBonus": handleBonus(3); break;
@@ -326,10 +326,10 @@ public class MyCLIGameController {
     public Dice[] getArcaneBoostDice() {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
-        for (Dice die: possibleDice) {
-            if (!gameBoard.getActiveArcaneDice().contains(die)) {
+        ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
+        outer: for (Dice die: possibleDice) {
+            if (!bannedDice.contains(die))
                 diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
-            }
         }
         int size = diceExcludingPreviouslySelectedByArcaneBoosts.size();
         Dice[] availableDice = new Dice[size];
@@ -341,7 +341,6 @@ public class MyCLIGameController {
     public void handleArcaneBoostCall(Player player) {
         Dice[] availableDice = getArcaneBoostDice();
         Arrays.sort(availableDice);
-        int size = availableDice.length;
         handleDiceDisplay(availableDice, 2);
         Move[] moveSet = getAllPossibleMovesForDiceSet(player, availableDice);
         if (moveSet.length == 0) {
@@ -369,7 +368,7 @@ public class MyCLIGameController {
             }
         }
         makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
-        selectDice(finalDie, player);
+        player.getScoreSheet().displayColoredScoreSheet();
         gameBoard.moveToArcaneDice(finalDie);
     }
 
@@ -459,10 +458,10 @@ public class MyCLIGameController {
         System.out.println("You have chosen to play with the Arcane Prism! This dice can be used to attack any realm.");
         System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
         System.out.println("\u001B[31m" + "1. Red Realm " + "\u001B[0m" + "\n" +
-                           "\u001B[32m" + "2. Green Realm" + "  (" + (gameBoard.getWhite().getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m" + "\n" +
-                           "\u001B[34m" + "3. Blue Realm" + "\u001B[0m" + "\n" +
-                           "\u001B[35m" + "4. Magenta Realm" + "\u001B[0m" + "\n" +
-                           "\u001B[33m" + "5. Yellow Realm" + "\u001B[0m" + "\n");
+                "\u001B[32m" + "2. Green Realm" + "  (" + (gameBoard.getWhite().getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m" + "\n" +
+                "\u001B[34m" + "3. Blue Realm" + "\u001B[0m" + "\n" +
+                "\u001B[35m" + "4. Magenta Realm" + "\u001B[0m" + "\n" +
+                "\u001B[33m" + "5. Yellow Realm" + "\u001B[0m" + "\n");
         int realmChosen;
         String input = scanner.next();
         while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
@@ -867,27 +866,8 @@ public class MyCLIGameController {
 
     public static void main (String[] args) {
         MyCLIGameController cli = new MyCLIGameController();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        cli.selectDice(cli.getGameBoard().availableDice.get(0), cli.getActivePlayer());
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().forgottenRealmDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        cli.getGameBoard().resetAllDice();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().forgottenRealmDice) {
-            System.out.println(dice);
-        }
+        cli.startGame();
+
     }
 
 }
