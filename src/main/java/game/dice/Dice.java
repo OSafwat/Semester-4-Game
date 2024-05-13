@@ -44,5 +44,8 @@ public class Dice implements Comparable{
         return RealmColor.PARENT;
     }
 
+    public String toString() {
+        return getRealm() + " " + getValue();
+    }
 
 }
