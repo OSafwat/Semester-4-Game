@@ -866,27 +866,8 @@ public class MyCLIGameController {
 
     public static void main (String[] args) {
         MyCLIGameController cli = new MyCLIGameController();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        cli.selectDice(cli.getGameBoard().availableDice.get(0), cli.getActivePlayer());
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().forgottenRealmDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        cli.getGameBoard().resetAllDice();
-        for (Dice dice : cli.getGameBoard().availableDice) {
-            System.out.println(dice);
-        }
-        System.out.println();
-        for (Dice dice : cli.getGameBoard().forgottenRealmDice) {
-            System.out.println(dice);
-        }
+        cli.startGame();
+
     }
 
 }
