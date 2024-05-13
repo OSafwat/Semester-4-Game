@@ -133,7 +133,7 @@ public class MyCLIGameController {
             case "EssenceBonus":
                 RealmColor theBonusColor = RealmColor.WHITE;
                 Dice chosenDie = handleColorBonusException(theBonusColor, player);
-                if (chosenDie.getValue() == 1000)
+                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                     break;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
@@ -698,7 +698,7 @@ public class MyCLIGameController {
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor1();
             Dice chosenDie = handleColorBonusException(theBonusColor, player);
-            if (chosenDie.getValue() == 1000)
+            if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                 return true;
             while (Objects.equals(chosenDie, null)) {
                 chosenDie = handleColorBonusException(theBonusColor, player);
@@ -709,7 +709,7 @@ public class MyCLIGameController {
             if (!Objects.equals(bException.getRealmColor2(), null)) {
                 theBonusColor = bException.getRealmColor2();
                 chosenDie = handleColorBonusException(theBonusColor, player);
-                if (chosenDie.getValue() == 1000)
+                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
                     return true;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
