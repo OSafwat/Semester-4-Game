@@ -130,23 +130,12 @@ public class MyCLIGameController {
         switch (reward){
             case "ArcaneBoost": player.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
             case "TimeWarp":   player.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
-            case "EssenceBonus":
-                RealmColor theBonusColor = RealmColor.WHITE;
-                Dice chosenDie = handleColorBonusException(theBonusColor, player);
-                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
-                    break;
-                while (Objects.equals(chosenDie, null)) {
-                    chosenDie = handleColorBonusException(theBonusColor, player);
-                }
-                makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
-                player.updateGameScore();
-                player.updateAllPossibleMoves();
-                break;
-            case "RedBonus":    handleBonus(1); break;
-            case "GreenBonus": handleBonus(2); break;
-            case "BlueBonus": handleBonus(3); break;
-            case "MagentaBonus": handleBonus(4); break;
-            case "YellowBonus": handleBonus(5); break;
+            case "EssenceBonus": handleBonus(player, RealmColor.WHITE); break;
+            case "RedBonus":    handleBonus(player, RealmColor.RED); break;
+            case "GreenBonus": handleBonus(player, RealmColor.GREEN); break;
+            case "BlueBonus": handleBonus(player, RealmColor.BLUE); break;
+            case "MagentaBonus": handleBonus(player,RealmColor.MAGENTA); break;
+            case "YellowBonus": handleBonus(player, RealmColor.YELLOW); break;
             default: System.out.println("7azak en el round da mafhoosh bonus");
         }
     }
@@ -546,26 +535,16 @@ public class MyCLIGameController {
         }
 
     }
-    public void handleBonus(int realmChoice){
-        Player currentActivePlayer= getActivePlayer();
-
-        Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
-        do {
-            try {
-                int numChoice =0;
-                String input;
-                do{
-                    System.out.println("please choose a number from 1-6 to attack with");
-                    input = scanner.next();
-                }while(!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5") && !input.equals("6"));
-                numChoice = Integer.parseInt(input);
-                if (makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature)))
-                    break;
-                System.out.println("please enter try another move that will be valid ");
-            } catch (Exception e) {
-                System.out.println("batal estehbal we have an unknown Exception");
-            }
-        } while (true);
+    public void handleBonus(Player player, RealmColor realmColor){
+        Dice chosenDie = handleColorBonusException(realmColor, player);
+        if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
+            return;
+        while (Objects.equals(chosenDie, null)) {
+            chosenDie = handleColorBonusException(realmColor, player);
+        }
+        makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
+        player.updateGameScore();
+        player.updateAllPossibleMoves();
     }
     public boolean handleTimeWarps(ArrayList<TimeWarp> timewarps){
         if (timewarps.isEmpty())
