@@ -197,7 +197,7 @@ public class MyCLIGameController {
             switchPlayer();
         }
         Player player1= gameBoard.getPlayer1();
-        Player player2= gameBoard.getPlayer1();
+        Player player2= gameBoard.getPlayer2();
         System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
         player1.getScoreSheet().displayColoredScoreSheet();
         System.out.println( player1.getGameScore().toString());
