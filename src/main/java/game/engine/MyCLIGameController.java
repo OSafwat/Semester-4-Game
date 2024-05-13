@@ -828,9 +828,11 @@ public class MyCLIGameController {
 
     // dice related methods:
     public Dice [] rollDice() {
-        Dice[] temp = gameBoard.getAllDice();
         gameBoard.rollDice();
-        return temp;
+        Dice[] dice = new Dice[gameBoard.getAvailableDice().size()];
+        for (int i = 0; i < dice.length; i++)
+            dice[i] = gameBoard.getAvailableDice().get(i);
+        return dice;
     }
 
     public Dice[] getAllDice() {
