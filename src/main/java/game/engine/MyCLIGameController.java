@@ -368,7 +368,7 @@ public class MyCLIGameController {
             }
         }
         makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
-        selectDice(finalDie, player);
+        player.getScoreSheet().displayColoredScoreSheet();
         gameBoard.moveToArcaneDice(finalDie);
     }
 
