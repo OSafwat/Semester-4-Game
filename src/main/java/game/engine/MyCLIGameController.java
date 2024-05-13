@@ -126,26 +126,20 @@ public class MyCLIGameController {
 
         return rewards;
     }
-    public void handleRoundRewards(Player currentActivePlayer, String reward) {
+    public void handleRoundRewards(Player player, String reward) {
         switch (reward){
-            case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
-            case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "ArcaneBoost": player.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp":   player.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
             case "EssenceBonus":
-                int realmChosen;
-                System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
-                System.out.println("\u001B[31m" + "1. Red Realm " + "\u001B[0m" + "\n" +
-                        "\u001B[32m" + "2. Green Realm" + "\u001B[0m" + "\n" +
-                        "\u001B[34m" + "3. Blue Realm" + "\u001B[0m" + "\n" +
-                        "\u001B[35m" + "4. Magenta Realm" + "\u001B[0m" + "\n" +
-                        "\u001B[33m" + "5. Yellow Realm" + "\u001B[0m" + "\n");
-                String input = scanner.next();
-                while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
-                    System.out.println("Invalid input.");
-                    System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
-                    input = scanner.next();
+                RealmColor theBonusColor = RealmColor.WHITE;
+                Dice chosenDie = handleColorBonusException(theBonusColor, player);
+                while (Objects.equals(chosenDie, null)) {
+                    chosenDie = handleColorBonusException(theBonusColor, player);
                 }
-                realmChosen = Integer.parseInt(input);
-                handleBonus(realmChosen); break;
+                makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+                break;
             case "RedBonus":    handleBonus(1); break;
             case "GreenBonus": handleBonus(2); break;
             case "BlueBonus": handleBonus(3); break;
@@ -378,7 +372,7 @@ public class MyCLIGameController {
         int selectedDragon = -1;
         String input = scanner.next();
         while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
-            System.out.println("That dragon does not exist.");
+            System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.");
             System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
             input = scanner.next();
         }
@@ -457,11 +451,11 @@ public class MyCLIGameController {
     public Dice handleArcanePrism(Dice chosenDie, Player player) {
         System.out.println("You have chosen to play with the Arcane Prism! This dice can be used to attack any realm.");
         System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
-        System.out.println("\u001B[31m" + "1. Red Realm " + "\u001B[0m" + "\n" +
-                "\u001B[32m" + "2. Green Realm" + "  (" + (gameBoard.getWhite().getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m" + "\n" +
-                "\u001B[34m" + "3. Blue Realm" + "\u001B[0m" + "\n" +
-                "\u001B[35m" + "4. Magenta Realm" + "\u001B[0m" + "\n" +
-                "\u001B[33m" + "5. Yellow Realm" + "\u001B[0m" + "\n");
+        System.out.println("1. \u001B[31m" + "Red Realm " + "\u001B[0m" + "\n" +
+                "2. \u001B[32m" + "Green Realm" + "  (" + (gameBoard.getWhite().getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m" + "\n" +
+                "3. \u001B[34m" + "Blue Realm" + "\u001B[0m" + "\n" +
+                "4. \u001B[35m" + "Magenta Realm" + "\u001B[0m" + "\n" +
+                "5. \u001B[33m" + "Yellow Realm" + "\u001B[0m" + "\n");
         int realmChosen;
         String input = scanner.next();
         while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
@@ -701,68 +695,131 @@ public class MyCLIGameController {
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
-            RealmColor theBonusColor = bException.getRealmColor();
-            int numberToAttackWith =0;
-            do{
-                System.out.println("Please enter the number to attack the " + theBonusColor + " realm with: ");
-                numberToAttackWith = Integer.parseInt(System.console().readLine()); // NEED TO VALIDATE THE INPUT
-                if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
-                    Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
-                    boolean result = makeMove(player, firstBonusmove);
-                    player.updateGameScore();
-                    return result;
-                }else{
-                    System.out.println("please enter a valid number");
-                }
-            } while (true);
-        }catch (BonusTwoException bonus2exception){
-            RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
-            RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
-
-            int firstNumberToAttackWith=0;
-            do{
-                System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
-                firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
-                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
-                    Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
-                    if (makeMove(player, firstBonusmove))
-                        break;
-                    else{
-                        System.out.println("please choose a valid move");
-                    }
-
-                }else{
-                    System.out.println("please enter a valid number");
-                }
-            } while (true);
-
-            int secondNumberToAttackWith =0;
-            do{
-                System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
-                secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
-                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature secondCreature = player.getScoreSheet().getCreatureByColor(theSecondBonusColor);
-                    Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
-                    if (makeMove(player, secondBonusmove))
-                        break;
-                    else{
-                        System.out.println("please choose again but a valid move");
-                    }
-
-                }else{
-                    System.out.println("please enter a valid number");
-                }
-            } while (true);
+            RealmColor theBonusColor = bException.getRealmColor1();
+            Dice chosenDie = handleColorBonusException(theBonusColor, player);
+            while (Objects.equals(chosenDie, null)) {
+                chosenDie = handleColorBonusException(theBonusColor, player);
+            }
+            makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
             player.updateGameScore();
             player.updateAllPossibleMoves();
+            if (!Objects.equals(bException.getRealmColor2(), null)) {
+                theBonusColor = bException.getRealmColor2();
+                chosenDie = handleColorBonusException(theBonusColor, player);
+                while (Objects.equals(chosenDie, null)) {
+                    chosenDie = handleColorBonusException(theBonusColor, player);
+                }
+                makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+            }
             return true;
         }
         catch (InvalidMoveException Im){
             System.out.println("i dont get why we would get here");
             return false;
         }
+    }
+
+    public Dice handleColorBonusException(RealmColor color, Player player) {
+        Dice finalDie = null;
+        String input = "";
+        if (color == RealmColor.WHITE) {
+            while (input.isEmpty()) {
+                System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
+                System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
+                System.out.println("1." + "\u001B[31m" +  " Red Realm " + "\u001B[0m" + "\n" +
+                        "2. \u001B[32m" + "Green Realm" + "\u001B[0m" + "\n" +
+                        "3. \u001B[34m" + "Blue Realm" + "\u001B[0m" + "\n" +
+                        "4. \u001B[35m" + "Magenta Realm" + "\u001B[0m" + "\n" +
+                        "5. \u001B[33m" + "Yellow Realm" + "\u001B[0m" + "\n");
+                input = scanner.next();
+                boolean validInput = false;
+                for (int i = 1; i <= 5 && !validInput; i++)
+                    validInput = input.equals("" + i);
+                if (!validInput) {
+                    input = "";
+                    System.out.println("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
+                }
+            }
+            int value = Integer.parseInt(input);
+            switch (value) {
+                case 1: color = RealmColor.RED; break;
+                case 2: color = RealmColor.GREEN; break;
+                case 3: color = RealmColor.BLUE; break;
+                case 4: color = RealmColor.MAGENTA; break;
+                case 5: color = RealmColor.YELLOW; break;
+            }
+        }
+        System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
+        if (color == RealmColor.GREEN) {
+            input = "";
+            while (input.isEmpty()) {
+                System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
+                input = scanner.next();
+                boolean validInput = false;
+                for (int i = 2; i <= 12 && !validInput; i++)
+                    validInput = input.equals("" + i);
+                if (!validInput) {
+                    input = "";
+                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                }
+            }
+            int value = Integer.parseInt(input);
+            finalDie = new GreenDice(value);
+        }
+        else if (color == RealmColor.RED) {
+            input = "";
+            while (input.isEmpty()) {
+                System.out.println("Please input a value between 1-6 that you would like to use to attack the RED Realm with!");
+                input = scanner.next();
+                boolean validInput = false;
+                for (int i = 1; i <= 6 && !validInput; i++)
+                    validInput = input.equals("" + i);
+                if (!validInput) {
+                    input = "";
+                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                }
+            }
+            int value = Integer.parseInt(input);
+            finalDie = new RedDice(value);
+            System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
+            System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+            input = scanner.next();
+            while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
+                System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.\n");
+                System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+                input = scanner.next();
+            }
+            ((RedDice)finalDie).selectsDragon(Integer.parseInt(input));
+        }
+        else {
+            input = "";
+            while (input.isEmpty()) {
+                System.out.println("Please input a value between 1-6 that you would like to use to attack the " + color + " Realm with!");
+                input = scanner.next();
+                boolean validInput = false;
+                for (int i = 1; i <= 6 && !validInput; i++)
+                    validInput = input.equals("" + i);
+                if (!validInput) {
+                    input = "";
+                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                }
+            }
+            int value = Integer.parseInt(input);
+            switch (color) {
+                case BLUE: finalDie= new BlueDice(value); break;
+                case MAGENTA: finalDie = new MagentaDice(); break;
+                case YELLOW: finalDie = new YellowDice();
+            };
+        }
+        Move[] possibleMoveset = getPossibleMovesForADie(player, finalDie);
+        if (possibleMoveset.length == 0) {
+            System.out.println("This die does not have any valid moves.");
+            System.out.println("I will rewind time to give you another chance at utilizing your boost properly. \nGood luck!");
+            finalDie = null;
+        }
+        return finalDie;
     }
 
     // gameboard getter:
