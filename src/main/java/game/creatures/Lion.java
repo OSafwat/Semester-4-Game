@@ -320,7 +320,7 @@ public class Lion extends Creature{
                         rewardString = "";
                 }
 
-                mappedRewardLocations[value.get(i) - 1] = rewardString;
+                mappedRewardLocations[value.get(i)] = rewardString;
             }
         }
 
