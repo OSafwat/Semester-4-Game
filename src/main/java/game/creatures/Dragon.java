@@ -9,15 +9,13 @@ import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.InvalidMoveException;
+import game.exceptions.BonusTwoException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class Dragon extends Creature {
     public Integer face;
