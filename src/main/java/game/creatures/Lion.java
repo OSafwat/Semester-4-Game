@@ -156,7 +156,7 @@ public class Lion extends Creature{
 
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
-            if (rewardToken == null) sb.append("     |");
+            if (rewardToken == "") sb.append("     |");
             else sb.append(rewardToken).append("   |");
         }
 
@@ -261,7 +261,11 @@ public class Lion extends Creature{
                     String number = matcher.group();
                     index = Integer.parseInt(number) - 1;
                 }
-                if (rewardLocations.containsKey((String) value)) {
+
+                if (((String) value) == null) {
+                    rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
+                }
+                else if (rewardLocations.containsKey((String) value)) {
                     rewardLocations.get((String) value).add(index);
                 } else {
                     rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
@@ -271,7 +275,7 @@ public class Lion extends Creature{
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-            rewardLocations.put(null, new ArrayList<>(Arrays.asList(new Integer[] {1,2,4,7,9,11})));
+            rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {1,2,4,7,9,11})));
             rewardLocations.put("TimeWarp", new ArrayList<>(Arrays.asList(new Integer[] {3})));
             rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {6})));
             rewardLocations.put("RedBonus", new ArrayList<>(Arrays.asList(new Integer[] {5})));
@@ -313,7 +317,7 @@ public class Lion extends Creature{
                         rewardString = getTimeWarpString(value.get(i));
                         break;
                     default:
-                        rewardString = null;
+                        rewardString = "";
                 }
 
                 mappedRewardLocations[value.get(i)] = rewardString;
