@@ -326,8 +326,9 @@ public class MyCLIGameController {
     public Dice[] getArcaneBoostDice() {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
-        for (Dice die: possibleDice) {
-            if (!gameBoard.getActiveArcaneDice().contains(die)) {
+        ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
+        outer: for (Dice die: possibleDice) {
+            if (!bannedDice.contains(die))
                 diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
         }
         int size = diceExcludingPreviouslySelectedByArcaneBoosts.size();
