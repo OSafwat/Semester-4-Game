@@ -148,7 +148,7 @@ public class Lion extends Creature{
         sb.append("|  H  |");
         for (int i = 0; i < 11; i++) {
             if (this.lions[i] == 0) sb.append("0    |");
-            else sb.append(i + "    |" );
+            else sb.append(lions[i] + "    |" );
         }
         sb.append("\n");
         sb.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
