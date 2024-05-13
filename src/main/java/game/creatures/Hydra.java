@@ -173,7 +173,7 @@ public class Hydra extends Creature{
 
         this.serpent.pop();
         updateScore();
-        this.diceUsed[this.headsKilled++] = "" + diceValue;
+        this.diceUsed[this.headsKilled++] = diceValue + "  ";
         
 
         if(serpent.isEmpty() && !regenerateFlag) 
