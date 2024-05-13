@@ -84,6 +84,22 @@ public class Dragon extends Creature {
         }
     }
 
+    public boolean checkValidityOfReward(String reward) {
+        switch (reward) {
+            case "ArcaneBoost":break;
+            case "GreenBonus":break;
+            case "YellowBonus":break;
+            case "BlueBonus":break;
+            case "ElementalCrest":break;
+            case "MagentaBonus":break;
+            case "RedBonus":break;
+            case "TimeWarp":break;
+            case "EssenceBonus":break;
+            default: return false;
+        }
+        return true;
+    }
+
     //A method to initialize the pointMap instance variable, which is used in score calculation
     public void initPointMap() {
         pointMap = new int[]{10, 14, 16, 20};
