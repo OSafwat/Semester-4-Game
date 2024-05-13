@@ -25,7 +25,7 @@ public class Phoenix extends Creature{
     // A hash map that maps the rewards to their respective phoenix's death amounts
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
-    public static String[] mappedRewardLocations = new String[11];
+    public String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
@@ -111,6 +111,7 @@ public class Phoenix extends Creature{
             }
 
             updateAllPossibleMoves();
+            populateMappedRewardLocation();
 
             return true;
         }
