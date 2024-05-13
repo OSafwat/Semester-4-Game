@@ -1,5 +1,7 @@
 package game.engine;
 import game.dice.*;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import game.engine.enums.PlayerStatus;
@@ -102,12 +104,13 @@ public class GameBoard {
         }
     }
     public void resetAllDice(){
-        availableDice.addAll(forgottenRealmDice);
         forgottenRealmDice.clear();
-        this.activeArcaneDice = new ArrayList<>();
-        this.passiveArcaneDice = new ArrayList<>();
-        availableDice.addAll(getPlayer1().getPlayedDice());
-        availableDice.addAll(getPlayer2().getPlayedDice());
+        availableDice.clear();
+        activeArcaneDice.clear();;
+        passiveArcaneDice.clear();
+        getPlayer1().getPlayedDice().clear();
+        getPlayer2().getPlayedDice().clear();
+        availableDice.addAll(Arrays.asList(allDice));
     }
     public void removeFromAvailable(Dice die){
         availableDice.remove(die);
