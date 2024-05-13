@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class CLIGameController {
+public class CLIGameController extends GameController {
     GameBoard gameBoard;
     String rewardsArray[];
     Scanner scanner;
