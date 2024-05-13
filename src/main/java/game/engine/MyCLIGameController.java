@@ -809,8 +809,8 @@ public class MyCLIGameController {
             int value = Integer.parseInt(input);
             switch (color) {
                 case BLUE: finalDie= new BlueDice(value); break;
-                case MAGENTA: finalDie = new MagentaDice(); break;
-                case YELLOW: finalDie = new YellowDice();
+                case MAGENTA: finalDie = new MagentaDice(value); break;
+                case YELLOW: finalDie = new YellowDice(value);
             };
         }
         Move[] possibleMoveset = getPossibleMovesForADie(player, finalDie);
