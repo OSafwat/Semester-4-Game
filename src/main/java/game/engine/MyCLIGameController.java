@@ -133,6 +133,8 @@ public class MyCLIGameController {
             case "EssenceBonus":
                 RealmColor theBonusColor = RealmColor.WHITE;
                 Dice chosenDie = handleColorBonusException(theBonusColor, player);
+                if (chosenDie.getValue() == 1000)
+                    break;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
                 }
@@ -696,6 +698,8 @@ public class MyCLIGameController {
         } catch (BonusException bException) {
             RealmColor theBonusColor = bException.getRealmColor1();
             Dice chosenDie = handleColorBonusException(theBonusColor, player);
+            if (chosenDie.getValue() == 1000)
+                return true;
             while (Objects.equals(chosenDie, null)) {
                 chosenDie = handleColorBonusException(theBonusColor, player);
             }
@@ -705,6 +709,8 @@ public class MyCLIGameController {
             if (!Objects.equals(bException.getRealmColor2(), null)) {
                 theBonusColor = bException.getRealmColor2();
                 chosenDie = handleColorBonusException(theBonusColor, player);
+                if (chosenDie.getValue() == 1000)
+                    return true;
                 while (Objects.equals(chosenDie, null)) {
                     chosenDie = handleColorBonusException(theBonusColor, player);
                 }
@@ -751,6 +757,16 @@ public class MyCLIGameController {
             }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
+        Move[] possibleMoves = getAllPossibleMoves(player);
+        boolean canYouUseThisBonus = false;
+        for (Move move: possibleMoves) {
+            canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
+        }
+        if (!canYouUseThisBonus) {
+            System.out.println("Unfortunately it seems that you cannot use this bonus.\nWe will now proceed with the game as normal.");
+            return new Dice(1000);
+            //1000 is a dummy value so that the calling method can tell that executing this bonus is not possible
+        }
         if (color == RealmColor.GREEN) {
             input = "";
             while (input.isEmpty()) {
