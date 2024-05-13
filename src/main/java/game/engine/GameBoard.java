@@ -107,6 +107,7 @@ public class GameBoard {
         forgottenRealmDice.clear();
         availableDice.clear();
         activeArcaneDice.clear();;
+        arcaneDice.clear();
         passiveArcaneDice.clear();
         getPlayer1().getPlayedDice().clear();
         getPlayer2().getPlayedDice().clear();
