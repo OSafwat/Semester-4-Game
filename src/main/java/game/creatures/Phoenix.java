@@ -25,7 +25,7 @@ public class Phoenix extends Creature{
     // A hash map that maps the rewards to their respective phoenix's death amounts
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
-    public static String[] mappedRewardLocations = new String[11];
+    public String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
@@ -71,7 +71,7 @@ public class Phoenix extends Creature{
 
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
-            if (rewardToken == null) sb.append("     |");
+            if (rewardToken == "") sb.append("     |");
             else sb.append(rewardToken + "   |");
         }
 
@@ -111,6 +111,7 @@ public class Phoenix extends Creature{
             }
 
             updateAllPossibleMoves();
+            populateMappedRewardLocation();
 
             return true;
         }
@@ -174,7 +175,10 @@ public class Phoenix extends Creature{
                     index = Integer.parseInt(number) - 1;
                 }
 
-                if (rewardLocations.containsKey((String) value)) {
+                if (((String) value) == null) {
+                    rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
+                }
+                else if (rewardLocations.containsKey((String) value)) {
                     rewardLocations.get((String) value).add(index);
                 } else {
                     rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
@@ -186,7 +190,7 @@ public class Phoenix extends Creature{
             System.out.println(ex.getMessage());
 
             // Actual population of the HashMap
-            rewardLocations.put(null, new ArrayList<>(Arrays.asList(new Integer[] {0, 1})));
+            rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {0, 1})));
             rewardLocations.put("TimeWarp", new ArrayList<>(Arrays.asList(new Integer[] {2, 7})));
             rewardLocations.put("GreenBonus", new ArrayList<>(Arrays.asList(new Integer[] {3})));
             rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {4, 10})));
@@ -235,7 +239,7 @@ public class Phoenix extends Creature{
                         rewardString = getRewardString(key, value.get(i));
                         break;
                     default:
-                        rewardString = null;
+                        rewardString = "";
                 }
 
                 mappedRewardLocations[value.get(i)] = rewardString;
