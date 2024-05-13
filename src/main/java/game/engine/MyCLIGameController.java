@@ -766,6 +766,7 @@ public class MyCLIGameController {
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
+            gameBoard.setGreen(value);
         }
         else if (color == RealmColor.RED) {
             input = "";
