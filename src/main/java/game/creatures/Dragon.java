@@ -219,7 +219,7 @@ public class Dragon extends Creature {
     }
 
     //A method that (attempts) to make a move, throwing any exceptions while doing so, and returns true if the move succeeds
-    public boolean makeMove(Dice inputDice) throws BonusException {
+    public boolean makeMove(Dice inputDice) throws BonusException, BonusTwoException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
         Dragon targetDragon = Dragons[dragonIndex];
@@ -239,14 +239,19 @@ public class Dragon extends Creature {
                 break;
             }
         }
+        int index1 = -1;
+        int index2 = -1;
         for (int i = 0; i < 5; i++) {
             String newRewardStatus = getRewardStringDependingOnIndex(i);
             if (!oldRewardStatus[i].equals(newRewardStatus)) {
                 if (oldRewardStatus[i].contains("C")) {
                     elementalCrestCount++;
                 }
-                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(i) != 'A') {
-                    throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[i].charAt(0)));
+                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(0) != 'A') {
+                    if (index1 == -1)
+                        index1 = i;
+                    else
+                        index2 = i;
                 }
                 else if (oldRewardStatus[i].equals("TW")) {
                     initNextTimeWarp();
@@ -254,6 +259,27 @@ public class Dragon extends Creature {
                 else if (oldRewardStatus[i].equals("AB")) {
                     initNextArcaneBoost();
                 }
+            }
+        }
+        //index1 being != -1 means there was at least one bonus, and index2 being != -1 means there were no bonuses
+        if (index1 != -1)
+        {
+            if (index2 == -1) {
+                throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(1)));
+            }
+            else
+            {
+                RealmColor firstBonus = decodeLetterToRealmColor(oldRewardStatus[index1].charAt(1));
+                RealmColor secondBonus = decodeLetterToRealmColor(oldRewardStatus[index2].charAt(1));
+                //.ordinal() returns the index of the enum in the enum list in the class
+                //since red is of highest prio, and it has ordinal 0, then the one with the LESSER ordinal should be applied first
+                //so, if firstBonus had a higher ordinal, it's switch with secondBonus such that firstBonus has the lower ordinal (and thus higher prio)
+                if (firstBonus.ordinal() > secondBonus.ordinal()) {
+                    RealmColor temporary = firstBonus;
+                    firstBonus = secondBonus;
+                    secondBonus = temporary;
+                }
+                throw new BonusTwoException(firstBonus, secondBonus);
             }
         }
         return true;
