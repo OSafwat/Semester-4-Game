@@ -250,7 +250,6 @@ public class MyCLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
-        handleDiceDisplay(getAvailableDice(), 0);
         boolean valid = false;
         while(!valid) {
             try {
@@ -744,7 +743,7 @@ public class MyCLIGameController {
             }
             player.updateGameScore();
             player.updateAllPossibleMoves();
-            if (!Objects.equals(bException.getRealmColor2(), null)) {
+            if (bException.getRealmColor2() != RealmColor.PARENT) {
                 RealmColor realmColor2 = bException.getRealmColor2();
                 valid = false;
                 while (!valid) {
