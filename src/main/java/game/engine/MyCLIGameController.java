@@ -648,6 +648,8 @@ public class MyCLIGameController {
         }
         removeGreenDuplicate(moveSet);
         int moveSetSize = moveSet.size();
+        if (moveSetSize == 0)
+            throw new ExhaustedResourceException();
         Move[] moves = new Move[moveSetSize];
         for (int index = 0; index < moveSetSize; index++) {
             moves[index] = moveSet.get(index);
