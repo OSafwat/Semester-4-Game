@@ -720,36 +720,54 @@ public class MyCLIGameController {
                 diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
             boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
-            player.updateAllPossibleMoves();
-            player.updateGameScore();
-            return temp;
-        } catch (BonusException bException) {
-            RealmColor theBonusColor = bException.getRealmColor1();
-            Dice chosenDie = handleColorBonusException(theBonusColor, player);
-            if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
+            if (!temp)
+                throw new InvalidMoveException();
+            else
                 return true;
-            while (Objects.equals(chosenDie, null)) {
-                chosenDie = handleColorBonusException(theBonusColor, player);
+        } catch (BonusException bException) {
+            RealmColor realmColor1 = bException.getRealmColor1();
+            Dice chosenDie;
+            boolean valid = false;
+            while (!valid) {
+                try {
+                    chosenDie = handleColorBonusException(realmColor1, player);
+                } catch (ExhaustedResourceException e) {
+                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    return true;
+                } catch (InvalidBonusSelection e) {
+                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    continue;
+                } catch (InvalidDiceSelectionException e) {
+                    continue;
+                }
+                valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
             }
-            makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
             player.updateGameScore();
             player.updateAllPossibleMoves();
             if (!Objects.equals(bException.getRealmColor2(), null)) {
-                theBonusColor = bException.getRealmColor2();
-                chosenDie = handleColorBonusException(theBonusColor, player);
-                if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
-                    return true;
-                while (Objects.equals(chosenDie, null)) {
-                    chosenDie = handleColorBonusException(theBonusColor, player);
+                RealmColor realmColor2 = bException.getRealmColor2();
+                valid = false;
+                while (!valid) {
+                    try {
+                        chosenDie = handleColorBonusException(realmColor2, player);
+                    } catch (ExhaustedResourceException e) {
+                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        return true;
+                    } catch (InvalidBonusSelection e) {
+                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        continue;
+                    } catch (InvalidDiceSelectionException e) {
+                        continue;
+                    }
+                    valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
                 }
-                makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
                 player.updateGameScore();
                 player.updateAllPossibleMoves();
             }
             return true;
         }
         catch (InvalidMoveException Im){
-            System.out.println("i dont get why we would get here");
+            System.out.println("It seems that this move is invalid.\nPlease try again.");
             return false;
         }
     }
