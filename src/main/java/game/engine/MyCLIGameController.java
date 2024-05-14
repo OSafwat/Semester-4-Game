@@ -272,38 +272,53 @@ public class MyCLIGameController {
         return true;
     }
 
-    public boolean turnCompletion(int diceCount, Player player) {
+    public boolean turnCompletion(Player player) throws ExhaustedResourceException{
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
-        Dice chosenDie = handleDiceSelection(player, diceSet);
-        int indicator = player.getPlayerStatus() == PlayerStatus.ACTIVE ? 0 : 1;
-        while (Objects.equals(chosenDie, null)) {
+        boolean valid = false;
+        Dice finalDie;
+        while (!valid) {
+            int indicator = player.getPlayerStatus() == PlayerStatus.ACTIVE ? 0 : 1;
             handleDiceDisplay(diceSet, indicator);
-            chosenDie = handleDiceSelection(player, diceSet);
-        }
-        Move[] moveSet = getPossibleMovesForADie(player, chosenDie);
-        if (moveSet.length == 0) {
-            System.out.println("This die does not have any valid moves.");
-            System.out.println("I will allow you to reselect the die you would like to attack with.");
-            return true;
-        }
-        Dice finalDie = null;
-        if (chosenDie instanceof ArcanePrism) {
-            while (Objects.equals(finalDie, null)) {
-                finalDie = handleArcanePrism(chosenDie, player);
+            Dice chosenDie;
+            while (true) {
+                try {
+                    chosenDie = handleDiceSelection(player, diceSet);
+                } catch (InvalidDiceSelectionException e) {
+                    System.out.println("I will now give you a chance to select properly.");
+                    handleDiceDisplay(diceSet, indicator);
+                    continue;
+                } catch (ExhaustedResourceException e) {
+                    System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                    handleDiceDisplay(diceSet, indicator);
+                    continue;
+                }
+                break;
             }
-        }
-        else
-            finalDie = chosenDie;
-        if (finalDie instanceof RedDice) {
-            RedDice dummyFinalDie = new RedDice(finalDie.getValue());
-            finalDie = handleRedDice(dummyFinalDie, player);
-            while (Objects.equals(finalDie, null)) {
-                finalDie = handleRedDice(dummyFinalDie, player);
+            finalDie = null;
+            if (chosenDie instanceof ArcanePrism) {
+                while (Objects.equals(finalDie, null)) {
+                    finalDie = handleArcanePrism(chosenDie, player);
+                }
+            } else
+                finalDie = chosenDie;
+            if (finalDie instanceof RedDice) {
+                boolean valid2 = false;
+                while (!valid2) {
+                    try {
+                        finalDie = handleRedDice((RedDice) finalDie);
+                    } catch (InvalidDiceSelectionException e) {
+                        System.out.println("Invalid input.\nPlease try again.");
+                        continue;
+                    }
+                    valid2 = true;
+                }
             }
+            valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
+            if (valid)
+                selectDice(finalDie, player);
         }
-        selectDice(chosenDie, player);
-        makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your score sheet after your move, " + player.getName() + " : ");
         return false;
