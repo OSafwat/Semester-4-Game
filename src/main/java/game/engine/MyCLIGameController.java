@@ -342,34 +342,50 @@ public class MyCLIGameController {
         Dice[] availableDice = getArcaneBoostDice();
         Arrays.sort(availableDice);
         handleDiceDisplay(availableDice, 2);
-        Move[] moveSet = getAllPossibleMovesForDiceSet(player, availableDice);
-        if (moveSet.length == 0) {
+        try {
+            getAllPossibleMovesForDiceSet(player, availableDice);
+        } catch (ExhaustedResourceException e) {
             System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
             return;
         }
-        Dice chosenDie = handleDiceSelection(player, availableDice);
-        while (Objects.equals(chosenDie, null)) {
-            handleDiceDisplay(availableDice, 2);
-            chosenDie = handleDiceSelection(player, availableDice);
-        }
-        Dice finalDie = null;
-        if (chosenDie instanceof ArcanePrism) {
-            while (Objects.equals(finalDie, null)) {
-                finalDie = handleArcanePrism(chosenDie, player);
+        Dice chosenDie;
+        boolean valid = false;
+        while (!valid) {
+            try {
+                chosenDie = handleDiceSelection(player, availableDice);
+            } catch (InvalidDiceSelectionException e) {
+                System.out.println("Invalid input.\nI will now give you a chance to select properly.");
+                handleDiceDisplay(availableDice, 2);
+                continue;
+            } catch (ExhaustedResourceException e) {
+                System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                handleDiceDisplay(availableDice, 2);
+                continue;
             }
-        }
-        else
-            finalDie = chosenDie;
-        if (finalDie instanceof RedDice) {
-            RedDice dummyFinalDie = new RedDice(finalDie.getValue());
-            finalDie = handleRedDice(dummyFinalDie, player);
-            while (Objects.equals(finalDie, null)) {
-                finalDie = handleRedDice(dummyFinalDie, player);
+            Dice finalDie = null;
+            if (chosenDie instanceof ArcanePrism) {
+                while (Objects.equals(finalDie, null)) {
+                    finalDie = handleArcanePrism(chosenDie, player);
+                }
+            } else
+                finalDie = chosenDie;
+            if (finalDie instanceof RedDice) {
+                boolean valid2 = false;
+                while (!valid2) {
+                    try {
+                        finalDie = handleRedDice((RedDice) finalDie);
+                    } catch (InvalidDiceSelectionException e) {
+                        System.out.println("Invalid input.\nPlease try again.");
+                        continue;
+                    }
+                    valid2 = true;
+                }
             }
+            valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
+            if (valid)
+                gameBoard.moveToArcaneDice(finalDie);
         }
-        makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
         player.getScoreSheet().displayColoredScoreSheet();
-        gameBoard.moveToArcaneDice(finalDie);
     }
 
     public RedDice handleRedDice(RedDice finalDie, Player player) {
