@@ -388,27 +388,21 @@ public class MyCLIGameController {
         player.getScoreSheet().displayColoredScoreSheet();
     }
 
-    public RedDice handleRedDice(RedDice finalDie, Player player) {
+    public RedDice handleRedDice(RedDice finalDie) throws InvalidDiceSelectionException{
         System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
         System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
         int selectedDragon = -1;
         String input = scanner.next();
-        while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
-            System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.");
-            System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+        while (input.isEmpty()) {
             input = scanner.next();
         }
+        if (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4"))
+            throw new InvalidDiceSelectionException();
         selectedDragon = Integer.parseInt(input);
         finalDie.selectsDragon(selectedDragon);
-        Move[] moveList = getPossibleMovesForADie(player, finalDie);
-        if (moveList.length == 0) {
-            System.out.println("Hmm... it seems that this specific Dragon cannot be attacked by this Die.");
-            System.out.println("Alright, I shall rewind time to give you another shot at selecting the Dragon you would like to attack. Please be careful this time.");
-            System.out.println("Good luck!");
-            return null;
-        }
         return finalDie;
     }
+
     //indicator = 0 -> Active player call
     //indicator = 1 -> Passive player call
     //indicator = 2 -> Post-Arcane Boost call
