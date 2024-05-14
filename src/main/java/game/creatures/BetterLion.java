@@ -10,6 +10,8 @@ import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.Move;
+import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
@@ -17,8 +19,10 @@ public class BetterLion extends Creature{
     private final Properties properties;
 
     private int[] scores;
-    private int score;
     private int lionsKilled;
+
+    private int arcaneBoostsUsed;
+    private int timeWarpsUsed;
 
     public BetterLion() {
         this.properties = new Properties();
@@ -43,6 +47,11 @@ public class BetterLion extends Creature{
 
         this.scores = new int[11];
         this.score = 0;
+
+        this.arcaneBoosts = new ArrayList<ArcaneBoost>();
+        this.arcaneBoostsUsed = 0;
+        this.timeWarps = new ArrayList<TimeWarp>();
+        this.timeWarpsUsed = 0;
     }
     @Override
     public int getElementalCrest() {
@@ -61,6 +70,7 @@ public class BetterLion extends Creature{
                          "+-----------------------------------------------------------------------+\n" +
                          "|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n" +
                          "+-----------------------------------------------------------------------+\n";
+
         scoresheet += "|  H  |";
         for(int i = 0; i < 11; i++) { scoresheet += scores[i]+"    |"; }
 
@@ -76,7 +86,7 @@ public class BetterLion extends Creature{
     }
 
     private String getMultiplier(int value) {
-        return (properties.getProperty("hit"+value+"Multiplier")==null)? "  ": "x"+scores[value];
+        return (properties.getProperty("hit"+value+"Multiplier").equals("1"))? "  ": "x"+scores[value];
     }
 
     private String getBonus(int value) {
@@ -107,8 +117,23 @@ public class BetterLion extends Creature{
 
     @Override
     public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+        int diceValue = dice.getValue();
+
+        if(!checkMove(dice)) return false;
+
+        this.scores[lionsKilled] = diceValue;
+        this.score += diceValue*Integer.parseInt(properties.getProperty("hit"+lionsKilled+"Multiplier"));
+        
+        switch(properties.getProperty("hit"+lionsKilled+"Reward")){
+            case "ArcaneBoost": this.arcaneBoosts.set(this.arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp": this.timeWarps.set(this.timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+            case "RedBonus": throw new BonusException(RealmColor.RED);
+            case "BlueBonus": throw new BonusException(RealmColor.BLUE);
+            case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
+            case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+        }
+        return true;
     }
 
     @Override
