@@ -250,16 +250,19 @@ public class MyCLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
-        int diceCount = getAvailableDice().length;
         handleDiceDisplay(getAvailableDice(), 0);
-        Move[] availableMoves = getAllPossibleMovesForDiceSet(player, getAvailableDice());
-        if (availableMoves.length == 0) {
-            System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-            boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
-            if (useTimeWarp) {
-                return playTurn(player, true);
+        boolean valid = false;
+        while(!valid) {
+            try {
+                valid = turnCompletion(player);
+            } catch (ExhaustedResourceException e) {
+                System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
+                boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+                if (useTimeWarp) {
+                    return playTurn(player, true);
+                }
+                return false;
             }
-            return false;
         }
         boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
         if (useTimeWarp) {
