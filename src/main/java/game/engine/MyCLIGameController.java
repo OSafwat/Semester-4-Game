@@ -203,16 +203,18 @@ public class MyCLIGameController {
     }
 
     public void playForgottenTurn(Player player) {
-        Dice[] forgottenDice = gameBoard.getForgottenRealmDice();
-        int diceCount = forgottenDice.length;
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
         System.out.println("It is currently the " + "PASSIVE" + " player's turn.");
         handleDiceDisplay(getForgottenRealmDice(), 1);
-        Move[] availableMoves = getAllPossibleMovesForDiceSet(player, getForgottenRealmDice());
-        if (availableMoves.length == 0) {
-            System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms. Better luck next time!");
-            return;
+        boolean valid = false;
+        while(!valid) {
+            try {
+                valid = turnCompletion(player);
+            } catch (ExhaustedResourceException e) {
+                System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
+                return;
+            }
         }
         while(turnCompletion(diceCount, player));
         boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
