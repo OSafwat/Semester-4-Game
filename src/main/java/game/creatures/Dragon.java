@@ -131,16 +131,16 @@ public class Dragon extends Creature {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            if (Dragons[i].face != null) {
+            if (!Objects.equals(Dragons[i].face, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
             }
-            if (Dragons[i].wings != null) {
+            if (!Objects.equals(Dragons[i].wings, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
             }
-            if (Dragons[i].tail != null) {
+            if (!Objects.equals(Dragons[i].tail, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
             }
-            if (Dragons[i].heart != null) {
+            if (!Objects.equals(Dragons[i].heart, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
             }
         }
@@ -164,6 +164,7 @@ public class Dragon extends Creature {
 
     //Method used to get all possible moves at any stage in the game
     public ArrayList<Move> getAllPossibleMoves() {
+        initPossibleMoves();
         return allPossibleMoves;
     }
 
@@ -265,6 +266,7 @@ public class Dragon extends Creature {
         if (index1 != -1)
         {
             if (index2 == -1) {
+                initPossibleMoves();
                 throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0)));
             }
             else
@@ -279,9 +281,11 @@ public class Dragon extends Creature {
                     firstBonus = secondBonus;
                     secondBonus = temporary;
                 }
+                initPossibleMoves();
                 throw new BonusException(firstBonus, secondBonus);
             }
         }
+        initPossibleMoves();
         return true;
     }
 
