@@ -225,13 +225,6 @@ public class Dragon extends Creature {
             oldRewardStatus[i] = getRewardStringDependingOnIndex(i);
         }
         targetDragon.moveHelper(targetValue, true);
-        Move move = new Move(dice, targetDragon);
-        for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
-            if (allPossibleMoves.get(i).equals(move)) {
-                allPossibleMoves.remove(i);
-                break;
-            }
-        }
         int index1 = -1;
         int index2 = -1;
         for (int i = 0; i < 5; i++) {
