@@ -325,7 +325,7 @@ public class MyCLIGameController {
         }
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your score sheet after your move, " + player.getName() + " : ");
-        return false;
+        return true;
     }
 
     public Dice[] getArcaneBoostDice() {
