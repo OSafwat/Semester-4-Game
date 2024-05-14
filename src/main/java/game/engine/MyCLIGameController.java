@@ -599,6 +599,7 @@ public class MyCLIGameController {
         }
         for (TimeWarp timeWarp: timewarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
+                handleDiceDisplay(getAvailableDice(), 0);
                 System.out.println("You have available Time Warps! Would you like to use one of them to rewind time and reroll your dice?");
                 System.out.println("You have a total of " + timeWarpCount + " Time Warp(s).");
                 System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
@@ -611,6 +612,7 @@ public class MyCLIGameController {
                     }
                     else if (c == 'n') {
                         System.out.println("Alright, the dice shall not be rerolled.");
+                        return false;
                     }
                     else {
                         System.out.println("Invalid input, please try again.");
