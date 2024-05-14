@@ -690,6 +690,7 @@ public class MyCLIGameController {
             GreenDice correctedDice = new GreenDice(dice.getValue() + gameBoard.getWhite().getValue());
             dice = correctedDice;
         }
+        gameBoard.setWhite();
         Move[] playerAllMoves= player.getAllPossibleMoves();
         //System.out.println(playerAllMoves.length);
         ArrayList<Move> result = new ArrayList<>();
@@ -785,6 +786,7 @@ public class MyCLIGameController {
     }
 
     public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
+        gameBoard.setWhite();
         Dice finalDie = null;
         String input = "";
         player.getScoreSheet().displayColoredScoreSheet();
