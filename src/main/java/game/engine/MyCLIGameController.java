@@ -206,7 +206,6 @@ public class MyCLIGameController {
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
         System.out.println("It is currently the " + "PASSIVE" + " player's turn.");
-        handleDiceDisplay(getForgottenRealmDice(), 1);
         boolean valid = false;
         while(!valid) {
             try {
@@ -250,24 +249,30 @@ public class MyCLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
+        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+        if (useTimeWarp) {
+            return playTurn(player, true);
+        }
         boolean valid = false;
         while(!valid) {
             try {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-                boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+                useTimeWarp = handleTimeWarps(player.getTimeWarps());
                 if (useTimeWarp) {
                     return playTurn(player, true);
                 }
                 return false;
             }
         }
-        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
-        if (useTimeWarp) {
-            return playTurn(player, true);
-        }
         return true;
+    }
+
+    public void resetRed() {
+        if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
+            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
+        }
     }
 
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
@@ -282,6 +287,7 @@ public class MyCLIGameController {
             Dice chosenDie;
             while (true) {
                 try {
+                    resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
                 } catch (InvalidDiceSelectionException e) {
                     System.out.println("I will now give you a chance to select properly.");
@@ -319,7 +325,7 @@ public class MyCLIGameController {
         }
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your score sheet after your move, " + player.getName() + " : ");
-        return false;
+        return true;
     }
 
     public Dice[] getArcaneBoostDice() {
@@ -593,6 +599,7 @@ public class MyCLIGameController {
         }
         for (TimeWarp timeWarp: timewarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
+                handleDiceDisplay(getAvailableDice(), 0);
                 System.out.println("You have available Time Warps! Would you like to use one of them to rewind time and reroll your dice?");
                 System.out.println("You have a total of " + timeWarpCount + " Time Warp(s).");
                 System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
@@ -605,6 +612,7 @@ public class MyCLIGameController {
                     }
                     else if (c == 'n') {
                         System.out.println("Alright, the dice shall not be rerolled.");
+                        return false;
                     }
                     else {
                         System.out.println("Invalid input, please try again.");
