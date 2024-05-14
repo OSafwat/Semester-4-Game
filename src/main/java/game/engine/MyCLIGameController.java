@@ -708,6 +708,7 @@ public class MyCLIGameController {
     public Dice handleColorBonusException(RealmColor color, Player player) {
         Dice finalDie = null;
         String input = "";
+        player.getScoreSheet().displayColoredScoreSheet();
         if (color == RealmColor.WHITE) {
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
@@ -920,8 +921,9 @@ public class MyCLIGameController {
 
     public static void main (String[] args) {
         MyCLIGameController cli = new MyCLIGameController();
-        cli.startGame();
-
+        ((RedDice)cli.getAllDice()[0]).selectsDragon(1);
+        cli.makeMove(cli.getGameBoard().getPlayer1(), new Move(cli.getAllDice()[0], cli.getGameBoard().getPlayer1().getScoreSheet().dragon));
+        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().dragon.getAllPossibleMoves());
     }
 
 }
