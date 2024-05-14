@@ -1,9 +1,7 @@
 package game.engine;
 
 import game.collectibles.*;
-import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
-import game.exceptions.InvalidMoveException;
+import game.exceptions.*;
 import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
