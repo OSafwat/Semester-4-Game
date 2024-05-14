@@ -446,7 +446,7 @@ public class Dragon extends Creature {
     }
 
     public String getCornerRewardString() {
-        return allDead() ? "X " : encode(rewards[4]);
+        return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
