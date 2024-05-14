@@ -113,13 +113,12 @@ public class BetterLion extends Creature{
 
     @Override
     public ArrayList<TimeWarp> getAllTimeWarps() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllTimeWarps'");
+        return timeWarps;
     }
 
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
+        return arcaneBoosts;
     }
 
     @Override
