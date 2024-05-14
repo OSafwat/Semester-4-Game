@@ -216,7 +216,6 @@ public class MyCLIGameController {
                 return;
             }
         }
-        while(turnCompletion(diceCount, player));
         boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
         while (usedArcaneBoost) {
             handleArcaneBoostCall(player);
