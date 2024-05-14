@@ -9,7 +9,7 @@ import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
+import game.exceptions.RewardException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -80,12 +80,12 @@ public class Dragon extends Creature {
                             rewards[pointer++] = value;
                         else
                         {
-                            throw new IOException();
+                            throw new RewardException();
                         }
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | RewardException e) {
             rewards = defaultRewards;
         }
     }
