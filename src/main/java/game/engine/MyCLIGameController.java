@@ -249,6 +249,10 @@ public class MyCLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
+        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+        if (useTimeWarp) {
+            return playTurn(player, true);
+        }
         boolean valid = false;
         while(!valid) {
             try {
@@ -261,10 +265,6 @@ public class MyCLIGameController {
                 }
                 return false;
             }
-        }
-        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
-        if (useTimeWarp) {
-            return playTurn(player, true);
         }
         return true;
     }
