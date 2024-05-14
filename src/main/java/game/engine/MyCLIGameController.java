@@ -561,13 +561,23 @@ public class MyCLIGameController {
 
     }
     public void handleBonus(Player player, RealmColor realmColor){
-        Dice chosenDie = handleColorBonusException(realmColor, player);
-        if (!Objects.equals(chosenDie, null) && chosenDie.getValue() == 1000)
-            return;
-        while (Objects.equals(chosenDie, null)) {
-            chosenDie = handleColorBonusException(realmColor, player);
+        Dice chosenDie;
+        boolean valid = false;
+        while (!valid) {
+            try {
+                chosenDie = handleColorBonusException(realmColor, player);
+            } catch (ExhaustedResourceException e) {
+                System.out.println("Hmm.. it seems that the " + realmColor + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                return;
+            } catch (InvalidBonusSelection e) {
+                System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                continue;
+            }
+            catch (InvalidDiceSelectionException e) {
+                continue;
+            }
+            valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
         }
-        makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
         player.updateGameScore();
         player.updateAllPossibleMoves();
     }
