@@ -57,10 +57,49 @@ public class BetterLion extends Creature{
 
     @Override
     public String getScoreSheet() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getScoreSheet'");
+        String scoresheet = "Radiant Savanna: Solar Lion (YELLOW REALM):\n" +
+                         "+-----------------------------------------------------------------------+\n" +
+                         "|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n" +
+                         "+-----------------------------------------------------------------------+\n";
+        scoresheet += "|  H  |";
+        for(int i = 0; i < 11; i++) { scoresheet += scores[i]+"    |"; }
+
+        scoresheet += "\n|  M  |";
+        for(int i = 0; i < 11; i++) { scoresheet += getMultiplier(i)+"   |"; }
+
+        scoresheet += "\n|  R  |";
+        for(int i = 0; i < 11; i++) { scoresheet += getBonus(i)+"   |"; }
+
+        scoresheet += "\n+-----------------------------------------------------------------------+\n\n";
+
+        return scoresheet;
     }
 
+    private String getMultiplier(int value) {
+        return (properties.getProperty("hit"+value+"Multiplier")==null)? "  ": "x"+scores[value];
+    }
+
+    private String getBonus(int value) {
+        String[] defaultValues = {"  ", "  ", "TW", "  ", "RB", "AB", "  ", "EC", "  ", "MB", "  "};
+        String reward = properties.getProperty("hit"+value+"Reward");
+        if(reward == null)
+            return "  ";
+        else if(!(this.scores[value]==0))
+            return "X ";
+        else{
+            switch (reward) {
+                case "ArcaneBoost": return "AB";
+                case "RedBonus": return "RB";
+                case "GreenBonus": return "GB";
+                case "BlueBonus": return "BB";
+                case "MagentaBonus": return "MB";
+                case "YellowBonus": return "YB";
+                case "ElementalCrest": return "EC";
+                case "TimeWarp": return "TW";
+                default: return defaultValues[value];
+            }
+        }
+    }
     @Override
     public boolean checkMove(Dice dice) throws InvalidMoveException {
         // TODO Auto-generated method stub
@@ -81,7 +120,6 @@ public class BetterLion extends Creature{
 
     @Override
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllArcaneBoosts'");
     }
 
