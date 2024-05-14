@@ -102,8 +102,7 @@ public class BetterLion extends Creature{
     }
     @Override
     public boolean checkMove(Dice dice) throws InvalidMoveException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkMove'");
+        return (scores[10]==0);
     }
 
     @Override
