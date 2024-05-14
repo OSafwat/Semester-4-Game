@@ -435,7 +435,7 @@ public class MyCLIGameController {
             }
         }
     }
-    public Dice handleDiceSelection(Player player, Dice[] diceSet) {
+    public Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, ExhaustedResourceException{
         Arrays.sort(diceSet);
         int diceCount = diceSet.length;
         System.out.println("Please enter a number from 1 to " + diceCount + " which indicates which dice you would like to use.");
@@ -452,14 +452,13 @@ public class MyCLIGameController {
             }
             else {
                 System.out.println("Invalid input, please try again.");
-                System.out.println("Please enter a number from 1 to " + diceCount + " which indicates which dice you would like to use.");
+                throw new InvalidDiceSelectionException();
             }
         }
         Dice chosenDie = diceSet[chosenDiceIndex-1];
         Move[] moveList = getPossibleMovesForADie(player, chosenDie);
         if (moveList.length == 0) {
-            System.out.println("Unfortunately, the die you have chosen does not have any possible moves available.\nI will now rewind time to give you a chance to select another die. Good luck!");
-            chosenDie = null;
+            throw new ExhaustedResourceException();
         }
         return chosenDie;
     }
