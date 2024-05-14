@@ -321,7 +321,12 @@ public class MyCLIGameController {
             }
             valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
             if (valid)
-                selectDice(finalDie, player);
+            {
+                if (chosenDie instanceof ArcanePrism)
+                    selectDice(chosenDie, player);
+                else
+                    selectDice(finalDie, player);
+            }
         }
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your score sheet after your move, " + player.getName() + " : ");
