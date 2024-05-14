@@ -9,7 +9,7 @@ public class BonusException extends Exception{
         color1 = color;
         this.color2 = null;
     }
-    public BonusException(RealmColor color1, RealmColor color2) {this(color1); this.color2 = color2;}
+    public BonusException(RealmColor color1, RealmColor color2) {this.color1 = color1; this.color2 = color2;}
     public RealmColor getRealmColor1(){
         return color1;
     }

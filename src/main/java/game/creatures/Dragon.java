@@ -9,7 +9,7 @@ import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
+import game.exceptions.RewardException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -65,7 +65,7 @@ public class Dragon extends Creature {
         rewards = new String[5];
         int pointer = 0;
         String[] defaultRewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
-        String filePath = "../../../main/resources/config/EmberFallDominionRewards.properties";
+        String filePath = "src/main/resources/config/EmberfallDominionRewards.properties";
         try (BufferedReader br = new BufferedReader( new FileReader(filePath))) {
             String nextLine;
             while ((nextLine = br.readLine()) != null) {
@@ -80,12 +80,12 @@ public class Dragon extends Creature {
                             rewards[pointer++] = value;
                         else
                         {
-                            throw new IOException();
+                            throw new RewardException();
                         }
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | RewardException e) {
             rewards = defaultRewards;
         }
     }
@@ -131,16 +131,16 @@ public class Dragon extends Creature {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            if (Dragons[i].face != null) {
+            if (!Objects.equals(Dragons[i].face, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
             }
-            if (Dragons[i].wings != null) {
+            if (!Objects.equals(Dragons[i].wings, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
             }
-            if (Dragons[i].tail != null) {
+            if (!Objects.equals(Dragons[i].tail, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
             }
-            if (Dragons[i].heart != null) {
+            if (!Objects.equals(Dragons[i].heart, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
             }
         }
@@ -164,6 +164,7 @@ public class Dragon extends Creature {
 
     //Method used to get all possible moves at any stage in the game
     public ArrayList<Move> getAllPossibleMoves() {
+        initPossibleMoves();
         return allPossibleMoves;
     }
 
@@ -190,14 +191,6 @@ public class Dragon extends Creature {
     //A method used to know whether a Dragon is dead or not
     public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
-    }
-
-    //A method used to know whether all Dragons in the Dragon array are dead or not
-    public boolean allDead() {
-        boolean dead = true;
-        for (int i = 0; i < 4; i++)
-            dead = dead && Dragons[i].isDead();
-        return dead;
     }
 
     public String getRewardStringDependingOnIndex(int index){
@@ -232,13 +225,6 @@ public class Dragon extends Creature {
             oldRewardStatus[i] = getRewardStringDependingOnIndex(i);
         }
         targetDragon.moveHelper(targetValue, true);
-        Move move = new Move(dice, targetDragon);
-        for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
-            if (allPossibleMoves.get(i).equals(move)) {
-                allPossibleMoves.remove(i);
-                break;
-            }
-        }
         int index1 = -1;
         int index2 = -1;
         for (int i = 0; i < 5; i++) {
@@ -265,6 +251,7 @@ public class Dragon extends Creature {
         if (index1 != -1)
         {
             if (index2 == -1) {
+                initPossibleMoves();
                 throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0)));
             }
             else
@@ -279,9 +266,11 @@ public class Dragon extends Creature {
                     firstBonus = secondBonus;
                     secondBonus = temporary;
                 }
+                initPossibleMoves();
                 throw new BonusException(firstBonus, secondBonus);
             }
         }
+        initPossibleMoves();
         return true;
     }
 
@@ -457,7 +446,7 @@ public class Dragon extends Creature {
     }
 
     public String getCornerRewardString() {
-        return allDead() ? "X " : encode(rewards[4]);
+        return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
