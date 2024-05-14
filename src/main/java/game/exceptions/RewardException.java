@@ -1,5 +1,5 @@
 package game.exceptions;
 
-public class RewardException {
+public class RewardException extends Exception {
     
 }

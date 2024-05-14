@@ -25,7 +25,7 @@ public class Phoenix extends Creature{
     // A hash map that maps the rewards to their respective phoenix's death amounts
     public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
-    public static String[] mappedRewardLocations = new String[11];
+    public String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixsReceivedHP = new Integer[11];
@@ -71,7 +71,7 @@ public class Phoenix extends Creature{
 
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
-            if (rewardToken == null) sb.append("     |");
+            if (rewardToken == "") sb.append("     |");
             else sb.append(rewardToken + "   |");
         }
 
@@ -111,6 +111,7 @@ public class Phoenix extends Creature{
             }
 
             updateAllPossibleMoves();
+            populateMappedRewardLocation();
 
             return true;
         }
@@ -174,7 +175,10 @@ public class Phoenix extends Creature{
                     index = Integer.parseInt(number) - 1;
                 }
 
-                if (rewardLocations.containsKey((String) value)) {
+                if (((String) value) == null) {
+                    rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
+                }
+                else if (rewardLocations.containsKey((String) value)) {
                     rewardLocations.get((String) value).add(index);
                 } else {
                     rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
@@ -186,7 +190,7 @@ public class Phoenix extends Creature{
             System.out.println(ex.getMessage());
 
             // Actual population of the HashMap
-            rewardLocations.put(null, new ArrayList<>(Arrays.asList(new Integer[] {0, 1})));
+            rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {0, 1})));
             rewardLocations.put("TimeWarp", new ArrayList<>(Arrays.asList(new Integer[] {2, 7})));
             rewardLocations.put("GreenBonus", new ArrayList<>(Arrays.asList(new Integer[] {3})));
             rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {4, 10})));
@@ -211,31 +215,31 @@ public class Phoenix extends Creature{
                 String rewardString;
                 switch(key) {
                     case "RedBonus":
-                        rewardString = getRedBonusString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "GreenBonus":
-                        rewardString = getGreenBonusString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "BlueBonus":
-                        rewardString = getBlueBonusString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "MagentaBonus":
-                        rewardString = getMagentaBonusString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "YellowBonus":
-                        rewardString = getYellowBonusString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "ElementalCrest":
-                        rewardString = getElementalCrestString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "ArcaneBoost":
-                        rewardString = getArcaneBoostString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     case "TimeWarp":
-                        rewardString = getTimeWarpString(value.get(i));
+                        rewardString = getRewardString(key, value.get(i));
                         break;
                     default:
-                        rewardString = null;
+                        rewardString = "";
                 }
 
                 mappedRewardLocations[value.get(i)] = rewardString;
@@ -245,99 +249,84 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes] == null? 0 : phoenixsReceivedHP[killedPhoenixes];
-        if (latestReceivedHit == 6) return;
+        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes - 1] == null? 0 : phoenixsReceivedHP[killedPhoenixes - 1] % 6;
 
-        for (int i = latestReceivedHit; i <= 6; i++) {
+        for (int i = latestReceivedHit + 1; i <= 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i), this));
         }
     }
 
-    public String getRedBonusString(int n) {
-        String rewardName = "RedBonus";
+    public String getRewardString(String rewardName, int n) {
         String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "RB";
-            }
-        }
-        return output;
-    }
+        switch (rewardName) {
+            case "RedBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "RB";
+                    }
+                }
+                break;
+            
+            case "GreenBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "GB";
+                    }
+                }
+                break;
 
-    public String getGreenBonusString(int n) {
-        String rewardName = "GreenBonus";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "GB";
-            }
-        }
-        return output;
-    }
+            case "BlueBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "BB";
+                    }
+                }
+                break;
 
-    public String getBlueBonusString(int n) {
-        String rewardName = "BlueBonus";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "BB";
-            }
-        }
-        return output;
-    }
+            case "MagentaBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "MB";
+                    }
+                }
+                break;
 
-    public String getMagentaBonusString(int n) {
-        String rewardName = "MagentaBonus";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "MB";
-            }
-        }
-        return output;
-    }
+            case "YellowBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "YB";
+                    }
+                }
+                break;
 
-    public String getYellowBonusString(int n) {
-        String rewardName = "YellowBonus";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "YB";
-            }
+            case "ElementalCrest":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EC";
+                    }
+                }
+                break;
+        
+            case "ArcaneBoost":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "AB";
+                    }
+                }
+                break;
+            
+            case "TimeWarp":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "TW";
+                    }
+                }
+                break;
+            
+            default:
+                output = "X ";
         }
-        return output;
-    }
 
-    public String getElementalCrestString(int n) {
-        String rewardName = "ElementalCrest";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EC";
-            }
-        }
-        return output;
-    }
-
-    public String getArcaneBoostString(int n) {
-        String rewardName = "ArcaneBoost";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "AB";
-            }
-        }
-        return output;
-    }
-
-    public String getTimeWarpString(int n) {
-        String rewardName = "TimeWarp";
-        String output = "X ";
-        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
-            if (rewardLocations.get(rewardName).get(i) == n) {
-                output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "TW";
-            }
-        }
         return output;
     }
 }

@@ -20,16 +20,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class CLIGameController {
+public class CLIGameController extends GameController {
     GameBoard gameBoard;
     String rewardsArray[];
+    Scanner scanner;
 
     // constructor(s):
     public CLIGameController() {
         this.gameBoard= new GameBoard();
+        scanner = new Scanner(System.in);
     }
     public int [] getSettings(){
-        Scanner scanner = new Scanner(System.in);
         int numberOfRounds;
         int numebrOfTurnsPerRound;
         BufferedReader settings=null;
@@ -128,9 +129,30 @@ public class CLIGameController {
 
         return rewards;
     }
+    public void handleRoundRewards(Player currentActivePlayer, int index, String[] rewards) {
+        switch (rewards[index]){
+            case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "EssenceBonus":
+                int realmChoice =0;
+                do{
+                    System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
+                    realmChoice= scanner.nextInt();
+                    if (realmChoice >=1 && realmChoice <= 5)
+                        break;
+                    System.out.println("momken nebatal estehbal");
+                }while(true);
+                handleBonus(realmChoice);
+            case "RedBonus":    handleBonus(1);
+            case "GreenBonus": handleBonus(2);
+            case "BlueBonus": handleBonus(3);
+            case "MagentaBonus": handleBonus(4);
+            case "YellowBonus": handleBonus(5);
+            default: System.out.println("7azak en el round da mafhoosh bonus");
+        }
+    }
 
     public void startGame(){
-        Scanner scanner = new Scanner(System.in);   //scanner is here
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
         getActivePlayer().setName(player1Name);
@@ -163,6 +185,7 @@ public class CLIGameController {
             for (int k = 0; k < 2; k++) {
                 //the following is playing some number of rounds with the active player then 1 round with the passive player
                 Player currentActivePlayer= getActivePlayer();
+                handleRoundRewards(currentActivePlayer, i, rewards);
                 rollDice();
                 for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
                     playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
@@ -170,29 +193,9 @@ public class CLIGameController {
                 moveAllIntoForgotten();
                 playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE, currentActivePlayer.getTimeWarps());        //playing a passive turn
                 //the following is resetting the dice:
-
                 // should assign the round rewards as well as use the arcaneboosts and time warps
                 // the following handles what to do with the rewards taken from the config file
-                switch (rewards[i]){
-                    case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
-                    case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
-                    case "EssenceBonus":
-                        int realmChoice =0;
-                        do{
-                            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
-                            realmChoice= scanner.nextInt();
-                            if (realmChoice >=1 && realmChoice <= 5)
-                                break;
-                            System.out.println("momken nebatal estehbal");
-                        }while(true);
-                        handleBonus(realmChoice);
-                    case "RedBonus":    handleBonus(1);
-                    case "GreenBonus": handleBonus(2);
-                    case "BlueBonus": handleBonus(3);
-                    case "MagentaBonus": handleBonus(4);
-                    case "YellowBonus": handleBonus(5);
-                    default: System.out.println("7azak en el round da mafhoosh bonus");
-                }
+
                 ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
                 handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost
 
@@ -220,11 +223,9 @@ public class CLIGameController {
         else
             System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
 
-        //scanner.close();
     }
 
     public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){
-        Scanner scanner = new Scanner(System.in);
 
         for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
             if (currentPlayersArcaneBoosts.get(arcaneBoostsIndex).getStatus() == RewardStates.ACQUIRED){
@@ -288,7 +289,7 @@ public class CLIGameController {
                 }
             }
         }
-        //scanner.close();
+
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
         switch (choice){
@@ -304,7 +305,6 @@ public class CLIGameController {
 
     }
     public void handleBonus(int realmChoice){
-        Scanner scanner = new Scanner(System.in);
         Player currentActivePlayer= getActivePlayer();
 
         Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
@@ -324,13 +324,10 @@ public class CLIGameController {
                 System.out.println("batal estehbal we have an unknown Exception");
             }
         } while (true);
-        //scanner.close();
     }
     public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
         if (timewarps.size()==0)
             return;
-        Scanner scanner = new Scanner(System.in);
-
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         for (int index = 0; index < timewarps.size(); index++) {
             //  System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
@@ -338,13 +335,15 @@ public class CLIGameController {
                 System.out.println("choose whether you would like to use a timeWarp to reroll or not (enter 'y' or 'n')");
                 char choice='4';
                 do {
-                    choice = scanner.next().charAt(0);
-                    if (choice == 'y' || choice == 'n')
-                        break;
+                    String input = scanner.nextLine();
+                    if (!input.isEmpty()){
+                        choice = input.charAt(0);
+                        if (choice == 'y' || choice == 'n')
+                            break;
+                    }
                     System.out.println("please enter a valid choice ba2a");
                 } while (true );
                 if (choice == 'n'){
-                    //scanner.close();
                     return;}
 
                 timewarps.get(index).setStatus(RewardStates.USED);
@@ -356,10 +355,8 @@ public class CLIGameController {
                 }
             }
         }
-        //scanner.close();
     }
-    public static void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
-        Scanner scanner = new Scanner(System.in);
+    public void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
         ScoreSheet scoreSheet = controller.getScoreSheet(player);
         System.out.println(player.getName()+", here is your score sheet:");
         scoreSheet.displayScoreSheet();
@@ -442,7 +439,6 @@ public class CLIGameController {
         }
         System.out.println("Here is your new score sheet  ==>");
         scoreSheet.displayScoreSheet();
-        //scanner.close();
     }
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
@@ -529,7 +525,7 @@ public class CLIGameController {
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
-            RealmColor theBonusColor = bException.getRealmColor();
+            RealmColor theBonusColor = bException.getRealmColor1();
             int numberToAttackWith =0;
             do{
                 System.out.println("Please enter the number to attack the " + theBonusColor + " realm with: ");
@@ -544,48 +540,49 @@ public class CLIGameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-        }catch (BonusTwoException bonus2exception){
-            RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
-            RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
-
-            int firstNumberToAttackWith=0;
-            do{
-                System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
-                firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
-                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
-                    Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
-                    if (makeMove(player, firstBonusmove))
-                        break;
-                    else{
-                        System.out.println("please choose a valid move");
-                    }
-
-                }else{
-                    System.out.println("please enter a valid number");
-                }
-            } while (true);
-
-            int secondNumberToAttackWith =0;
-            do{
-                System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
-                secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
-                if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-                    Creature secondCreature = player.getScoreSheet().getCreatureByColor(theSecondBonusColor);
-                    Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
-                    if (makeMove(player, secondBonusmove))
-                        break;
-                    else{
-                        System.out.println("please choose again but a valid move");
-                    }
-
-                }else{
-                    System.out.println("please enter a valid number");
-                }
-            } while (true);
-            player.updateGameScore();
-            return true;
         }
+        // }catch (BonusTwoException bonus2exception){
+        //     RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
+        //     RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
+
+        //     int firstNumberToAttackWith=0;
+        //     do{
+        //         System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
+        //         firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
+        //         if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
+        //             Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
+        //             Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
+        //             if (makeMove(player, firstBonusmove))
+        //                 break;
+        //             else{
+        //                 System.out.println("please choose a valid move");
+        //             }
+
+        //         }else{
+        //             System.out.println("please enter a valid number");
+        //         }
+        //     } while (true);
+
+        //     int secondNumberToAttackWith =0;
+        //     do{
+        //         System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
+        //         secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
+        //         if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
+        //             Creature secondCreature = player.getScoreSheet().getCreatureByColor(theSecondBonusColor);
+        //             Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
+        //             if (makeMove(player, secondBonusmove))
+        //                 break;
+        //             else{
+        //                 System.out.println("please choose again but a valid move");
+        //             }
+
+        //         }else{
+        //             System.out.println("please enter a valid number");
+        //         }
+        //     } while (true);
+        //     player.updateGameScore();
+        //     return true;
+        // }
         catch (InvalidMoveException Im){
             System.out.println("i dont get why we would get here");
             return false;

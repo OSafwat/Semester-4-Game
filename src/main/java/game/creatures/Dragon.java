@@ -9,15 +9,13 @@ import game.engine.enums.DragonNumber;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.InvalidMoveException;
+import game.exceptions.RewardException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.function.Supplier;
 
 public class Dragon extends Creature {
     public Integer face;
@@ -66,7 +64,8 @@ public class Dragon extends Creature {
     public void initRewards() {
         rewards = new String[5];
         int pointer = 0;
-        String filePath = "../../../main/resources/config/EmberFallDominionRewards.properties";
+        String[] defaultRewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+        String filePath = "src/main/resources/config/EmberfallDominionRewards.properties";
         try (BufferedReader br = new BufferedReader( new FileReader(filePath))) {
             String nextLine;
             while ((nextLine = br.readLine()) != null) {
@@ -75,13 +74,36 @@ public class Dragon extends Creature {
                     int separatorIndex = nextLine.indexOf('=');
                     if (separatorIndex != -1) {
                         String value = nextLine.substring(separatorIndex + 1).trim();
-                        rewards[pointer++] = value;
+                        if (value.isEmpty())
+                            rewards[pointer] = defaultRewards[pointer++];
+                        else if (checkValidityOfReward(value))
+                            rewards[pointer++] = value;
+                        else
+                        {
+                            throw new RewardException();
+                        }
                     }
                 }
             }
-        } catch (IOException e) {
-            rewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
+        } catch (IOException | RewardException e) {
+            rewards = defaultRewards;
         }
+    }
+
+    public boolean checkValidityOfReward(String reward) {
+        switch (reward) {
+            case "ArcaneBoost":break;
+            case "GreenBonus":break;
+            case "YellowBonus":break;
+            case "BlueBonus":break;
+            case "ElementalCrest":break;
+            case "MagentaBonus":break;
+            case "RedBonus":break;
+            case "TimeWarp":break;
+            case "EssenceBonus":break;
+            default: return false;
+        }
+        return true;
     }
 
     //A method to initialize the pointMap instance variable, which is used in score calculation
@@ -109,16 +131,16 @@ public class Dragon extends Creature {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            if (Dragons[i].face != null) {
+            if (!Objects.equals(Dragons[i].face, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
             }
-            if (Dragons[i].wings != null) {
+            if (!Objects.equals(Dragons[i].wings, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
             }
-            if (Dragons[i].tail != null) {
+            if (!Objects.equals(Dragons[i].tail, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
             }
-            if (Dragons[i].heart != null) {
+            if (!Objects.equals(Dragons[i].heart, null)) {
                 allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
             }
         }
@@ -142,6 +164,7 @@ public class Dragon extends Creature {
 
     //Method used to get all possible moves at any stage in the game
     public ArrayList<Move> getAllPossibleMoves() {
+        initPossibleMoves();
         return allPossibleMoves;
     }
 
@@ -168,14 +191,6 @@ public class Dragon extends Creature {
     //A method used to know whether a Dragon is dead or not
     public boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
-    }
-
-    //A method used to know whether all Dragons in the Dragon array are dead or not
-    public boolean allDead() {
-        boolean dead = true;
-        for (int i = 0; i < 4; i++)
-            dead = dead && Dragons[i].isDead();
-        return dead;
     }
 
     public String getRewardStringDependingOnIndex(int index){
@@ -210,21 +225,19 @@ public class Dragon extends Creature {
             oldRewardStatus[i] = getRewardStringDependingOnIndex(i);
         }
         targetDragon.moveHelper(targetValue, true);
-        Move move = new Move(dice, targetDragon);
-        for (int i = 0, size = allPossibleMoves.size(); i < size; i++) {
-            if (allPossibleMoves.get(i).equals(move)) {
-                allPossibleMoves.remove(i);
-                break;
-            }
-        }
+        int index1 = -1;
+        int index2 = -1;
         for (int i = 0; i < 5; i++) {
             String newRewardStatus = getRewardStringDependingOnIndex(i);
             if (!oldRewardStatus[i].equals(newRewardStatus)) {
                 if (oldRewardStatus[i].contains("C")) {
                     elementalCrestCount++;
                 }
-                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(i) != 'A') {
-                    throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[i].charAt(0)));
+                else if (oldRewardStatus[i].charAt(1) == 'B' && oldRewardStatus[i].charAt(0) != 'A') {
+                    if (index1 == -1)
+                        index1 = i;
+                    else
+                        index2 = i;
                 }
                 else if (oldRewardStatus[i].equals("TW")) {
                     initNextTimeWarp();
@@ -234,6 +247,30 @@ public class Dragon extends Creature {
                 }
             }
         }
+        //index1 being != -1 means there was at least one bonus, and index2 being != -1 means there were no bonuses
+        if (index1 != -1)
+        {
+            if (index2 == -1) {
+                initPossibleMoves();
+                throw new BonusException(decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0)));
+            }
+            else
+            {
+                RealmColor firstBonus = decodeLetterToRealmColor(oldRewardStatus[index1].charAt(0));
+                RealmColor secondBonus = decodeLetterToRealmColor(oldRewardStatus[index2].charAt(0));
+                //.ordinal() returns the index of the enum in the enum list in the class
+                //since red is of highest prio, and it has ordinal 0, then the one with the LESSER ordinal should be applied first
+                //so, if firstBonus had a higher ordinal, it's switch with secondBonus such that firstBonus has the lower ordinal (and thus higher prio)
+                if (firstBonus.ordinal() > secondBonus.ordinal()) {
+                    RealmColor temporary = firstBonus;
+                    firstBonus = secondBonus;
+                    secondBonus = temporary;
+                }
+                initPossibleMoves();
+                throw new BonusException(firstBonus, secondBonus);
+            }
+        }
+        initPossibleMoves();
         return true;
     }
 
@@ -393,23 +430,23 @@ public class Dragon extends Creature {
     }
 
     public String getFirstRowRewardString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X" : encode(rewards[0]);
+        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X " : encode(rewards[0]);
     }
 
     public String getSecondRowRewardString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X" : encode(rewards[1]);
+        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X " : encode(rewards[1]);
     }
 
     public String getThirdRowRewardString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X" : encode(rewards[2]);
+        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X " : encode(rewards[2]);
     }
 
     public String getFourthRowRewardString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X" : encode(rewards[3]);
+        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X " : encode(rewards[3]);
     }
 
     public String getCornerRewardString() {
-        return allDead() ? "X" : encode(rewards[4]);
+        return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
