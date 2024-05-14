@@ -193,14 +193,6 @@ public class Dragon extends Creature {
         return face == null && wings == null && heart == null && tail == null;
     }
 
-    //A method used to know whether all Dragons in the Dragon array are dead or not
-    public boolean allDead() {
-        boolean dead = true;
-        for (int i = 0; i < 4; i++)
-            dead = dead && Dragons[i].isDead();
-        return dead;
-    }
-
     public String getRewardStringDependingOnIndex(int index){
         //0 -> FirstRow
         //1 -> SecondRow
