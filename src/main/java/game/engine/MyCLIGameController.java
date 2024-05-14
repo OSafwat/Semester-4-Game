@@ -206,7 +206,6 @@ public class MyCLIGameController {
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
         System.out.println("It is currently the " + "PASSIVE" + " player's turn.");
-        handleDiceDisplay(getForgottenRealmDice(), 1);
         boolean valid = false;
         while(!valid) {
             try {
