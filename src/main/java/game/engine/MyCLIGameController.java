@@ -211,7 +211,7 @@ public class MyCLIGameController {
         while(!valid) {
             try {
                 valid = turnCompletion(player);
-            } catch (ExhaustedResourceException e) {
+            } catch (NoAvailableMovesException e) {
                 System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
                 return;
             }
@@ -255,7 +255,7 @@ public class MyCLIGameController {
         while(!valid) {
             try {
                 valid = turnCompletion(player);
-            } catch (ExhaustedResourceException e) {
+            } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
                 boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
                 if (useTimeWarp) {
@@ -271,7 +271,7 @@ public class MyCLIGameController {
         return true;
     }
 
-    public boolean turnCompletion(Player player) throws ExhaustedResourceException{
+    public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
@@ -288,7 +288,7 @@ public class MyCLIGameController {
                     System.out.println("I will now give you a chance to select properly.");
                     handleDiceDisplay(diceSet, indicator);
                     continue;
-                } catch (ExhaustedResourceException e) {
+                } catch (NoAvailableMovesException e) {
                     System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
                     handleDiceDisplay(diceSet, indicator);
                     continue;
@@ -344,7 +344,7 @@ public class MyCLIGameController {
         handleDiceDisplay(availableDice, 2);
         try {
             getAllPossibleMovesForDiceSet(player, availableDice);
-        } catch (ExhaustedResourceException e) {
+        } catch (NoAvailableMovesException e) {
             System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
             return;
         }
@@ -357,7 +357,7 @@ public class MyCLIGameController {
                 System.out.println("Invalid input.\nI will now give you a chance to select properly.");
                 handleDiceDisplay(availableDice, 2);
                 continue;
-            } catch (ExhaustedResourceException e) {
+            } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
                 handleDiceDisplay(availableDice, 2);
                 continue;
@@ -435,7 +435,7 @@ public class MyCLIGameController {
             }
         }
     }
-    public Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, ExhaustedResourceException{
+    public Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, NoAvailableMovesException{
         Arrays.sort(diceSet);
         int diceCount = diceSet.length;
         System.out.println("Please enter a number from 1 to " + diceCount + " which indicates which dice you would like to use.");
@@ -458,7 +458,7 @@ public class MyCLIGameController {
         Dice chosenDie = diceSet[chosenDiceIndex-1];
         Move[] moveList = getPossibleMovesForADie(player, chosenDie);
         if (moveList.length == 0) {
-            throw new ExhaustedResourceException();
+            throw new NoAvailableMovesException();
         }
         return chosenDie;
     }
@@ -566,7 +566,7 @@ public class MyCLIGameController {
         while (!valid) {
             try {
                 chosenDie = handleColorBonusException(realmColor, player);
-            } catch (ExhaustedResourceException e) {
+            } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm.. it seems that the " + realmColor + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                 return;
             } catch (InvalidBonusSelection e) {
@@ -634,14 +634,14 @@ public class MyCLIGameController {
                 dice[i] = availableDice.get(i);
             moveSet = getAllPossibleMovesForDiceSet(player, dice);
         }
-        catch (ExhaustedResourceException e)
+        catch (NoAvailableMovesException e)
         {
             return moveSet;
         }
         return moveSet;
     }
 
-    public Move[] getAllPossibleMovesForDiceSet (Player player, Dice[] dice) throws ExhaustedResourceException{
+    public Move[] getAllPossibleMovesForDiceSet (Player player, Dice[] dice) throws NoAvailableMovesException{
         ArrayList<Move> moveSet = new ArrayList<>();
         for (Dice die: dice) {
             moveSet.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
@@ -649,7 +649,7 @@ public class MyCLIGameController {
         removeGreenDuplicate(moveSet);
         int moveSetSize = moveSet.size();
         if (moveSetSize == 0)
-            throw new ExhaustedResourceException();
+            throw new NoAvailableMovesException();
         Move[] moves = new Move[moveSetSize];
         for (int index = 0; index < moveSetSize; index++) {
             moves[index] = moveSet.get(index);
@@ -731,7 +731,7 @@ public class MyCLIGameController {
             while (!valid) {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
-                } catch (ExhaustedResourceException e) {
+                } catch (NoAvailableMovesException e) {
                     System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                     return true;
                 } catch (InvalidBonusSelection e) {
@@ -750,7 +750,7 @@ public class MyCLIGameController {
                 while (!valid) {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
-                    } catch (ExhaustedResourceException e) {
+                    } catch (NoAvailableMovesException e) {
                         System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                         return true;
                     } catch (InvalidBonusSelection e) {
@@ -772,14 +772,14 @@ public class MyCLIGameController {
         }
     }
 
-    public Dice handleColorBonusException(RealmColor color, Player player) throws ExhaustedResourceException, InvalidBonusSelection, InvalidDiceSelectionException{
+    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
         Dice finalDie = null;
         String input = "";
         player.getScoreSheet().displayColoredScoreSheet();
         if (color == RealmColor.WHITE) {
             Move[] possibleMoves = getAllPossibleMoves(player);
             if (possibleMoves.length == 0)
-                throw new ExhaustedResourceException();
+                throw new NoAvailableMovesException();
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
                 System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
@@ -821,7 +821,7 @@ public class MyCLIGameController {
             canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
         }
         if (!canYouUseThisBonus) {
-            throw new ExhaustedResourceException();
+            throw new NoAvailableMovesException();
         }
         if (color == RealmColor.GREEN) {
             System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
