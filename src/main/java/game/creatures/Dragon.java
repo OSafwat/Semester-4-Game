@@ -65,7 +65,7 @@ public class Dragon extends Creature {
         rewards = new String[5];
         int pointer = 0;
         String[] defaultRewards = new String[]{"GreenBonus", "YellowBonus", "BlueBonus", "ElementalCrest", "ArcaneBoost"};
-        String filePath = "../../../main/resources/config/EmberFallDominionRewards.properties";
+        String filePath = "src/main/resources/config/EmberfallDominionRewards.properties";
         try (BufferedReader br = new BufferedReader( new FileReader(filePath))) {
             String nextLine;
             while ((nextLine = br.readLine()) != null) {
