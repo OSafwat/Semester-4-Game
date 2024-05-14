@@ -268,7 +268,6 @@ public class MyCLIGameController {
         if (useTimeWarp) {
             return playTurn(player, true);
         }
-        while (turnCompletion(diceCount, player));
         return true;
     }
 
