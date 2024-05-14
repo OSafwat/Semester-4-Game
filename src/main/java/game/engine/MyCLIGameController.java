@@ -269,6 +269,12 @@ public class MyCLIGameController {
         return true;
     }
 
+    public void resetRed() {
+        if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
+            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
+        }
+    }
+
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         getAllPossibleMovesForDiceSet(player, diceSet);
@@ -281,6 +287,7 @@ public class MyCLIGameController {
             Dice chosenDie;
             while (true) {
                 try {
+                    resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
                 } catch (InvalidDiceSelectionException e) {
                     System.out.println("I will now give you a chance to select properly.");
