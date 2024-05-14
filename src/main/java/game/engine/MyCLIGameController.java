@@ -772,11 +772,14 @@ public class MyCLIGameController {
         }
     }
 
-    public Dice handleColorBonusException(RealmColor color, Player player) {
+    public Dice handleColorBonusException(RealmColor color, Player player) throws ExhaustedResourceException, InvalidBonusSelection, InvalidDiceSelectionException{
         Dice finalDie = null;
         String input = "";
         player.getScoreSheet().displayColoredScoreSheet();
         if (color == RealmColor.WHITE) {
+            Move[] possibleMoves = getAllPossibleMoves(player);
+            if (possibleMoves.length == 0)
+                throw new ExhaustedResourceException();
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
                 System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
@@ -802,6 +805,14 @@ public class MyCLIGameController {
                 case 4: color = RealmColor.MAGENTA; break;
                 case 5: color = RealmColor.YELLOW; break;
             }
+            possibleMoves = getAllPossibleMoves(player);
+            boolean canYouUseThisBonus = false;
+            for (Move move: possibleMoves) {
+                canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
+            }
+            if (!canYouUseThisBonus) {
+                throw new InvalidBonusSelection();
+            }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
         Move[] possibleMoves = getAllPossibleMoves(player);
@@ -810,39 +821,31 @@ public class MyCLIGameController {
             canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
         }
         if (!canYouUseThisBonus) {
-            System.out.println("Unfortunately it seems that you cannot use this bonus.\nWe will now proceed with the game as normal.");
-            return new Dice(1000);
-            //1000 is a dummy value so that the calling method can tell that executing this bonus is not possible
+            throw new ExhaustedResourceException();
         }
         if (color == RealmColor.GREEN) {
-            input = "";
-            while (input.isEmpty()) {
-                System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
-                input = scanner.next();
-                boolean validInput = false;
-                for (int i = 2; i <= 12 && !validInput; i++)
-                    validInput = input.equals("" + i);
-                if (!validInput) {
-                    input = "";
-                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                }
+            System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 2; i <= 12 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
             gameBoard.setGreen(value);
         }
         else if (color == RealmColor.RED) {
-            input = "";
-            while (input.isEmpty()) {
-                System.out.println("Please input a value between 1-6 that you would like to use to attack the RED Realm with!");
-                input = scanner.next();
-                boolean validInput = false;
-                for (int i = 1; i <= 6 && !validInput; i++)
-                    validInput = input.equals("" + i);
-                if (!validInput) {
-                    input = "";
-                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                }
+            System.out.println("Please input a value between 1-6 that you would like to use to attack the RED Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 1; i <= 6 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
             }
             int value = Integer.parseInt(input);
             finalDie = new RedDice(value);
@@ -857,17 +860,14 @@ public class MyCLIGameController {
             ((RedDice)finalDie).selectsDragon(Integer.parseInt(input));
         }
         else {
-            input = "";
-            while (input.isEmpty()) {
-                System.out.println("Please input a value between 1-6 that you would like to use to attack the " + color + " Realm with!");
-                input = scanner.next();
-                boolean validInput = false;
-                for (int i = 1; i <= 6 && !validInput; i++)
-                    validInput = input.equals("" + i);
-                if (!validInput) {
-                    input = "";
-                    System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                }
+            System.out.println("Please input a value between 1-6 that you would like to use to attack the " + color + " Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 1; i <= 6 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
             }
             int value = Integer.parseInt(input);
             switch (color) {
@@ -875,12 +875,6 @@ public class MyCLIGameController {
                 case MAGENTA: finalDie = new MagentaDice(value); break;
                 case YELLOW: finalDie = new YellowDice(value);
             };
-        }
-        Move[] possibleMoveset = getPossibleMovesForADie(player, finalDie);
-        if (possibleMoveset.length == 0) {
-            System.out.println("This die does not have any valid moves.");
-            System.out.println("I will rewind time to give you another chance at utilizing your boost properly. \nGood luck!");
-            finalDie = null;
         }
         return finalDie;
     }
