@@ -259,7 +259,7 @@ public class MyCLIGameController {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-                boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+                useTimeWarp = handleTimeWarps(player.getTimeWarps());
                 if (useTimeWarp) {
                     return playTurn(player, true);
                 }
