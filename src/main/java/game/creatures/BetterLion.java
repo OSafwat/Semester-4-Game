@@ -41,12 +41,18 @@ public class BetterLion extends Creature{
             this.properties.setProperty("hit11Reward", null);
         }
 
-        scores = new int[11];
-        score = 0;
+        this.scores = new int[11];
+        this.score = 0;
     }
     @Override
     public int getElementalCrest() {
-
+        int elementalCrestCount = 0;
+        for(int i = 1; i < 11; i++) {
+            if(properties.getProperty("hit"+i+"Reward").equals("ElementalCrest") && scores[i-1]!=0) {
+                elementalCrestCount++;
+            }
+        }
+        return elementalCrestCount;
     }
 
     @Override
