@@ -593,7 +593,7 @@ public class MyCLIGameController {
         return getAllPossibleMovesForDiceSet(player, getAvailableDice());
     }
 
-    public Move[] getAllPossibleMovesForDiceSet(Player player, Dice[] dice) {
+    public Move[] getAllPossibleMovesForDiceSet (Player player, Dice[] dice) throws ExhaustedResourceException{
         ArrayList<Move> moveSet = new ArrayList<>();
         for (Dice die: dice) {
             moveSet.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
