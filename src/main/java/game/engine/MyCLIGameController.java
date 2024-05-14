@@ -170,17 +170,26 @@ public class MyCLIGameController {
         for (int round = 0; round < numberOfRounds; round++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+            gameBoard.resetGreenPostColorBonus();
             playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
+            gameBoard.resetGreenPostColorBonus();
             moveAllIntoForgotten();
+            gameBoard.resetGreenPostColorBonus();
             playForgottenTurn(getPassivePlayer());
+            gameBoard.resetGreenPostColorBonus();
             gameBoard.resetAllDice();
             switchPlayer();
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+            gameBoard.resetGreenPostColorBonus();
             playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
+            gameBoard.resetGreenPostColorBonus();
             moveAllIntoForgotten();
+            gameBoard.resetGreenPostColorBonus();
             playForgottenTurn(getPassivePlayer());
+            gameBoard.resetGreenPostColorBonus();
             gameBoard.resetAllDice();
+            gameBoard.resetGreenPostColorBonus();
             switchPlayer();
         }
         Player player1= gameBoard.getPlayer1();
@@ -203,6 +212,7 @@ public class MyCLIGameController {
     }
 
     public void playForgottenTurn(Player player) {
+        gameBoard.resetGreenPostColorBonus();
         player.getScoreSheet().displayColoredScoreSheet();
         System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
         System.out.println("It is currently the " + "PASSIVE" + " player's turn.");
@@ -240,7 +250,9 @@ public class MyCLIGameController {
 
     //If this is a timewarp reroll call, there is no need to redisplay the score sheet and the "We will now roll the dice" message
     public boolean playTurn(Player player, boolean isThisATimeWarpRerollCall) {
+        gameBoard.resetGreenPostColorBonus();
         if (!isThisATimeWarpRerollCall) {
+            gameBoard.resetGreenPostColorBonus();
             player.getScoreSheet().displayColoredScoreSheet();
             System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
             System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
@@ -690,7 +702,7 @@ public class MyCLIGameController {
             GreenDice correctedDice = new GreenDice(dice.getValue() + gameBoard.getWhite().getValue());
             dice = correctedDice;
         }
-        gameBoard.setWhite();
+        gameBoard.resetGreenPostColorBonus();
         Move[] playerAllMoves= player.getAllPossibleMoves();
         //System.out.println(playerAllMoves.length);
         ArrayList<Move> result = new ArrayList<>();
@@ -786,7 +798,7 @@ public class MyCLIGameController {
     }
 
     public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
-        gameBoard.setWhite();
+        gameBoard.resetGreenPostColorBonus();
         Dice finalDie = null;
         String input = "";
         player.getScoreSheet().displayColoredScoreSheet();
@@ -849,7 +861,7 @@ public class MyCLIGameController {
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
-            gameBoard.setGreen(value);
+            gameBoard.setGreenForColorBonus(value);
         }
         else if (color == RealmColor.RED) {
             System.out.println("Please input a value between 1-6 that you would like to use to attack the RED Realm with!");
@@ -996,9 +1008,11 @@ public class MyCLIGameController {
 
     public static void main (String[] args) {
         MyCLIGameController cli = new MyCLIGameController();
-        ((RedDice)cli.getAllDice()[0]).selectsDragon(1);
-        cli.makeMove(cli.getGameBoard().getPlayer1(), new Move(cli.getAllDice()[0], cli.getGameBoard().getPlayer1().getScoreSheet().dragon));
-        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().dragon.getAllPossibleMoves());
+        cli.getGameBoard().getPlayer1().getScoreSheet().dragon.Dragons[1].face = null;
+        cli.getGameBoard().getPlayer1().getScoreSheet().dragon.Dragons[2].face = null;
+        cli.getGameBoard().getPlayer1().getScoreSheet().displayColoredScoreSheet();
+        cli.startGame();
+
     }
 
 }
