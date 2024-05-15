@@ -1,7 +1,6 @@
 name: Autograding Tests
 'on':
 - push
-- workflow_dispatch
 - repository_dispatch
 permissions:
   checks: write
@@ -16,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
     - name: CLIGameControllerTest
       id: cligamecontrollertest
-      uses: education/autograding-command-grader@v1
+      uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: CLIGameControllerTest
         setup-command: mvn compile
@@ -24,7 +23,7 @@ jobs:
         timeout: 3
         max-score: 10
     - name: Autograding Reporter
-      uses: education/autograding-grading-reporter@v1
+      uses: classroom-resources/autograding-grading-reporter@v1
       env:
         CLIGAMECONTROLLERTEST_RESULTS: "${{steps.cligamecontrollertest.outputs.result}}"
       with:
