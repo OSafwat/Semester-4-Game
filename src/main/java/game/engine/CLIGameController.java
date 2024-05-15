@@ -525,7 +525,7 @@ public class CLIGameController extends GameController {
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
-            RealmColor theBonusColor = bException.getRealmColor1();
+            //RealmColor theBonusColor = bException.getRealmColor1();
             RealmColor theBonusColor = bException.getRealmColor1();
             int numberToAttackWith =0;
             do{
