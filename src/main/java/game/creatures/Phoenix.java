@@ -267,6 +267,9 @@ public class Phoenix extends Creature{
                     case "YellowBonus":
                         rewardString = getRewardString(key, value.get(i));
                         break;
+                    case "EssenceBonus":
+                        rewardString = getRewardString(key, value.get(i));
+                        break;
                     case "ElementalCrest":
                         rewardString = getRewardString(key, value.get(i));
                         break;
