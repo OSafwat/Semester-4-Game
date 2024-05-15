@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -217,30 +215,64 @@ public class Phoenix extends Creature{
             // get the property value and store them in the HashMap rewardLocation
             if (prop.isEmpty()) throw new IOException("Properties file is empty properties");
 
-            for (String key : prop.stringPropertyNames()) {
-                String value = prop.getProperty(key);
+            for (int i = 0; i < 11; i++) {
+                String rewardString = prop.getProperty("hit" + (i + 1) + "Reward");
+                if (rewardString == null) {
+                    switch (i) {
+                        case 0:
+                            rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {0})));
+                            break;
 
-                /* The Pattern and Matcher classes are predefined java classes. Pattern is a class that is used for defining regex expression
-                 * that would be matched later using the Matcher class to parse strings for desired values. In this case, to avoid any conflicts
-                 * upon changing the "hit Reward" identifying text in the config files, a regex expression is used to parse the text for the "hit"
-                 * number, to be able to store the index in the respective HashMap / Array depending on the use
-                 */
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(key);
+                        case 1:
+                            rewardLocations.get("").add(1);
+                            break;
 
-                int index = 0;
-                while (matcher.find()) {
-                    String number = matcher.group();
-                    index = Integer.parseInt(number) - 1;
-                }
+                        case 2:
+                            rewardLocations.put("TimeWarp", new ArrayList<>(Arrays.asList(new Integer[] {2})));
+                            break;
 
-                if (((String) value) == null) {
-                    rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
-                }
-                else if (rewardLocations.containsKey((String) value)) {
-                    rewardLocations.get((String) value).add(index);
+                        case 3:
+                            rewardLocations.put("GreenBonus", new ArrayList<>(Arrays.asList(new Integer[] {3})));
+                            break;
+
+                        case 4:
+                            rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {4})));
+                            break;
+
+                        case 5:
+                            rewardLocations.put("RedBonus", new ArrayList<>(Arrays.asList(new Integer[] {5})));
+                            break;
+                            
+                        case 6:
+                            rewardLocations.put("ElementalCrest", new ArrayList<>(Arrays.asList(new Integer[] {6})));
+                            break;
+                        
+                        case 7:
+                            rewardLocations.get("TimeWarp").add(7);
+                            break;
+                            
+                        case 8:
+                            rewardLocations.put("BlueBonus", new ArrayList<>(Arrays.asList(new Integer[] {8})));
+                            break;
+                        
+                        case 9:
+                            rewardLocations.put("YellowBonus", new ArrayList<>(Arrays.asList(new Integer[] {9})));
+                            break;
+                            
+                        case 10:
+                            rewardLocations.get("ArcaneBoost").add(10);
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                } else if (rewardString == "null") {
+                    if (!rewardLocations.containsKey("")) rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {i})));
+                    else rewardLocations.get("").add(i);
+                } else if (rewardLocations.containsKey(rewardString)) {
+                    rewardLocations.get(rewardString).add(i);
                 } else {
-                    rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
+                    rewardLocations.put(rewardString, new ArrayList<>(Arrays.asList(new Integer[] {i})));
                 }
             }
 
@@ -267,7 +299,6 @@ public class Phoenix extends Creature{
         // Iterate over the key-value pairs in the rewardLocations HashMap
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
             String key = entry.getKey();
-            //System.out.println(key);
             ArrayList<Integer> value = entry.getValue();
 
             for (int i = 0; i < value.size(); i++) {
