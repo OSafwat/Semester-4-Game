@@ -1,20 +1,12 @@
 package game.creatures;
 
 import java.io.File;
-
-/* ISSUES:-
- *  - taking care of incrementing and decrementing abs/tws/ecs type shit
- */
-
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -25,14 +17,11 @@ import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.ArcanePrism;
 import game.dice.Dice;
-import game.dice.MagentaDice;
 import game.dice.YellowDice;
 import game.engine.Move;
-import game.engine.ScoreSheet;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.InvalidMoveException;
 
 public class Lion extends Creature{
     private int[] lions;
@@ -48,10 +37,10 @@ public class Lion extends Creature{
         arcaneBoosts= new ArrayList<>();
         timeWarps = new ArrayList<>();
         initLions();
-        this.deadLions=0;
-        this.score=0;
+        this.deadLions = 0;
+        this.score = 0;
         initScoreSheet();
-        this.elementalCrest=0;
+        this.elementalCrest = 0;
         populateRewardLocationFromConfigFile();
         populateMappedRewardLocation();
 
@@ -73,6 +62,7 @@ public class Lion extends Creature{
             properties.setProperty("hit10Reward", "MagentaBonus");
             properties.setProperty("hit11Reward", "null");
         }
+
         for(int i = 0; i < 11; i++) {
             if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
@@ -85,57 +75,61 @@ public class Lion extends Creature{
         }
 
     }
+
     public ArrayList<TimeWarp> getAllTimeWarps() {
         return timeWarps;
     }
 
-    //A method to get all the arcane boost powers
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
     }
+
     public int[] getLions(){
         return this.lions;
     }
+
     private void setLions(int[] lions){
         this.lions=lions;
     }
+
     private void initLions(){
         setLions(new int[11]);
     }
+
     private void updateLions(Dice dice){
-        this.lions[deadLions]=calculateScore(dice);
+        this.lions[deadLions] = calculateScore(dice);
     }
 
     public int getDeadLions(){
         return this.deadLions;
     }
+
     private void setDeadLions (int deadLions){
-        this.deadLions=deadLions;
+        this.deadLions = deadLions;
     }
+
     private void updateDeadLions(){
-        setDeadLions(deadLions+1);
+        setDeadLions(deadLions + 1);
     }
 
     @Override
     public int getScore(){
         return this.score;
     }
+
     private int calculateScore(Dice dice){
-        int value=dice.getValue();
+        int value = dice.getValue();
         int ans;
-        if(deadLions+1==4||deadLions+1==6||deadLions+1==9){
-            ans=value*2;
-        }
-        else if(deadLions+1==11){
-            ans=value*3;
-        }
-        else{
-            ans=value;
-        }
+
+        if (deadLions + 1 == 4 || deadLions + 1 == 6 || deadLions + 1 == 9) ans = value * 2;
+        else if (deadLions + 1 == 11) ans = value * 3;
+        else ans = value;
+
         return ans;
     }
+
     private void updateScore(Dice dice){
-        this.score+=calculateScore(dice);
+        this.score += calculateScore(dice);
     }
 
     @Override
@@ -146,10 +140,8 @@ public class Lion extends Creature{
         sb.append("+-----------------------------------------------------------------------+\n");
 
         sb.append("|  H  |");
-        for (int i = 0; i < 11; i++) {
-            if (this.lions[i] == 0) sb.append("0    |");
-            else sb.append(lions[i]).append("    |");
-        }
+        for (int i = 0; i < 11; i++) sb.append(lions[i]).append("    |");
+
         sb.append("\n");
         sb.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
         sb.append("|  R  |");
@@ -166,25 +158,33 @@ public class Lion extends Creature{
 
         return (sb.toString());
     }
-    private void setScoreSheet(String scoreSheet){
+
+    private void setScoreSheet(String scoreSheet) {
         this.scoresheet=scoreSheet;
     }
-    private void initScoreSheet(){
-        StringBuilder temp= new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
+
+    private void initScoreSheet() {
+        StringBuilder temp = new StringBuilder("Radiant Savanna: Solar Lion (YELLOW REALM):\n");
         temp.append("+-----------------------------------------------------------------------+\n");
         temp.append("|  #  |1    |2    |3    |4    |5    |6    |7    |8    |9    |10   |11   |\n");
         temp.append("+-----------------------------------------------------------------------+\n");
+
         temp.append("|  H  |");
-        for (int i = 0; i < 11; i++)
-            temp.append("0    |");
+
+        for (int i = 0; i < 11; i++) temp.append("0    |");
+            
         temp.append("\n");
+
         temp.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
+
         temp.append("|  R  |");
+
         for (int i = 0 ; i < 11; i++) {
             String rewardToken = mappedRewardLocations[i];
-            if (rewardToken == null) temp.append("     |");
+            if (rewardToken == "") temp.append("     |");
             else temp.append(rewardToken).append("   |");
         }
+
         temp.append("+-----------------------------------------------------------------------+\n\n");
     }
 
@@ -203,18 +203,17 @@ public class Lion extends Creature{
 
     @Override
     public boolean checkMove(Dice dice){
-        int diceValue=dice.getValue();
-        return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions<11;
+        int diceValue = dice.getValue();
+        return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions < 11;
     }
+
     @Override
     public boolean makeMove(Dice dice) throws BonusException{
-        if(!checkMove(dice)){
-            System.out.print("erm what the sigma");
-            return false;
-        }
+        if(!checkMove(dice)) return false;
+
         updateLions(dice);
         updateScore(dice);
-        updateDeadLions(); //leave this after the updatescoresheet method bc you change the deadlions number here
+
         ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
         ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
@@ -225,60 +224,66 @@ public class Lion extends Creature{
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
             if (ArcaneBoostArrayList.get(i) == deadLions) arcaneBoosts.add(new ArcaneBoost());
         }
-        switch(properties.getProperty("hit"+deadLions+"Reward")){
-            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
+
+        updateDeadLions(); //leave this after the updatescoresheet method bc you change the deadlions number here
+        
+        switch(properties.getProperty("hit" + deadLions + "Reward")){
             case "RedBonus": throw new BonusException(RealmColor.RED);
+            case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
             case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
             case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+            case "EssenceBonus": throw new BonusException(RealmColor.WHITE);
             default: return true;
         }
-
     }
+
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
         if(deadLions == 11) return new ArrayList<>();
+
         ArrayList<Move> possibleMoves = new ArrayList<>();
-        for(int i = 0; i < 6; i++) {
-            Move idk = new Move(new YellowDice(i + 1), this);
-            possibleMoves.add(idk);
+
+        for(int i = 1; i <= 6; i++) {
+            Move possibleMove = new Move(new YellowDice(i), this);
+            possibleMoves.add(possibleMove);
         }
+
         return possibleMoves;
     }
 
     public void populateRewardLocationFromConfigFile() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/RadiantSvannaRewards.properties")) {
-            if (input == null) throw new IOException("config file not found crodie default config shall be put into use");
+            if (input == null) throw new IOException("config file not found default config shall be put into use");
+
             Properties prop = new Properties();
             prop.load(input);
-            if (prop.isEmpty() || prop.size() < 11) throw new IOException("Properties file is empty or contains fewer than 11 properties");
+
+            if (prop.isEmpty()) throw new IOException("Properties file is empty");
+
             for (String key : prop.stringPropertyNames()) {
                 String value = prop.getProperty(key);
+
                 Pattern pattern = Pattern.compile("\\d+");
                 Matcher matcher = pattern.matcher(key);
+
                 int index = 0;
+
                 while (matcher.find()) {
                     String number = matcher.group();
                     index = Integer.parseInt(number) - 1;
                 }
 
-                if (((String) value) == null) {
-                    rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
-                }
-                else if (rewardLocations.containsKey((String) value)) {
-                    rewardLocations.get((String) value).add(index);
-                } else {
-                    rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
-                }
+                if (((String) value) == null) rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {index})));
+                else if (rewardLocations.containsKey((String) value)) rewardLocations.get((String) value).add(index);
+                else rewardLocations.put((String) value, new ArrayList<>(Arrays.asList(new Integer[] {index})));
             }
-
-
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             rewardLocations.put("", new ArrayList<>(Arrays.asList(new Integer[] {1,2,4,7,9,11})));
             rewardLocations.put("TimeWarp", new ArrayList<>(Arrays.asList(new Integer[] {3})));
-            rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {6})));
             rewardLocations.put("RedBonus", new ArrayList<>(Arrays.asList(new Integer[] {5})));
+            rewardLocations.put("ArcaneBoost", new ArrayList<>(Arrays.asList(new Integer[] {6})));
             rewardLocations.put("ElementalCrest", new ArrayList<>(Arrays.asList(new Integer[] {8})));
             rewardLocations.put("MagentaBonus", new ArrayList<>(Arrays.asList(new Integer[] {10})));
         }
@@ -286,7 +291,6 @@ public class Lion extends Creature{
     public void populateMappedRewardLocation() {
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
             String key = entry.getKey();
-            //System.out.println(key);
             ArrayList<Integer> value = entry.getValue();
 
             for (int i = 0; i < value.size(); i++) {
@@ -307,6 +311,9 @@ public class Lion extends Creature{
                     case "YellowBonus":
                         rewardString = getYellowBonusString(value.get(i));
                         break;
+                    case "EssenceBonus":
+                        rewardString = getEssenceBonusString(value.get(i));
+                        break;
                     case "ElementalCrest":
                         rewardString = getElementalCrestString(value.get(i));
                         break;
@@ -325,6 +332,7 @@ public class Lion extends Creature{
         }
 
     }
+
     public String getRedBonusString(int n) {
         String rewardName = "RedBonus";
         String output = "X ";
@@ -375,6 +383,17 @@ public class Lion extends Creature{
         for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
             if (rewardLocations.get(rewardName).get(i) == n) {
                 output = this.lions[rewardLocations.get(rewardName).get(i)] != 0 ? "X " : "YB";
+            }
+        }
+        return output;
+    }
+
+    public String getEssenceBonusString(int n) {
+        String rewardName = "EssenceBonus";
+        String output = "X ";
+        for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+            if (rewardLocations.get(rewardName).get(i) == n) {
+                output = this.lions[rewardLocations.get(rewardName).get(i)] != 0 ? "X " : "EB";
             }
         }
         return output;
