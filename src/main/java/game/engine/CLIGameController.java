@@ -525,6 +525,7 @@ public class CLIGameController extends GameController {
             player.updateGameScore();
             return temp;
         } catch (BonusException bException) {
+            //RealmColor theBonusColor = bException.getRealmColor1();
             RealmColor theBonusColor = bException.getRealmColor1();
             int numberToAttackWith =0;
             do{
@@ -540,8 +541,7 @@ public class CLIGameController extends GameController {
                     System.out.println("please enter a valid number");
                 }
             } while (true);
-        }
-        // }catch (BonusTwoException bonus2exception){
+        } // catch (BonusTwoException bonus2exception){
         //     RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
         //     RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
 
