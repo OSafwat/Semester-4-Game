@@ -18,6 +18,7 @@ import game.dice.MagentaDice;
 import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
+import game.engine.enums.RewardStates;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
@@ -37,6 +38,18 @@ public class Phoenix extends Creature{
         allPossibleMoves = new ArrayList<>();
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
+        initRewards();
+    }
+
+    public void initRewards() {
+        ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
+        ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
+
+        for (int i = 0; i < TimeWarpArrayList.size(); i++)
+            timeWarps.add(new TimeWarp());
+
+        for (int i = 0; i < ArcaneBoostArrayList.size(); i++)
+            arcaneBoosts.add(new ArcaneBoost());
     }
 
     @Override
@@ -105,11 +118,19 @@ public class Phoenix extends Creature{
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-                if (TimeWarpArrayList.get(i) == killedPhoenixes) timeWarps.add(new TimeWarp());
+                if (TimeWarpArrayList.get(i) == killedPhoenixes - 1) {
+                    timeWarps.get(0).setStatus(RewardStates.ACQUIRED);
+                    timeWarps.remove(0);
+                    break;
+                }
             }
 
             for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-                if (ArcaneBoostArrayList.get(i) == killedPhoenixes) arcaneBoosts.add(new ArcaneBoost());
+                if (ArcaneBoostArrayList.get(i) == killedPhoenixes - 1){
+                    arcaneBoosts.get(0).setStatus(RewardStates.ACQUIRED);
+                    arcaneBoosts.remove(0);
+                    break;
+                };
             }
 
             String rewardString = mappedRewardLocations[killedPhoenixes - 1];

@@ -155,8 +155,8 @@ public class MyCLIGameController {
         do {
             String choice = scanner.nextLine();
             if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
-                System.out.println("Description goes here.\n");
-                System.out.println("Press 'i' to get more information about the game or 'c' to continue straight away to the game.\n");
+                System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                break;
             } else if (!choice.isEmpty() && choice.charAt(0)=='c')
                 break;
             else
