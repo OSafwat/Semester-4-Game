@@ -339,6 +339,14 @@ public class Phoenix extends Creature{
                     }
                 }
                 break;
+            
+            case "EssenceBonus":
+                for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
+                    if (rewardLocations.get(rewardName).get(i) == n) {
+                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EB";
+                    }
+                }
+                break;
 
             case "ElementalCrest":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
