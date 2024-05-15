@@ -21,7 +21,7 @@ import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
-    public Integer[] phoenixsReceivedHP;
+    public Integer[] phoenixes;
     int killedPhoenixes;
     public ArrayList<Move> allPossibleMoves;
     // A hash map that maps the rewards to their respective phoenix's death amounts
@@ -30,7 +30,7 @@ public class Phoenix extends Creature{
     public String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
-        phoenixsReceivedHP = new Integer[11];
+        phoenixes = new Integer[11];
         killedPhoenixes = 0;
         timeWarps = new ArrayList<>();
         arcaneBoosts = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Phoenix extends Creature{
 
         int counter = 0;
         for (int i = 0; i < rewardLocationsArray.size(); i++) {
-            if (phoenixsReceivedHP[rewardLocationsArray.get(i)] != null) counter++;
+            if (phoenixes[rewardLocationsArray.get(i)] != null) counter++;
         }
 
         return counter;
@@ -61,10 +61,10 @@ public class Phoenix extends Creature{
         sb.append("+-----------------------------------------------------------------------+\n");
 
         sb.append("|  H  |");
-        // for loop to loop on the phoenixsReceivedHP array which stored the hits received by each pheonix
+        // for loop to loop on the phoenixes array which stored the hits received by each pheonix
         for (int i = 0; i < 11; i++) {
-            if (phoenixsReceivedHP[i] == null) sb.append("0    |");
-            else sb.append(phoenixsReceivedHP[i]).append("    |");
+            if (phoenixes[i] == null) sb.append("0    |");
+            else sb.append(phoenixes[i]).append("    |");
         }
         sb.append("\n");
 
@@ -88,7 +88,7 @@ public class Phoenix extends Creature{
     public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
-            if (killedPhoenixes == 0 || phoenixsReceivedHP[killedPhoenixes - 1] == 6 || diceValue > phoenixsReceivedHP[killedPhoenixes - 1]) return true;
+            if (killedPhoenixes == 0 || phoenixes[killedPhoenixes - 1] == 6 || diceValue > phoenixes[killedPhoenixes - 1]) return true;
         }
 
         return false;
@@ -98,7 +98,7 @@ public class Phoenix extends Creature{
     public boolean makeMove(Dice dice) throws InvalidMoveException, BonusException {
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
-            phoenixsReceivedHP[killedPhoenixes++] = diceValue;
+            phoenixes[killedPhoenixes++] = diceValue;
             score += diceValue;
 
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
@@ -290,7 +290,7 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixsReceivedHP[killedPhoenixes - 1] == null? 0 : phoenixsReceivedHP[killedPhoenixes - 1] % 6;
+        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null? 0 : phoenixes[killedPhoenixes - 1] % 6;
 
         for (int i = latestReceivedHit + 1; i <= 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i), this));
@@ -303,7 +303,7 @@ public class Phoenix extends Creature{
             case "RedBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "RB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "RB";
                     }
                 }
                 break;
@@ -311,7 +311,7 @@ public class Phoenix extends Creature{
             case "GreenBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "GB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "GB";
                     }
                 }
                 break;
@@ -319,7 +319,7 @@ public class Phoenix extends Creature{
             case "BlueBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "BB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "BB";
                     }
                 }
                 break;
@@ -327,7 +327,7 @@ public class Phoenix extends Creature{
             case "MagentaBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "MB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "MB";
                     }
                 }
                 break;
@@ -335,7 +335,7 @@ public class Phoenix extends Creature{
             case "YellowBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "YB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "YB";
                     }
                 }
                 break;
@@ -343,7 +343,7 @@ public class Phoenix extends Creature{
             case "EssenceBonus":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EB";
                     }
                 }
                 break;
@@ -351,7 +351,7 @@ public class Phoenix extends Creature{
             case "ElementalCrest":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EC";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "EC";
                     }
                 }
                 break;
@@ -359,7 +359,7 @@ public class Phoenix extends Creature{
             case "ArcaneBoost":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "AB";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "AB";
                     }
                 }
                 break;
@@ -367,7 +367,7 @@ public class Phoenix extends Creature{
             case "TimeWarp":
                 for (int i = 0; i < rewardLocations.get(rewardName).size(); i++) {
                     if (rewardLocations.get(rewardName).get(i) == n) {
-                        output = phoenixsReceivedHP[rewardLocations.get(rewardName).get(i)] != null ? "X " : "TW";
+                        output = phoenixes[rewardLocations.get(rewardName).get(i)] != null ? "X " : "TW";
                     }
                 }
                 break;
