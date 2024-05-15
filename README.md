@@ -13,30 +13,29 @@ This repository contains the code for a Dice Realms: Quest for the Elemental Cre
    - **Testing**: Tests are run using JUnit 4.13.2 as specified in the Maven dependencies.
 4. **Familiarize yourself with the provided files**:
 
-   #### **DO NOT** alter all core provided files as per the below list. Any modifications to these files will be reverted, which might disrupt your game’s functionality.
+### **DO NOT** alter all core provided files as per the below list. Any modifications to these files will be reverted, which might disrupt your game’s functionality
 
-   - root folder (`/`)
-     - [`Grades.md`](/Grades.md)
-     - [`pom.xml`](/pom.xml)
-     - [`README.md`](/README.md)
-     - [`TemplateSkeleton.md`](/TemplateSkeleton.md)
-   - resources folder (`/src/main/resources/`)
-     - [`EmptyScoreSheet.txt`](/src/main/resources/EmptyScoreSheet.txt)
-     - config folder (`/src/main/resources/config/`)
-       - [`RoundsRewards.properties`](/src/main/resources/config/RoundsRewards.properties)
-       - [`EmberfallDominionRewards.properties`](/src/main/resources/config/EmberfallDominionRewards.properties)
-       - [`TerrasHeartlandRewards.properties`](/src/main/resources/config/TerrasHeartlandRewards.properties)
-       - [`TideAbyssRewards.properties`](/src/main/resources/config/TideAbyssRewards.properties)
-       - [`MysticalSkyRewards.properties`](/src/main/resources/config/MysticalSkyRewards.properties)
-       - [`RadiantSvannaRewards.properties`](/src/main/resources/config/RadiantSvannaRewards.properties)
-     - images folder (`/src/main/resources/images/`)
-       - [`Project-UML-Diagram.png`](/src/main/resources/images/Project-UML-Diagram.png)
-   - game folder (`/src/main/java/game/`)
-     - [`Main.java`](/src/main/java/game/Main.java)
-     - engine folder (`/src/main/java/game/engine/`)
-       - [`GameController.java`](/src/main/java/game/engine/GameController.java)
-   - [test folder](`/src/test/`) (`/src/test/`)
-     - All files created under the test folder, however, you are free and highly recommended to add more custom test cases files to ensure proper unit testing of your code.
+- root folder (`/`)
+  - [`Grades.md`](/Grades.md)
+  - [`README.md`](/README.md)
+  - [`TemplateSkeleton.md`](/TemplateSkeleton.md)
+- resources folder (`/src/main/resources/`)
+  - [`EmptyScoreSheet.txt`](/src/main/resources/EmptyScoreSheet.txt)
+  - config folder (`/src/main/resources/config/`)
+    - [`RoundsRewards.properties`](/src/main/resources/config/RoundsRewards.properties)
+    - [`EmberfallDominionRewards.properties`](/src/main/resources/config/EmberfallDominionRewards.properties)
+    - [`TerrasHeartlandRewards.properties`](/src/main/resources/config/TerrasHeartlandRewards.properties)
+    - [`TideAbyssRewards.properties`](/src/main/resources/config/TideAbyssRewards.properties)
+    - [`MysticalSkyRewards.properties`](/src/main/resources/config/MysticalSkyRewards.properties)
+    - [`RadiantSvannaRewards.properties`](/src/main/resources/config/RadiantSvannaRewards.properties)
+  - images folder (`/src/main/resources/images/`)
+    - [`Project-UML-Diagram.png`](/src/main/resources/images/Project-UML-Diagram.png)
+- game folder (`/src/main/java/game/`)
+  - [`Main.java`](/src/main/java/game/Main.java)
+  - engine folder (`/src/main/java/game/engine/`)
+    - [`GameController.java`](/src/main/java/game/engine/GameController.java)
+- [test folder](`/src/test/`) (`/src/test/`)
+  - All files created under the test folder, however, you are free and highly recommended to add more custom test cases files to ensure proper unit testing of your code.
 
 ## Grading
 
@@ -87,9 +86,7 @@ The [Grades.md](/Grades.md) file in your repository will be updated with milesto
 
 ## Objective
 
-Develop a fully functional game engine that can be played through the Command Line Interface (CLI). This milestone
-
-will focus on implementing the core functionality that allows two players to interact with the game and navigate through different realms, attack creatures and collect crests.
+Develop a fully functional game engine that can be played through the Command Line Interface (CLI). This milestone will focus on implementing the core functionality that allows two players to interact with the game and navigate through different realms, attack creatures and collect crests.
 
 ## Submission Deadlines
 
@@ -149,11 +146,68 @@ _**Note:** Refer to the provided test files for guidance on implementing the req
 
 # Milestone 3: Game GUI
 
-WIP
+Develop a fully functional game that can be played through a Graphical User Interface (GUI). This milestone will focus on implementing the UI/UX functionality that allows two players to interact with the game and navigate through different realms, attack creatures and collect crests.
 
-# Bonus Milestone 3: Game AI
+## **Submission Deadlines**
 
-WIP
+- **Final Deadline**: 02.06.2024
+  - Deliver a fully functional GUI-based game that will be graded on unit tests, functionality, code quality, and adherence to the project requirements.
+
+## **General Requirements**
+
+- Ensure the effects of any action performed in the GUI are reflected in the game engine and vice versa.
+- Players should be able to view all content at all times without the need to resize the window during gameplay.
+- The action currently happening in the game should always be clearly indicated in the GUI.
+- Handle all exceptions and input validations robustly. If an exception arises, notify the player and prohibit the erroneous action, prompting for an alternative.
+- The game should continue running and not terminate on exceptions.
+- Use only JavaFX for the GUI development. The use of SceneBuilder is allowed and encouraged.
+
+## **Game Requirements**
+
+- **Menu Scene**:
+  - Options for starting a new game for 2 players or 1 player vs. AI (note if AI is not implemented, notify player that it as WIP).
+  - Settings for configuration parameters and an exit button.
+- **Game Play Scene**:
+  - Display essential player information: Name and Status (active/passive)
+  - Display round numbers and their rewards
+  - Display designated area for turns and dice selection
+  - Display a dynamic tracknig of collected Elemental Crests
+  - Display a dynamic tracknig of Arcane Boost powers and their status (active / used)
+  - Display a dynamic tracknig of Time Warp powers and their status (active / used)
+  - Include a dynamic graphical representation of each player's ScoreSheet in their realm color, detailing hits, rewards, and scoring.
+  - Provide a designated area for dice rolling and Forgotten Realm.
+- **Game Over Scene**:
+  - Show scores per realm, total crests collected, and the total score declaring the winner and protector of Eldoria.
+
+## **GUI Requirements**
+
+- If the design is not immediately intuitive, include a help section or navigation menu for game instructions.
+- **Interaction**:
+  - Players should be able to select dice, attack regions, and see possible moves highlighted.
+  - Include visual or audio cues for each action to guide the player through the game flow.
+  - Utilize pop-ups for additional information without affecting the game continuation.
+- **Aesthetic Enhancements**:
+  - The use of images, animations, and background music is optional but recommended to enhance gameplay experience.
+
+## **AI Requirement**
+
+- If implementing AI, it should be capable of reasoned actions, not random guesses, and aim for a minimum score of 150 points. Incorporating AI grants a 5% bonus point with a competitive edge over other teams.
+
+## Additional Guidelines
+
+- You are free to update the `pom.xml` file to include any additional dependencies that are necessary for your project. However, please be cautious with these changes as they are not recommended without thorough testing. Unintended changes might affect the project build and its dependencies.
+- You will begin with `module-info.java` and `DiceRealms.java` as the initial JavaFX files. Feel free to modify these files to suit the needs of your project. They are designed to give you a starting point which you can expand based on your game design requirements.
+- FXML files should be added to the `gui` package. This organization helps maintain a clean project structure, making it easier to manage and locate your user interface components.
+- CSS files should be stored in the `resources/styles` folder. Organizing your stylesheets in this directory will help separate style from structure and keep your project organized.
+- Images files should be stored in the `resources/images` directory.
+- Videos files should be stored in the `resources/videos` directory.
+- Audio files should be stored in the `resources/sounds` directory.
+
+## **Submission Guidelines**
+
+- As a team, push/merge all completed work to the main branch and tag it `Milestone-3` for evaluation. Incorrect tagging may lead to your submission not being evaluated.
+- Refer to the provided instructions at the end of this README for how to tag your submissions correctly.
+- Any updates to the core files by the instructor will be synchronized with your forked repositories. Notifications will be communicated via Discord and email.
 
 # Version Control Best Practices
 
@@ -169,13 +223,13 @@ Proper use of version control is critical in managing and tracking the progress 
 - **Test Early and Often**: Write unit tests alongside your code. Tests are not just for finding bugs but also for ensuring that your code behaves as expected.
 - **Run Local Tests Frequently**: Before pushing your changes, run your tests locally to ensure everything works as expected. Use the command:
 
-```
+```bash
 mvn test
 ```
 
 - **Add Custom Tests**: While it's essential to pass the provided tests, creating your own can help cover more scenarios specific to your implementation.
 
-## Creating a Tag on GitHub Website:
+## Creating a Tag on GitHub Website
 
 1. Navigate to the repository on GitHub.
 2. Click on the “Releases” label on the right side.

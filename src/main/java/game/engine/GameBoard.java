@@ -17,6 +17,8 @@ public class GameBoard {
     ArrayList<Dice> forgottenRealmDice;
     ArrayList<Dice> passiveArcaneDice;
     ArrayList<Dice> arcaneDice;
+    int whiteValue;
+    int greenValue;
     public Dice getWhite(){
         for (Dice die: allDice) {
             if (die.getRealm().equals(RealmColor.WHITE))
@@ -32,15 +34,30 @@ public class GameBoard {
         return null;
     }
 
-    public void setGreen(int greenValue) {
+    public void setGreenForColorBonus(int greenValue) {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                this.greenValue = allDice[index].getValue();
                 allDice[index].setValue(greenValue);
             }
             else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                whiteValue = allDice[index].getValue();
                 allDice[index].setValue(0);
             }
         }
+    }
+
+    public void resetGreenPostColorBonus() {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                allDice[index].setValue(greenValue == -1 ? allDice[index].getValue() : greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                allDice[index].setValue(whiteValue == -1 ? allDice[index].getValue() : whiteValue);
+            }
+        }
+        this.greenValue = -1;
+        this.whiteValue = -1;
     }
     //constructor
     public GameBoard(){
@@ -68,6 +85,8 @@ public class GameBoard {
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
 
+        this.whiteValue = -1;
+        this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
 
     }
