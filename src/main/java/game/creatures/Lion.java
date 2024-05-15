@@ -253,11 +253,12 @@ public class Lion extends Creature{
     }
 
     public void populateRewardLocationFromConfigFile() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/RadiantSvannaRewards.properties")) {
-            if (input == null) throw new IOException("config file not found default config shall be put into use");
+        try {
+            File config = new File("src/main/resources/config/RadiantSvannaRewards.properties");
+            FileReader configReader = new FileReader(config);
 
             Properties prop = new Properties();
-            prop.load(input);
+            prop.load(configReader);
 
             if (prop.isEmpty()) throw new IOException("Properties file is empty");
 
@@ -327,7 +328,7 @@ public class Lion extends Creature{
                         rewardString = "";
                 }
 
-                mappedRewardLocations[value.get(i) - 1] = rewardString;
+                mappedRewardLocations[value.get(i)] = rewardString;
             }
         }
 

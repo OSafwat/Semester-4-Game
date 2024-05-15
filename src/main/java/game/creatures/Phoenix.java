@@ -1,5 +1,7 @@
 package game.creatures;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -200,17 +202,14 @@ public class Phoenix extends Creature{
     //implementing the config file reading
     public void populateRewardLocationFromConfigFile() {
         // Trying to read from the config (.properties file) the realm configuration
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config/MysticalSkyRewards.properties")) {
-            if (input == null) throw new IOException("Config file not found, default configuration will be used");
+        try {
+            File config = new File("src/main/resources/config/MysticalSkyRewards.properties");
+            FileReader configReader = new FileReader(config);
 
-            /* Predefined java class that makes a HashMap with String keys and String values from the config
-             * file by making the keys the text before the equal sign, and the value the text after the equal
-             * sign in each line of the config file
-             */
             Properties prop = new Properties();
 
             // load a properties file
-            prop.load(input);
+            prop.load(configReader);
 
             // get the property value and store them in the HashMap rewardLocation
             if (prop.isEmpty()) throw new IOException("Properties file is empty properties");
