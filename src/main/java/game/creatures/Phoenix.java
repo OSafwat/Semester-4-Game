@@ -194,7 +194,7 @@ public class Phoenix extends Creature{
             prop.load(input);
 
             // get the property value and store them in the HashMap rewardLocation
-            if (prop.isEmpty() || prop.size() < 11) throw new IOException("Properties file is empty or contains fewer than 11 properties");
+            if (prop.isEmpty()) throw new IOException("Properties file is empty properties");
 
             for (String key : prop.stringPropertyNames()) {
                 String value = prop.getProperty(key);
