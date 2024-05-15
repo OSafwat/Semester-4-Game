@@ -18,6 +18,7 @@ public class GameBoard {
     ArrayList<Dice> passiveArcaneDice;
     ArrayList<Dice> arcaneDice;
     int whiteValue;
+    int greenValue;
     public Dice getWhite(){
         for (Dice die: allDice) {
             if (die.getRealm().equals(RealmColor.WHITE))
@@ -33,18 +34,10 @@ public class GameBoard {
         return null;
     }
 
-    public void setWhite() {
-        for (int index = 0; index < 6; index++) {
-            if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
-                allDice[index].setValue(getWhiteValue() == -1 ? allDice[index].getValue() : getWhiteValue());
-            }
-        }
-        whiteValue = -1;
-    }
-
-    public void setGreen(int greenValue) {
+    public void setGreenForColorBonus(int greenValue) {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                this.greenValue = allDice[index].getValue();
                 allDice[index].setValue(greenValue);
             }
             else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
@@ -54,9 +47,17 @@ public class GameBoard {
         }
     }
 
-    public int getWhiteValue() {
-        whiteValue = -1;
-        return whiteValue;
+    public void resetGreenPostColorBonus() {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                allDice[index].setValue(greenValue == -1 ? allDice[index].getValue() : greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                allDice[index].setValue(whiteValue == -1 ? allDice[index].getValue() : whiteValue);
+            }
+        }
+        this.greenValue = -1;
+        this.whiteValue = -1;
     }
     //constructor
     public GameBoard(){
@@ -85,6 +86,7 @@ public class GameBoard {
         player2 = new Player(PlayerStatus.PASSIVE);
 
         this.whiteValue = -1;
+        this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
 
     }
