@@ -170,26 +170,17 @@ public class MyCLIGameController {
         for (int round = 0; round < numberOfRounds; round++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            gameBoard.resetGreenPostColorBonus();
             playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            gameBoard.resetGreenPostColorBonus();
             moveAllIntoForgotten();
-            gameBoard.resetGreenPostColorBonus();
             playForgottenTurn(getPassivePlayer());
-            gameBoard.resetGreenPostColorBonus();
             gameBoard.resetAllDice();
             switchPlayer();
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            gameBoard.resetGreenPostColorBonus();
             playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            gameBoard.resetGreenPostColorBonus();
             moveAllIntoForgotten();
-            gameBoard.resetGreenPostColorBonus();
             playForgottenTurn(getPassivePlayer());
-            gameBoard.resetGreenPostColorBonus();
             gameBoard.resetAllDice();
-            gameBoard.resetGreenPostColorBonus();
             switchPlayer();
         }
         Player player1= gameBoard.getPlayer1();
@@ -221,6 +212,7 @@ public class MyCLIGameController {
             try {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
+                handleDiceDisplay(gameBoard.getForgottenRealmDice(), 1);
                 System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
                 return;
             }
@@ -233,6 +225,7 @@ public class MyCLIGameController {
     }
 
     public void playRound(Player player, String reward, int turnCount) {
+        gameBoard.resetGreenPostColorBonus();
         handleRoundRewards(player, reward);
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
             System.out.println();
@@ -270,6 +263,11 @@ public class MyCLIGameController {
             try {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
+                ArrayList<Dice> availableDice = gameBoard.getAvailableDice();
+                Dice[] diceSet = new Dice[availableDice.size()];
+                for (int i = 0; i < availableDice.size(); i++)
+                    diceSet[i] = availableDice.get(i);
+                handleDiceDisplay(diceSet, 0);
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
                 useTimeWarp = handleTimeWarps(player.getTimeWarps());
                 if (useTimeWarp) {
@@ -288,6 +286,7 @@ public class MyCLIGameController {
     }
 
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
+        gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
@@ -361,6 +360,7 @@ public class MyCLIGameController {
         return availableDice;
     }
     public void handleArcaneBoostCall(Player player) {
+        gameBoard.resetGreenPostColorBonus();
         Dice[] availableDice = getArcaneBoostDice();
         Arrays.sort(availableDice);
         handleDiceDisplay(availableDice, 2);
@@ -458,6 +458,7 @@ public class MyCLIGameController {
         }
     }
     public Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, NoAvailableMovesException{
+        gameBoard.resetGreenPostColorBonus();
         Arrays.sort(diceSet);
         int diceCount = diceSet.length;
         System.out.println("Please enter a number from 1 to " + diceCount + " which indicates which dice you would like to use.");
@@ -916,6 +917,7 @@ public class MyCLIGameController {
 
     // dice related methods:
     public Dice [] rollDice() {
+        gameBoard.resetGreenPostColorBonus();
         gameBoard.rollAvailableDice();
         Dice[] dice = new Dice[gameBoard.getAvailableDice().size()];
         for (int i = 0; i < dice.length; i++)
@@ -986,6 +988,7 @@ public class MyCLIGameController {
         return arcaneBoostsAsArray;
     }
     public boolean selectDice(Dice dice, Player player){
+        gameBoard.resetGreenPostColorBonus();
         try{
             player.selectDice(dice);
             gameBoard.removeFromAvailable(dice);
@@ -1000,6 +1003,7 @@ public class MyCLIGameController {
 
     //new method
     public void moveAllIntoForgotten() {
+        gameBoard.resetGreenPostColorBonus();
         for (Dice die: getAvailableDice()) {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
@@ -1008,9 +1012,9 @@ public class MyCLIGameController {
 
     public static void main (String[] args) {
         MyCLIGameController cli = new MyCLIGameController();
-        cli.getGameBoard().getPlayer1().getScoreSheet().dragon.Dragons[1].face = null;
-        cli.getGameBoard().getPlayer1().getScoreSheet().dragon.Dragons[2].face = null;
-        cli.getGameBoard().getPlayer1().getScoreSheet().displayColoredScoreSheet();
+        cli.gameBoard.getPlayer1().getScoreSheet().dragon.Dragons[2].face = null;
+        cli.gameBoard.getPlayer1().getScoreSheet().dragon.Dragons[1].face = null;
+        cli.gameBoard.getPlayer1().getScoreSheet().displayColoredScoreSheet();
         cli.startGame();
 
     }
