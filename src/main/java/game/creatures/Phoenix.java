@@ -16,6 +16,8 @@ import game.dice.ArcanePrism;
 import game.dice.Dice;
 import game.dice.MagentaDice;
 import game.engine.Move;
+import game.engine.enums.RealmColor;
+import game.exceptions.BonusException;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
@@ -93,7 +95,7 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    public boolean makeMove(Dice dice) throws InvalidMoveException {
+    public boolean makeMove(Dice dice) throws InvalidMoveException, BonusException {
         if (checkMove(dice)) {
             int diceValue = dice.getValue();
             phoenixsReceivedHP[killedPhoenixes++] = diceValue;
@@ -110,8 +112,44 @@ public class Phoenix extends Creature{
                 if (ArcaneBoostArrayList.get(i) == killedPhoenixes) arcaneBoosts.add(new ArcaneBoost());
             }
 
+            String rewardString = mappedRewardLocations[killedPhoenixes - 1];
+            RealmColor bonusColor = RealmColor.PARENT;
+            Boolean notBonus = false;
+            if (!rewardString.equals("")) {
+                switch (rewardString) {
+                    case "RB":
+                        bonusColor = RealmColor.RED;
+                        break;
+
+                    case "GB":
+                        bonusColor = RealmColor.GREEN;
+                        break;
+
+                    case "BB":
+                        bonusColor = RealmColor.BLUE;
+                        break;
+
+                    case "MB":
+                        bonusColor = RealmColor.MAGENTA;
+                        break;
+
+                    case "YB":
+                        bonusColor = RealmColor.YELLOW;
+                        break;
+                
+                    case "EB":
+                        bonusColor = RealmColor.WHITE;
+                        break;
+                    default:
+                        notBonus = true;
+                        break;
+                }
+            }
+
             updateAllPossibleMoves();
             populateMappedRewardLocation();
+
+            if (!notBonus) throw new BonusException(bonusColor);
 
             return true;
         }
