@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import game.engine.enums.PlayerStatus;
+import game.engine.enums.RealmColor;
+
 public class GameBoard {
     GameStatus gameStatus;
     Player player1;
@@ -15,11 +17,47 @@ public class GameBoard {
     ArrayList<Dice> forgottenRealmDice;
     ArrayList<Dice> passiveArcaneDice;
     ArrayList<Dice> arcaneDice;
+    int whiteValue;
+    int greenValue;
     public Dice getWhite(){
-        return this.allDice[5];
+        for (Dice die: allDice) {
+            if (die.getRealm().equals(RealmColor.WHITE))
+                return die;
+        }
+        return null;
     }
     public Dice getGreen(){
-        return this.allDice[1];
+        for (Dice die: allDice) {
+            if (die.getRealm().equals(RealmColor.GREEN))
+                return die;
+        }
+        return null;
+    }
+
+    public void setGreenForColorBonus(int greenValue) {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                this.greenValue = allDice[index].getValue();
+                allDice[index].setValue(greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                whiteValue = allDice[index].getValue();
+                allDice[index].setValue(0);
+            }
+        }
+    }
+
+    public void resetGreenPostColorBonus() {
+        for (int index = 0; index < 6; index++) {
+            if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
+                allDice[index].setValue(greenValue == -1 ? allDice[index].getValue() : greenValue);
+            }
+            else if (allDice[index].getRealm().equals(RealmColor.WHITE)) {
+                allDice[index].setValue(whiteValue == -1 ? allDice[index].getValue() : whiteValue);
+            }
+        }
+        this.greenValue = -1;
+        this.whiteValue = -1;
     }
     //constructor
     public GameBoard(){
@@ -47,6 +85,8 @@ public class GameBoard {
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
 
+        this.whiteValue = -1;
+        this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
 
     }
