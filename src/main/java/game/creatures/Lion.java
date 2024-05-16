@@ -238,11 +238,19 @@ public class Lion extends Creature{
 
         if(TimeWarpArrayList!=null)
         for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-            if (TimeWarpArrayList.get(i) == deadLions) timeWarps.add(new TimeWarp());
+            if (TimeWarpArrayList.get(i) == deadLions){
+                this.timeWarps.get(0).setStatus(RewardStates.ACQUIRED);
+                this.timeWarps.remove(0);
+                break;
+            }
         }
         if(ArcaneBoostArrayList!=null)
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-            if (ArcaneBoostArrayList.get(i) == deadLions) arcaneBoosts.add(new ArcaneBoost());
+            if (ArcaneBoostArrayList.get(i) == deadLions) {
+                this.arcaneBoosts.get(0).setStatus(RewardStates.ACQUIRED);
+                this.arcaneBoosts.remove(0);
+                break;
+            }
         }
         
         switch(properties.getProperty("hit" + deadLions + "Reward")){
