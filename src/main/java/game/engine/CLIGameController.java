@@ -245,7 +245,6 @@ public class CLIGameController {
     public boolean playTurn(Player player, boolean isThisATimeWarpRerollCall) {
         gameBoard.resetGreenPostColorBonus();
         if (!isThisATimeWarpRerollCall) {
-            gameBoard.resetGreenPostColorBonus();
             player.getScoreSheet().displayColoredScoreSheet();
             System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
             System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
@@ -555,13 +554,14 @@ public class CLIGameController {
                     }
                     else if (c == 'n') {
                         System.out.println("Alright, you will not get a chance to attack your Realms again.\n");
+                        return false;
                     }
                     else {
                         System.out.println("Invalid input, please try again.");
                         System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
                     }
 
-                } while (c != 'y' && c != 'n');
+                } while (c != 'y');
                 if (c == 'y') {
                     arcaneBoost.setStatus(RewardStates.USED);
                 }
@@ -721,7 +721,7 @@ public class CLIGameController {
         }
         else{
             for (int i = 0; i < playerAllMoves.length; i++) {
-                if (playerAllMoves[i].compareTo(dice)==0){
+                if (playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue()){
                     result.add(playerAllMoves[i]);
                 }
             }
@@ -1013,6 +1013,18 @@ public class CLIGameController {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
+    }
+
+    public static void main (String[] args) {
+        CLIGameController cli = new CLIGameController();
+        RedDice redDice = new RedDice(6);
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
+        for (int i = 0; i < cli.getGameBoard().getPlayer1().getArcaneBoosts().size(); i++)
+            System.out.println(cli.getGameBoard().getPlayer1().getArcaneBoosts().get(i).getStatus());
     }
 }
 
