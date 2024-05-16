@@ -1,9 +1,7 @@
 package game.engine;
 
 import game.collectibles.*;
-import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
-import game.exceptions.InvalidMoveException;
+import game.exceptions.*;
 import game.dice.*;
 import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
@@ -15,12 +13,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
-public class CLIGameController extends GameController {
+public class CLIGameController {
     GameBoard gameBoard;
     String rewardsArray[];
     Scanner scanner;
@@ -129,25 +124,16 @@ public class CLIGameController extends GameController {
 
         return rewards;
     }
-    public void handleRoundRewards(Player currentActivePlayer, int index, String[] rewards) {
-        switch (rewards[index]){
-            case "ArcaneBoost": currentActivePlayer.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
-            case "TimeWarp":   currentActivePlayer.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
-            case "EssenceBonus":
-                int realmChoice =0;
-                do{
-                    System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
-                    realmChoice= scanner.nextInt();
-                    if (realmChoice >=1 && realmChoice <= 5)
-                        break;
-                    System.out.println("momken nebatal estehbal");
-                }while(true);
-                handleBonus(realmChoice);
-            case "RedBonus":    handleBonus(1);
-            case "GreenBonus": handleBonus(2);
-            case "BlueBonus": handleBonus(3);
-            case "MagentaBonus": handleBonus(4);
-            case "YellowBonus": handleBonus(5);
+    public void handleRoundRewards(Player player, String reward) {
+        switch (reward){
+            case "ArcaneBoost": player.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp":   player.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "EssenceBonus": handleBonus(player, RealmColor.WHITE); break;
+            case "RedBonus":    handleBonus(player, RealmColor.RED); break;
+            case "GreenBonus": handleBonus(player, RealmColor.GREEN); break;
+            case "BlueBonus": handleBonus(player, RealmColor.BLUE); break;
+            case "MagentaBonus": handleBonus(player,RealmColor.MAGENTA); break;
+            case "YellowBonus": handleBonus(player, RealmColor.YELLOW); break;
             default: System.out.println("7azak en el round da mafhoosh bonus");
         }
     }
@@ -165,12 +151,13 @@ public class CLIGameController extends GameController {
         int numebrOfTurnsPerRound=temp[1];
 
 
-        System.out.println("Welcome to the mystical lands of Eldoria, \n press 'i' to get more information about the game or 'c' to continue straight away to the game");
+        System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
         do {
             String choice = scanner.nextLine();
-            if (choice.length() !=0 && 'i' == choice.charAt(0)) {
-                System.out.println("Description goes here\n");
-            } else if (choice.charAt(0)=='c')
+            if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
+                System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                break;
+            } else if (!choice.isEmpty() && choice.charAt(0)=='c')
                 break;
             else
                 System.out.println("Please choose sth correct\n");
@@ -180,41 +167,31 @@ public class CLIGameController extends GameController {
         String rewards [] = getRewards(numberOfRounds);
 
         //the following is trying to start the game loop:
-
-        for (int i=0; i<numberOfRounds; i++){
-            for (int k = 0; k < 2; k++) {
-                //the following is playing some number of rounds with the active player then 1 round with the passive player
-                Player currentActivePlayer= getActivePlayer();
-                handleRoundRewards(currentActivePlayer, i, rewards);
-                rollDice();
-                for (int j=0; j<numebrOfTurnsPerRound && getAvailableDice().length > 0; j++){
-                    playOneTurn(this, currentActivePlayer, this.gameBoard, getAvailableDice(), PlayerStatus.ACTIVE ,currentActivePlayer.getTimeWarps());     //playing an active turn
-                }
-                moveAllIntoForgotten();
-                playOneTurn(this, getPassivePlayer(), gameBoard, getForgottenRealmDice(), PlayerStatus.PASSIVE, currentActivePlayer.getTimeWarps());        //playing a passive turn
-                //the following is resetting the dice:
-                // should assign the round rewards as well as use the arcaneboosts and time warps
-                // the following handles what to do with the rewards taken from the config file
-
-                ArrayList<ArcaneBoost> currentPlayersArcaneBoosts = currentActivePlayer.getArcaneBoosts();
-                handleArcaneBoost(currentActivePlayer, currentPlayersArcaneBoosts);         //  1 method to handle having wanting an arcane boost
-
-                handleArcaneBoost(getPassivePlayer(), currentPlayersArcaneBoosts);
-                System.out.println("weselna hena ");
-                gameBoard.resetAllDice();// this moves all thats in the forgotten realm to the available dice and empties the activeArcaneDice and passiveArcaneDice
-                switchPlayer();
-            }
-
+        for (int round = 0; round < numberOfRounds; round++) {
+            System.out.println();
+            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
+            moveAllIntoForgotten();
+            playForgottenTurn(getPassivePlayer());
+            gameBoard.resetAllDice();
+            switchPlayer();
+            System.out.println();
+            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
+            moveAllIntoForgotten();
+            playForgottenTurn(getPassivePlayer());
+            gameBoard.resetAllDice();
+            switchPlayer();
         }
         Player player1= gameBoard.getPlayer1();
-        Player player2= gameBoard.getPlayer1();
+        Player player2= gameBoard.getPlayer2();
         System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
-        player1.getScoreSheet().displayScoreSheet();
+        player1.getScoreSheet().displayColoredScoreSheet();
         System.out.println( player1.getGameScore().toString());
         int player1Score= player1.getGameScore().getTotalScore();
 
         System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
-        player2.getScoreSheet().displayScoreSheet();
+        player2.getScoreSheet().displayColoredScoreSheet();
         System.out.println( player2.getGameScore().toString());
         int player2Score= player2.getGameScore().getTotalScore();
 
@@ -222,74 +199,376 @@ public class CLIGameController extends GameController {
             System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
         else
             System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
-
+        scanner.close();
     }
 
-    public void handleArcaneBoost(Player player,ArrayList<ArcaneBoost> currentPlayersArcaneBoosts){
-
-        for (int arcaneBoostsIndex=0; arcaneBoostsIndex < currentPlayersArcaneBoosts.size(); arcaneBoostsIndex++){
-            if (currentPlayersArcaneBoosts.get(arcaneBoostsIndex).getStatus() == RewardStates.ACQUIRED){
-                System.out.println("Would you like to use an arcane Boost (enter 'y' or 'n')");
-                char choice = '7';
-                do {
-                    choice =scanner.nextLine().charAt(0);
-                    if (choice == 'y' || choice == 'n')
-                        break;
-                    else
-                        System.out.println("please enter a valid input");
-                } while (true);
-
-                if (choice == 'n')
-                    break;
-                if (choice=='y'){
-                    currentPlayersArcaneBoosts.get(arcaneBoostsIndex).setStatus(RewardStates.USED);
-                    //the functionality of getting an arcane boost goes here
-                    //meow meow meow meow
-                    Dice [] alldice= getAllDice();
-                    ArrayList<Dice> activeArcaneDice = gameBoard.getActiveArcaneDice();
-                    ArrayList<Dice> passivePlayerDice = gameBoard.getPassiveArcaneDice();
-                    System.out.println("choose from the following dice one of them to make a move with");
-                    HashSet<Integer> hs = new HashSet<>();
-                    for (int diceIndex=0; diceIndex < alldice.length ; diceIndex++){
-                        if (player == getActivePlayer()){
-                            if (!activeArcaneDice.contains(alldice[diceIndex])){
-                                hs.add(diceIndex);
-                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+alldice[diceIndex].getValue());
-                            }
-                        }else {
-                            if (!passivePlayerDice.contains(alldice[diceIndex])){
-                                hs.add(diceIndex);
-                                System.out.println(diceIndex +":"+alldice[diceIndex].getRealm()+" "+alldice[diceIndex].getValue());
-                            }
-                        }
-                    }
-
-                    while (true) {
-                        try {
-                            int arcaneboostChoice=0;
-                            do {
-                                arcaneboostChoice= scanner.nextInt();
-                                if (hs.contains(arcaneboostChoice))
-                                    break;
-                                else System.out.println("please input one of the possible dice (note the inconsistent numbers are just to keep you on edge akeeeeeeed ana mesh mekasel akteb code yegeeb el arqam men 0 le7ad their number)");
-                            } while (true);
-                            if(player == getActivePlayer()){
-                                activeArcaneDice.add(alldice[arcaneboostChoice]);
-                            }else {
-                                gameBoard.getPassiveArcaneDice().add(alldice[arcaneboostChoice]);
-                            }
-                            if (makeMove(player, new Move(alldice[arcaneboostChoice],player.getScoreSheet().getCreatureByColor(alldice[arcaneboostChoice].getRealm()))))
-                                break;
-
-                        } catch (Exception e) {
-                            System.out.println("we have an unknown");
-                        }
-                    }
-
-                }
+    public void playForgottenTurn(Player player) {
+        gameBoard.resetGreenPostColorBonus();
+        player.getScoreSheet().displayColoredScoreSheet();
+        System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
+        System.out.println("It is currently the " + "PASSIVE" + " player's turn.");
+        boolean valid = false;
+        while(!valid) {
+            try {
+                valid = turnCompletion(player);
+            } catch (NoAvailableMovesException e) {
+                handleDiceDisplay(gameBoard.getForgottenRealmDice(), 1);
+                System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
+                return;
             }
         }
+        boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        while (usedArcaneBoost) {
+            handleArcaneBoostCall(player);
+            usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        }
+    }
 
+    public void playRound(Player player, String reward, int turnCount) {
+        gameBoard.resetGreenPostColorBonus();
+        handleRoundRewards(player, reward);
+        for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
+            System.out.println();
+            System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
+            boolean valid = playTurn(player, false);
+            if (!valid)
+                break;
+        }
+        boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        while (usedArcaneBoost) {
+            handleArcaneBoostCall(player);
+            usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        }
+    }
+
+    //If this is a timewarp reroll call, there is no need to redisplay the score sheet and the "We will now roll the dice" message
+    public boolean playTurn(Player player, boolean isThisATimeWarpRerollCall) {
+        gameBoard.resetGreenPostColorBonus();
+        if (!isThisATimeWarpRerollCall) {
+            gameBoard.resetGreenPostColorBonus();
+            player.getScoreSheet().displayColoredScoreSheet();
+            System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
+            System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
+            System.out.println("I will now roll the dice...");
+        }
+        if (isThisATimeWarpRerollCall)
+            System.out.println("I will now reroll the dice...");
+        rollDice();
+        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+        if (useTimeWarp) {
+            return playTurn(player, true);
+        }
+        boolean valid = false;
+        while(!valid) {
+            try {
+                valid = turnCompletion(player);
+            } catch (NoAvailableMovesException e) {
+                ArrayList<Dice> availableDice = gameBoard.getAvailableDice();
+                Dice[] diceSet = new Dice[availableDice.size()];
+                for (int i = 0; i < availableDice.size(); i++)
+                    diceSet[i] = availableDice.get(i);
+                handleDiceDisplay(diceSet, 0);
+                System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
+                useTimeWarp = handleTimeWarps(player.getTimeWarps());
+                if (useTimeWarp) {
+                    return playTurn(player, true);
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void resetRed() {
+        if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
+            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
+        }
+    }
+
+    public boolean turnCompletion(Player player) throws NoAvailableMovesException{
+        gameBoard.resetGreenPostColorBonus();
+        Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        getAllPossibleMovesForDiceSet(player, diceSet);
+        Arrays.sort(diceSet);
+        boolean valid = false;
+        Dice finalDie;
+        while (!valid) {
+            int indicator = player.getPlayerStatus() == PlayerStatus.ACTIVE ? 0 : 1;
+            handleDiceDisplay(diceSet, indicator);
+            Dice chosenDie;
+            while (true) {
+                try {
+                    resetRed();
+                    chosenDie = handleDiceSelection(player, diceSet);
+                } catch (InvalidDiceSelectionException e) {
+                    System.out.println("I will now give you a chance to select properly.");
+                    handleDiceDisplay(diceSet, indicator);
+                    continue;
+                } catch (NoAvailableMovesException e) {
+                    System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                    handleDiceDisplay(diceSet, indicator);
+                    continue;
+                }
+                break;
+            }
+            finalDie = null;
+            if (chosenDie instanceof ArcanePrism) {
+                while (Objects.equals(finalDie, null)) {
+                    finalDie = handleArcanePrism(chosenDie, player);
+                }
+            } else
+                finalDie = chosenDie;
+            if (finalDie instanceof RedDice) {
+                boolean valid2 = false;
+                while (!valid2) {
+                    try {
+                        finalDie = handleRedDice((RedDice) finalDie);
+                    } catch (InvalidDiceSelectionException e) {
+                        System.out.println("Invalid input.\nPlease try again.");
+                        continue;
+                    }
+                    valid2 = true;
+                }
+            }
+            valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
+            if (valid)
+            {
+                if (chosenDie instanceof ArcanePrism)
+                    selectDice(chosenDie, player);
+                else
+                    selectDice(finalDie, player);
+            }
+        }
+        player.getScoreSheet().displayColoredScoreSheet();
+        System.out.println("Here is your score sheet after your move, " + player.getName() + " : ");
+        return true;
+    }
+
+    public Dice[] getArcaneBoostDice() {
+        Dice[] possibleDice = getAllDice();
+        ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
+        ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
+        outer: for (Dice die: possibleDice) {
+            if (!bannedDice.contains(die))
+                diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
+        }
+        int size = diceExcludingPreviouslySelectedByArcaneBoosts.size();
+        Dice[] availableDice = new Dice[size];
+        for (int index = 1; index <= size; index++) {
+            availableDice[index-1] = diceExcludingPreviouslySelectedByArcaneBoosts.get(index-1);
+        }
+        return availableDice;
+    }
+    public void handleArcaneBoostCall(Player player) {
+        gameBoard.resetGreenPostColorBonus();
+        Dice[] availableDice = getArcaneBoostDice();
+        Arrays.sort(availableDice);
+        handleDiceDisplay(availableDice, 2);
+        try {
+            getAllPossibleMovesForDiceSet(player, availableDice);
+        } catch (NoAvailableMovesException e) {
+            System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
+            return;
+        }
+        Dice chosenDie;
+        boolean valid = false;
+        while (!valid) {
+            try {
+                chosenDie = handleDiceSelection(player, availableDice);
+            } catch (InvalidDiceSelectionException e) {
+                System.out.println("Invalid input.\nI will now give you a chance to select properly.");
+                handleDiceDisplay(availableDice, 2);
+                continue;
+            } catch (NoAvailableMovesException e) {
+                System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                handleDiceDisplay(availableDice, 2);
+                continue;
+            }
+            Dice finalDie = null;
+            if (chosenDie instanceof ArcanePrism) {
+                while (Objects.equals(finalDie, null)) {
+                    finalDie = handleArcanePrism(chosenDie, player);
+                }
+            } else
+                finalDie = chosenDie;
+            if (finalDie instanceof RedDice) {
+                boolean valid2 = false;
+                while (!valid2) {
+                    try {
+                        finalDie = handleRedDice((RedDice) finalDie);
+                    } catch (InvalidDiceSelectionException e) {
+                        System.out.println("Invalid input.\nPlease try again.");
+                        continue;
+                    }
+                    valid2 = true;
+                }
+            }
+            valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
+            if (valid)
+                gameBoard.moveToArcaneDice(finalDie);
+        }
+        player.getScoreSheet().displayColoredScoreSheet();
+    }
+
+    public RedDice handleRedDice(RedDice finalDie) throws InvalidDiceSelectionException{
+        System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
+        System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+        int selectedDragon = -1;
+        String input = scanner.next();
+        while (input.isEmpty()) {
+            input = scanner.next();
+        }
+        if (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4"))
+            throw new InvalidDiceSelectionException();
+        selectedDragon = Integer.parseInt(input);
+        finalDie.selectsDragon(selectedDragon);
+        return finalDie;
+    }
+
+    //indicator = 0 -> Active player call
+    //indicator = 1 -> Passive player call
+    //indicator = 2 -> Post-Arcane Boost call
+    //indicator = 3 -> Pre-Arcane Boost call
+    public void handleDiceDisplay(Dice[] diceSet, int indicator) {
+        int diceCount = diceSet.length;
+        Arrays.sort(diceSet);
+        if (indicator == 0 || indicator == 2) {
+            System.out.println("Here are the available dice: \n");
+            for (int diceIndex = 1; diceIndex <= diceCount; diceIndex++) {
+                System.out.print(diceIndex + ". ");
+                displayDice(diceSet[diceIndex-1]);
+                System.out.println();
+            }
+        }
+        else if (indicator == 1){
+            System.out.println("Here are the forgotten dice: \n");
+            for (int diceIndex = 1; diceIndex <= diceCount; diceIndex++) {
+                System.out.print(diceIndex + ". ");
+                displayDice(diceSet[diceIndex-1]);
+                System.out.println();
+            }
+        }
+        else {
+            System.out.println("Here are the dice that you would be able to use if you use your Arcane Boost: \n");
+            for (int diceIndex = 1; diceIndex <= diceCount; diceIndex++) {
+                System.out.print(diceIndex + ". ");
+                displayDice(diceSet[diceIndex-1]);
+                System.out.println();
+            }
+        }
+    }
+    public Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, NoAvailableMovesException{
+        gameBoard.resetGreenPostColorBonus();
+        Arrays.sort(diceSet);
+        int diceCount = diceSet.length;
+        System.out.println("Please enter a number from 1 to " + diceCount + " which indicates which dice you would like to use.");
+        int chosenDiceIndex = -1;
+        while (true) {
+            String input = scanner.next();
+            boolean validInput = false;
+            for (int i = 1; i <= diceCount; i++) {
+                validInput = validInput || input.equals("" + i);
+            }
+            if (validInput) {
+                chosenDiceIndex = Integer.parseInt(input);
+                break;
+            }
+            else {
+                System.out.println("Invalid input, please try again.");
+                throw new InvalidDiceSelectionException();
+            }
+        }
+        Dice chosenDie = diceSet[chosenDiceIndex-1];
+        Move[] moveList = getPossibleMovesForADie(player, chosenDie);
+        if (moveList.length == 0) {
+            throw new NoAvailableMovesException();
+        }
+        return chosenDie;
+    }
+
+    public Dice handleArcanePrism(Dice chosenDie, Player player) {
+        System.out.println("You have chosen to play with the Arcane Prism! This dice can be used to attack any realm.");
+        System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
+        System.out.println("1. \u001B[31m" + "Red Realm " + "\u001B[0m" + "\n" +
+                "2. \u001B[32m" + "Green Realm" + "  (" + (gameBoard.getWhite().getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m" + "\n" +
+                "3. \u001B[34m" + "Blue Realm" + "\u001B[0m" + "\n" +
+                "4. \u001B[35m" + "Magenta Realm" + "\u001B[0m" + "\n" +
+                "5. \u001B[33m" + "Yellow Realm" + "\u001B[0m" + "\n");
+        int realmChosen;
+        String input = scanner.next();
+        while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5")) {
+            System.out.println("Invalid input.");
+            System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
+            input = scanner.next();
+        }
+        realmChosen = Integer.parseInt(input);
+        Dice diceAfterSelection = new Dice();
+        switch (realmChosen) {
+            case 1: diceAfterSelection = new RedDice(chosenDie.getValue()); break;
+            case 2: diceAfterSelection = gameBoard.getGreen(); break;
+            case 3: diceAfterSelection = new BlueDice(chosenDie.getValue()); break;
+            case 4: diceAfterSelection = new MagentaDice(chosenDie.getValue()); break;
+            case 5: diceAfterSelection = new YellowDice(chosenDie.getValue());
+        }
+        Move[] moveList = getPossibleMovesForADie(player, diceAfterSelection);
+        if (moveList.length == 0) {
+            System.out.println("Unfortunately, you can not cast the Arcane Prism into this form because it has no valid moves.");
+            System.out.println("I shall now rewind time to give you another chance at casting your Arcane Prism. Good luck!");
+            return null;
+        }
+        return diceAfterSelection;
+    }
+    public void displayDice (Dice dice) {
+        switch (dice.getRealm()) {
+            case RED: System.out.print("\u001B[31m" + dice.getRealm() + "      " + dice.getValue() + "\u001B[0m"); break;
+            case GREEN: System.out.print("\u001B[32m" + dice.getRealm() + "    " + dice.getValue() + "  (" + (dice.getValue() + gameBoard.getWhite().getValue()) + ")\u001B[0m"); break;
+            case BLUE: System.out.print("\u001B[34m" + dice.getRealm() + "     " + dice.getValue() + "\u001B[0m"); break;
+            case MAGENTA: System.out.print("\u001B[35m" + dice.getRealm() + "  " + dice.getValue() + "\u001B[0m"); break;
+            case YELLOW: System.out.print("\u001B[33m" + dice.getRealm() + "   " + dice.getValue() + "\u001B[0m"); break;
+            case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
+        }
+    }
+    public boolean handleArcaneBoost(ArrayList<ArcaneBoost> arcaneBoosts){
+        if (arcaneBoosts.isEmpty())
+            return false;
+        // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
+        //dummy value initialization for loop entry
+        char c = 'a';
+        int arcaneBoostCount = 0;
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
+                arcaneBoostCount++;
+        }
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
+                System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
+                System.out.println("You have a total of " + arcaneBoostCount + " Arcane Boost(s).");
+                Dice[] arcaneBoostDice = getArcaneBoostDice();
+                handleDiceDisplay(arcaneBoostDice, 4);
+                System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
+                do {
+                    String input = scanner.next();
+                    if (!input.isEmpty())
+                        c = input.charAt(0);
+                    if (c == 'y') {
+                        System.out.println("Alright, you will get a chance to attack your Realms again.\n");
+                    }
+                    else if (c == 'n') {
+                        System.out.println("Alright, you will not get a chance to attack your Realms again.\n");
+                    }
+                    else {
+                        System.out.println("Invalid input, please try again.");
+                        System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
+                    }
+
+                } while (c != 'y' && c != 'n');
+                if (c == 'y') {
+                    arcaneBoost.setStatus(RewardStates.USED);
+                }
+                break;
+            }
+        }
+        return c == 'y';
     }
     public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
         switch (choice){
@@ -304,159 +583,104 @@ public class CLIGameController extends GameController {
         }
 
     }
-    public void handleBonus(int realmChoice){
-        Player currentActivePlayer= getActivePlayer();
-
-        Creature creature=getCreatureToAttacByColor(realmChoice, getScoreSheet(getActivePlayer()));
-        do {
+    public void handleBonus(Player player, RealmColor realmColor){
+        Dice chosenDie;
+        boolean valid = false;
+        while (!valid) {
             try {
-                int numChoice =0;
-                do{
-                    System.out.println("please choose a number from 1-6 to attack with");
-                    numChoice= scanner.nextInt();
-                    if (realmChoice >=1 && realmChoice <= 5)
-                        break;
-                }while(true);
-                if (makeMove(currentActivePlayer, new Move(new Dice(numChoice), creature)))
-                    break;
-                System.out.println("please enter try another move that will be valid ");
-            } catch (Exception e) {
-                System.out.println("batal estehbal we have an unknown Exception");
-            }
-        } while (true);
-    }
-    public void handleTimeWarps(ArrayList<TimeWarp> timewarps){
-        if (timewarps.size()==0)
-            return;
-        // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
-        for (int index = 0; index < timewarps.size(); index++) {
-            //  System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
-            if (timewarps.get(index).getStatus()==RewardStates.ACQUIRED){
-                System.out.println("choose whether you would like to use a timeWarp to reroll or not (enter 'y' or 'n')");
-                char choice='4';
-                do {
-                    String input = scanner.nextLine();
-                    if (!input.isEmpty()){
-                        choice = input.charAt(0);
-                        if (choice == 'y' || choice == 'n')
-                            break;
-                    }
-                    System.out.println("please enter a valid choice ba2a");
-                } while (true );
-                if (choice == 'n'){
-                    return;}
-
-                timewarps.get(index).setStatus(RewardStates.USED);
-                gameBoard.rollAvailableDice();
-                System.out.println("Here are your rolled dice: ");
-                int counter=0;
-                for (Dice die : getAvailableDice()) {
-                    System.out.println(++counter +":"+die.getRealm()+" "+die.getValue());
-                }
-            }
-        }
-    }
-    public void playOneTurn(CLIGameController controller, Player player, GameBoard gameBoard, Dice [] diceToBePlayedwith, PlayerStatus playerStatus, ArrayList<TimeWarp> timewarps){
-        ScoreSheet scoreSheet = controller.getScoreSheet(player);
-        System.out.println(player.getName()+", here is your score sheet:");
-        scoreSheet.displayScoreSheet();
-
-
-        gameBoard.rollAvailableDice();
-
-        if (player == controller.getActivePlayer())
-            System.out.println(player.getName()+", Here are your rolled dice: ");
-        else System.out.println(player.getName()+", Here are your passive turn dice: ");
-        int counter= 0;
-        for (Dice die : diceToBePlayedwith) {
-            if (die == null) {
+                chosenDie = handleColorBonusException(realmColor, player);
+            } catch (NoAvailableMovesException e) {
+                System.out.println("Hmm.. it seems that the " + realmColor + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                 return;
+            } catch (InvalidBonusSelection e) {
+                System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                continue;
             }
-            System.out.println(++counter +":"+die.getRealm()+" "+die.getValue());
-        }
-        if (playerStatus==PlayerStatus.ACTIVE)
-            controller.handleTimeWarps(timewarps);
-        //the following is choosing a correct valid move
-        Dice chosenDice=null;
-        boolean alreadySelected = false;
-        outer: do {
-            System.out.println("Please choose a number between 1 and "+ diceToBePlayedwith.length);
-            int choice = scanner.nextInt();
-            if (!(choice > diceToBePlayedwith.length || choice <= 0)){
-                chosenDice = diceToBePlayedwith[choice-1];
-                try{
-                    if(chosenDice instanceof ArcanePrism){
-                        System.out.println("Please a realm to attack:");
-                        int realmChoice = -1;
-                        do{
-                            System.out.println("please choose a realm to attack:\n 1-Red 2-Green 3-Blue 4-Magenta 5-Yellow ");
-                            realmChoice= scanner.nextInt();
-                            if (realmChoice >=1 && realmChoice <= 5)
-                                break;
-                            System.out.println("momken nebatal estehbal");
-                        }while(true);
-                        if (player.getPlayerStatus() == PlayerStatus.ACTIVE) {
-                            controller.selectDice(chosenDice, player);
-                            alreadySelected = true;
-                        }
-                        switch (realmChoice) {
-                            case 1: chosenDice = new RedDice(chosenDice.getValue()); break;
-                            case 2: chosenDice = new GreenDice(gameBoard.getGreen().getValue()); break;
-                            case 3: chosenDice = new BlueDice(chosenDice.getValue()); break;
-                            case 4: chosenDice = new MagentaDice(chosenDice.getValue()); break;
-                            case 5: chosenDice = new YellowDice(chosenDice.getValue()); break;
-                        }
-                    }
-                    if (chosenDice instanceof RedDice){
-                        int dragonChoice = 0;
-                        do {
-                            System.out.println("Please choose a proper dragon to attack in the Red Realm");
-                            dragonChoice = scanner.nextInt();
-                            if (dragonChoice>= 1 && dragonChoice <= 4){
-                                ((RedDice)chosenDice).selectsDragon(dragonChoice);
-                                if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm()))))
-                                    break outer;
-                            }
-                        } while (true);
-                    }
-                    else if (controller.makeMove(player, new Move(chosenDice, scoreSheet.getCreatureByColor(chosenDice.getRealm())))){
-                        break;
-                    }
-                }catch(Exception e){
-                    System.out.println();
-                }
-
-            }else {
-                System.out.println("Please choose a valid move");
+            catch (InvalidDiceSelectionException e) {
+                continue;
             }
-        } while (true);
-
-        //System.out.println("here is your new scoresheet");
-
-        //changing the available dice
-        if (playerStatus == PlayerStatus.ACTIVE && !alreadySelected){
-            controller.selectDice(chosenDice, player);
+            valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
         }
-        System.out.println("Here is your new score sheet  ==>");
-        scoreSheet.displayScoreSheet();
+        player.updateGameScore();
+        player.updateAllPossibleMoves();
     }
+    public boolean handleTimeWarps(ArrayList<TimeWarp> timewarps){
+        if (timewarps.isEmpty())
+            return false;
+        // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
+        //dummy value initialization for loop entry
+        char c = 'a';
+        int timeWarpCount = 0;
+        for (TimeWarp timeWarp: timewarps) {
+            if (timeWarp.getStatus() == RewardStates.ACQUIRED)
+                timeWarpCount++;
+        }
+        for (TimeWarp timeWarp: timewarps) {
+            if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
+                handleDiceDisplay(getAvailableDice(), 0);
+                System.out.println("You have available Time Warps! Would you like to use one of them to rewind time and reroll your dice?");
+                System.out.println("You have a total of " + timeWarpCount + " Time Warp(s).");
+                System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
+                do {
+                    String input = scanner.next();
+                    if (!input.isEmpty())
+                        c = input.charAt(0);
+                    if (c == 'y') {
+                        System.out.println("Alright, the dice shall be rerolled!\n");
+                    }
+                    else if (c == 'n') {
+                        System.out.println("Alright, the dice shall not be rerolled.");
+                        return false;
+                    }
+                    else {
+                        System.out.println("Invalid input, please try again.");
+                        System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
+                    }
+                } while (c != 'y' && c != 'n');
+                if (c == 'y') {
+                    timeWarp.setStatus(RewardStates.USED);
+                }
+                break;
+            }
+        }
+        return c == 'y';
+    }
+
     // move methods
     public Move[] getAllPossibleMoves(Player player) {
         return player.getAllPossibleMoves();
     }
     public Move [] getPossibleMovesForAvailableDice(Player player){
-        ArrayList<Move> result = new ArrayList<>();
-        Dice [] allDice = getAvailableDice();
-        outer: for (Dice die : allDice) {
-            result.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
+        Move[] moveSet = new Move[0];
+        try {
+            ArrayList<Dice> availableDice = gameBoard.getAvailableDice();
+            Dice[] dice = new Dice[availableDice.size()];
+            for (int i = 0; i < availableDice.size(); i++)
+                dice[i] = availableDice.get(i);
+            moveSet = getAllPossibleMovesForDiceSet(player, dice);
         }
-        removeGreenDuplicate(result);
-        Move [] temp = new Move[result.size()];
-        for (int index = 0; index < result.size(); index++) {
-            temp[index]= result.get(index);
+        catch (NoAvailableMovesException e)
+        {
+            return moveSet;
         }
-        Arrays.sort(temp);
-        return temp;
+        return moveSet;
+    }
+
+    public Move[] getAllPossibleMovesForDiceSet (Player player, Dice[] dice) throws NoAvailableMovesException{
+        ArrayList<Move> moveSet = new ArrayList<>();
+        for (Dice die: dice) {
+            moveSet.addAll(Arrays.asList(getPossibleMovesForADie(player, die)));
+        }
+        removeGreenDuplicate(moveSet);
+        int moveSetSize = moveSet.size();
+        if (moveSetSize == 0)
+            throw new NoAvailableMovesException();
+        Move[] moves = new Move[moveSetSize];
+        for (int index = 0; index < moveSetSize; index++) {
+            moves[index] = moveSet.get(index);
+        }
+        Arrays.sort(moves);
+        return moves;
     }
     public void removeGreenDuplicate(ArrayList<Move> result) {
         int index1 = -1;
@@ -479,8 +703,9 @@ public class CLIGameController extends GameController {
             GreenDice correctedDice = new GreenDice(dice.getValue() + gameBoard.getWhite().getValue());
             dice = correctedDice;
         }
+        gameBoard.resetGreenPostColorBonus();
         Move[] playerAllMoves= player.getAllPossibleMoves();
-        System.out.println(playerAllMoves.length);
+        //System.out.println(playerAllMoves.length);
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
@@ -511,82 +736,179 @@ public class CLIGameController extends GameController {
 
     // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
-        player.updateAllPossibleMoves();
         try {
             Dice diceToBeMovedWith= move.getDice();
             if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) gameBoard.getGreen();
-                Dice arcanePrism = (ArcanePrism) gameBoard.getWhite();
+                Dice arcanePrism = gameBoard.getWhite();
                 int greenVal = greenDice.getValue();
                 int whiteVal = arcanePrism.getValue();
                 diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
-            boolean temp = move.getCreature().makeMove(diceToBeMovedWith);
-            player.updateGameScore();
-            return temp;
+            boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
+            if (!temp)
+                throw new InvalidMoveException();
+            else {
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+                return true;
+            }
         } catch (BonusException bException) {
-            //RealmColor theBonusColor = bException.getRealmColor1();
-            RealmColor theBonusColor = bException.getRealmColor1();
-            int numberToAttackWith =0;
-            do{
-                System.out.println("Please enter the number to attack the " + theBonusColor + " realm with: ");
-                numberToAttackWith = Integer.parseInt(System.console().readLine()); // NEED TO VALIDATE THE INPUT
-                if (!(numberToAttackWith > 6 || numberToAttackWith < 1)){
-                    Creature firstCreature = player.getScoreSheet().getCreatureByColor(theBonusColor);
-                    Move firstBonusmove = new Move(new Dice(numberToAttackWith), firstCreature);
-                    boolean result = makeMove(player, firstBonusmove);
-                    player.updateGameScore();
-                    return result;
-                }else{
-                    System.out.println("please enter a valid number");
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
+            RealmColor realmColor1 = bException.getRealmColor1();
+            Dice chosenDie;
+            boolean valid = false;
+            while (!valid) {
+                try {
+                    chosenDie = handleColorBonusException(realmColor1, player);
+                } catch (NoAvailableMovesException e) {
+                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    return true;
+                } catch (InvalidBonusSelection e) {
+                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    continue;
+                } catch (InvalidDiceSelectionException e) {
+                    continue;
                 }
-            } while (true);
-        } // catch (BonusTwoException bonus2exception){
-        //     RealmColor theFirstBonusColor = bonus2exception.getBothRealmColors()[0];
-        //     RealmColor theSecondBonusColor = bonus2exception.getBothRealmColors()[1];
-
-        //     int firstNumberToAttackWith=0;
-        //     do{
-        //         System.out.println("please enter the number to attack the " + theFirstBonusColor + " realm with: ");
-        //         firstNumberToAttackWith = Integer.parseInt(System.console().readLine());
-        //         if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-        //             Creature firstCreature = player.getScoreSheet().getCreatureByColor(theFirstBonusColor);
-        //             Move firstBonusmove = new Move(new Dice(firstNumberToAttackWith), firstCreature);
-        //             if (makeMove(player, firstBonusmove))
-        //                 break;
-        //             else{
-        //                 System.out.println("please choose a valid move");
-        //             }
-
-        //         }else{
-        //             System.out.println("please enter a valid number");
-        //         }
-        //     } while (true);
-
-        //     int secondNumberToAttackWith =0;
-        //     do{
-        //         System.out.println("please enter the number to attack the " + theSecondBonusColor + " realm with: ");
-        //         secondNumberToAttackWith = Integer.parseInt(System.console().readLine());
-        //         if (!(firstNumberToAttackWith > 6 || firstNumberToAttackWith < 1)){
-        //             Creature secondCreature = player.getScoreSheet().getCreatureByColor(theSecondBonusColor);
-        //             Move secondBonusmove = new Move(new Dice(secondNumberToAttackWith), secondCreature);
-        //             if (makeMove(player, secondBonusmove))
-        //                 break;
-        //             else{
-        //                 System.out.println("please choose again but a valid move");
-        //             }
-
-        //         }else{
-        //             System.out.println("please enter a valid number");
-        //         }
-        //     } while (true);
-        //     player.updateGameScore();
-        //     return true;
-        // }
+                valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
+            }
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
+            if (bException.getRealmColor2() != RealmColor.PARENT) {
+                RealmColor realmColor2 = bException.getRealmColor2();
+                valid = false;
+                while (!valid) {
+                    try {
+                        chosenDie = handleColorBonusException(realmColor2, player);
+                    } catch (NoAvailableMovesException e) {
+                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        return true;
+                    } catch (InvalidBonusSelection e) {
+                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        continue;
+                    } catch (InvalidDiceSelectionException e) {
+                        continue;
+                    }
+                    valid = makeMove(player, new Move(chosenDie, getScoreSheet(player).getCreatureByColor(chosenDie.getRealm())));
+                }
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+            }
+            return true;
+        }
         catch (InvalidMoveException Im){
-            System.out.println("i dont get why we would get here");
+            System.out.println("It seems that this move is invalid.\nPlease try again.");
             return false;
         }
+    }
+
+    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
+        gameBoard.resetGreenPostColorBonus();
+        Dice finalDie = null;
+        String input = "";
+        player.getScoreSheet().displayColoredScoreSheet();
+        if (color == RealmColor.WHITE) {
+            Move[] possibleMoves = getAllPossibleMoves(player);
+            if (possibleMoves.length == 0)
+                throw new NoAvailableMovesException();
+            while (input.isEmpty()) {
+                System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
+                System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
+                System.out.println("1. \u001B[31m" +  "Red Realm " + "\u001B[0m" + "\n" +
+                        "2. \u001B[32m" + "Green Realm" + "\u001B[0m" + "\n" +
+                        "3. \u001B[34m" + "Blue Realm" + "\u001B[0m" + "\n" +
+                        "4. \u001B[35m" + "Magenta Realm" + "\u001B[0m" + "\n" +
+                        "5. \u001B[33m" + "Yellow Realm" + "\u001B[0m" + "\n");
+                input = scanner.next();
+                boolean validInput = false;
+                for (int i = 1; i <= 5 && !validInput; i++)
+                    validInput = input.equals("" + i);
+                if (!validInput) {
+                    input = "";
+                    System.out.println("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
+                }
+            }
+            int value = Integer.parseInt(input);
+            switch (value) {
+                case 1: color = RealmColor.RED; break;
+                case 2: color = RealmColor.GREEN; break;
+                case 3: color = RealmColor.BLUE; break;
+                case 4: color = RealmColor.MAGENTA; break;
+                case 5: color = RealmColor.YELLOW; break;
+            }
+            possibleMoves = getAllPossibleMoves(player);
+            boolean canYouUseThisBonus = false;
+            for (Move move: possibleMoves) {
+                canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
+            }
+            if (!canYouUseThisBonus) {
+                throw new InvalidBonusSelection();
+            }
+        }
+        System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
+        Move[] possibleMoves = getAllPossibleMoves(player);
+        boolean canYouUseThisBonus = false;
+        for (Move move: possibleMoves) {
+            canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
+        }
+        if (!canYouUseThisBonus) {
+            throw new NoAvailableMovesException();
+        }
+        if (color == RealmColor.GREEN) {
+            System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 2; i <= 12 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
+            }
+            int value = Integer.parseInt(input);
+            finalDie = new GreenDice(value);
+            gameBoard.setGreenForColorBonus(value);
+        }
+        else if (color == RealmColor.RED) {
+            System.out.println("Please input a value between 1-6 that you would like to use to attack the RED Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 1; i <= 6 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
+            }
+            int value = Integer.parseInt(input);
+            finalDie = new RedDice(value);
+            System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
+            System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+            input = scanner.next();
+            while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
+                System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.\n");
+                System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
+                input = scanner.next();
+            }
+            ((RedDice)finalDie).selectsDragon(Integer.parseInt(input));
+        }
+        else {
+            System.out.println("Please input a value between 1-6 that you would like to use to attack the " + color + " Realm with!");
+            input = scanner.next();
+            boolean validInput = false;
+            for (int i = 1; i <= 6 && !validInput; i++)
+                validInput = input.equals("" + i);
+            if (!validInput) {
+                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
+                throw new InvalidDiceSelectionException();
+            }
+            int value = Integer.parseInt(input);
+            switch (color) {
+                case BLUE: finalDie= new BlueDice(value); break;
+                case MAGENTA: finalDie = new MagentaDice(value); break;
+                case YELLOW: finalDie = new YellowDice(value);
+            };
+        }
+        return finalDie;
     }
 
     // gameboard getter:
@@ -600,9 +922,12 @@ public class CLIGameController extends GameController {
 
     // dice related methods:
     public Dice [] rollDice() {
-        Dice[] temp = gameBoard.getAllDice();
-        gameBoard.rollDice();
-        return temp;
+        gameBoard.resetGreenPostColorBonus();
+        gameBoard.rollAvailableDice();
+        Dice[] dice = new Dice[gameBoard.getAvailableDice().size()];
+        for (int i = 0; i < dice.length; i++)
+            dice[i] = gameBoard.getAvailableDice().get(i);
+        return dice;
     }
 
     public Dice[] getAllDice() {
@@ -668,6 +993,7 @@ public class CLIGameController extends GameController {
         return arcaneBoostsAsArray;
     }
     public boolean selectDice(Dice dice, Player player){
+        gameBoard.resetGreenPostColorBonus();
         try{
             player.selectDice(dice);
             gameBoard.removeFromAvailable(dice);
@@ -682,17 +1008,12 @@ public class CLIGameController extends GameController {
 
     //new method
     public void moveAllIntoForgotten() {
+        gameBoard.resetGreenPostColorBonus();
         for (Dice die: getAvailableDice()) {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
     }
-
-    public static void main(String[] args)  {
-        CLIGameController controller = new CLIGameController();
-        controller.startGame();
-    }
-
 }
 
 
