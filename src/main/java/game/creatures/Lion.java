@@ -121,8 +121,8 @@ public class Lion extends Creature{
         int value = dice.getValue();
         int ans;
 
-        if (deadLions + 1 == 4 || deadLions + 1 == 6 || deadLions + 1 == 9) ans = value * 2;
-        else if (deadLions + 1 == 11) ans = value * 3;
+        if (deadLions  == 3 || deadLions  == 6 || deadLions == 8) ans = value * 2; //zero-indexed
+        else if (deadLions == 10) ans = value * 3;
         else ans = value;
 
         return ans;
@@ -140,7 +140,10 @@ public class Lion extends Creature{
         sb.append("+-----------------------------------------------------------------------+\n");
 
         sb.append("|  H  |");
-        for (int i = 0; i < 11; i++) sb.append(lions[i]).append("    |");
+        for (int i = 0; i < 11; i++) {
+            if(lions[i]>9) sb.append(lions[i]).append("   |");
+            else sb.append(lions[i]).append("    |");
+    }
 
         sb.append("\n");
         sb.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
@@ -194,6 +197,7 @@ public class Lion extends Creature{
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
 
         int counter = 0;
+        if(rewardLocationsArray!=null)
         for (int i = 0; i < rewardLocationsArray.size(); i++) {
             if (lions[rewardLocationsArray.get(i)] != 0) counter++;
         }
@@ -216,11 +220,11 @@ public class Lion extends Creature{
 
         ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
         ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
-
+        if(TimeWarpArrayList!=null)
         for (int i = 0; i < TimeWarpArrayList.size(); i++) {
             if (TimeWarpArrayList.get(i) == deadLions) timeWarps.add(new TimeWarp());
         }
-
+        if(ArcaneBoostArrayList!=null)
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
             if (ArcaneBoostArrayList.get(i) == deadLions) arcaneBoosts.add(new ArcaneBoost());
         }
