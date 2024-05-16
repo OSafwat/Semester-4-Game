@@ -3,7 +3,6 @@ package game.creatures;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,7 +38,6 @@ public class Lion extends Creature{
         initLions();
         this.deadLions = 0;
         this.score = 0;
-        initScoreSheet();
         this.elementalCrest = 0;
         populateRewardLocationFromConfigFile();
         populateMappedRewardLocation();
@@ -64,7 +62,7 @@ public class Lion extends Creature{
             properties.setProperty("hit11Reward", "null");
         }
 
-        for(int i = 0; i < 11; i++) {
+        for(int i = 1; i <= 11; i++) {
             if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
                 arcaneBoosts.add(ac);
@@ -74,6 +72,7 @@ public class Lion extends Creature{
                 timeWarps.add(tw);
             }
         }
+                initScoreSheet();
 
     }
 
@@ -192,7 +191,11 @@ public class Lion extends Creature{
             
         temp.append("\n");
 
-        temp.append("|  M  |     |     |     |x2   |     |     |x2   |     |x2   |     |x3   |\n");
+        temp.append("|  M  |");
+        for(int i = 1; i <= 11; i++) { 
+             temp.append(getMultiplier(i)+"   |"); 
+        }
+        temp.append("\n");
 
         temp.append("|  R  |");
 
@@ -238,7 +241,7 @@ public class Lion extends Creature{
 
         if(TimeWarpArrayList!=null)
         for (int i = 0; i < TimeWarpArrayList.size(); i++) {
-            if (TimeWarpArrayList.get(i) == deadLions){
+            if (TimeWarpArrayList.get(i) == deadLions-1){
                 this.timeWarps.get(0).setStatus(RewardStates.ACQUIRED);
                 this.timeWarps.remove(0);
                 break;
@@ -246,7 +249,7 @@ public class Lion extends Creature{
         }
         if(ArcaneBoostArrayList!=null)
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
-            if (ArcaneBoostArrayList.get(i) == deadLions) {
+            if (ArcaneBoostArrayList.get(i) == deadLions-1) {
                 this.arcaneBoosts.get(0).setStatus(RewardStates.ACQUIRED);
                 this.arcaneBoosts.remove(0);
                 break;
