@@ -17,7 +17,6 @@ import java.util.*;
 
 public class CLIGameController {
     GameBoard gameBoard;
-    String rewardsArray[];
     Scanner scanner;
 
     // constructor(s):
@@ -185,20 +184,20 @@ public class CLIGameController {
         }
         Player player1= gameBoard.getPlayer1();
         Player player2= gameBoard.getPlayer2();
-        System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
         player1.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player1.getGameScore().toString());
+        System.out.println( player1.getGameScore().toString() + "\n");
         int player1Score= player1.getGameScore().getTotalScore();
 
-        System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
         player2.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player2.getGameScore().toString());
+        System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
         if (player1Score > player2Score)
-            System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
         else
-            System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
         scanner.close();
     }
 
@@ -1013,18 +1012,6 @@ public class CLIGameController {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
-    }
-
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        RedDice redDice = new RedDice(6);
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
-        for (int i = 0; i < cli.getGameBoard().getPlayer1().getArcaneBoosts().size(); i++)
-            System.out.println(cli.getGameBoard().getPlayer1().getArcaneBoosts().get(i).getStatus());
     }
 }
 
