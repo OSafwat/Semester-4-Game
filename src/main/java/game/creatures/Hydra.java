@@ -184,8 +184,8 @@ public class Hydra extends Creature{
             regenerateSerpent();
 
         switch(properties.getProperty("hit"+headsKilled+"Reward")){
-            case "ArcaneBoost": this.arcaneBoosts.set(this.arcaneBoostsUsed++, new ArcaneBoost(RewardStates.ACQUIRED)); break;
-            case "TimeWarp": this.timeWarps.set(this.timeWarpsUsed++, new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "ArcaneBoost": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
+            case "TimeWarp": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
             case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "RedBonus": throw new BonusException(RealmColor.RED);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
