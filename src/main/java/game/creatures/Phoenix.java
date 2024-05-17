@@ -104,6 +104,10 @@ public class Phoenix extends Creature{
     public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
+            if (killedPhoenixes >= 11) {
+                allPossibleMoves.clear();
+                return false;
+            }
             if (killedPhoenixes == 0 || phoenixes[killedPhoenixes - 1] == 6 || diceValue > phoenixes[killedPhoenixes - 1]) return killedPhoenixes < 11;
         }
 
@@ -175,7 +179,7 @@ public class Phoenix extends Creature{
             updateAllPossibleMoves();
             populateMappedRewardLocation();
 
-            if (!notBonus) throw new BonusException(bonusColor);
+            if (!notBonus && bonusColor != RealmColor.PARENT) throw new BonusException(bonusColor);
 
             return true;
         }
@@ -346,7 +350,7 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null? 0 : phoenixes[killedPhoenixes - 1] % 6;
+        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null || killedPhoenixes >= 11? 0 : phoenixes[killedPhoenixes - 1] % 6;
 
         for (int i = latestReceivedHit + 1; i <= 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i), this));
