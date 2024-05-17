@@ -6,7 +6,6 @@ import game.dice.Dice;
 import game.engine.Move;
 import java.util.ArrayList;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
 
 public abstract class Creature {

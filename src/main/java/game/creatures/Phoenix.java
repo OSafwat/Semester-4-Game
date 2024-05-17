@@ -45,9 +45,11 @@ public class Phoenix extends Creature{
         ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
         ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
+        if(TimeWarpArrayList!=null)
         for (int i = 0; i < TimeWarpArrayList.size(); i++)
             timeWarps.add(new TimeWarp());
 
+        if(ArcaneBoostArrayList!=null)    
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++)
             arcaneBoosts.add(new ArcaneBoost());
     }
@@ -58,6 +60,7 @@ public class Phoenix extends Creature{
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
 
         int counter = 0;
+        if(rewardLocationsArray!=null)
         for (int i = 0; i < rewardLocationsArray.size(); i++) {
             if (phoenixes[rewardLocationsArray.get(i)] != null) counter++;
         }
@@ -117,6 +120,7 @@ public class Phoenix extends Creature{
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
+            if(TimeWarpArrayList!=null)
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
                 if (TimeWarpArrayList.get(i) == killedPhoenixes - 1) {
                     timeWarps.get(0).setStatus(RewardStates.ACQUIRED);
@@ -124,7 +128,8 @@ public class Phoenix extends Creature{
                     break;
                 }
             }
-
+            
+            if(ArcaneBoostArrayList!=null)
             for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
                 if (ArcaneBoostArrayList.get(i) == killedPhoenixes - 1){
                     arcaneBoosts.get(0).setStatus(RewardStates.ACQUIRED);

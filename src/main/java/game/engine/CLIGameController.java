@@ -17,7 +17,6 @@ import java.util.*;
 
 public class CLIGameController {
     GameBoard gameBoard;
-    String rewardsArray[];
     Scanner scanner;
 
     // constructor(s):
@@ -185,20 +184,20 @@ public class CLIGameController {
         }
         Player player1= gameBoard.getPlayer1();
         Player player2= gameBoard.getPlayer2();
-        System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
         player1.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player1.getGameScore().toString());
+        System.out.println( player1.getGameScore().toString() + "\n");
         int player1Score= player1.getGameScore().getTotalScore();
 
-        System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
         player2.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player2.getGameScore().toString());
+        System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
         if (player1Score > player2Score)
-            System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
         else
-            System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
         scanner.close();
     }
 
@@ -217,10 +216,10 @@ public class CLIGameController {
                 return;
             }
         }
-        boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
         while (usedArcaneBoost) {
             handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
         }
     }
 
@@ -234,10 +233,10 @@ public class CLIGameController {
             if (!valid)
                 break;
         }
-        boolean usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
         while (usedArcaneBoost) {
             handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(player.getArcaneBoosts());
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
         }
     }
 
@@ -245,7 +244,6 @@ public class CLIGameController {
     public boolean playTurn(Player player, boolean isThisATimeWarpRerollCall) {
         gameBoard.resetGreenPostColorBonus();
         if (!isThisATimeWarpRerollCall) {
-            gameBoard.resetGreenPostColorBonus();
             player.getScoreSheet().displayColoredScoreSheet();
             System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
             System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
@@ -254,7 +252,7 @@ public class CLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
-        boolean useTimeWarp = handleTimeWarps(player.getTimeWarps());
+        boolean useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
         if (useTimeWarp) {
             return playTurn(player, true);
         }
@@ -269,7 +267,7 @@ public class CLIGameController {
                     diceSet[i] = availableDice.get(i);
                 handleDiceDisplay(diceSet, 0);
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-                useTimeWarp = handleTimeWarps(player.getTimeWarps());
+                useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
                 if (useTimeWarp) {
                     return playTurn(player, true);
                 }
@@ -528,8 +526,8 @@ public class CLIGameController {
             case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
         }
     }
-    public boolean handleArcaneBoost(ArrayList<ArcaneBoost> arcaneBoosts){
-        if (arcaneBoosts.isEmpty())
+    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts){
+        if (arcaneBoosts.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         //dummy value initialization for loop entry
@@ -555,13 +553,14 @@ public class CLIGameController {
                     }
                     else if (c == 'n') {
                         System.out.println("Alright, you will not get a chance to attack your Realms again.\n");
+                        return false;
                     }
                     else {
                         System.out.println("Invalid input, please try again.");
                         System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
                     }
 
-                } while (c != 'y' && c != 'n');
+                } while (c != 'y');
                 if (c == 'y') {
                     arcaneBoost.setStatus(RewardStates.USED);
                 }
@@ -569,19 +568,6 @@ public class CLIGameController {
             }
         }
         return c == 'y';
-    }
-    public Creature getCreatureToAttacByColor(int choice, ScoreSheet scoresheet){
-        switch (choice){
-            case 1: return scoresheet.getCreatureByColor(RealmColor.RED);
-            case 2: return scoresheet.getCreatureByColor(RealmColor.GREEN);
-            case 3: return scoresheet.getCreatureByColor(RealmColor.BLUE);
-            case 4: return scoresheet.getCreatureByColor(RealmColor.MAGENTA);
-            case 5: return scoresheet.getCreatureByColor(RealmColor.YELLOW);
-            default: System.out.println("ok ana mesh 3aref law dakhalna hena han7elaha ezay");
-                return scoresheet.getCreatureByColor(RealmColor.RED);
-
-        }
-
     }
     public void handleBonus(Player player, RealmColor realmColor){
         Dice chosenDie;
@@ -592,7 +578,7 @@ public class CLIGameController {
             } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm.. it seems that the " + realmColor + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                 return;
-            } catch (InvalidBonusSelection e) {
+            } catch (InvalidBonusSelectionException e) {
                 System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                 continue;
             }
@@ -604,8 +590,8 @@ public class CLIGameController {
         player.updateGameScore();
         player.updateAllPossibleMoves();
     }
-    public boolean handleTimeWarps(ArrayList<TimeWarp> timewarps){
-        if (timewarps.isEmpty())
+    public boolean handleTimeWarps(TimeWarp[] timewarps){
+        if (timewarps.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         //dummy value initialization for loop entry
@@ -721,7 +707,7 @@ public class CLIGameController {
         }
         else{
             for (int i = 0; i < playerAllMoves.length; i++) {
-                if (playerAllMoves[i].compareTo(dice)==0){
+                if (playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue()){
                     result.add(playerAllMoves[i]);
                 }
             }
@@ -765,7 +751,7 @@ public class CLIGameController {
                 } catch (NoAvailableMovesException e) {
                     System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                     return true;
-                } catch (InvalidBonusSelection e) {
+                } catch (InvalidBonusSelectionException e) {
                     System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                     continue;
                 } catch (InvalidDiceSelectionException e) {
@@ -784,7 +770,7 @@ public class CLIGameController {
                     } catch (NoAvailableMovesException e) {
                         System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                         return true;
-                    } catch (InvalidBonusSelection e) {
+                    } catch (InvalidBonusSelectionException e) {
                         System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                         continue;
                     } catch (InvalidDiceSelectionException e) {
@@ -803,7 +789,7 @@ public class CLIGameController {
         }
     }
 
-    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
+    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelectionException, InvalidDiceSelectionException{
         gameBoard.resetGreenPostColorBonus();
         Dice finalDie = null;
         String input = "";
@@ -843,7 +829,7 @@ public class CLIGameController {
                 canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
             }
             if (!canYouUseThisBonus) {
-                throw new InvalidBonusSelection();
+                throw new InvalidBonusSelectionException();
             }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
@@ -1013,6 +999,18 @@ public class CLIGameController {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
+    }
+
+    public static void main (String[] args) {
+        CLIGameController cli = new CLIGameController();
+        RedDice redDice = new RedDice(6);
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
+        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
+        for (int i = 0; i < cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1()).length; i++)
+            System.out.println(cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1())[i].getStatus());
     }
 }
 
