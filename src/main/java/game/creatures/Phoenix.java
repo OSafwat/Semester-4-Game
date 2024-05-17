@@ -3,7 +3,6 @@ package game.creatures;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,13 +21,13 @@ import game.engine.enums.RewardStates;
 import game.exceptions.InvalidMoveException;
 
 public class Phoenix extends Creature{
-    public Integer[] phoenixes;
-    int killedPhoenixes;
-    public ArrayList<Move> allPossibleMoves;
+    private Integer[] phoenixes;
+    private int killedPhoenixes;
+    private ArrayList<Move> allPossibleMoves;
     // A hash map that maps the rewards to their respective phoenix's death amounts
-    public static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+    private static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
-    public String[] mappedRewardLocations = new String[11];
+    private String[] mappedRewardLocations = new String[11];
 
     public Phoenix() {
         phoenixes = new Integer[11];
@@ -41,7 +40,7 @@ public class Phoenix extends Creature{
         initRewards();
     }
 
-    public void initRewards() {
+    private void initRewards() {
         ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
         ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
@@ -209,7 +208,7 @@ public class Phoenix extends Creature{
     }
 
     //implementing the config file reading
-    public void populateRewardLocationFromConfigFile() {
+    private void populateRewardLocationFromConfigFile() {
         // Trying to read from the config (.properties file) the realm configuration
         try {
             File config = new File("src/main/resources/config/MysticalSkyRewards.properties");
@@ -303,7 +302,7 @@ public class Phoenix extends Creature{
     }
 
     // This method is used to populate the MappedRewardLocation Array for faster and easier accessing of the "hit reward(s)" indices
-    public void populateMappedRewardLocation() {
+    private void populateMappedRewardLocation() {
         // Iterate over the key-value pairs in the rewardLocations HashMap
         for (Map.Entry<String, ArrayList<Integer>> entry : rewardLocations.entrySet()) {
             String key = entry.getKey();
@@ -348,7 +347,7 @@ public class Phoenix extends Creature{
         }
     }
 
-    public void updateAllPossibleMoves() {
+    private void updateAllPossibleMoves() {
         allPossibleMoves.clear();
         if (killedPhoenixes >= 11) {
             return;
@@ -360,7 +359,7 @@ public class Phoenix extends Creature{
         }
     }
 
-    public String getRewardString(String rewardName, int n) {
+    private String getRewardString(String rewardName, int n) {
         String output = "X ";
         switch (rewardName) {
             case "RedBonus":
@@ -440,19 +439,5 @@ public class Phoenix extends Creature{
         }
 
         return output;
-    }
-
-    public static void main (String[] args) {
-        Phoenix phoenix = new Phoenix();
-        for (int i = 0; i < 11; i++)
-            try {
-                phoenix.makeMove(new MagentaDice(6));
-            } catch (BonusException e) {
-                continue;
-            } catch (InvalidMoveException e) {
-                continue;
-            }
-        System.out.println(phoenix.killedPhoenixes);
-        System.out.println(phoenix.getAllPossibleMoves());
     }
 }
