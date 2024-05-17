@@ -52,7 +52,10 @@ Dice-Realms/
 │   │   │       │   ├── InvalidDiceSelectionException.java
 │   │   │       │   ├── DiceRollException.java
 │   │   │       │   ├── CommandFormatException.java
-│   │   │       │   └── ExhaustedResourceException.java
+│   │   │       │   ├── ExhaustedResourceException.java
+│   │   │       │   ├── BonusException.java
+│   │   │       │   ├── NoAvailableMovesException.java
+│   │   │       │   └── InvalidBonusSelectionException.java
 │   │   │       │
 │   │   │       ├── gui/
 │   │   │       │
@@ -257,7 +260,199 @@ For each package, add the skeleton details for the class and duplicate as much a
     - **Return Type**: `boolean`
       - `true` if the move is successfully completed,
       - `false` otherwise.
-  
+
+### `CLIGameController` class
+
+- **Package**: `game.engine`
+- **Type**: Class
+- **Description**: This class represents the main controller for the game. 
+
+#### Methods:
+
+1. `int[] getSettings()`
+
+    - **Description**: Reads the config files to get the game settings data.
+    - **Return Type**: `int[]`
+        An integer array that contains the values related to the game settings.
+
+2. `String[] getRewards(int numberOfRounds)`
+
+    - **Description**: Reads the config files to get the round rewards data.
+    - **Parameters**:
+        - `numberOfRounds`: A value which specifies an upper count on the number of round rewards that should be obtained from the config file.
+    - **Return Type**: `String[]`
+        A string array that contains the strings that represent the round rewards.
+
+3. `void handleRoundRewards(Player player, String reward)`
+
+    - **Description**: Handles the rewards obtained at the start of a player's turn in a new round.
+    - **Parameters**:
+        - `player`: The player who has obtained the reward.
+        - `reward`: The reward that the player should get now.
+    - **Return Type**: `void`
+
+4. `void playRound(Player player, String reward, int turnCount)`
+
+    - **Description**: A method which manages how a round plays out.
+    - **Parameters**:
+        - `player`: The player who is playing his turn now.
+        - `reward`: The reward obtained in this round.
+        - `turnCount`: The number of turns to be played in the round.
+    - **Return Type**: `void`
+
+5. `boolean playTurn(Player player, boolean isThisATimeWarpRerollCall)`
+
+    - **Description**: A method which handles every ACTIVE turn being played.
+    - **Parameters**:
+        - `player`: The player whose active turn is now.
+        - `isThisATimeWarpRerollCall`: .
+    - **Return Type**: `boolean`
+        - `true` if the turn is successfully completed,
+        - `false` otherwise.
+
+6. `boolean playForgottenTurn(Player player)`
+
+    - **Description**: A method which handles every PASSIVE turn being played.
+    - **Parameters**:
+        - `player`: The player whose passive turn is now.
+    - **Return Type**: `void`
+
+7. `void resetRed()`
+
+    - **Description**: A method which resets the Red Dice, in case any mishandling of it occurs.
+    - **Parameters**:
+
+    - **Return Type**: `void`
+
+8. `boolean turnCompletion(Player player) throws NoAvailableMovesException`
+
+    - **Description**: A method where all turns converge to get handled.
+    - **Parameters**:
+        - `player`: The player whose turn is now.
+    - **Return Type**: `boolean`
+        - `true` if the turn is successfully completed,
+        - `false` otherwise.
+
+9. `Dice[] getArcaneBoostDice()`
+
+    - **Description**: A method that gets the dice that can be used in an arcane boost.
+    - **Parameters**:
+    - **Return Type**: `Dice[]`
+        - An array of dice containing the dice that can be used in this arcane boost call.
+
+10. `void handleArcaneBoostCall(Player player)`
+
+    - **Description**: A method which handles any arcane boosts that get used.
+    - **Parameters**:
+        - `player`: The player who is using the arcane boost.
+    - **Return Type**: `void`
+
+11. `RedDice handleRedDice(RedDice finalDie) throws InvalidDiceSelectionException`
+
+    - **Description**: A method which handles any red dice that get used, since they need to be handled differently than other dice.
+    - **Parameters**:
+        - `finalDie`: The red dice that is being used
+    - **Return Type**: `boolean`
+        - The red dice after the dragon has been selected. 
+
+12. `void handleDiceDisplay(Dice[] diceSet, int indicator)`
+
+    - **Description**: A method which handles the process of displaying dice to the user.
+    - **Parameters**:
+        - `diceSet`: The set of dice that are being displayed.
+        - `indicator`: A parameter that dictates the messages that appear along with the dice.
+    - **Return Type**: `void`
+
+13. `Dice handleDiceSelection(Player player, Dice[] diceSet) throws InvalidDiceSelectionException, NoAvailableMovesException`
+
+    - **Description**: A method which handles the process of selecting a die to attack with.
+    - **Parameters**:
+        - `player`: The player who is selecting a die to attack with now.
+        - `diceSet`: The set of dice that the player is selecting a die from now.
+    - **Return Type**: `Dice`
+        - The die the player has selected
+
+14. `Dice handleArcanePrism(Dice chosenDie, Player player)`
+
+    - **Description**: A method which handles the selection of the Arcane Prism, since it requires different handling from other dice.
+    - **Parameters**:
+        - `player`: The player who has selected the Arcane Prism to attack with now.
+        - `chosenDie`: The die that the player has chosen.
+    - **Return Type**: `Dice`
+        - The die after it has been changed into the correct type to attack with, according to the player's choice.
+
+15. `void displayDice (Dice dice)`
+
+    - **Description**: A method which handles the process of displaying a singular die, and is used repeatedly in handleDiceDisplay to display all dice.
+    - **Parameters**:
+        - `dice`: The die to be displayed.
+    - **Return Type**: `void`
+
+16. `boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts)`
+
+    - **Description**: A method that handles arcane boosts and checks if the player can use one.
+    - **Parameters**:
+        - `arcaneBoosts`: The array of arcane boosts that is present in the player clas. It contains all arcane boosts that the player can obtain, regardless of their status.
+    - **Return Type**: `boolean`
+        - `true`: If the player has decided to use an arcane boost,
+        - `false`: otherwise.
+
+17. `void displayDice (Dice dice)`
+
+    - **Description**: A method which handles the process of displaying a singular die, and is used repeatedly in handleDiceDisplay to display all dice.
+    - **Parameters**:
+        - `dice`: The die to be displayed.
+    - **Return Type**: `void`
+
+18. `void handleBonus(Player player, RealmColor realmColor)`
+
+    - **Description**: A method which handles any bonuses obtained via the round rewards system.
+    - **Parameters**:
+        - `player`: The current player who has just obtained a bonus.
+        - `realmColor`: The realm color that dictates which bonus the realm will be used against.
+    - **Return Type**: `void`
+
+19. `boolean handleTimeWarps(TimeWarp[] timewarps)`
+
+    - **Description**: A method that handles time warps and checks if the player can use one.
+    - **Parameters**:
+        - `timewarps`: The array of time warps that is present in the player clas. It contains all time warps that the player can obtain, regardless of their status.
+    - **Return Type**: `boolean`
+        - `true`: If the player has decided to use a time warp,
+        - `false`: otherwise.
+
+20. `Move[] getAllPossibleMovesForDiceSet (Player player, Dice[] dice) throws NoAvailableMovesException`
+
+    - **Description**: A method that gets all possible moves that the player can do with any set of dice.
+    - **Parameters**:
+        - `player`: The player whose moves we want to get.
+        - `dice`: The set of dice that the player can use.
+    - **Return Type**: `Move[]`
+        - A Move array that contains all moves that the player can do using the dice set passed as a parameter.
+
+21. `void removeGreenDuplicate(ArrayList<Move> result)`
+
+    - **Description**: A method that checks of a move arraylist contains a green duplicate move (the green die's move, and the green version of the Arcane Prism) and removes the duplicate.
+    - **Parameters**:
+        - `result`: The arraylist of Moves to be checked.
+    - **Return Type**: `void`
+
+22. `Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelectionException, InvalidDiceSelectionException`
+
+    - **Description**: A method which handles any bonuses obtained throughout the game.
+    - **Parameters**:
+        - `color`: The color of the realm that the bonus can be used against.
+        - `player`: The player that has just obtained a bonus.
+    - **Return Type**: `Dice`
+        - A die containing the move the player has chosen. 
+
+23. `public void moveAllIntoForgotten()`
+
+    - **Description**: A method which moves all dice to the forgotten realm after the active player is done playing.
+    - **Parameters**:
+    - **Return Type**: `void`
+
+
 ### `TimeWarp` class
 
 - **Package**: `game.collectibles`
@@ -300,18 +495,23 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `Dice rollDice()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
-   - **Return Type**: `Dice`
-     - `Dice` object representing the dice rolled.
-2. `int getValue()`
-   - **Description**: returns the numerical value represented by the dice
+1. `void selectsDragon(int dragonNumber)`
+   - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+   - **Parameter**:
+     - `dragonNumber`: The value that the instance variable should be changed to.
+   - **Return Type**: `void`
+
+2. `int getDragonNumber()`
+   - **Description**: returns the `dragonNumber` instance variable
+   - **Parameter**:
    - **Return Type**: `int`
-     - The number that the dice has been rolled on
-3. `Color getColor()`
-   - **Description**: returns the color of the dice 
-   - **Return Type**: `Color`
-     - The color represented by the dice.
+     - The `dragonNumber` instance variable
+
+### `RedDice` class
+
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the red dice in the game
 
 
 ### `Move` class
@@ -505,44 +705,6 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
-### `RedRealm` class
-
-- **Package**: `game.engine`
-- **Type**: Class
-- **Description**: This class is going to represent the realm that has the pyro dragons.
-
-#### Methods:
-1. `int getScore()`
-   - **Description**: Returns the current score of this realm for the current player.
-   - **Return Type**: `int`
-
-2. `void updateScore()`
-   - **Description**: Updates the value of the score of this realm according to the dragon that has been defeated.
-   - **Return Type**: `void`
-
-3. `boolean checkMove(Dice dice, Creature creature)`
-   - **Description**: Checks if a move using a specific dice can be used against a specific dragon.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player.
-     - `creature`: The target dragon selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is possible.
-     - `false` otherwise.
-
-4. `boolean makeMove(Dice dice, Creature creature)`
-   - **Description**: Executes an attack on a specific dragon using a specific dice.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player for the move.
-     - `creature`: The target dragon selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed.
-     - `false` otherwise.
-
-5. `void print()`
-   - **Description**: Displays data related to the realm.
-   - **Parameter**: 
-   - **Return Type**: `void`
-
 ### `GreenRealm` class
 
 - **Package**: `game.engine`
@@ -683,37 +845,167 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
 
-### `PyroDragon` class
+### `Dragon` class
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the PyroDragon in the game.
+- **Description**: This class represents the PyroDragon in the game. It extends the Creature class.
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, PyroDragon pyroDragon)`
-   - **Description**: Executes an attack on a PyroDragon.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The PyroDragon that the move is against.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed,
-     - `false` otherwise.
-
-2. `boolean checkMove(Dice dice,  PyroDragon pyroDragon)`
-   - **Description**: Check if a move on a PyroDragon is possible.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The PyroDragon that the active player wants to check if the move is possible against.
-   - **Return Type**: `boolean`
-     - `True` if the move is possible,
-     - `False` otherwise.
-
-3. `String toString()`
+1. `String toString()`
    - **Description**: Outputs a string containing the details of the PyroDragon.
+   - **Parameter**:
    - **Return Type**: `String`
      - The String containing the PyroDragon .
 
+2. `void initialization()`
+   - **Description**: A method which contains all other initialization methods.
+   - **Parameter**:
+   - **Return Type**: `void`
+
+3. `void initRewards()`
+    - **Description**: A method which initializes the rewards array using the config file.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+4. `boolean checkValidityOfReward(String reward)`
+   - **Description**: A method that checks whether a reward is an actual proper reward.
+   - **Parameter**: 
+     - `reward`: The reward to be checked.
+   - **Return Type**: `boolean`
+     - `True` if the reward is a correct reward,
+     - `False` otherwise.
+
+5. `void initPointMap()`
+    - **Description**: A method that initializes an array called pointMap with the values of the score that should be obtained from every dragon after it has been slain.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+6. `void initTimeWarpsAndArcaneBoosts ()`
+    - **Description**: A method that initializes the time warp and arcane boost array lists.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+7. `void initPossibleMoves()`
+    - **Description**: A method that initializes an arraylist with all current possible moves.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+8. `DragonNumber getDragonNumber()`
+    - **Description**: A method that returns a dragon's Dragon Number.
+    - **Parameter**:
+    - **Return Type**: `Dragon Number`
+      - `Dragon1`: If the dragon is the first dragon.
+      - `Dragon2`: If the dragon is the second dragon.
+      - `Dragon3`: If the dragon is the third dragon.
+      - `Dragon4`: If the dragon is the fourth dragon.
+
+9. `Dragon selectsDragon(int number)`
+    - **Description**: A method that returns the dragon that has been selected using the number parameter.
+   - **Parameter**:
+     - `number`: The number that indicated which dragon should be selected for this attack.        
+   - **Return Type**: `Dragon`
+     - The dragon that has been selected.
+
+10. `boolean isDead()`
+    - **Description**: A method used to know whether a Dragon is dead or not.
+    - **Parameter**:
+    - **Return Type**: `boolean`
+      -`true`: If the dragon is dead,
+      -`false`: otherwise. 
+
+11. `String getRewardStringDependingOnIndex(int index)`
+    - **Description**: A method that gets a reward as a string based on the index passed as a parameter.
+    - **Parameter**:
+      - `index`: The index that dictates which reward string should be returned.
+    - **Return Type**: `String`
+      - A string containing the reward that should be returned.
+
+12. `boolean equals(Object obj)`
+    - **Description**: A method used to compare two dragons.
+    - **Parameter**:
+      - `obj`: An object which contains the dragon that is to be compared to the dragon that this method is called upon.
+    - **Return Type**: `boolean`
+      - `true`: If the two dragons are equal,
+      - `false`: otherwise.
+
+13. `void initNextTimeWarp()`
+    - **Description**: A method used to initialize the next time warp.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+14. `void initNextArcaneBoost()`
+    - **Description**: A method used to initialize the next arcane boost.
+    - **Parameter**:
+    - **Return Type**: `void`
+
+15. `RealmColor decodeLetterToRealmColor (char c)`
+    - **Description**: A method used to translate a character into the corresponding realm color.
+    - **Parameter**:
+      - `c`: The character that is used to determine which realm color should the method return.
+    - **Return Type**: `RealmColor`
+      - The realm color corresponding to the character c, if there exists one,
+      - `null` otherwise.
+
+16. `boolean moveHelper(int targetValue, boolean doMove)`
+    - **Description**: A method that contains the common code segment between the makemove and checkmove methods in order to reduce code redundancy.
+    - **Parameter**:
+      - `targetValue`: The value that the dice being used in this move contains.
+      - `doMove`: A boolean which dictates whether the move should actually occur or not. Check move passes this parameter as false, while make move passes it as true.
+    - **Return Type**: `boolean`
+      - `true`: If the move was successful OR if the move can be applied (for makemove and checkmove respectively),
+      - `false`: otherwise.
+
+17. `String changeToString(Integer integer)`
+    - **Description**: A method that helps in printing the scoresheet.
+    - **Parameter**:
+      - `integer`: The value of the dragon part that this method is called upon.
+    - **Return Type**: `String`
+      - `"" + value`: If the integer passed is not `null`,
+      - `"X "`: otherwise.
+
+18. `String getFirstRowRewardString()`
+    - **Description**: A method that returns a string containing the reward obtained from the first row.
+    - **Parameter**:
+    - **Return Type**: `String`
+      - A string containing the initials of the two major words that make up the reward (for example, RedBonus becomes RB) depending on whether the conditions for this reward have been met,
+      - `"X "`: otherwise.
+
+19. `String getSecondRowRewardString()`
+    - **Description**: A method that returns a string containing the reward obtained from the second row.
+    - **Parameter**:
+    - **Return Type**: `String`
+      - A string containing the initials of the two major words that make up the reward (for example, RedBonus becomes RB) depending on whether the conditions for this reward have been met,
+      - `"X "`: otherwise.
+
+20. `String getThirdRowRewardString()`
+    - **Description**: A method that returns a string containing the reward obtained from the third row.
+    - **Parameter**:
+    - **Return Type**: `String`
+      - A string containing the initials of the two major words that make up the reward (for example, RedBonus becomes RB) depending on whether the conditions for this reward have been met,
+      - `"X "`: otherwise.
+
+21. `String getFourthRowRewardString()`
+    - **Description**: A method that returns a string containing the reward obtained from the fourth row.
+    - **Parameter**:
+    - **Return Type**: `String`
+      - A string containing the initials of the two major words that make up the reward (for example, RedBonus becomes RB) depending on whether the conditions for this reward have been met,
+      - `"X "`: otherwise.
+
+22. `String getCornerRewardString()`
+    - **Description**: A method that returns a string containing the reward obtained from the corner/diagonal.
+    - **Parameter**:
+    - **Return Type**: `String`
+      - A string containing the initials of the two major words that make up the reward (for example, RedBonus becomes RB) depending on whether the conditions for this reward have been met,
+      - `"X "`: otherwise.
+
+23. `String encode (String reward)`
+    - **Description**: A method that encodes a reward by changing it into a string that contains the initials of the two major words that make up the reward (for example, RedBonus becomes RB).
+    - **Parameter**:
+      - `reward`: The string that is to be encoded.
+    - **Return Type**: `String`
+      - The string that contains the encoded version of the reward.
 
 ### `GaiaGaurdian` class
 
@@ -783,7 +1075,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the MajesticPheonix in the game.
+- **Description**: This class represents the MajesticPhoenix in the game.
 
 #### Methods:
 
