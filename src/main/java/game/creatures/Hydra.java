@@ -232,22 +232,4 @@ public class Hydra extends Creature{
         }
         return moves;
     }
-    public static void main(String[] args) {
-        Hydra hydra = new Hydra();
-        BlueDice dice = new BlueDice(6);
-        ArrayList<ArcaneBoost> acs = hydra.getAllArcaneBoosts();
-        for(int i = 0; i < 4; i++) {
-            try{
-                System.out.println(hydra.makeMove(dice));
-            }
-            catch(BonusException e) {
-                System.out.println();
-            }
-        }
-        for(int i = 0; i < acs.size(); i++) {
-            ArcaneBoost ac = acs.get(i);
-            System.out.println(ac.getStatus());
-        }
-        System.out.println(hydra.getScore());
-    }
 }

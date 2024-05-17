@@ -21,7 +21,7 @@ import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 
-public class Lion extends Creature{
+public class Lion extends Creature {
     private int[] lions;
     private int deadLions;
     private int score;

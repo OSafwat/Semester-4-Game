@@ -678,12 +678,4 @@ private boolean applyNotBonusCollectable(String s){
     return false;
 
 }
-
-public static void main(String[] args) {
-    Gaia gaia = new Gaia();
-    System.out.println(gaia.getScoreSheet());
-   
-  
-}
-
 }
