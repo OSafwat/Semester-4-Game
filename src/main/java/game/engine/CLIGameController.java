@@ -304,7 +304,6 @@ public class CLIGameController {
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
-        Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -364,7 +363,7 @@ public class CLIGameController {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
         ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
-        outer: for (Dice die: possibleDice) {
+        for (Dice die: possibleDice) {
             if (!bannedDice.contains(die))
                 diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
         }
