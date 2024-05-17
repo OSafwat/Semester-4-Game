@@ -14,7 +14,7 @@ public class Player {
     //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
-    private Move[] allPossibleMoves ;
+    private Move[] allPossibleMoves;
     private ArrayList<Dice> playedDice;
 
 
