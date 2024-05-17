@@ -786,7 +786,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the MajesticPheonix in the game.
+- **Description**: This class represents the MajesticPhoenix in the game.
 
 #### Methods:
 
