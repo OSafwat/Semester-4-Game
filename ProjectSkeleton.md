@@ -621,43 +621,6 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
-### `MagentaRealm` class
-
-- **Package**: `game.engine`
-- **Type**: Class
-- **Description**: This class is going to represent the realm that has the magenta phoenix.
-#### Methods:
-1. `int getScore()`
-   - **Description**: Returns the current score of this realm.
-   - **Return Type**: `int`
-
-2. `void updateScore()`
-   - **Description**: Updates the value of the score of this realm according to the phoenix that has been defeated.
-   - **Return Type**: `void`
-
-3. `boolean checkMove(Dice dice, Creature creature)`
-   - **Description**: Checks if a move using a specific dice can be used against the phoenix.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player.
-     - `creature`: The phoenix.
-   - **Return Type**: `boolean`
-     - `true` if the move is possible.
-     - `false` otherwise.
-
-4. `boolean makeMove(Dice dice, Creature creature)`
-   - **Description**: Executes an attack on the phoenix using a specific dice.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player for the move.
-     - `creature`: The phoenix.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed.
-     - `false` otherwise.
-
-5. `void print()`
-   - **Description**: Displays data related to the realm.
-   - **Parameter**: 
-   - **Return Type**: `void`
-
 ### `YellowRealm` class
 
 - **Package**: `game.engine`
@@ -819,7 +782,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - The String containing the HydraSerpent.
   
 
-### `MajesticPhoenix` class
+### `Phoenix` class
 
 - **Package**: `game.creatures`
 - **Type**: class
@@ -827,28 +790,36 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, MajesticPhoenix majesticPhoenix)`
-   - **Description**: Executes an attack on a MajesticPhoenix.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The MajesticPhoenix that the move is against.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed,
-     - `false` otherwise.
+1. `public Phoenix()`
+   - **Description**: Class constructor that initialises an instance of Phoenix.
 
-2. `boolean checkMove(Dice dice,  MajesticPhoenix majesticPhoenix)`
-   - **Description**: Check if a move on a MajesticPhoenix is possible.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The MajesticPhoenix that the active player wants to check if the move is possible against.
-   - **Return Type**: `boolean`
-     - `True` if the move is possible,
-     - `False` otherwise.
+2. `public void initRewards()`
+   - **Description**: Initialises the arcaneBoosts and the timeWarps ArrayLists depending on how many of each was found in the configuration file.
+   - **Parameter**:
+   - **Return Type**: `void`
 
-3. `String toString()`
-   - **Description**: Outputs a string containing the details of the MajesticPhoenix.
-   - **Return Type**: `String`
-     - The String containing the MajesticPhoenix.
+3. `public void populateRewardLocationFromConfigFile()`
+   - **Description**: Reads the game configuration from the respective .properties file, and if the file is bugged, uses a default configuration,   either configurations are then loaded into a HashMap for later use.
+   - **Parameter**:
+   - **Return Type**: `void`
+
+4. `public void populateMappedRewardLocation()`
+  - **Description**: Uses the rewardLocation HashMap initialised in the populateRewardLocationFromConfigFile() method to reverse the mapping in the HashMap with the Key-Value pair being <String, ArrayList> to a String Array where the index of a reward is its respective location. This is done for easier and faster access of the reward location later on.
+  - **Parameter**:
+  - **Return Type**: `void`
+
+5. `public void updateAllPossibleMoves()`
+  - **Description**: Updates the allPossibleMoves ArrayList to include all the -new- possible moves a player could do in the Magenta realm.
+  - **Parameter**:
+  - **Return Type**: `void`
+
+5. `public String getRewardString(String rewardName, int n)`
+  - **Description**: Returns a string indicating how the reward should be displayed in the score sheet.
+  - **Parameter**:
+    - `rewardName`: The full reward name.
+    - `n`: The number of Phoenixes killed that should grant the reward.
+  - **Return Type**: `String`
+    - The string indicating how the reward should be displayed in the score sheet.
 
 ### `SolarLion` class
 
