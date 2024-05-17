@@ -800,7 +800,12 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**:
    - **Return Type**: `void`
 
-4. `public void populateMappedRewardLocation()`
+4. `public void updateAllPossibleMoves()`
+  - **Description**: Updates the allPossibleMoves ArrayList to include all the -new- possible moves a player could do in the Magenta realm.
+  - **Parameter**:
+  - **Return Type**: `void`
+
+5. `public void populateMappedRewardLocation()`
   - **Description**: Uses the rewardLocation HashMap initialised in the populateRewardLocationFromConfigFile() method to reverse the mapping in the HashMap with the Key-Value pair being <String, ArrayList> to a String Array where the index of a reward is its respective location. This is done for easier and faster access of the reward location later on.
   - **Parameter**:
   - **Return Type**: `void`
