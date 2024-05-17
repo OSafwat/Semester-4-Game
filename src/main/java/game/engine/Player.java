@@ -73,7 +73,7 @@ public class Player {
             this.playerStatus = PlayerStatus.ACTIVE;
     }
     public void updateGameScore(){
-        gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests() );
+        gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests());
     }
     public GameScore getGameScore(){
         return this.gameScore;
