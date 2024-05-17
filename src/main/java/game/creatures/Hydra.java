@@ -185,7 +185,7 @@ public class Hydra extends Creature{
 
         switch(properties.getProperty("hit"+headsKilled+"Reward")){
             case "ArcaneBoost": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
-            case "TimeWarp": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
+            case "TimeWarp": this.arcaneBoosts.get(timeWarpsUsed++).setStatus(RewardStates.ACQUIRED); break;
             case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "RedBonus": throw new BonusException(RealmColor.RED);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
