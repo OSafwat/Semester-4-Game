@@ -19,12 +19,12 @@ public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
     String[] magicNames = {
-        "Arcanus", "Mystara", "Zephyrion", "Luminara", "Thalindra", "Elandor", "Celestia", "Drakonis",
-        "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Thorne", "Aelar", "Lyra", "Vesper",
-        "Marcellus", "Nyx", "Alaric", "Sylphine", "Dorian", "Zephira", "Arion", "Liora", "Valerian",
-        "Esmeray", "Orin", "Amara", "Kael", "Thalassa", "Oberon", "Elara", "Zarek", "Morrigan",
-        "Galadriel", "Kaelen", "Serilda", "Elowen", "Fenris", "Thalia", "Kaelis", "Arwen", "Serapis",
-        "Valeria", "Thorne", "Meliora", "Cassian", "Isolde", "Evander"
+        "Akiramenai", "Hitler", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
+        "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
+        "Dumbbelldoor", "CNC", "Hitler", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
+        "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+        "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hitler"
     };
     
 
