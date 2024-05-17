@@ -18,13 +18,24 @@ import java.util.*;
 public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
-    String[] magicNames = {
+    static final String[] magicNames = {
         "Akiramenai", "Hitler", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
         "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
         "Dumbbelldoor", "CNC", "Hitler", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
         "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
         "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
         "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hitler"
+    };
+
+    // ANSI escape codes for various colors
+    static final String RESET = "\u001B[0m";
+    static final String[] COLORS = {
+        "\u001B[31m", // Red
+        "\u001B[33m", // Yellow
+        "\u001B[32m", // Green
+        "\u001B[36m", // Cyan
+        "\u001B[34m", // Blue
+        "\u001B[35m", // Magenta
     };
     
 
@@ -160,11 +171,79 @@ public class CLIGameController {
 
             player1Name = randomName;
         }
+
+        switch(player1Name.toLowerCase()) {
+            case "dimension6":
+                printRainbowText("The Best Team");
+                player1Name = changeToRainbowText(player1Name);
+                break;
+            
+            case "doctor":
+            case "dr":
+            case "dr.":
+            case "doc":
+            case "ahmed hussein":
+                player1Name = changeToRainbowText("slmat");
+                printRainbowText("Hi slmat");
+                break;
+            
+            case "noureldin":
+            case "nesegemaa":
+            case "mahmoud":
+            case "elephant":
+            case "elephanto":
+            case "elephanto gyat":
+            case "safwat":
+            case "hamed":
+            case "hotdog":
+            case "hotdawg":
+            case "tamer":
+            case "kirat":
+                player1Name = changeToRainbowText("Xx" + player1Name + "xX");
+                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                break;
+            
+            case "ace":
+            case "rewe":
+            case "el le3ba":
+            case "le3ba":
+            case "dumbbeldoor":
+            case "sixfold":
+            case "amrosgy":
+            case "utopia":
+            case "akiraminai":
+            case "badawayyy":
+            case "zeus":
+                player1Name = changeToRainbowText(player1Name);
+                printRainbowText("=_= Hello losers.");
+                break;
+
+            case "sharazad":
+                player1Name = changeToRainbowText(player1Name);
+                printRainbowText("Don't cry over spilled Fruit Punch");
+                break;
+            
+            case "giu":
+                player1Name = changeToRainbowText(player1Name);
+                System.out.println("\u001B[41m#####################\u001B[0m");
+                System.out.println("\u001B[43m#####################\u001B[0m");
+                System.out.println("\u001B[40m#####################\u001B[0m");
+                break;
+            case "guc":
+                player1Name = changeToRainbowText(player1Name);
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("\u001B[47m########\u001B[43m#####\u001B[47m########\u001B[0m");
+                System.out.println("\u001B[40m#####################\u001B[0m");
+                
+            default:
+                break;
+        }
+
         getActivePlayer().setName(player1Name);
         
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
-        if (player1Name.trim().equals("")) {
+        if (player2Name.trim().equals("")) {
             Random random = new Random();
             String randomName;
 
@@ -178,6 +257,74 @@ public class CLIGameController {
 
             player2Name = randomName;
         }
+
+        switch(player2Name.toLowerCase()) {
+            case "dimension6":
+                printRainbowText("The Best Team");
+                player2Name = changeToRainbowText(player2Name);
+                break;
+            
+            case "doctor":
+            case "dr":
+            case "dr.":
+            case "doc":
+            case "ahmed hussein":
+                player2Name = changeToRainbowText("slmat");
+                printRainbowText("Hi slmat");
+                break;
+            
+            case "noureldin":
+            case "nesegemaa":
+            case "mahmoud":
+            case "elephant":
+            case "elephanto":
+            case "elephanto gyat":
+            case "safwat":
+            case "hamed":
+            case "hotdog":
+            case "hotdawg":
+            case "tamer":
+            case "kirat":
+                player2Name = changeToRainbowText("Xx" + player2Name + "xX");
+                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                break;
+            
+            case "ace":
+            case "rewe":
+            case "el le3ba":
+            case "le3ba":
+            case "dumbbeldoor":
+            case "sixfold":
+            case "amrosgy":
+            case "utopia":
+            case "akiraminai":
+            case "badawayyy":
+            case "zeus":
+                player2Name = changeToRainbowText(player2Name);
+                printRainbowText("=_= Hello losers.");
+                break;
+
+            case "sharazad":
+                player2Name = changeToRainbowText(player2Name);
+                printRainbowText("Don't cry over spilled Fruit Punch");
+                break;
+            
+            case "giu":
+                player2Name = changeToRainbowText(player2Name);
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("\u001B[33m#####################\u001B[0m");
+                System.out.println("\u001B[30m#####################\u001B[0m");
+                break;
+            case "guc":
+                player2Name = changeToRainbowText(player2Name);
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("########\u001B[33m#####\u001B[0m########");
+                System.out.println("\u001B[30m#####################\u001B[0m");
+                
+            default:
+                break;
+        }
+
         getPassivePlayer().setName(player2Name);
 
         int [] temp = getSettings();
@@ -1058,6 +1205,28 @@ public class CLIGameController {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
+    }
+
+    public static void printRainbowText(String text) {
+        int colorIndex = 0;
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            System.out.print(COLORS[colorIndex] + c + RESET);
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        // Move to the next line after printing the text
+        System.out.println();
+    }
+
+    public static String changeToRainbowText(String text) {
+        int colorIndex = 0;
+        String output = "";
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            output += COLORS[colorIndex] + c + RESET;
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        return output;
     }
 
     public static void main (String[] args) {
