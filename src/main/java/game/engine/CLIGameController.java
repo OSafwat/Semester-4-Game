@@ -18,6 +18,15 @@ import java.util.*;
 public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
+    String[] magicNames = {
+        "Arcanus", "Mystara", "Zephyrion", "Luminara", "Thalindra", "Elandor", "Celestia", "Drakonis",
+        "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Thorne", "Aelar", "Lyra", "Vesper",
+        "Marcellus", "Nyx", "Alaric", "Sylphine", "Dorian", "Zephira", "Arion", "Liora", "Valerian",
+        "Esmeray", "Orin", "Amara", "Kael", "Thalassa", "Oberon", "Elara", "Zarek", "Morrigan",
+        "Galadriel", "Kaelen", "Serilda", "Elowen", "Fenris", "Thalia", "Kaelis", "Arwen", "Serapis",
+        "Valeria", "Thorne", "Meliora", "Cassian", "Isolde", "Evander"
+    };
+    
 
     // constructor(s):
     public CLIGameController() {
@@ -140,9 +149,35 @@ public class CLIGameController {
     public void startGame(){
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
+        if (player1Name.trim().equals("")) {
+            Random random = new Random();
+
+            // Get a random index between 0 and the length of the array
+            int randomIndex = random.nextInt(magicNames.length);
+
+            // Get the random name from the array
+            String randomName = magicNames[randomIndex];
+
+            player1Name = randomName;
+        }
         getActivePlayer().setName(player1Name);
+        
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
+        if (player1Name.trim().equals("")) {
+            Random random = new Random();
+            String randomName;
+
+            do {
+                // Get a random index between 0 and the length of the array
+                int randomIndex = random.nextInt(magicNames.length);
+
+                // Get the random name from the array
+                randomName = magicNames[randomIndex];
+            } while (randomName.equals(player1Name));
+
+            player2Name = randomName;
+        }
         getPassivePlayer().setName(player2Name);
 
         int [] temp = getSettings();
