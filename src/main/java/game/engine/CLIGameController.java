@@ -17,7 +17,6 @@ import java.util.*;
 
 public class CLIGameController {
     GameBoard gameBoard;
-    String rewardsArray[];
     Scanner scanner;
 
     // constructor(s):
@@ -185,20 +184,20 @@ public class CLIGameController {
         }
         Player player1= gameBoard.getPlayer1();
         Player player2= gameBoard.getPlayer2();
-        System.out.println("the scoresheet of "+ player1.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
         player1.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player1.getGameScore().toString());
+        System.out.println( player1.getGameScore().toString() + "\n");
         int player1Score= player1.getGameScore().getTotalScore();
 
-        System.out.println("the scoresheet of "+ player2.getName()+" is the following:");
+        System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
         player2.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player2.getGameScore().toString());
+        System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
         if (player1Score > player2Score)
-            System.out.println("Congratulations "+player1.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player2.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
         else
-            System.out.println("Congratulations "+player2.getName()+" you have emerged victorious in this wonderful conquest and have shown your absolute superiority when compared to the other noob wannabe-wizard in my opinion "+ player1.getName()+ " should just go and kill himself for wasting his life away like that\n anyway thanks you for playing and we hope you dont come again after all u just wasted like 30 mins of your life for nothing unlike me who just wasted 10 hours at least 😭");
+            System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
         scanner.close();
     }
 
@@ -245,7 +244,6 @@ public class CLIGameController {
     public boolean playTurn(Player player, boolean isThisATimeWarpRerollCall) {
         gameBoard.resetGreenPostColorBonus();
         if (!isThisATimeWarpRerollCall) {
-            gameBoard.resetGreenPostColorBonus();
             player.getScoreSheet().displayColoredScoreSheet();
             System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
             System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
@@ -555,13 +553,14 @@ public class CLIGameController {
                     }
                     else if (c == 'n') {
                         System.out.println("Alright, you will not get a chance to attack your Realms again.\n");
+                        return false;
                     }
                     else {
                         System.out.println("Invalid input, please try again.");
                         System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
                     }
 
-                } while (c != 'y' && c != 'n');
+                } while (c != 'y');
                 if (c == 'y') {
                     arcaneBoost.setStatus(RewardStates.USED);
                 }
@@ -721,7 +720,7 @@ public class CLIGameController {
         }
         else{
             for (int i = 0; i < playerAllMoves.length; i++) {
-                if (playerAllMoves[i].compareTo(dice)==0){
+                if (playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue()){
                     result.add(playerAllMoves[i]);
                 }
             }
