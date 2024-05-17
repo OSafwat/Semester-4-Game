@@ -116,7 +116,7 @@ public class Hydra extends Creature{
     }
 
     // Setter for the "score" variable.
-    public void updateScore() {
+    private void updateScore() {
         this.score = this.scores[this.headsKilled];
     }
 
