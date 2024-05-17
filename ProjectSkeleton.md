@@ -765,43 +765,6 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
-### `BlueRealm` class
-
-- **Package**: `game.engine`
-- **Type**: Class
-- **Description**: This class is going to represent the realm that has the hydra serpents.
-#### Methods:
-1. `int getScore()`
-   - **Description**: Returns the current score of this realm.
-   - **Return Type**: `int`
-
-2. `void updateScore()`
-   - **Description**: Updates the value of the score of this realm according to the serpent that has been defeated.
-   - **Return Type**: `void`
-
-3. `boolean checkMove(Dice dice, Creature creature)`
-   - **Description**: Checks if a move using a specific dice can be used against a specific serpent.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player.
-     - `creature`: The target serpent selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is possible.
-     - `false` otherwise.
-
-4. `boolean makeMove(Dice dice, Creature creature)`
-   - **Description**: Executes an attack on a specific serpent using a specific dice.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player for the move.
-     - `creature`: The target serpent selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed.
-     - `false` otherwise.
-
-5. `void print()`
-   - **Description**: Displays data related to the realm.
-   - **Parameter**: 
-   - **Return Type**: `void`
-
 ### `YellowRealm` class
 
 - **Package**: `game.engine`
@@ -1069,41 +1032,18 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, HydraSerpent hydraSerpent)`
-   - **Description**: Executes an attack on a HydraSerpent.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The target creature that the move is against.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed,
-     - `false` otherwise.
-
-2. `boolean checkMove(Dice dice,  HydraSerpent hydraSerpent)`
-   - **Description**: Check if a move on a HydraSerpent is possible.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The HydraSerpent that the active player wants to check if the move is possible against.
-   - **Return Type**: `boolean`
-     - `True` if the move is possible,
-     - `False` otherwise.
-
-3. `String toString()`
-   - **Description**: Outputs a string containing the details of the HydraSerpent.
-   - **Return Type**: `String`
-     - The String containing the HydraSerpent.
-
-4. `String getBonus(int value)`
+1. `String getBonus(int value)`
    - **Description**: Outputs a string containing the value of the bonus to be printed in the scoresheet.
    - **Parameter**:
      - `value`: The value indicating which bonus in the scoresheet to get.
    - **Return Type**: `String`
      - The string containing the value of the bonus represented in two capital letters. (e.g. "AB") 
   
-5. `void updateScore()`
+2. `void updateScore()`
    - **Desciption**: Updates the score of the hydra class based on the current state of the hydra.
    - **Return Type**: `void`
 
-6. `void regenerateSerpent()`
+3. `void regenerateSerpent()`
    - **Description**: When the first hydra dies, populates the hydra class with 6 new heads.
    - **Return Type**: `void`
   
