@@ -2,7 +2,7 @@
 
 ## Folder Structure
 
-```
+```css
 Dice-Realms/
 │
 ├── src/
