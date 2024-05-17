@@ -1110,7 +1110,7 @@ For each package, add the skeleton details for the class and duplicate as much a
   - **Return Type**: `String`
     - The string indicating how the reward should be displayed in the score sheet.
 
-### `SolarLion` class
+### `Lion` class
 
 - **Package**: `game.creatures`
 - **Type**: class
@@ -1118,28 +1118,191 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, SolarLion solarLion)`
-   - **Description**: Executes an attack on a SolarLion.
+0. `public Lion()`
+  - **Description**: class constructor that initializes a lion instance.
+
+1. `public boolean makeMove(Dice dice)`
+   - **Description**: executes an attack on a SolarLion.
    - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The target creature that the move is against.
+     - `dice`: the dice selected by the player for the move.
    - **Return Type**: `boolean`
      - `true` if the move is successfully completed,
      - `false` otherwise.
 
-2. `boolean checkMove(Dice dice,  SolarLion SolarLion)`
-   - **Description**: Check if a move on a SolarLion is possible.
+2. `public boolean checkMove(Dice dice)`
+   - **Description**: checks if a move on a lion is possible.
    - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The SolarLion that the active player wants to check if the move is possible against.
+     - `dice`: the dice selected by the player to check for the move.
    - **Return Type**: `boolean`
      - `True` if the move is possible,
      - `False` otherwise.
 
-3. `String toString()`
-   - **Description**: Outputs a string containing the details of the SolarLion.
-   - **Return Type**: `String`
-     - The String containing the SolarLion.
+3. `public ArrayList<TimeWarp> getAllTimeWarps()`
+  - **Description**: a method that returns all acquired timewarps.
+  - **Return Type**: `ArrayList<TimeWarp>`
+        - an arraylist with all the timewarps acquired from the yellow realm.
+
+4. `public ArrayList<ArcaneBoost> getAllArcaneBoosts()`
+  - **Description**: a method that returns all acquired arcaneboosts.
+  - **Return Type**: `ArrayList<ArcaneBoost>`
+        -an arraylist with all the arcaneboosts acquired from the yellow realm.
+
+5. `public int[] getLions()`
+  - **Description**: a method that returns the scores of all lions
+  - **Return Type**: `int[]`
+        - an array of all the scores of all the lions.
+
+6. `private void setLions(int[] lions)`
+  - **Description**: a method that sets the scores of the lions in the realm. 
+  - **Parameter**:
+        - `lions`: an array that has the scores of the lions.
+  - **Return Type**: `void`
+
+7. `private void initLions()`
+  - **Description**: a method that intializes the scores of all the lions.
+  - **Return Type**: `void`
+
+8. `private void updateLions(Dice dice)`
+  - **Description**: a method that updates the scores of the lions after making a successful move.
+  - **Parameter**: 
+        - `dice`: the dice with which you attack.
+  - **Return Type**: `void`
+
+9. `public int getDeadLions()`
+  - **Description**: a method that returns the number of dead lions.
+  - **Return Type**: `int`
+        - the number of dead lions in the yellow realm.
+
+10. `private void setDeadLions (int deadLions)`
+  - **Description**: a method that sets the number of dead lions.
+  - **Parameter**: 
+        - `deadLions`: the number of the dead lions to which you wanna set.
+  - **Return Type**: `void`
+
+11. `private void updateDeadLions()`
+  - **Description**: a method that updates the number of dead lions after making a move.
+  - **Return Type**: `void`
+
+12. `public int getScore()`
+  - **Description**: a method that returns the total score of the yellow realm.
+  - **Return Type**: `int`
+        - the total score of the yellow realm.
+
+13. `private int calculateScore(Dice dice)`
+  - **Description**: a method that calculates the actual score for a given dice.
+  - **Parameter** :
+        -`dice`: the dice for which we want to calculate the score.
+  - **Return Type**: `int`
+        - the actual score for a given dice depending on the multiplier at that position.
+
+14. `private void updateScore(Dice dice)`
+  - **Description**: a method that updates the total score of the yellow realm.
+  - **Parameter**:
+      - `dice`: the dice with which we add to the total score of the realm.
+  - **Return Type**: `void`
+
+15. `public String getScoreSheet()`
+  - **Description**: a method the returns the scoresheet for the yellow realm.
+  - **Return Type**: `String`
+        - the partial scoresheet for the yellow realm.
+
+16. `private void setScoreSheet(String scoreSheet)`
+  - **Description**: a method that sets the scoresheet for the yellow realm.
+  - **Return Type**: `void`
+
+17. `private void initScoreSheet()`
+  - **Description**: a method that intializes an empty scoresheet for the yellow realm.
+  - **Return Type**: `void`
+
+18. `public int getElementalCrest()`
+  - **Description**: a method that returns the number of elemental crests in the yellow realm.
+  - **Return Type**: `int`
+        - the number of elemental crests obtained in the yellow realm.
+
+19. `public ArrayList<Move> getAllPossibleMoves()`
+  - **Description**: a method that returns all possible moves in the yellow realm.
+  - **Return Type**: `ArrayList<Move>`
+        - an arraylist of all possible moves in the yellow realm.
+
+20. `public void populateRewardLocationFromConfigFile()`
+  - **Description**: a method that reads the game configuration from the respective .properties file, and if the file is bugged, uses the default configuration,   then loads the configuration into a hashmap for later use.
+  - **Return Type**: `void`
+
+21. `public void populateMappedRewardLocation()`
+  - **Description**: a method that uses the rewardLocation hashmap initialized in the populateRewardLocationFromConfigFile() method to reverse the mapping in the hashmap with the key-value pair being <String, ArrayList> to a string array where the index of a reward is its respective location. this is done for easier and faster access of the reward location later on.
+  - **Return Type**: `void`
+
+22. `public String getMultiplier(int n)`
+  - **Description**: a method that returns how the multiplier should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should use the multiplier.
+  - **Return Type**: `String`
+        - the string indicating how the multiplier should be displayed in the score sheet.
+
+23. `public String getRedBonusString(int n)`
+  - **Description**: a method that returns how the red bonus should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the red bonus.
+  - **Return Type**: `String`
+        - the string indicating how the red bonus should be displayed in the score sheet.
+
+24. `public String getGreenBonusString(int n)`
+  - **Description**: a method that returns how the green bonus should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the green bonus.
+  - **Return Type**: `String`
+        - the string indicating how the green bonus should be displayed in the score sheet.
+
+25. `public String getBlueBonusString(int n)`
+  - **Description**: a method that returns how the blue bonus should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the blue bonus.
+  - **Return Type**: `String` 
+        - the string indicating how the blue bonus should be displayed in the score sheet.
+
+26. `public String getMagentaBonusString(int n)`
+  - **Description**: a method that returns how the magenta bonus should look like in the scoresheet.
+  - **Parameter** 
+        - `n` the number of lions killed that should grant the magenta bonus.
+  - **Return Type**: `String`
+        - the string indicating how the magenta bonus should be displayed in the score sheet.
+
+27. `public String getYellowBonusString(int n)`
+  - **Description**: a method that returns how the yellow bonus should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the yellow bonus.
+  - **Return Type**: `String`
+        - the string indicating how the yellow bonus should be displayed in the score sheet.
+
+28. `public String getEssenceBonusString(int n)`
+  - **Description**: a method that returns how the essence bonus should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the essence bonus.
+  - **Return Type**: `String`
+          - the string indicating how the essence bonus should be displayed in the score sheet.
+
+29. `public String getElementalCrestString(int n)`
+  - **Description**: a method that returns how the elemental crest should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the elemental crest reward.
+  - **Return Type**: `String`
+        - the string indicating how the elemental crest should be displayed in the score sheet.
+
+30. `public String getArcaneBoostString(int n)`
+  - **Description**: a method that returns how the arcaneboost should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the arcaneboost reward.
+  - **Return Type**: `String`
+        - the string indicating how the arcane boost should be displayed in the score sheet.
+
+31. `public String getTimeWarpString(int n)`
+  - **Description**: a method that returns how the timewarp should look like in the scoresheet.
+  - **Parameter**: 
+        - `n` the number of lions killed that should grant the timewarp reward.
+  - **Return Type**: `String`
+        - the string indicating how the time warp should be displayed in the score sheet.
+
+
 ## Interfaces
 
 ### `Creature` interface
