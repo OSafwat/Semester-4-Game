@@ -24,6 +24,19 @@ public class CLIGameController {
         this.gameBoard= new GameBoard();
         scanner = new Scanner(System.in);
     }
+    public void getRewardsProp(){
+        try {
+            FileReader SettingsfileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");    
+            Properties p = new Properties();
+            p.load(SettingsfileReader); 
+            System.out.println(p.get("round1Reward")); // making sure the properties file is loaded correctly 
+
+        } catch (IOException e) {
+            System.out.println("the file has not been found the default rewards will be used");
+            // code to be implemented
+        }
+
+    }
     public int [] getSettings(){
         int numberOfRounds;
         int numebrOfTurnsPerRound;
@@ -1025,10 +1038,10 @@ public class CLIGameController {
         }
     }
 
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        cli.startGame();
-    }
+    // public static void main (String[] args) {
+    //     CLIGameController cli = new CLIGameController();
+    //     cli.getRewardsProp();
+    // }
 }
 
 
