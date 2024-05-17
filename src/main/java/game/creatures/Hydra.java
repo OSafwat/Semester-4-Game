@@ -50,17 +50,17 @@ public class Hydra extends Creature{
             this.properties.load(configReader);
         } catch (IOException e) {
             System.out.println("Properties file reading failed.");
-            this.properties.setProperty("hit1Reward", null);
-            this.properties.setProperty("hit2Reward", null);
-            this.properties.setProperty("hit3Reward", null);
+            this.properties.setProperty("hit1Reward", "null");
+            this.properties.setProperty("hit2Reward", "null");
+            this.properties.setProperty("hit3Reward", "null");
             this.properties.setProperty("hit4Reward", "ArcaneBoost");
-            this.properties.setProperty("hit5Reward", null);
+            this.properties.setProperty("hit5Reward", "null");
             this.properties.setProperty("hit6Reward", "GreenBonus");
             this.properties.setProperty("hit7Reward", "ElementalCrest");
-            this.properties.setProperty("hit8Reward", null);
+            this.properties.setProperty("hit8Reward", "null");
             this.properties.setProperty("hit9Reward", "MagentaBonus");
             this.properties.setProperty("hit10Reward", "TimeWarp");
-            this.properties.setProperty("hit11Reward", null);
+            this.properties.setProperty("hit11Reward", "null");
         }
         
         this.score = 0;
@@ -73,6 +73,10 @@ public class Hydra extends Creature{
 
         this.headsKilled = 0;
         this.diceUsed = new String[11];
+        for(int i = 1; i <= 11; i++) {
+            String[] defaultValues = {"null","null","null","ArcaneBoost","null","GreenBonus","ElementalCrest","null","MagentaBonus","TimeWarp","null"};
+            if(properties.getProperty("hit"+i+"Reward")==null) properties.setProperty("hit"+i+"Reward", defaultValues[i-1]);
+        }
         for(int i = 0; i < 11; i++) {
             this.diceUsed[i] = "---";
 
@@ -92,7 +96,7 @@ public class Hydra extends Creature{
     private String getBonus(int value) {
         String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
         String reward = properties.getProperty("hit"+value+"Reward");
-        if(reward == null)
+        if(reward.equals("null"))
             return "  ";
         else if(!this.diceUsed[--value].equals("---"))
             return "X ";
@@ -187,6 +191,7 @@ public class Hydra extends Creature{
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
             case "MagentaBonus": throw new BonusException(RealmColor.MAGENTA);
             case "YellowBonus": throw new BonusException(RealmColor.YELLOW);
+            case "EssenceBonus": throw new BonusException(RealmColor.WHITE);
         }
         return true;
     }
@@ -230,12 +235,18 @@ public class Hydra extends Creature{
     public static void main(String[] args) {
         Hydra hydra = new Hydra();
         BlueDice dice = new BlueDice(6);
-        for(int i = 0; i < 2; i++) {
-            try {
+        ArrayList<ArcaneBoost> acs = hydra.getAllArcaneBoosts();
+        for(int i = 0; i < 4; i++) {
+            try{
                 System.out.println(hydra.makeMove(dice));
-            } catch (BonusException e) {
-                System.out.println("Bonus");
             }
+            catch(BonusException e) {
+                System.out.println();
+            }
+        }
+        for(int i = 0; i < acs.size(); i++) {
+            ArcaneBoost ac = acs.get(i);
+            System.out.println(ac.getStatus());
         }
         System.out.println(hydra.getScore());
     }
