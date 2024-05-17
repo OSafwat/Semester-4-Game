@@ -45,9 +45,11 @@ public class Phoenix extends Creature{
         ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
         ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
+        if(TimeWarpArrayList!=null)
         for (int i = 0; i < TimeWarpArrayList.size(); i++)
             timeWarps.add(new TimeWarp());
 
+        if(ArcaneBoostArrayList!=null)    
         for (int i = 0; i < ArcaneBoostArrayList.size(); i++)
             arcaneBoosts.add(new ArcaneBoost());
     }
@@ -58,6 +60,7 @@ public class Phoenix extends Creature{
         ArrayList<Integer> rewardLocationsArray = rewardLocations.get(rewardName);
 
         int counter = 0;
+        if(rewardLocationsArray!=null)
         for (int i = 0; i < rewardLocationsArray.size(); i++) {
             if (phoenixes[rewardLocationsArray.get(i)] != null) counter++;
         }
@@ -101,6 +104,10 @@ public class Phoenix extends Creature{
     public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
+            if (killedPhoenixes >= 11) {
+                allPossibleMoves.clear();
+                return false;
+            }
             if (killedPhoenixes == 0 || phoenixes[killedPhoenixes - 1] == 6 || diceValue > phoenixes[killedPhoenixes - 1]) return killedPhoenixes < 11;
         }
 
@@ -117,6 +124,7 @@ public class Phoenix extends Creature{
             ArrayList<Integer> TimeWarpArrayList = rewardLocations.get("TimeWarp");
             ArrayList<Integer> ArcaneBoostArrayList = rewardLocations.get("ArcaneBoost");
 
+            if(TimeWarpArrayList!=null)
             for (int i = 0; i < TimeWarpArrayList.size(); i++) {
                 if (TimeWarpArrayList.get(i) == killedPhoenixes - 1) {
                     timeWarps.get(0).setStatus(RewardStates.ACQUIRED);
@@ -124,7 +132,8 @@ public class Phoenix extends Creature{
                     break;
                 }
             }
-
+            
+            if(ArcaneBoostArrayList!=null)
             for (int i = 0; i < ArcaneBoostArrayList.size(); i++) {
                 if (ArcaneBoostArrayList.get(i) == killedPhoenixes - 1){
                     arcaneBoosts.get(0).setStatus(RewardStates.ACQUIRED);
@@ -170,7 +179,7 @@ public class Phoenix extends Creature{
             updateAllPossibleMoves();
             populateMappedRewardLocation();
 
-            if (!notBonus) throw new BonusException(bonusColor);
+            if (!notBonus && bonusColor != RealmColor.PARENT) throw new BonusException(bonusColor);
 
             return true;
         }
@@ -341,7 +350,7 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null? 0 : phoenixes[killedPhoenixes - 1] % 6;
+        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null || killedPhoenixes >= 11? 0 : phoenixes[killedPhoenixes - 1] % 6;
 
         for (int i = latestReceivedHit + 1; i <= 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i), this));

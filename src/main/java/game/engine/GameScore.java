@@ -49,16 +49,16 @@ public class GameScore {
     public String toString(){
         String res="";
         // Print top border
-        res+=("+--------+--------+-------+-------+------+-------+");
+        res+=("+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+\n");
         // Print header row
-        res+=("| Dragon | Phoenix| Lion  | Hydra | Gaia | Total |");
+        res+=("  |   Red Realm   |   Green Realm   |  Blue Realm   |  Magenta Realm  |  Yellow Realm  |  Total  |\n");
         // Print middle border
-        res+=("+--------+--------+-------+-------+------+-------+");
+        res+=("+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+\n");
         // Print values with vertical lines and tabs to align them as a table
-        res+=("|   " + allScores[0] + "    |   " +  allScores[1] + "    |   " +  allScores[2] + "   |   " +  allScores[3] + "   |  " +  allScores[4] + "   |   " +
-                (getTotalScore()) + "   |");
+        res+=("  |       " + allScores[0] + "       |        " +  allScores[1] + "        |       " +  allScores[2] + "       |        " +  allScores[3] + "        |       " +  allScores[4] + "        |    " +
+                (getTotalScore()) + "    | \n");
         // Print bottom border
-        res+=("+--------+--------+-------+-------+------+-------+");
+        res+=("+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+");
         return res;
     }
 }
