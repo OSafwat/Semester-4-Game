@@ -162,7 +162,7 @@ public class Hydra extends Creature{
 
     // Method that checks if the move is possible.
     @Override
-    public boolean checkMove(Dice dice) {
+    protected boolean checkMove(Dice dice) {
         return dice.getValue() >= this.serpent.peek();
     }
 
