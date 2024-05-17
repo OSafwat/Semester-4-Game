@@ -211,7 +211,7 @@ public class Lion extends Creature{
     }
 
     @Override
-    public boolean checkMove(Dice dice){
+    protected boolean checkMove(Dice dice){
         int diceValue = dice.getValue();
         return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions < 11;
     }
