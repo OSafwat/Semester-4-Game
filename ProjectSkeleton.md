@@ -779,7 +779,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - The String containing the HydraSerpent.
   
 
-### `MajesticPhoenix` class
+### `Phoenix` class
 
 - **Package**: `game.creatures`
 - **Type**: class
@@ -787,28 +787,28 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, MajesticPhoenix majesticPhoenix)`
-   - **Description**: Executes an attack on a MajesticPhoenix.
+1. `boolean makeMove(Dice dice, Phoenix Phoenix)`
+   - **Description**: Executes an attack on a Phoenix.
    - **Parameter**: 
      - `dice`: The dice selected by the active player for the move.
-     - `creature`: The MajesticPhoenix that the move is against.
+     - `creature`: The Phoenix that the move is against.
    - **Return Type**: `boolean`
      - `true` if the move is successfully completed,
      - `false` otherwise.
 
-2. `boolean checkMove(Dice dice,  MajesticPhoenix majesticPhoenix)`
-   - **Description**: Check if a move on a MajesticPhoenix is possible.
+2. `boolean checkMove(Dice dice,  Phoenix Phoenix)`
+   - **Description**: Check if a move on a Phoenix is possible.
    - **Parameter**: 
      - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The MajesticPhoenix that the active player wants to check if the move is possible against.
+     - `creature`: The Phoenix that the active player wants to check if the move is possible against.
    - **Return Type**: `boolean`
      - `True` if the move is possible,
      - `False` otherwise.
 
 3. `String toString()`
-   - **Description**: Outputs a string containing the details of the MajesticPhoenix.
+   - **Description**: Outputs a string containing the details of the Phoenix.
    - **Return Type**: `String`
-     - The String containing the MajesticPhoenix.
+     - The String containing the Phoenix.
 
 ### `SolarLion` class
 
