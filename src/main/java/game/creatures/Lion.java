@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.dice.ArcanePrism;
@@ -48,7 +47,7 @@ public class Lion extends Creature{
             FileReader configReader = new FileReader(config);
             properties.load(configReader);
         } catch (IOException e) {
-            //smth wrong in the file crodie
+            //smth wrong in the file crodie :3
             properties.setProperty("hit1Reward", "null");
             properties.setProperty("hit2Reward", "null");
             properties.setProperty("hit3Reward", "TimeWarp");
@@ -65,15 +64,14 @@ public class Lion extends Creature{
         for(int i = 1; i <= 11; i++) {
             if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
-                arcaneBoosts.add(ac);
-            }
+                this.arcaneBoosts.add(ac);
+              }
             if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "TimeWarp")) {
                 TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
-                timeWarps.add(tw);
+                this.timeWarps.add(tw);
+              }
             }
-        }
                 initScoreSheet();
-
     }
 
     public ArrayList<TimeWarp> getAllTimeWarps() {
