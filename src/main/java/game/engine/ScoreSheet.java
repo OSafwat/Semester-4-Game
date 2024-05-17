@@ -11,12 +11,12 @@ import game.engine.enums.RealmColor;
 import java.util.ArrayList;
 
 public class ScoreSheet {
-    Hydra hydra;
-    Phoenix phoenix;
-    Lion lion;
-    Dragon dragon;
-    Gaia gaia;
-    GameScore gamescore;
+    private Hydra hydra;
+    private Phoenix phoenix;
+    private Lion lion;
+    private Dragon dragon;
+    private Gaia gaia;
+    private GameScore gamescore;
     //red    green  blue    magenta    yellow
 //dragon gaia   hydra   phoenix  lion
     public ScoreSheet(){
