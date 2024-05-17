@@ -7,15 +7,15 @@ import game.dice.Dice;
 import game.engine.enums.*;
 
 public class Player {
-    String name;
+    private String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
     //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
-    Move[] allPossibleMoves ;
-    ArrayList<Dice> playedDice;
+    private Move[] allPossibleMoves ;
+    private ArrayList<Dice> playedDice;
 
 
     public void setName(String name){
