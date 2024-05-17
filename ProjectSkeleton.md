@@ -495,18 +495,23 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `Dice rollDice()`
-   - **Description**: returns a dice with a given color and a random number between 1 and 6 
-   - **Return Type**: `Dice`
-     - `Dice` object representing the dice rolled.
-2. `int getValue()`
-   - **Description**: returns the numerical value represented by the dice
+1. `void selectsDragon(int dragonNumber)`
+   - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+   - **Parameter**:
+     - `dragonNumber`: The value that the instance variable should be changed to.
+   - **Return Type**: `void`
+
+2. `int getDragonNumber()`
+   - **Description**: returns the `dragonNumber` instance variable
+   - **Parameter**:
    - **Return Type**: `int`
-     - The number that the dice has been rolled on
-3. `Color getColor()`
-   - **Description**: returns the color of the dice 
-   - **Return Type**: `Color`
-     - The color represented by the dice.
+     - The `dragonNumber` instance variable
+
+### `RedDice` class
+
+- **Package**: `game.dice`
+- **Type**: Class
+- **Description**: This class represents the red dice in the game
 
 
 ### `Move` class
