@@ -61,4 +61,8 @@ public class GameScore {
         res+=("+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+");
         return res;
     }
+
+    protected int[] getAllScores() {
+        return allScores;
+    }
 }

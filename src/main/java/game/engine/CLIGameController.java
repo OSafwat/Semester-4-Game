@@ -194,10 +194,28 @@ public class CLIGameController {
         System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
+        if (player1Score == player2Score)
+        {
+            int[] player1Scores = player1.getGameScore().getAllScores();
+            int[] player2Scores = player2.getGameScore().getAllScores();
+            for (int i = 0; i < player2Scores.length; i++) {
+                if (player1Scores[i] > player2Scores[i]) {
+                    player1Score = 100;
+                    player2Score = 0;
+                }
+                else if (player1Scores[i] < player2Scores[i]) {
+                    player1Score = 0;
+                    player2Score = 100;
+                }
+            }
+        }
         if (player1Score > player2Score)
             System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-        else
+        else if (player1Score < player2Score)
             System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+        else {
+            System.out.println("It is a draw!");
+        }
         scanner.close();
     }
 
