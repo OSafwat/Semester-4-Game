@@ -549,6 +549,7 @@ public class CLIGameController {
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         //dummy value initialization for loop entry
+        gameBoard.resetGreenPostColorBonus();
         char c = 'a';
         int arcaneBoostCount = 0;
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
@@ -609,6 +610,7 @@ public class CLIGameController {
         player.updateAllPossibleMoves();
     }
     public boolean handleTimeWarps(TimeWarp[] timewarps){
+        gameBoard.resetGreenPostColorBonus();
         if (timewarps.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
