@@ -14,7 +14,6 @@ import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
-import game.exceptions.BonusTwoException;
 import game.exceptions.InvalidMoveException;
 
 
@@ -36,6 +35,10 @@ public class Gaia extends Creature{
     private int [] scores ={1,2,4,7,11,16,22,29,37,46,56};
     private boolean [] row={false,false,false};
     private boolean [] col = {false,false,false,false};
+    private String [] colreward;
+    private String [] rowreward;
+    private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost"};
+    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest"};
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
@@ -47,6 +50,94 @@ public class Gaia extends Creature{
         elementalCrestCount = 0;
         timeWarps= new ArrayList<>();
         arcaneBoosts= new ArrayList<>();
+        colreward = new String[4];
+        rowreward = new String[3];
+       
+
+            
+            for(  int i=0;i<4;i++){
+                    try {
+            String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
+           Properties prop ;
+           String colReward;
+           prop = new Properties();
+           FileInputStream ip = new FileInputStream(filePath);
+           prop.load(ip);
+           int real = i+1;
+           String whichReward = "column"+real+"Reward";
+           colReward = prop.getProperty(whichReward);
+           boolean flag = false;
+           for(int j =0;j<defaultcolreward.length;j++){
+            if(colReward.equals(defaultcolreward[j])){
+                flag = true;
+                break;
+            }
+           }
+           for(int j =0;j<defaultrowreward.length;j++){
+            if(colReward.equals(defaultrowreward[j])){
+                flag = true;
+                break;
+            }
+           }
+           
+           
+           if(flag)
+           this.colreward[i] = colReward;
+           else
+           this.colreward[i] = this.defaultcolreward[i];
+
+             }
+
+           catch(IOException e){
+            this.colreward[i] = this.defaultcolreward[i];
+        }
+            }
+
+            for(  int i=0;i<3;i++){
+                try {
+        String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
+       Properties prop ;
+       String rowReward;
+       prop = new Properties();
+       FileInputStream ip = new FileInputStream(filePath);
+       prop.load(ip);
+       int real = i+1;
+       String whichReward = "row"+real+"Reward";
+       rowReward = prop.getProperty(whichReward);
+       boolean flag = false;
+       for(int j =0;j<defaultcolreward.length;j++){
+        if(rowReward.equals(defaultcolreward[j])){
+            flag = true;
+            break;
+        }
+       }
+       for(int j =0;j<defaultrowreward.length;j++){
+        if(rowReward.equals(defaultrowreward[j])){
+            flag = true;
+            break;
+        }
+       }
+       
+       
+       if(flag)
+       this.rowreward[i] = rowReward;
+       else
+       this.rowreward[i] = this.defaultrowreward[i];
+       
+                }
+
+       catch(IOException e){
+        this.rowreward[i] = this.defaultrowreward[i];
+    }
+        }
+
+
+        
+         
+         
+        
+         
+       
 
         int c =1;
         for(int i=0;i<gaiaGuardians.length;i++){
@@ -249,42 +340,15 @@ private  void updateRow(int r){
     // IMP this will be changed when collectables classes are done
     // ASUM here I wrote stings but when the leader finish the classes this will be void and replace strings with method.
     private String whichCollectableCol (int c){
-        try{
-         String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
-        Properties prop ;
-        String colReward;
-        prop = new Properties();
-        FileInputStream ip = new FileInputStream(filePath);
-        prop.load(ip);
-        int real = c+1;
-        String whichReward = "column"+real+"Reward";
-        colReward = prop.getProperty(whichReward);
-        return colReward;
-        }
-        catch(IOException e){
-            return "Invalid";
-        }
+        return colreward[c];
+ 
       
     }
 
       // EXP gives the respective bonus for each row
     // IMP this will be changed when collectables classes are done
       private String whichCollectableRow(int r) {
-        try{
-        String filePath = "src/main/resources/config/TerrasHeartlandRewards.properties";
-        Properties prop ;
-        String rowReward;
-        prop = new Properties();
-        FileInputStream ip = new FileInputStream(filePath);
-        prop.load(ip);
-        int real = r+1;
-        String whichReward = "row"+real+"Reward";
-        rowReward = prop.getProperty(whichReward);
-        return rowReward;
-        }
-        catch(IOException e ){
-            return "Invalid";
-        }
+        return rowreward[r];
         
 }
 
@@ -617,11 +681,9 @@ private boolean applyNotBonusCollectable(String s){
 
 public static void main(String[] args) {
     Gaia gaia = new Gaia();
-    ArrayList<Move> moves= gaia.getAllPossibleMoves();
-    for (int index = 0; index < moves.size(); index++) {
-        Move move= moves.get(index);
-        System.out.println();
-    }
+    System.out.println(gaia.getScoreSheet());
+   
+  
 }
 
 }
