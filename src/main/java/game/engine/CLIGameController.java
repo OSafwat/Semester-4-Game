@@ -755,6 +755,7 @@ public class CLIGameController {
             else {
                 player.updateGameScore();
                 player.updateAllPossibleMoves();
+                gameBoard.resetGreenPostColorBonus();
                 return true;
             }
         } catch (BonusException bException) {
@@ -768,6 +769,7 @@ public class CLIGameController {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
                     System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    gameBoard.resetGreenPostColorBonus();
                     return true;
                 } catch (InvalidBonusSelectionException e) {
                     System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
@@ -787,6 +789,7 @@ public class CLIGameController {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
                         System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        gameBoard.resetGreenPostColorBonus();
                         return true;
                     } catch (InvalidBonusSelectionException e) {
                         System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
@@ -798,11 +801,13 @@ public class CLIGameController {
                 }
                 player.updateGameScore();
                 player.updateAllPossibleMoves();
+                gameBoard.resetGreenPostColorBonus();
             }
             return true;
         }
         catch (InvalidMoveException Im){
             System.out.println("It seems that this move is invalid.\nPlease try again.");
+            gameBoard.resetGreenPostColorBonus();
             return false;
         }
     }
