@@ -350,7 +350,10 @@ public class Phoenix extends Creature{
 
     public void updateAllPossibleMoves() {
         allPossibleMoves.clear();
-        int latestReceivedHit = phoenixes[killedPhoenixes - 1] == null || killedPhoenixes >= 11? 0 : phoenixes[killedPhoenixes - 1] % 6;
+        if (killedPhoenixes >= 11) {
+            return;
+        }
+        int latestReceivedHit = phoenixes[killedPhoenixes - 1] % 6;
 
         for (int i = latestReceivedHit + 1; i <= 6; i++) {
             allPossibleMoves.add(new Move(new MagentaDice(i), this));
@@ -437,5 +440,19 @@ public class Phoenix extends Creature{
         }
 
         return output;
+    }
+
+    public static void main (String[] args) {
+        Phoenix phoenix = new Phoenix();
+        for (int i = 0; i < 11; i++)
+            try {
+                phoenix.makeMove(new MagentaDice(6));
+            } catch (BonusException e) {
+                continue;
+            } catch (InvalidMoveException e) {
+                continue;
+            }
+        System.out.println(phoenix.killedPhoenixes);
+        System.out.println(phoenix.getAllPossibleMoves());
     }
 }

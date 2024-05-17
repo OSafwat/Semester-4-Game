@@ -304,7 +304,7 @@ public class CLIGameController {
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
-        getAllPossibleMovesForDiceSet(player, diceSet);
+        Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -1021,14 +1021,7 @@ public class CLIGameController {
 
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
-        RedDice redDice = new RedDice(6);
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
-        for (int i = 0; i < cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1()).length; i++)
-            System.out.println(cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1())[i].getStatus());
+        cli.startGame();
     }
 }
 
