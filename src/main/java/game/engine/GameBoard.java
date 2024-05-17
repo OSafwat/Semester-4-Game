@@ -8,17 +8,17 @@ import game.engine.enums.PlayerStatus;
 import game.engine.enums.RealmColor;
 
 public class GameBoard {
-    GameStatus gameStatus;
-    Player player1;
-    Player player2;
-    Dice [] allDice;
-    ArrayList<Dice> availableDice;
-    ArrayList<Dice> activeArcaneDice ;
-    ArrayList<Dice> forgottenRealmDice;
-    ArrayList<Dice> passiveArcaneDice;
-    ArrayList<Dice> arcaneDice;
-    int whiteValue;
-    int greenValue;
+    private GameStatus gameStatus;
+    private Player player1;
+    private Player player2;
+    private Dice [] allDice;
+    private ArrayList<Dice> availableDice;
+    private ArrayList<Dice> activeArcaneDice ;
+    private ArrayList<Dice> forgottenRealmDice;
+    private ArrayList<Dice> passiveArcaneDice;
+    private ArrayList<Dice> arcaneDice;
+    private int whiteValue;
+    private int greenValue;
     public Dice getWhite(){
         for (Dice die: allDice) {
             if (die.getRealm().equals(RealmColor.WHITE))

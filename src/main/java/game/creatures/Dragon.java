@@ -90,7 +90,7 @@ public class Dragon extends Creature {
         }
     }
 
-    public boolean checkValidityOfReward(String reward) {
+    private boolean checkValidityOfReward(String reward) {
         switch (reward) {
             case "ArcaneBoost":break;
             case "GreenBonus":break;
@@ -107,12 +107,12 @@ public class Dragon extends Creature {
     }
 
     //A method to initialize the pointMap instance variable, which is used in score calculation
-    public void initPointMap() {
+    private void initPointMap() {
         pointMap = new int[]{10, 14, 16, 20};
     }
 
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
-    public void initTimeWarpsAndArcaneBoosts () {
+    private void initTimeWarpsAndArcaneBoosts () {
         arcaneBoosts = new ArrayList<>();
         timeWarps = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -127,7 +127,7 @@ public class Dragon extends Creature {
     }
 
     //Method that goes over all the dragons and fills up an arraylist with all the possible moves that can be done against these dragons
-    public void initPossibleMoves() {
+    private void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
@@ -189,7 +189,7 @@ public class Dragon extends Creature {
     }
 
     //A method used to know whether a Dragon is dead or not
-    public boolean isDead() {
+    private boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
@@ -280,21 +280,21 @@ public class Dragon extends Creature {
     }
 
     //Method that updates TimeWarps
-    public void initNextTimeWarp() {
+    private void initNextTimeWarp() {
         TimeWarp currentTimewarp = timeWarps.get(0);
         currentTimewarp.setStatus(RewardStates.ACQUIRED);
         timeWarps.remove(currentTimewarp);
     }
 
     //Method that updates ArcaneBoosts
-    public void initNextArcaneBoost() {
+    private void initNextArcaneBoost() {
         ArcaneBoost currentArcaneBoost = arcaneBoosts.get(0);
         currentArcaneBoost.setStatus(RewardStates.ACQUIRED);
         arcaneBoosts.remove(currentArcaneBoost);
     }
 
     //Method that, using a character, can identify what realm a boost belongs to
-    public RealmColor decodeLetterToRealmColor (char c) {
+    private RealmColor decodeLetterToRealmColor (char c) {
         RealmColor result;
         switch (c) {
             case 'G': result =  RealmColor.GREEN; break;
@@ -315,7 +315,7 @@ public class Dragon extends Creature {
     }
 
     //Method to reduce code redundancy
-    public boolean moveHelper(int targetValue, boolean doMove) {
+    private boolean moveHelper(int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -425,32 +425,32 @@ public class Dragon extends Creature {
     }
 
     //This and the methods below it assist in the scoresheet and other methods
-    public String changeToString(Integer integer) {
+    private String changeToString(Integer integer) {
         return  Objects.equals(null, integer) ? "X" : "" + integer;
     }
 
-    public String getFirstRowRewardString() {
+    private String getFirstRowRewardString() {
         return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X " : encode(rewards[0]);
     }
 
-    public String getSecondRowRewardString() {
+    private String getSecondRowRewardString() {
         return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X " : encode(rewards[1]);
     }
 
-    public String getThirdRowRewardString() {
+    private String getThirdRowRewardString() {
         return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X " : encode(rewards[2]);
     }
 
-    public String getFourthRowRewardString() {
+    private String getFourthRowRewardString() {
         return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X " : encode(rewards[3]);
     }
 
-    public String getCornerRewardString() {
+    private String getCornerRewardString() {
         return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
-    public String encode (String reward) {
+    private String encode (String reward) {
         return reward.replaceAll("[^A-Z]", "");
     }
 }
