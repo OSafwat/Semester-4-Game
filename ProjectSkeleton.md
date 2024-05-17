@@ -795,10 +795,10 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**:
    - **Return Type**: `void`
 
-3. `String toString()`
-   - **Description**: Outputs a string containing the details of the Phoenix.
-   - **Return Type**: `String`
-     - The String containing the Phoenix.
+3. `public void populateRewardLocationFromConfigFile()`
+   - **Description**: Reads the game configuration from the respective .properties file, and if the file is bugged, uses a default configuration,   either configurations are then loaded into a HashMap for later use.
+   - **Parameter**:
+   - **Return Type**: `void`
 
 ### `SolarLion` class
 
