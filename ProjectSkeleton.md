@@ -1061,7 +1061,7 @@ For each package, add the skeleton details for the class and duplicate as much a
      - The String containing the GaiaGaurdian.
 
 
-### `HydraSerpent` class
+### `Hydra` class
 
 - **Package**: `game.creatures`
 - **Type**: class
@@ -1091,6 +1091,21 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Description**: Outputs a string containing the details of the HydraSerpent.
    - **Return Type**: `String`
      - The String containing the HydraSerpent.
+
+4. `String getBonus(int value)`
+   - **Description**: Outputs a string containing the value of the bonus to be printed in the scoresheet.
+   - **Parameter**:
+     - `value`: The value indicating which bonus in the scoresheet to get.
+   - **Return Type**: `String`
+     - The string containing the value of the bonus represented in two capital letters. (e.g. "AB") 
+  
+5. `void updateScore()`
+   - **Desciption**: Updates the score of the hydra class based on the current state of the hydra.
+   - **Return Type**: `void`
+
+6. `void regenerateSerpent()`
+   - **Description**: When the first hydra dies, populates the hydra class with 6 new heads.
+   - **Return Type**: `void`
   
 
 ### `Phoenix` class
