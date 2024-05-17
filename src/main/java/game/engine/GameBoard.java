@@ -34,7 +34,7 @@ public class GameBoard {
         return null;
     }
 
-    public void setGreenForColorBonus(int greenValue) {
+    void setGreenForColorBonus(int greenValue) {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
                 this.greenValue = allDice[index].getValue();
@@ -47,7 +47,7 @@ public class GameBoard {
         }
     }
 
-    public void resetGreenPostColorBonus() {
+    void resetGreenPostColorBonus() {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
                 allDice[index].setValue(greenValue == -1 ? allDice[index].getValue() : greenValue);
@@ -91,26 +91,26 @@ public class GameBoard {
 
     }
     //player methods:
-    public Player getPlayer1() {
+    Player getPlayer1() {
         return player1;
     }
 
-    public Player getPlayer2() {
+    Player getPlayer2() {
         return player2;
     }
 
     //game status getter
-    public GameStatus getGameStatus(){
+    GameStatus getGameStatus(){
         return this.gameStatus;
     }
 
     //dice related methods
-    public void rollDice(){
+    void rollDice(){
         for (Dice die : allDice) {
             die.rollDice();
         }
     }
-    public void rollAvailableDice(){
+    void rollAvailableDice(){
         for (Dice die : availableDice) {
             die.rollDice();
         }
@@ -136,14 +136,14 @@ public class GameBoard {
     public Dice [] getForgottenRealmDice(){
         return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
     }
-    public void moveToForgottenrealm(Dice die){
+    void moveToForgottenrealm(Dice die){
         availableDice.remove(die);
         forgottenRealmDice.add(die);
     }
-    public void moveToArcaneDice(Dice chosenDice){
+    void moveToArcaneDice(Dice chosenDice){
         arcaneDice.add(chosenDice);
     }
-    public void resetAllDice(){
+    void resetAllDice(){
         forgottenRealmDice.clear();
         availableDice.clear();
         activeArcaneDice.clear();;
@@ -153,7 +153,7 @@ public class GameBoard {
         getPlayer2().getPlayedDice().clear();
         availableDice.addAll(Arrays.asList(allDice));
     }
-    public void removeFromAvailable(Dice die){
+    void removeFromAvailable(Dice die){
         availableDice.remove(die);
     }
 
