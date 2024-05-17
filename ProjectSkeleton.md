@@ -1102,7 +1102,7 @@ For each package, add the skeleton details for the class and duplicate as much a
   - **Parameter**:
   - **Return Type**: `void`
 
-5. `public String getRewardString(String rewardName, int n)`
+6. `public String getRewardString(String rewardName, int n)`
   - **Description**: Returns a string indicating how the reward should be displayed in the score sheet.
   - **Parameter**:
     - `rewardName`: The full reward name.
