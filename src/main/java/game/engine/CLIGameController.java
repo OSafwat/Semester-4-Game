@@ -194,10 +194,28 @@ public class CLIGameController {
         System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
+        if (player1Score == player2Score)
+        {
+            int[] player1Scores = player1.getGameScore().getAllScores();
+            int[] player2Scores = player2.getGameScore().getAllScores();
+            for (int i = 0; i < player2Scores.length; i++) {
+                if (player1Scores[i] > player2Scores[i]) {
+                    player1Score = 100;
+                    player2Score = 0;
+                }
+                else if (player1Scores[i] < player2Scores[i]) {
+                    player1Score = 0;
+                    player2Score = 100;
+                }
+            }
+        }
         if (player1Score > player2Score)
             System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-        else
+        else if (player1Score < player2Score)
             System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+        else {
+            System.out.println("It is a draw!");
+        }
         scanner.close();
     }
 
@@ -286,7 +304,7 @@ public class CLIGameController {
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
-        getAllPossibleMovesForDiceSet(player, diceSet);
+        Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -1003,14 +1021,7 @@ public class CLIGameController {
 
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
-        RedDice redDice = new RedDice(6);
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
-        for (int i = 0; i < cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1()).length; i++)
-            System.out.println(cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1())[i].getStatus());
+        cli.startGame();
     }
 }
 

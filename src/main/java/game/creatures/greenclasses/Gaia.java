@@ -37,7 +37,7 @@ public class Gaia extends Creature{
     private boolean [] col = {false,false,false,false};
     private String [] colreward;
     private String [] rowreward;
-    private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost"};
+    private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost","GreenBonus"};
     private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest"};
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
