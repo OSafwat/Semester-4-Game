@@ -787,23 +787,13 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `boolean makeMove(Dice dice, Phoenix Phoenix)`
-   - **Description**: Executes an attack on a Phoenix.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player for the move.
-     - `creature`: The Phoenix that the move is against.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed,
-     - `false` otherwise.
+1. `public Phoenix()`
+   - **Description**: Class constructor that initialises an instance of Phoenix.
 
-2. `boolean checkMove(Dice dice,  Phoenix Phoenix)`
-   - **Description**: Check if a move on a Phoenix is possible.
-   - **Parameter**: 
-     - `dice`: The dice selected by the active player to check for the move.
-     - `creature`: The Phoenix that the active player wants to check if the move is possible against.
-   - **Return Type**: `boolean`
-     - `True` if the move is possible,
-     - `False` otherwise.
+2. `public void initRewards()`
+   - **Description**: Initialises the arcaneBoosts and the timeWarps ArrayLists depending on how many of each was found in the configuration file.
+   - **Parameter**:
+   - **Return Type**: `void`
 
 3. `String toString()`
    - **Description**: Outputs a string containing the details of the Phoenix.
