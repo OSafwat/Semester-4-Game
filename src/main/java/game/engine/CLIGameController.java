@@ -591,7 +591,7 @@ public class CLIGameController {
             } catch (NoAvailableMovesException e) {
                 System.out.println("Hmm.. it seems that the " + realmColor + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                 return;
-            } catch (InvalidBonusSelection e) {
+            } catch (InvalidBonusSelectionException e) {
                 System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                 continue;
             }
@@ -764,7 +764,7 @@ public class CLIGameController {
                 } catch (NoAvailableMovesException e) {
                     System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                     return true;
-                } catch (InvalidBonusSelection e) {
+                } catch (InvalidBonusSelectionException e) {
                     System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                     continue;
                 } catch (InvalidDiceSelectionException e) {
@@ -783,7 +783,7 @@ public class CLIGameController {
                     } catch (NoAvailableMovesException e) {
                         System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
                         return true;
-                    } catch (InvalidBonusSelection e) {
+                    } catch (InvalidBonusSelectionException e) {
                         System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
                         continue;
                     } catch (InvalidDiceSelectionException e) {
@@ -802,7 +802,7 @@ public class CLIGameController {
         }
     }
 
-    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelection, InvalidDiceSelectionException{
+    public Dice handleColorBonusException(RealmColor color, Player player) throws NoAvailableMovesException, InvalidBonusSelectionException, InvalidDiceSelectionException{
         gameBoard.resetGreenPostColorBonus();
         Dice finalDie = null;
         String input = "";
@@ -842,7 +842,7 @@ public class CLIGameController {
                 canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
             }
             if (!canYouUseThisBonus) {
-                throw new InvalidBonusSelection();
+                throw new InvalidBonusSelectionException();
             }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");

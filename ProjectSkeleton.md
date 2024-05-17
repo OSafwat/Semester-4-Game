@@ -52,7 +52,10 @@ Dice-Realms/
 │   │   │       │   ├── InvalidDiceSelectionException.java
 │   │   │       │   ├── DiceRollException.java
 │   │   │       │   ├── CommandFormatException.java
-│   │   │       │   └── ExhaustedResourceException.java
+│   │   │       │   ├── ExhaustedResourceException.java
+│   │   │       │   ├── BonusException.java
+│   │   │       │   ├── NoAvailableMovesException.java
+│   │   │       │   └── InvalidBonusSelectionException.java
 │   │   │       │
 │   │   │       ├── gui/
 │   │   │       │
@@ -720,7 +723,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 - **Type**: Enum Class
 - **Description**: This class will contain the different enumerations that represent the states of the player, such as "Active" and "Passive".
 
-### `PyroDragon` class
+### `Dragon` class
 
 - **Package**: `game.creatures`
 - **Type**: class
