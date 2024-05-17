@@ -226,7 +226,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    private Guardians getGuardians(int c){
+private Guardians getGuardians(int c){
         if(c<2 || c>12)
         return null;
         //int index =1;
@@ -289,10 +289,8 @@ private void killGaiaGuardian(Guardians g){
     }
 }
 
-//EXP  gets the number of  still allive guradians
-private int getAlliveGuardians(){
-    return alliveGuardians;
-}
+
+
  
 private int getDeadGuardians(){
     return deadGuardians;
@@ -585,7 +583,7 @@ public String getScoreSheet(){
 
 }
 
-  //return number of elemental crests for each realm will be 0 or 1 
+  //return number of elemental crests for each realm 
   public  int getElementalCrest(){
    return elementalCrestCount;
   }
