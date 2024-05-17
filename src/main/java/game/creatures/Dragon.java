@@ -18,18 +18,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Dragon extends Creature {
-    public Integer face;
-    public Integer wings;
-    public Integer tail;
-    public Integer heart;
-    public DragonNumber dragonNumber;
-    public Dragon[] Dragons;
-    public int[] pointMap;
-    public ArrayList<Move> allPossibleMoves;
-    public ArrayList<TimeWarp> timeWarps;
-    public ArrayList<ArcaneBoost> arcaneBoosts;
-    public String[] rewards;
-    public int elementalCrestCount;
+    private Integer face;
+    private Integer wings;
+    private Integer tail;
+    private Integer heart;
+    private DragonNumber dragonNumber;
+    private Dragon[] Dragons;
+    private int[] pointMap;
+    private ArrayList<Move> allPossibleMoves;
+    private ArrayList<TimeWarp> timeWarps;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private String[] rewards;
+    private int elementalCrestCount;
 
 
     //Constructor to be used in the CLIcontroller to initialize the Dragon array
