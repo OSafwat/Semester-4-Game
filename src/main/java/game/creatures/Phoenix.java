@@ -188,7 +188,8 @@ public class Phoenix extends Creature{
 
     @Override
     public ArrayList<Move> getAllPossibleMoves() {
-        updateAllPossibleMoves();
+        if (killedPhoenixes > 0)
+            updateAllPossibleMoves();
         return allPossibleMoves;
     }
 
