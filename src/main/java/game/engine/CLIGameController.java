@@ -338,6 +338,8 @@ public class CLIGameController {
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
+        if (moveSet.length == 0)
+            throw new NoAvailableMovesException();
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
