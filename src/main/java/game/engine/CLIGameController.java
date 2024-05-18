@@ -191,13 +191,14 @@ public class CLIGameController {
                 player1Name = changeToRainbowText(player1Name);
                 break;
             
+            case "slmat":    
             case "doctor":
             case "dr":
             case "dr.":
             case "doc":
             case "ahmed hussein":
-                player1Name = changeToRainbowText("slmat");
-                printRainbowText("Hi slmat");
+                player1Name = changeToRainbowText("slmat27");
+                printRainbowText("Hi slmat27");
                 break;
             
             case "noureldin":
@@ -206,6 +207,8 @@ public class CLIGameController {
             case "elephant":
             case "elephanto":
             case "elephanto gyat":
+            case "elephantogyat":
+            case "0ping":
             case "safwat":
             case "hamed":
             case "hotdog":
@@ -247,6 +250,10 @@ public class CLIGameController {
                 System.out.println("\u001B[31m#####################\u001B[0m");
                 System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
                 System.out.println("\u001B[30m#####################\u001B[0m");
+            
+            case "meow":
+                player1Name = changeToRainbowText(player1Name);
+                printRainbowText("blawg is NOT a cat ");
                 
             default:
                 break;
@@ -276,13 +283,14 @@ public class CLIGameController {
                 player2Name = changeToRainbowText(player2Name);
                 break;
             
+            case "slmat":    
             case "doctor":
             case "dr":
             case "dr.":
             case "doc":
             case "ahmed hussein":
-                player2Name = changeToRainbowText("slmat");
-                printRainbowText("Hi slmat");
+                player2Name = changeToRainbowText("slmat27");
+                printRainbowText("Hi slmat27");
                 break;
             
             case "noureldin":
@@ -291,13 +299,15 @@ public class CLIGameController {
             case "elephant":
             case "elephanto":
             case "elephanto gyat":
+            case "elephantogyat":
+            case "0ping":
             case "safwat":
             case "hamed":
             case "hotdog":
             case "hotdawg":
             case "tamer":
             case "kirat":
-                player2Name = changeToRainbowText("Xx" + player2Name + "xX");
+               player2Name = changeToRainbowText("Xx" + player2Name + "xX");
                 printRainbowText("^_^ Hello Chat. Is this W-rizz?");
                 break;
             
@@ -312,12 +322,12 @@ public class CLIGameController {
             case "akiraminai":
             case "badawayyy":
             case "zeus":
-                player2Name = changeToRainbowText(player2Name);
+               player2Name = changeToRainbowText(player2Name);
                 printRainbowText("=_= Hello losers.");
                 break;
 
             case "sharazad":
-                player2Name = changeToRainbowText(player2Name);
+               player2Name = changeToRainbowText(player2Name);
                 printRainbowText("Don't cry over spilled Fruit Punch");
                 break;
             
@@ -330,8 +340,12 @@ public class CLIGameController {
             case "guc":
                 player2Name = changeToRainbowText(player2Name);
                 System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("########\u001B[33m#####\u001B[0m########");
+                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
                 System.out.println("\u001B[30m#####################\u001B[0m");
+            
+            case "meow":
+                player2Name = changeToRainbowText(player2Name);
+                printRainbowText("blawg is NOT a cat ");
                 
             default:
                 break;
