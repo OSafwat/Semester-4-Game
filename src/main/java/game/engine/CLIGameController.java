@@ -308,7 +308,7 @@ public class CLIGameController {
         if (moveSet.length == 0)
             throw new NoAvailableMovesException();
         Arrays.sort(diceSet);
-        System.out.println("Would you like to skip your turn?\nIf so, type 'yes', or type 'no' if you do not want to skip your turn.");
+        /*System.out.println("Would you like to skip your turn?\nIf so, type 'yes', or type 'no' if you do not want to skip your turn.");
         String skip = "";
         while (skip.isEmpty()) {
             skip = scanner.nextLine();
@@ -317,7 +317,7 @@ public class CLIGameController {
             if (skip.equals("no"))
                 break;
             skip = "";
-        }
+        }*/
         boolean valid = false;
         Dice finalDie;
         while (!valid) {
