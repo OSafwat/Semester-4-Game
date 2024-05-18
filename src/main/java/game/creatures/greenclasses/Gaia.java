@@ -688,16 +688,4 @@ private boolean applyNotBonusCollectable(String s){
     return false;
 
 }
-public static void main(String[] args) throws Throwable{
-    Gaia g = new Gaia();
-    System.out.println(g.getScoreSheet());
-    Scanner sc = new Scanner(System.in);
-    while (true){
-        int x = sc.nextInt();
-        GreenDice green = new GreenDice(x);
-        g.makeMove(green);
-        System.out.println(g.getScoreSheet());
-        
-    }
-}
 }
