@@ -418,7 +418,15 @@ public class CLIGameController {
         try {
             getAllPossibleMovesForDiceSet(player, availableDice);
         } catch (NoAvailableMovesException e) {
-            System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
+            System.out.println("Hmm.. this is terrible. It seems that this Arcane Boost is useless. Be careful next time.");
+            //resetting the arcane boost to be acquired
+            ArcaneBoost[] playerArcaneBoosts = getArcaneBoostPowers(player);
+            for (ArcaneBoost arcaneBoost: playerArcaneBoosts) {
+                if (arcaneBoost.getStatus().equals(RewardStates.USED)) {
+                    arcaneBoost.setStatus(RewardStates.ACQUIRED);
+                    break;
+                }
+            }
             return;
         }
         Dice chosenDie;
