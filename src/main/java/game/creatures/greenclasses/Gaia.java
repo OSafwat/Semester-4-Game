@@ -38,7 +38,7 @@ public class Gaia extends Creature{
     private String [] colreward;
     private String [] rowreward;
     private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost","GreenBonus"};
-    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest","EssenceBonus"};
+    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest","EssenceBonus","null"};
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
@@ -638,6 +638,7 @@ private String getCorrectBonusInScore(String s){
         case "ArcaneBoost" : return"AB";
         case "ElementalCrest": return"EC";
         case "EssenceBonus" : return "EB";
+        case "null": return "  ";
         default: return "";
             
     }
@@ -676,7 +677,14 @@ private boolean applyNotBonusCollectable(String s){
         return true ;
 
     }
+    else if (s.equals("null"))
+    return true;
+    else
     return false;
 
+}
+public static void main(String[] args) {
+    Gaia g = new Gaia();
+    System.out.println(g.getScoreSheet());
 }
 }
