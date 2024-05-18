@@ -287,7 +287,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class represents the main controller for the game. 
+- **Description**: This class represents the main controller for the game. It extends the `GameController` class.
 
 #### Methods:
 
@@ -533,7 +533,22 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.dice`
 - **Type**: Class
-- **Description**: This class represents the red dice in the game
+- **Description**: This class represents the red dice in the game and it extends the `Dice` class
+
+#### Methods:
+
+1. `void selectsDragon(int dragonNumber)`
+    - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+    - **Parameter**:
+        - `dragonNumber`: The value that the instance variable should be changed to.
+    - **Return Type**: `void`
+
+2. `int getDragonNumber()`
+    - **Description**: returns the `dragonNumber` instance variable
+    - **Parameter**:
+    - **Return Type**: `int`
+        - The `dragonNumber` instance variable
+
 
 
 ### `Move` class
@@ -969,7 +984,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the PyroDragon in the game. It extends the Creature class.
+- **Description**: This class represents the PyroDragon in the game. It extends the `Creature` class.
 
 #### Methods:
 
