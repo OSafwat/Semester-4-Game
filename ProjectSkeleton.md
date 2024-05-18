@@ -517,17 +517,53 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `void selectsDragon(int dragonNumber)`
-   - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+1. `public Dice(int num)`
+   - **Description**: A constructor that initializes a Dice instance with the given number
    - **Parameter**:
-     - `dragonNumber`: The value that the instance variable should be changed to.
+     - `num`: An integer value that would be used as the dice value
    - **Return Type**: `void`
 
-2. `int getDragonNumber()`
-   - **Description**: returns the `dragonNumber` instance variable
+2. `public Dice()`
+   - **Description**: A constructor that initializes a Dice instance with a random number by calling `rollDice()`
+   - **Parameter**:
+   - **Return Type**: `void`
+
+3. `public int getValue()`
+   - **Description**: Returns the value of the dice on which the method was called on
    - **Parameter**:
    - **Return Type**: `int`
-     - The `dragonNumber` instance variable
+      - The `num` instance variable
+
+4. `public void setValue(int num)`
+   - **Description**: Sets the value of the dice on which the method was called on
+   - **Parameter**:
+      - `num`: The value to which the `num` instance variable in the dice class would be set to
+   - **Return Type**: `void`
+
+5. `public void rollDice()`
+   - **Description**: Sets the dice value to a random number
+   - **Parameter**:
+   - **Return Type**: `void`
+
+6. `public int compareTo(Object dice)`
+   - **Description**: A method that returns a value depending on how another object compares to the current instance of dice
+   - **Parameter**:
+      - `dice` : Potentially a `Dice` Object that would be compared to the current instance of the `Dice` class on which the method is called
+   - **Return Type**: `int`
+     - The method returns the difference between the value of the die if they share the same realm 
+     - The method returns the value provided by `compareTo()` on the respecitve realm of each dice if they don't have the same realm
+
+7. `public RealmColor getRealm()`
+   - **Description**: A dummy method that always returns the `RealmColor` of the dice as `PARENT` which is used in some cases in the `ScoreSheet` class
+   - **Parameter**:
+   - **Return Type**:
+      - `RealmColor` : The realm color of the dice, which is `PARENT` by default
+
+8. `public String toString()`
+   - **Description**: Returns a string description of the dice.
+   - **Parameter**:
+   - **Return Type**: `String`
+     - `String`: A string containing the dice color (realm) and value.
 
 ### `RedDice` class
 
