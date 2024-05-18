@@ -47,7 +47,6 @@ public class Move implements Comparable{
     @Override
     public boolean equals(Object obj) {
         Move m = (Move) obj;
-        Creature targetCreature = m.getCreature();
         return m.creature.equals(creature) && m.dice.equals(dice);
     }
 

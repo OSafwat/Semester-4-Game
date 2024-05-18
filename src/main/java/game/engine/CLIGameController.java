@@ -18,11 +18,44 @@ import java.util.*;
 public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
+    static final String[] magicNames = {
+        "Akiramenai", "Hitler", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
+        "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
+        "Dumbbelldoor", "CNC", "Hitler", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
+        "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+        "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hitler"
+    };
+
+    // ANSI escape codes for various colors
+    static final String RESET = "\u001B[0m";
+    static final String[] COLORS = {
+        "\u001B[31m", // Red
+        "\u001B[33m", // Yellow
+        "\u001B[32m", // Green
+        "\u001B[36m", // Cyan
+        "\u001B[34m", // Blue
+        "\u001B[35m", // Magenta
+    };
+
 
     // constructor(s):
     public CLIGameController() {
         this.gameBoard= new GameBoard();
         scanner = new Scanner(System.in);
+    }
+    public void getRewardsProp(){
+        try {
+            FileReader SettingsfileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");
+            Properties p = new Properties();
+            p.load(SettingsfileReader);
+            System.out.println(p.get("round1Reward")); // making sure the properties file is loaded correctly
+
+        } catch (IOException e) {
+            System.out.println("the file has not been found the default rewards will be used");
+            // code to be implemented
+        }
+
     }
     public int [] getSettings(){
         int numberOfRounds;
@@ -305,19 +338,7 @@ public class CLIGameController {
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
-        if (moveSet.length == 0)
-            throw new NoAvailableMovesException();
         Arrays.sort(diceSet);
-        /*System.out.println("Would you like to skip your turn?\nIf so, type 'yes', or type 'no' if you do not want to skip your turn.");
-        String skip = "";
-        while (skip.isEmpty()) {
-            skip = scanner.nextLine();
-            if (skip.equals("yes"))
-                return true;
-            if (skip.equals("no"))
-                break;
-            skip = "";
-        }*/
         boolean valid = false;
         Dice finalDie;
         while (!valid) {
@@ -1029,6 +1050,28 @@ public class CLIGameController {
             gameBoard.removeFromAvailable(die);
             gameBoard.moveToForgottenrealm(die);
         }
+    }
+
+    public static void printRainbowText(String text) {
+        int colorIndex = 0;
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            System.out.print(COLORS[colorIndex] + c + RESET);
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        // Move to the next line after printing the text
+        System.out.println();
+    }
+
+    public static String changeToRainbowText(String text) {
+        int colorIndex = 0;
+        String output = "";
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            output += COLORS[colorIndex] + c + RESET;
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        return output;
     }
 
     public static void main (String[] args) {

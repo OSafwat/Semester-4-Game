@@ -196,7 +196,7 @@ public class Gaia extends Creature{
 
 
     // EXP checks if a given move is possible
-    public boolean checkMove(Dice dice)throws InvalidMoveException{
+    protected boolean checkMove(Dice dice)throws InvalidMoveException{
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
@@ -678,12 +678,4 @@ private boolean applyNotBonusCollectable(String s){
     return false;
 
 }
-
-public static void main(String[] args) {
-    Gaia gaia = new Gaia();
-    System.out.println(gaia.getScoreSheet());
-   
-  
-}
-
 }
