@@ -18,11 +18,44 @@ import java.util.*;
 public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
+    static final String[] magicNames = {
+        "Akiramenai", "Hitler", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
+        "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
+        "Dumbbelldoor", "CNC", "Hitler", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
+        "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+        "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hitler"
+    };
+
+    // ANSI escape codes for various colors
+    static final String RESET = "\u001B[0m";
+    static final String[] COLORS = {
+        "\u001B[31m", // Red
+        "\u001B[33m", // Yellow
+        "\u001B[32m", // Green
+        "\u001B[36m", // Cyan
+        "\u001B[34m", // Blue
+        "\u001B[35m", // Magenta
+    };
+
 
     // constructor(s):
     public CLIGameController() {
         this.gameBoard= new GameBoard();
         scanner = new Scanner(System.in);
+    }
+    public void getRewardsProp(){
+        try {
+            FileReader SettingsfileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");
+            Properties p = new Properties();
+            p.load(SettingsfileReader);
+            System.out.println(p.get("round1Reward")); // making sure the properties file is loaded correctly
+
+        } catch (IOException e) {
+            System.out.println("the file has not been found the default rewards will be used");
+            // code to be implemented
+        }
+
     }
     public int [] getSettings(){
         int numberOfRounds;
@@ -194,10 +227,28 @@ public class CLIGameController {
         System.out.println( player2.getGameScore().toString() + "\n");
         int player2Score= player2.getGameScore().getTotalScore();
 
+        if (player1Score == player2Score)
+        {
+            int[] player1Scores = player1.getGameScore().getAllScores();
+            int[] player2Scores = player2.getGameScore().getAllScores();
+            for (int i = 0; i < player2Scores.length; i++) {
+                if (player1Scores[i] > player2Scores[i]) {
+                    player1Score = 100;
+                    player2Score = 0;
+                }
+                else if (player1Scores[i] < player2Scores[i]) {
+                    player1Score = 0;
+                    player2Score = 100;
+                }
+            }
+        }
         if (player1Score > player2Score)
             System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-        else
+        else if (player1Score < player2Score)
             System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+        else {
+            System.out.println("It is a draw!");
+        }
         scanner.close();
     }
 
@@ -286,7 +337,9 @@ public class CLIGameController {
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
-        getAllPossibleMovesForDiceSet(player, diceSet);
+        Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
+        if (moveSet.length == 0)
+            throw new NoAvailableMovesException();
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -365,7 +418,15 @@ public class CLIGameController {
         try {
             getAllPossibleMovesForDiceSet(player, availableDice);
         } catch (NoAvailableMovesException e) {
-            System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
+            System.out.println("Hmm.. this is terrible. It seems that this Arcane Boost is useless. Be careful next time.");
+            //resetting the arcane boost to be acquired
+            ArcaneBoost[] playerArcaneBoosts = getArcaneBoostPowers(player);
+            for (ArcaneBoost arcaneBoost: playerArcaneBoosts) {
+                if (arcaneBoost.getStatus().equals(RewardStates.USED)) {
+                    arcaneBoost.setStatus(RewardStates.ACQUIRED);
+                    break;
+                }
+            }
             return;
         }
         Dice chosenDie;
@@ -1001,16 +1062,31 @@ public class CLIGameController {
         }
     }
 
+    public static void printRainbowText(String text) {
+        int colorIndex = 0;
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            System.out.print(COLORS[colorIndex] + c + RESET);
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        // Move to the next line after printing the text
+        System.out.println();
+    }
+
+    public static String changeToRainbowText(String text) {
+        int colorIndex = 0;
+        String output = "";
+        for (char c : text.toCharArray()) {
+            // Print each character in the next color, then reset
+            output += COLORS[colorIndex] + c + RESET;
+            colorIndex = (colorIndex + 1) % COLORS.length;
+        }
+        return output;
+    }
+
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
-        RedDice redDice = new RedDice(6);
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        cli.makeMove(cli.getGameBoard().player1, new Move(new BlueDice(6), cli.getGameBoard().getPlayer1().getScoreSheet().hydra));
-        System.out.println(cli.getGameBoard().getPlayer1().getScoreSheet().hydra.getAllPossibleMoves());
-        for (int i = 0; i < cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1()).length; i++)
-            System.out.println(cli.getArcaneBoostPowers(cli.getGameBoard().getPlayer1())[i].getStatus());
+        cli.startGame();
     }
 }
 

@@ -3,88 +3,110 @@
 ## Folder Structure
 
 ```css
-Dice-Realms/
-│
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── game/
-│   │   │       ├── collectibles/   
-│   │   │       │   ├── Reward.java
-│   │   │       │   ├── Power.java
-│   │   │       │   ├── Bonus.java
-│   │   │       │   ├── ElementalCrest.java
-│   │   │       │   ├── ArcaneBoost.java
-│   │   │       │   ├── TimeWarp.java
-│   │   │       │   └── EssenceBonus.java
-│   │   │       │
-│   │   │       ├── creatures/
-│   │   │       │   ├── Creature.java
-│   │   │       │   ├── Dragon.java
-│   │   │       │   ├── Gaia.java
-│   │   │       │   ├── Hydra.java
-│   │   │       │   ├── Phoenix.java
-│   │   │       │   └── Lion.java
-│   │   │       │
-│   │   │       ├── dice/
-│   │   │       │   ├── Dice.java
-│   │   │       │   ├── RedDice.java
-│   │   │       │   ├── GreenDice.java
-│   │   │       │   ├── BlueDice.java
-│   │   │       │   ├── MagentaDice.java
-│   │   │       │   ├── YellowDice.java
-│   │   │       │   └── ArcanePrism.java
-│   │   │       │
-│   │   │       ├── engine/
-│   │   │       │   ├── GameController.java
-│   │   │       │   ├── CLIGameController.java
-│   │   │       │   ├── GameBoard.java
-│   │   │       │   ├── Player.java
-│   │   │       │   ├── ScoreSheet.java
-│   │   │       │   ├── GameStatus.java
-│   │   │       │   ├── GameScore.java
-│   │   │       │   └── Move.java
-│   │   │       │   
-│   │   │       ├── exceptions/
-│   │   │       │   ├── RewardException.java
-│   │   │       │   ├── PlayerActionException.java
-│   │   │       │   ├── InvalidMoveException.java
-│   │   │       │   ├── InvalidDiceSelectionException.java
-│   │   │       │   ├── DiceRollException.java
-│   │   │       │   ├── CommandFormatException.java
-│   │   │       │   ├── ExhaustedResourceException.java
-│   │   │       │   ├── BonusException.java
-│   │   │       │   ├── NoAvailableMovesException.java
-│   │   │       │   └── InvalidBonusSelectionException.java
-│   │   │       │
-│   │   │       ├── gui/
-│   │   │       │
-│   │   │       └── Main.java
-│   │   │         
-│   │   └── resources/
-│   │       ├── images/
-│   │       │   └── Project-UML-Diagram.png
-│   │       ├── config/
-│   │       │   ├── EmberfallDominionRewards.properties
-│   │       │   ├── RoundsRewards.properties
-│   │       │   ├── MysticalSkyRewards.properties
-│   │       │   ├── TerrasHeartlandRewards.properties
-│   │       │   ├── RadiantSvannaRewards.properties
-│   │       │   └── TideAbyssRewards.properties
-│   │       └── EmptyScoreSheet.txt
-│   │
-│   │
-│   └── test/
-│       └── java/
-│           └── game/
-│               ├── collectibles/
-│               ├── creatures/
-│               ├── dice/
-│               ├── engine/
-│               ├── exceptions/
-│               └── gui/
-│
-└── README.md
+dice-realms
+├── Grades.md
+├── ProjectSkeleton.md
+├── README.md
+├── TemplateSkeleton.md
+├── bin
+│   ├── Grades.md
+│   ├── ProjectSkeleton.md
+│   ├── README.md
+│   ├── TemplateSkeleton.md
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           └── resources
+│               ├── EmptyScoreSheet.txt
+│               ├── config
+│               │   ├── EmberfallDominionRewards.properties
+│               │   ├── MysticalSkyRewards.properties
+│               │   ├── RadiantSvannaRewards.properties
+│               │   ├── RoundsRewards.properties
+│               │   ├── RoundsSettings.properties
+│               │   ├── TerrasHeartlandRewards.properties
+│               │   └── TideAbyssRewards.properties
+│               └── images
+│                   └── Project-UML-Diagram.png
+├── pom.xml
+└── src
+    ├── main
+    │   ├── java
+    │   │   ├── game
+    │   │   │   ├── Main.java
+    │   │   │   ├── collectibles
+    │   │   │   │   ├── ArcaneBoost.java
+    │   │   │   │   ├── Bonus.java
+    │   │   │   │   ├── ElementalCrest.java
+    │   │   │   │   ├── EssenceBonus.java
+    │   │   │   │   ├── Power.java
+    │   │   │   │   ├── Reward.java
+    │   │   │   │   └── TimeWarp.java
+    │   │   │   ├── creatures
+    │   │   │   │   ├── Creature.java
+    │   │   │   │   ├── Dragon.java
+    │   │   │   │   ├── Hydra.java
+    │   │   │   │   ├── Lion.java
+    │   │   │   │   ├── Phoenix.java
+    │   │   │   │   └── greenclasses
+    │   │   │   │       ├── Gaia.java
+    │   │   │   │       └── Guardians.java
+    │   │   │   ├── dice
+    │   │   │   │   ├── ArcanePrism.java
+    │   │   │   │   ├── BlueDice.java
+    │   │   │   │   ├── Dice.java
+    │   │   │   │   ├── GreenDice.java
+    │   │   │   │   ├── MagentaDice.java
+    │   │   │   │   ├── RedDice.java
+    │   │   │   │   └── YellowDice.java
+    │   │   │   ├── engine
+    │   │   │   │   ├── AI.java
+    │   │   │   │   ├── CLIGameController.java
+    │   │   │   │   ├── GameBoard.java
+    │   │   │   │   ├── GameController.java
+    │   │   │   │   ├── GameScore.java
+    │   │   │   │   ├── GameStatus.java
+    │   │   │   │   ├── Move.java
+    │   │   │   │   ├── Player.java
+    │   │   │   │   ├── ScoreSheet.java
+    │   │   │   │   └── enums
+    │   │   │   │       ├── DiceStatus.java
+    │   │   │   │       ├── DragonNumber.java
+    │   │   │   │       ├── PlayerStatus.java
+    │   │   │   │       ├── RealmColor.java
+    │   │   │   │       ├── RewardStates.java
+    │   │   │   │       └── RewardType.java
+    │   │   │   ├── exceptions
+    │   │   │   │   ├── BonusException.java
+    │   │   │   │   ├── CommandFormatException.java
+    │   │   │   │   ├── DiceRollException.java
+    │   │   │   │   ├── ExhaustedResourceException.java
+    │   │   │   │   ├── InvalidBonusSelectionException.java
+    │   │   │   │   ├── InvalidDiceSelectionException.java
+    │   │   │   │   ├── InvalidMoveException.java
+    │   │   │   │   ├── NoAvailableMovesException.java
+    │   │   │   │   ├── PlayerActionException.java
+    │   │   │   │   └── RewardException.java
+    │   │   │   └── gui
+    │   │   │       └── DiceRealms.java
+    │   │   └── module-info.java
+    │   └── resources
+    │       ├── EmptyScoreSheet.txt
+    │       ├── config
+    │       │   ├── EmberfallDominionRewards.properties
+    │       │   ├── MysticalSkyRewards.properties
+    │       │   ├── RadiantSvannaRewards.properties
+    │       │   ├── RoundsRewards.properties
+    │       │   ├── RoundsSettings.properties
+    │       │   ├── TerrasHeartlandRewards.properties
+    │       │   └── TideAbyssRewards.properties
+    │       └── images
+    │           └── Project-UML-Diagram.png
+    └── test
+        └── java
+            └── game
+                └── engine
+                    └── CLIGameControllerTest.java
 ```
 
 ## Packages
