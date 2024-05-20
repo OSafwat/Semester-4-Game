@@ -2,7 +2,7 @@ package game.engine;
 
 public class GameScore {
     private int allScores[];
-    private int elementalCrestCounter;
+    public int elementalCrestCounter;
 
     public GameScore(){
         allScores= new int[5];
