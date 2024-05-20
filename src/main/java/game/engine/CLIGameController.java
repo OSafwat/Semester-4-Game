@@ -504,7 +504,7 @@ public class CLIGameController {
 
     public void resetRed() {
         if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
-            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
+            ((RedDice) getAvailableDice()[0]).selectsDragon(-1);
         }
     }
 
@@ -933,6 +933,18 @@ public class CLIGameController {
             for (int i = 0; i < 5; i++) {
                 Move[] thisDiceMoves = getPossibleMovesForADie(player, possibleDice[i]);
                 result.addAll(Arrays.asList(thisDiceMoves));
+            }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
+        }
+        else if (dice instanceof RedDice && ((RedDice)dice).getDragonNumber() != -1) {
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                if ((playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue() && ((RedDice)playerAllMoves[i].getDice()).getDragonNumber() == ((RedDice)dice).getDragonNumber())){
+                    result.add(playerAllMoves[i]);
+                }
             }
             Move [] finalResult = new Move[result.size()];
             for (int i=0; i<result.size(); i++) {
