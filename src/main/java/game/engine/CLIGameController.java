@@ -3,7 +3,6 @@ package game.engine;
 import game.collectibles.*;
 import game.exceptions.*;
 import game.dice.*;
-import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
@@ -99,8 +98,7 @@ public class CLIGameController {
                 }
             }
         }
-        int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
-        return temp;
+        return new int[]{numberOfRounds, numebrOfTurnsPerRound};
     }
 
     public String [] getRewards(int numberOfRounds){
@@ -173,7 +171,7 @@ public class CLIGameController {
     public void startGame(){
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
-        if (player1Name.trim().equals("")) {
+        if (player1Name.trim().isEmpty()) {
             Random random = new Random();
 
             // Get a random index between 0 and the length of the array
@@ -376,16 +374,12 @@ public class CLIGameController {
         for (int round = 0; round < numberOfRounds; round++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            moveAllIntoForgotten();
-            playForgottenTurn(getPassivePlayer());
+            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
             gameBoard.resetAllDice();
             switchPlayer();
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            moveAllIntoForgotten();
-            playForgottenTurn(getPassivePlayer());
+            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
             gameBoard.resetAllDice();
             switchPlayer();
         }
@@ -441,27 +435,29 @@ public class CLIGameController {
                 return;
             }
         }
-        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
-        while (usedArcaneBoost) {
-            handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
-        }
     }
 
-    public void playRound(Player player, String reward, int turnCount) {
+    public void playRound(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
         gameBoard.resetGreenPostColorBonus();
-        handleRoundRewards(player, reward);
+        handleRoundRewards(activePlayer, reward);
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
-            boolean valid = playTurn(player, false);
+            boolean valid = playTurn(activePlayer, false);
             if (!valid)
                 break;
         }
-        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
+        moveAllIntoForgotten();
+        playForgottenTurn(passivePlayer);
+        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
         while (usedArcaneBoost) {
-            handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
+            handleArcaneBoostCall(activePlayer);
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+        }
+        usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+        while (usedArcaneBoost) {
+            handleArcaneBoostCall(passivePlayer);
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
         }
     }
 
@@ -569,10 +565,10 @@ public class CLIGameController {
         return true;
     }
 
-    public Dice[] getArcaneBoostDice() {
+    public Dice[] getArcaneBoostDice(Player player) {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
-        ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
+        ArrayList<Dice> bannedDice = player.getUsedArcaneDice();
         outer: for (Dice die: possibleDice) {
             if (!bannedDice.contains(die))
                 diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
@@ -586,7 +582,7 @@ public class CLIGameController {
     }
     public void handleArcaneBoostCall(Player player) {
         gameBoard.resetGreenPostColorBonus();
-        Dice[] availableDice = getArcaneBoostDice();
+        Dice[] availableDice = getArcaneBoostDice(player);
         Arrays.sort(availableDice);
         handleDiceDisplay(availableDice, 2);
         try {
@@ -637,8 +633,9 @@ public class CLIGameController {
                 }
             }
             valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
-            if (valid)
-                gameBoard.moveToArcaneDice(finalDie);
+            if (valid) {
+                player.addToUsedArcaneDice(finalDie);
+            }
         }
         player.getScoreSheet().displayColoredScoreSheet();
     }
@@ -646,7 +643,7 @@ public class CLIGameController {
     public RedDice handleRedDice(RedDice finalDie) throws InvalidDiceSelectionException{
         System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
         System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-        int selectedDragon = -1;
+        int selectedDragon;
         String input = scanner.next();
         while (input.isEmpty()) {
             input = scanner.next();
@@ -761,7 +758,7 @@ public class CLIGameController {
             case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
         }
     }
-    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts){
+    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts, Player player){
         if (arcaneBoosts.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
@@ -776,7 +773,7 @@ public class CLIGameController {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
                 System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
                 System.out.println("You have a total of " + arcaneBoostCount + " Arcane Boost(s).");
-                Dice[] arcaneBoostDice = getArcaneBoostDice();
+                Dice[] arcaneBoostDice = getArcaneBoostDice(player);
                 handleDiceDisplay(arcaneBoostDice, 4);
                 System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
                 do {
@@ -857,10 +854,8 @@ public class CLIGameController {
                         System.out.println("Invalid input, please try again.");
                         System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
                     }
-                } while (c != 'y' && c != 'n');
-                if (c == 'y') {
-                    timeWarp.setStatus(RewardStates.USED);
-                }
+                } while (c != 'y');
+                timeWarp.setStatus(RewardStates.USED);
                 break;
             }
         }
