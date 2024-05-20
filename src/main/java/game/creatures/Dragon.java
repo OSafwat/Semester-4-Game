@@ -92,14 +92,14 @@ public class Dragon extends Creature {
 
     private boolean checkValidityOfReward(String reward) {
         switch (reward) {
-            case "ArcaneBoost":break;
-            case "GreenBonus":break;
-            case "YellowBonus":break;
-            case "BlueBonus":break;
-            case "ElementalCrest":break;
-            case "MagentaBonus":break;
-            case "RedBonus":break;
-            case "TimeWarp":break;
+            case "ArcaneBoost":
+            case "GreenBonus":
+            case "YellowBonus":
+            case "BlueBonus":
+            case "ElementalCrest":
+            case "MagentaBonus":
+            case "RedBonus":
+            case "TimeWarp":
             case "EssenceBonus":break;
             default: return false;
         }
@@ -176,16 +176,6 @@ public class Dragon extends Creature {
     //A method to get all the arcane boost powers
     public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
         return arcaneBoosts;
-    }
-
-    //A method to get the dragon number attribute
-    public DragonNumber getDragonNumber() {
-        return this.dragonNumber;
-    }
-
-    //A method that selects the dragon
-    public Dragon selectsDragon(int number) {
-        return Dragons[number-1];
     }
 
     //A method used to know whether a Dragon is dead or not
@@ -275,8 +265,11 @@ public class Dragon extends Creature {
     }
 
     public boolean equals(Object obj) {
-        Dragon dragon = (Dragon) obj;
-        return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
+        if (obj instanceof Dragon) {
+            Dragon dragon = (Dragon) obj;
+            return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
+        }
+        return false;
     }
 
     //Method that updates TimeWarps
