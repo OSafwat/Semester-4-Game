@@ -431,7 +431,7 @@ public class CLIGameController {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
                 handleDiceDisplay(gameBoard.getForgottenRealmDice(), 1);
-                System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
+                e.displayMessage();
                 return;
             }
         }
@@ -509,7 +509,7 @@ public class CLIGameController {
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
         if (moveSet.length == 0)
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("Hmm, it seems that this set of dice has no possible moves. How unfortunate.");
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -534,8 +534,13 @@ public class CLIGameController {
             }
             finalDie = null;
             if (chosenDie instanceof ArcanePrism) {
-                while (Objects.equals(finalDie, null)) {
-                    finalDie = handleArcanePrism(chosenDie, player);
+                while (true) {
+                    try {
+                        finalDie = handleArcanePrism(chosenDie, player);
+                    } catch (NoAvailableMovesException e) {
+                        e.displayMessage();
+                    }
+                    break;
                 }
             } else
                 finalDie = chosenDie;
@@ -615,8 +620,13 @@ public class CLIGameController {
             }
             Dice finalDie = null;
             if (chosenDie instanceof ArcanePrism) {
-                while (Objects.equals(finalDie, null)) {
-                    finalDie = handleArcanePrism(chosenDie, player);
+                while (true) {
+                    try {
+                        finalDie = handleArcanePrism(chosenDie, player);
+                    } catch (NoAvailableMovesException e) {
+                        e.displayMessage();
+                    }
+                    break;
                 }
             } else
                 finalDie = chosenDie;
@@ -626,7 +636,7 @@ public class CLIGameController {
                     try {
                         finalDie = handleRedDice((RedDice) finalDie);
                     } catch (InvalidDiceSelectionException e) {
-                        System.out.println("Invalid input.\nPlease try again.");
+                        e.displayMessage();
                         continue;
                     }
                     valid2 = true;
@@ -649,7 +659,7 @@ public class CLIGameController {
             input = scanner.next();
         }
         if (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4"))
-            throw new InvalidDiceSelectionException();
+            throw new InvalidDiceSelectionException("This dragon does not exist, please try again.");
         selectedDragon = Integer.parseInt(input);
         finalDie.selectsDragon(selectedDragon);
         return finalDie;
@@ -704,19 +714,18 @@ public class CLIGameController {
                 break;
             }
             else {
-                System.out.println("Invalid input, please try again.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("Invalid input, please try again.");
             }
         }
         Dice chosenDie = diceSet[chosenDiceIndex-1];
         Move[] moveList = getPossibleMovesForADie(player, chosenDie);
         if (moveList.length == 0) {
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("This die has no possible moves. Please select another die to play with.");
         }
         return chosenDie;
     }
 
-    public Dice handleArcanePrism(Dice chosenDie, Player player) {
+    public Dice handleArcanePrism(Dice chosenDie, Player player) throws NoAvailableMovesException {
         System.out.println("You have chosen to play with the Arcane Prism! This dice can be used to attack any realm.");
         System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
         System.out.println("1. \u001B[31m" + "Red Realm " + "\u001B[0m" + "\n" +
@@ -742,9 +751,7 @@ public class CLIGameController {
         }
         Move[] moveList = getPossibleMovesForADie(player, diceAfterSelection);
         if (moveList.length == 0) {
-            System.out.println("Unfortunately, you can not cast the Arcane Prism into this form because it has no valid moves.");
-            System.out.println("I shall now rewind time to give you another chance at casting your Arcane Prism. Good luck!");
-            return null;
+            throw new NoAvailableMovesException("Unfortunately, you cannot cast the Arcane Prism into this form because it has no possible moves.\nPlease try again.");
         }
         return diceAfterSelection;
     }
@@ -890,7 +897,7 @@ public class CLIGameController {
         removeGreenDuplicate(moveSet);
         int moveSetSize = moveSet.size();
         if (moveSetSize == 0)
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("Hmm, it seems that this set of dice has no possible moves. How unfortunate.");
         Move[] moves = new Move[moveSetSize];
         for (int index = 0; index < moveSetSize; index++) {
             moves[index] = moveSet.get(index);
@@ -1039,7 +1046,7 @@ public class CLIGameController {
         if (color == RealmColor.WHITE) {
             Move[] possibleMoves = getAllPossibleMoves(player);
             if (possibleMoves.length == 0)
-                throw new NoAvailableMovesException();
+                throw new NoAvailableMovesException("How horrible! You cannot use your essence bonus because you have no available moves at all.");
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
                 System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
@@ -1053,8 +1060,7 @@ public class CLIGameController {
                 for (int i = 1; i <= 5 && !validInput; i++)
                     validInput = input.equals("" + i);
                 if (!validInput) {
-                    input = "";
-                    System.out.println("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
+                    throw new InvalidBonusSelectionException("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
                 }
             }
             int value = Integer.parseInt(input);
@@ -1071,7 +1077,7 @@ public class CLIGameController {
                 canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
             }
             if (!canYouUseThisBonus) {
-                throw new InvalidBonusSelectionException();
+                throw new InvalidBonusSelectionException("Unfortunately you cannot cast your Essence Bonus into this form because it will not have any available moves.\nPlease try again.");
             }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
@@ -1081,7 +1087,7 @@ public class CLIGameController {
             canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
         }
         if (!canYouUseThisBonus) {
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("Unfortunately, you cannot use this bonus because it has no available moves.");
         }
         if (color == RealmColor.GREEN) {
             System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
@@ -1090,8 +1096,7 @@ public class CLIGameController {
             for (int i = 2; i <= 12 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
@@ -1104,19 +1109,11 @@ public class CLIGameController {
             for (int i = 1; i <= 6 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             finalDie = new RedDice(value);
-            System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
-            System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-            input = scanner.next();
-            while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
-                System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.\n");
-                System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-                input = scanner.next();
-            }
+            finalDie = handleRedDice((RedDice)finalDie);
             ((RedDice)finalDie).selectsDragon(Integer.parseInt(input));
         }
         else {
@@ -1126,8 +1123,7 @@ public class CLIGameController {
             for (int i = 1; i <= 6 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             switch (color) {
