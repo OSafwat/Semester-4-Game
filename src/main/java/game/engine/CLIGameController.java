@@ -449,15 +449,24 @@ public class CLIGameController {
         }
         moveAllIntoForgotten();
         playForgottenTurn(passivePlayer);
-        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
-        while (usedArcaneBoost) {
-            handleArcaneBoostCall(activePlayer);
+        boolean usedArcaneBoost;
+        try {
             usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            usedArcaneBoost = false;
         }
-        usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
-        while (usedArcaneBoost) {
-            handleArcaneBoostCall(passivePlayer);
+        if (usedArcaneBoost) {
+            handleArcaneBoostCall(activePlayer);
+        }
+        try {
             usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            usedArcaneBoost = false;
+        }
+        if (usedArcaneBoost) {
+            handleArcaneBoostCall(passivePlayer);
         }
     }
 
@@ -473,7 +482,13 @@ public class CLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
-        boolean useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+        boolean useTimeWarp;
+        try {
+           useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            useTimeWarp = false;
+        }
         if (useTimeWarp) {
             return playTurn(player, true);
         }
@@ -488,7 +503,11 @@ public class CLIGameController {
                     diceSet[i] = availableDice.get(i);
                 handleDiceDisplay(diceSet, 0);
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-                useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+                try {
+                    useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+                } catch (ExhaustedResourceException f) {
+                    f.displayMessage();
+                }
                 if (useTimeWarp) {
                     return playTurn(player, true);
                 }
@@ -765,7 +784,7 @@ public class CLIGameController {
             case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
         }
     }
-    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts, Player player){
+    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts, Player player) throws ExhaustedResourceException{
         if (arcaneBoosts.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
@@ -776,6 +795,8 @@ public class CLIGameController {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
                 arcaneBoostCount++;
         }
+        if (arcaneBoostCount == 0)
+            throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
                 System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
@@ -829,7 +850,7 @@ public class CLIGameController {
         player.updateGameScore();
         player.updateAllPossibleMoves();
     }
-    public boolean handleTimeWarps(TimeWarp[] timewarps){
+    public boolean handleTimeWarps(TimeWarp[] timewarps) throws ExhaustedResourceException{
         if (timewarps.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
@@ -840,6 +861,8 @@ public class CLIGameController {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED)
                 timeWarpCount++;
         }
+        if (timeWarpCount == 0)
+            throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (TimeWarp timeWarp: timewarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
                 handleDiceDisplay(getAvailableDice(), 0);
