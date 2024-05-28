@@ -1013,10 +1013,10 @@ public class CLIGameController {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    e.displayMessage();
                     return true;
                 } catch (InvalidBonusSelectionException e) {
-                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    e.displayMessage();
                     continue;
                 } catch (InvalidDiceSelectionException e) {
                     continue;
@@ -1032,10 +1032,10 @@ public class CLIGameController {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
-                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        e.displayMessage();
                         return true;
                     } catch (InvalidBonusSelectionException e) {
-                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        e.displayMessage();
                         continue;
                     } catch (InvalidDiceSelectionException e) {
                         continue;
@@ -1048,7 +1048,7 @@ public class CLIGameController {
             return true;
         }
         catch (InvalidMoveException Im){
-            System.out.println("It seems that this move is invalid.\nPlease try again.");
+            Im.displayMessage();
             return false;
         }
     }
@@ -1265,7 +1265,7 @@ public class CLIGameController {
         System.out.println();
     }
 
-    public static String changeToRainbowText(String text) {
+    public String changeToRainbowText(String text) {
         int colorIndex = 0;
         String output = "";
         for (char c : text.toCharArray()) {
