@@ -1287,6 +1287,7 @@ public class CLIGameController {
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
         cli.startGame();
+       
     }
 
 
@@ -1357,6 +1358,7 @@ public class CLIGameController {
         return score;
     }
     public int evaluateDice(Dice dice){
+        if(dice==null) return 0;
         switch (dice.getRealm()) {
             case RED:
                 return evaluateRedDice(dice);
