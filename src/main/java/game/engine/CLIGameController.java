@@ -1276,10 +1276,6 @@ public class CLIGameController {
         return output;
     }
 
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        System.out.println(Arrays.toString(cli.getPossibleMovesForADie(cli.getActivePlayer(), new RedDice(3))));
-    }
 }
 
 
