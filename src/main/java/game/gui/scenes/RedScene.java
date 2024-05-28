@@ -19,15 +19,14 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.StackPane;
 import javafx.geometry.Pos;
 
-public class RedScene {
+public class RedScene extends RealmScene {
 
     private ImageView dragon1, dragon2, dragon3, dragon4;
-    private AnchorPane root;
     Player currentPlayer = new Player(PlayerStatus.ACTIVE);
     private boolean isPopupOpen = false;
-    Scene mainScene;
 
-    public Scene getRedScene() {
+    @Override
+    public void createScene() {
         root = new AnchorPane();
         mainScene = new Scene(root, 1920, 1080);
 
@@ -39,11 +38,6 @@ public class RedScene {
         root.setPadding(javafx.geometry.Insets.EMPTY);
 
         initializeDragons();
-        return mainScene;
-    }
-
-    public Scene getRoot() {
-        return mainScene;
     }
 
     private void initializeDragons() {
