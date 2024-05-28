@@ -41,4 +41,8 @@ public class SceneController {
     public ImageView getYellowDice () {
         return boardScene.getYellowDice();
     }
+
+    public ImageView getPhoenix() {
+        return magentaScene.getPhoenix();
+    }
 }
