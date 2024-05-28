@@ -146,14 +146,136 @@ public class DiceRealms extends Application {
 
     }
 
+    public void handlePlayerNameInputs() {
+        TextInputDialog textInputDialog = new TextInputDialog();
+
+        textInputDialog.setTitle("Player Name Input");
+        textInputDialog.setHeaderText("Please enter Player 1's name");
+
+        Optional<String> result = textInputDialog.showAndWait();
+        String player1Name;
+
+        try {
+            player1Name = handleNames(result.get());
+        } catch (NoSuchElementException e) {
+            player1Name = handleNames("");
+        }
+
+        textInputDialog.setTitle("Player Name Input");
+        textInputDialog.setHeaderText("Please enter Player 2's name");
+
+        result = textInputDialog.showAndWait();
+        String player2Name;
+
+        try {
+            player2Name = handleNames(result.get());
+        } catch (NoSuchElementException e) {
+            player2Name = handleNames("");
+        }
+
+        guiGameController.getPlayer1().setName(player1Name);
+        guiGameController.getPlayer2().setName(player2Name);
+    }
+    
+    public String handleNames(String playerName) {
+        String[] magicNames = {
+                "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
+                "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
+                "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
+                "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+                "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
+                "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Square Moustache guy", "Hooba"
+        };
+        if (playerName.trim().isEmpty()) {
+            Random random = new Random();
+
+            // Get a random index between 0 and the length of the array
+            int randomIndex = random.nextInt(magicNames.length);
+
+            // Get the random name from the array
+            String randomName = magicNames[randomIndex];
+
+            playerName = randomName;
+        }
+
+        switch(playerName.toLowerCase()) {
+            case "dimension6":
+                playerName = guiGameController.changeToRainbowText(playerName);
+                break;
+
+            case "slmat":
+            case "doctor":
+            case "dr":
+            case "dr.":
+            case "doc":
+            case "ahmed hussein":
+                playerName = guiGameController.changeToRainbowText("slmat27");
+                break;
+
+            case "noureldin":
+            case "nesegemaa":
+            case "mahmoud":
+            case "elephant":
+            case "elephanto":
+            case "elephanto gyat":
+            case "elephantogyat":
+            case "0ping":
+            case "safwat":
+            case "hamed":
+            case "hotdog":
+            case "hotdawg":
+            case "tamer":
+            case "kirat":
+                playerName = guiGameController.changeToRainbowText("Xx" + playerName + "xX");
+                break;
+
+            case "ace":
+            case "rewe":
+            case "el le3ba":
+            case "le3ba":
+            case "dumbbeldoor":
+            case "sixfold":
+            case "amrosgy":
+            case "utopia":
+            case "akiraminai":
+            case "badawayyy":
+            case "zeus":
+                playerName = guiGameController.changeToRainbowText(playerName);
+                break;
+
+            case "sharazad":
+                playerName = guiGameController.changeToRainbowText(playerName);
+                break;
+
+            case "giu":
+                playerName = guiGameController.changeToRainbowText(playerName);
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("\u001B[33m#####################\u001B[0m");
+                System.out.println("\u001B[30m#####################\u001B[0m");
+                break;
+            case "guc":
+                playerName = guiGameController.changeToRainbowText(playerName);
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                System.out.println("\u001B[30m#####################\u001B[0m");
+
+            case "meow":
+                playerName = guiGameController.changeToRainbowText(playerName);
+
+            default:
+                break;
+        }
+        return playerName;
+    }
+
     public void setupRealmScene(String realmColor) {
         Scene scene;
-        switch (realmColor) {
-            case "Red": scene = sceneController.redScene.getScene();break;
-            case "Green": scene = sceneController.greenScene.getScene(); break;
-            case "Blue": scene = sceneController.blueScene.getScene(); break;
-            case "Magenta": scene = sceneController.magentaScene.getScene(); break;
-            case "Yellow": scene = sceneController.yellowScene.getScene(); break;
+        switch (realmColor.toLowerCase()) {
+            case "red": scene = sceneController.redScene.getScene();break;
+            case "green": scene = sceneController.greenScene.getScene(); break;
+            case "blue": scene = sceneController.blueScene.getScene(); break;
+            case "magenta": scene = sceneController.magentaScene.getScene(); break;
+            case "yellow": scene = sceneController.yellowScene.getScene(); break;
             default: scene = null;
         }
         primaryStage.setScene(scene);
