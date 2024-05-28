@@ -1291,9 +1291,9 @@ public class CLIGameController {
 
 
 
-    //AI SHIT
+    //AI PART
 
-    public Move maxmaxRoot(Player player,GameBoard board, int depth) {
+    public Move findBestMove(Player player,GameBoard board, int depth) {
         int bestValue = Integer.MIN_VALUE;
         Move bestMove = null;
         
@@ -1315,9 +1315,10 @@ public class CLIGameController {
         }
 
             int maxEval = Integer.MIN_VALUE;
-            for (Move move : player.getAllPossibleMoves()) {
-                makeMove(player,move);
-                int eval = maxmax(player,board, depth - 1);
+            int eval=0;
+            for (Move move : player.getAllPossibleMoves()) {    //dfs sum
+                makeMove(player,move);                  //should momentarily keep track of the player total score and also the board
+                eval += maxmax(player,board, depth - 1);    //+=?
                 //reset the board for the next move in the list
                 maxEval = Math.max(maxEval, eval);
             }
@@ -1325,13 +1326,78 @@ public class CLIGameController {
     }
 
     public int evaluate(Player player,GameBoard board){
-     int score =0;
-     
-     
+        int score =0;
+        score=player.getGameScore().getTotalScore();
 
-     return score;
+        Dice[] dice=board.getForgottenRealmDice();
+        int forgottenRealmScore=evaluateDiceScore(dice);
+        score-=forgottenRealmScore;
+
+        int arcaneBoostCount = 0;
+        for (ArcaneBoost arcaneBoost: player.getArcaneBoosts()) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
+                arcaneBoostCount++;
+        }
+        score+=arcaneBoostCount*10;
+
+        int timeWarpCount = 0;
+        for(TimeWarp timeWarp: player.getTimeWarps()){
+            if(timeWarp.getStatus() == RewardStates.ACQUIRED)
+                timeWarpCount++;
+        }
+        score+=timeWarpCount*5;
+
+        return score;
     }
-
+    public int evaluateDiceScore(Dice[] dice){
+        int score=0;
+        for(Dice die: dice){
+           score+=evaluateDice(die);
+        }
+        return score;
+    }
+    public int evaluateDice(Dice dice){
+        switch (dice.getRealm()) {
+            case RED:
+                return evaluateRedDice(dice);
+            case GREEN:
+                return evaluateGreenDice(dice);
+            case BLUE:
+                return evaluateBlueDice(dice);
+            case MAGENTA:
+                return evaluateMagentaDice(dice);
+            case YELLOW:
+                return evaluateYellowDice(dice);
+            case WHITE:
+                return evaluateWhiteDice(dice);
+            default:
+            return 3;  //idk just smth random  
+        }
+    }
+    public int evaluateRedDice(Dice dice){
+        //should check if this dice can end a column/row
+        return dice.getValue();
+    }
+    public int evaluateGreenDice(Dice dice){
+        // the green+white value
+        return dice.getValue();
+    }
+    public int evaluateBlueDice(Dice dice){
+        // check if the move is possible
+        return dice.getValue();
+    }
+    public int evaluateMagentaDice(Dice dice){
+        // the hashmap thing
+        return dice.getValue();
+    }
+    public int evaluateYellowDice(Dice dice){
+        return dice.getValue();
+    }
+    public int evaluateWhiteDice(Dice dice){
+        int highestScore=Math.max(evaluateRedDice(dice),Math.max(evaluateGreenDice(dice),Math.max(evaluateBlueDice(dice),
+        Math.max(evaluateMagentaDice(dice),evaluateYellowDice(dice)))));
+        return highestScore;
+    }
 }
 
 
