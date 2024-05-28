@@ -11,7 +11,7 @@ public class YellowScene extends RealmScene {
         root = new AnchorPane();
         mainScene = new Scene(root, 1920, 1080);
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna 1.png")));
+        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna.png")));
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);

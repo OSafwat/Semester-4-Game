@@ -6,16 +6,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class MagentaScene extends RealmScene {
+    private ImageView phoenix;
     @Override
     public void createScene() {
         root = new AnchorPane();
         mainScene = new Scene(root, 1920, 1080);
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mysitcal_Sky 1.png")));
+        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mysitcal_Sky.png")));
+        phoenix = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/MajesticPhoenix.png")));
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
+        phoenix.setX(710);
+        phoenix.setY(290);
         backgroundView.setPreserveRatio(false);
         root.getChildren().add(backgroundView);
+        root.getChildren().add(phoenix);
         root.setPadding(javafx.geometry.Insets.EMPTY);
+    }
+
+    public ImageView getPhoenix() {
+        return phoenix;
     }
 }
