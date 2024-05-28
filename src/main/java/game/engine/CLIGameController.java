@@ -1288,6 +1288,50 @@ public class CLIGameController {
         CLIGameController cli = new CLIGameController();
         cli.startGame();
     }
+
+
+
+    //AI SHIT
+
+    public Move maxmaxRoot(Player player,GameBoard board, int depth) {
+        int bestValue = Integer.MIN_VALUE;
+        Move bestMove = null;
+        
+        for (Move move : player.getAllPossibleMoves()) {
+            makeMove(player, move);
+            int boardValue = maxmax(player,board, depth - 1);
+
+            if (boardValue > bestValue) {
+                bestValue = boardValue;
+                bestMove = move;
+            }
+        }
+        return bestMove;
+    }
+
+    public int maxmax(Player player, GameBoard board, int depth) {
+        if (depth <= 0 || player.getAllPossibleMoves()==null) {
+            return evaluate(player,board);
+        }
+
+            int maxEval = Integer.MIN_VALUE;
+            for (Move move : player.getAllPossibleMoves()) {
+                makeMove(player,move);
+                int eval = maxmax(player,board, depth - 1);
+                //reset the board for the next move in the list
+                maxEval = Math.max(maxEval, eval);
+            }
+            return maxEval;
+    }
+
+    public int evaluate(Player player,GameBoard board){
+     int score =0;
+     
+     
+
+     return score;
+    }
+
 }
 
 
