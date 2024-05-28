@@ -70,8 +70,80 @@ public class DiceRealms extends Application {
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
     }
 
-    public void setupGameScene() {
-        primaryStage.setScene(sceneController.boardScene.getDiceScene());
+    public void handleMove(String color) {
+        //change this later
+        if (color.equals("Magenta")) {
+            MagentaDice currDice = (MagentaDice) guiGameController.getGameBoard().getAllDice()[3];
+            Creature creature = guiGameController.getActivePlayer().getScoreSheet().getCreatureByColor(RealmColor.MAGENTA);
+            Player player = guiGameController.getActivePlayer();
+            boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+            if (!moveDone) {
+                //if we enter here, that means that some sort of exception has been caught
+                //either a bonus exception or an invalid move exception
+                Exception exception = guiGameController.getException();
+                if (exception instanceof BonusException) {
+                    switch (((BonusException)exception).getRealmColor1()) {
+                        case RED: setupRealmScene("Red"); break;
+                        case GREEN: setupRealmScene("Green"); break;
+                        case BLUE: setupRealmScene("Blue"); break;
+                        case MAGENTA: setupRealmScene("Magenta"); break;
+                        case YELLOW: setupRealmScene("Yellow"); break;
+                        default: handleEssenceBonus(); break;
+                    }
+
+                    //put in the bonus make move logic
+
+                    switch (((BonusException)exception).getRealmColor2()) {
+                        case RED: setupRealmScene("Red"); break;
+                        case GREEN: setupRealmScene("Green"); break;
+                        case BLUE: setupRealmScene("Blue"); break;
+                        case MAGENTA: setupRealmScene("Magenta"); break;
+                        case YELLOW: setupRealmScene("Yellow"); break;
+                        case WHITE: handleEssenceBonus(); break;
+                        default: return;
+                    }
+
+                    //put in the bonus make move logic
+                }
+                else {
+                    //put in a popup that tells the user that he has done an illegal move
+                    //logic here
+                    //and go back to the dice board
+                    primaryStage.setScene(sceneController.boardScene.getBoardScene());
+                }
+            }
+        }
+    }
+
+    public void handleEssenceBonus() {
+        TextInputDialog textInputDialog = new TextInputDialog();
+
+        // Set the dialog title and header text
+        textInputDialog.setTitle("Essence Bonus");
+        textInputDialog.setHeaderText("You have obtained an Essence Bonus! Please input the name of the Realm you would like to attack! Be careful while inputting, because you can't go back.");
+
+        // Show the dialog and capture the input
+        Optional<String> result = textInputDialog.showAndWait();
+        String realm = "";
+
+        while (realm.isEmpty() || !checkRealmValidity(realm)) {
+            try {
+                realm = result.get();
+            } catch (NoSuchElementException e) {}
+        }
+
+        setupRealmScene(realm);
+    }
+
+    public boolean checkRealmValidity(String realm) {
+        realm = realm.toLowerCase();
+        return realm.equals("red") || realm.equals("blue") || realm.equals("green") || realm.equals("yellow") || realm.equals("magenta");
+    }
+
+    public void startGame() {
+        primaryStage.setScene(sceneController.boardScene.getBoardScene());
+        handlePlayerNameInputs();
+
     }
 
     public void setupRealmScene(String realmColor) {
