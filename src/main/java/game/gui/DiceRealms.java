@@ -1,10 +1,21 @@
 package game.gui;
+import game.creatures.Creature;
 import game.dice.Dice;
+import game.dice.MagentaDice;
 import game.engine.GUIGameController;
+import game.engine.Move;
+import game.engine.Player;
+import game.engine.enums.RealmColor;
+import game.exceptions.BonusException;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Random;
 
 public class DiceRealms extends Application {
     GUIGameController guiGameController;
@@ -27,7 +38,7 @@ public class DiceRealms extends Application {
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
         primaryStage.setScene(sceneController.mainMenuScene.createMainScene());
-        sceneController.boardScene.makeDiceScene(getDicePNGs(guiGameController.getAvailableDice()));
+        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         sceneController.redScene.createScene();
         sceneController.greenScene.createScene();
         sceneController.blueScene.createScene();
@@ -62,12 +73,13 @@ public class DiceRealms extends Application {
     }
 
     public void initEventListeners() {
-        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> setupGameScene()); ;
+        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); ;
         sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
         sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
+        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
     }
 
     public void handleMove(String color) {
