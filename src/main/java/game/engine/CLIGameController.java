@@ -519,7 +519,7 @@ public class CLIGameController {
 
     public void resetRed() {
         if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
-            ((RedDice) getAvailableDice()[0]).selectsDragon(-1);
+            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
         }
     }
 
