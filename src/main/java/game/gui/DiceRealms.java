@@ -22,9 +22,11 @@ public class DiceRealms extends Application {
     Stage primaryStage;
     @Override
     public void start(Stage primaryStage) {
-        Scene mainScene = makeDiceScene();
+        this.primaryStage = primaryStage;
+        primaryStage.setY(0);
+        primaryStage.setX(0);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/wizard hat.png")));
-
+        sceneController = new SceneController();
         primaryStage.setResizable(false);
 
         primaryStage.setTitle("Dice realms Game");
