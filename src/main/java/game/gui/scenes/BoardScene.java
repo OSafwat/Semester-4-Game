@@ -16,14 +16,14 @@ import javafx.stage.Stage;
 
 public class BoardScene{
 
-    Scene diceScene;
+    Scene boardScene;
     ImageView redDice;
     ImageView greenDice;
     ImageView blueDice;
     ImageView magentaDice;
     ImageView yellowDice;
     ImageView arcaneDice;
-    public void makeDiceScene(String[] dicePNGs) {
+    public void makeboardScene(String[] dicePNGs) {
         // Create the AnchorPane
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefSize(766, 495);
@@ -101,7 +101,7 @@ public class BoardScene{
 
         // Create the scene
         Scene scene = new Scene(anchorPane);
-        diceScene = scene;
+        boardScene = scene;
     }
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
@@ -129,7 +129,7 @@ public class BoardScene{
     public ImageView getArcaneDice() {
         return arcaneDice;
     }
-    public Scene getDiceScene() {
-        return diceScene;
+    public Scene getBoardScene() {
+        return boardScene;
     }
 }
