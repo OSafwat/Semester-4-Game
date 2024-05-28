@@ -29,9 +29,14 @@ public class DiceRealms extends Application {
         sceneController = new SceneController();
         primaryStage.setResizable(false);
 
-        primaryStage.setTitle("Dice realms Game");
-        primaryStage.setScene(mainScene);
+        primaryStage.setTitle("Dice Realms Game");
+        primaryStage.setScene(sceneController.boardScene.makeDiceScene());
+        sceneController.getRedDice().setOnMouseClicked(e -> setupRed());
         primaryStage.show();
+    }
+
+    public void setupRed() {
+        primaryStage.setScene(sceneController.redScene.getRedScene());
     }
 
     public static void main(String[] args) {
