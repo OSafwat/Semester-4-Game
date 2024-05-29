@@ -17,6 +17,7 @@ public class MainMenuScene{
 
     Button startGameButton;
     Button optionsButton;
+    Button exitButton;
 
     public Scene createMainScene() {
         
@@ -44,10 +45,11 @@ public class MainMenuScene{
         optionsButton.setLayoutY(496);
         optionsButton.getStyleClass().add("options");
 
-        Button exitButton = new Button("Exit");
+        exitButton = new Button("Exit");
         exitButton.setLayoutX(877);
         exitButton.setLayoutY(650);
         exitButton.getStyleClass().add("exit");
+
 
 
 
@@ -75,5 +77,8 @@ public class MainMenuScene{
 
     public Button getOptionsButton() {
         return optionsButton;
+    }
+    public Button getExiButton(){
+        return exitButton;
     }
 }

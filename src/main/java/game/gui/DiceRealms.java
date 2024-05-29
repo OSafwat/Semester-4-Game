@@ -73,7 +73,8 @@ public class DiceRealms extends Application {
     }
 
     public void initEventListeners() {
-        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); ;
+        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); 
+        sceneController.mainMenuScene.getExiButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
         sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
@@ -121,7 +122,7 @@ public class DiceRealms extends Application {
                     //put in a popup that tells the user that he has done an illegal move
                     //logic here
                     //and go back to the dice board
-                    primaryStage.setScene(sceneController.boardScene.getBoardScene());
+                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
                 }
             }
         }
@@ -153,7 +154,7 @@ public class DiceRealms extends Application {
     }
 
     public void startGame() {
-        primaryStage.setScene(sceneController.boardScene.getBoardScene());
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
         handlePlayerNameInputs();
 
     }

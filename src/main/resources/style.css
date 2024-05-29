@@ -29,7 +29,7 @@
 .button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-text-fill: #1400FF;
+    -fx-text-fill: black;
     -fx-font-size: 70px;
     -fx-padding: 10px 20px;
     -fx-margin: 10px 0;
@@ -38,6 +38,12 @@
     -fx-font-family: 'serif';
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
+}
+
+.button:pressed {
+    -fx-background-color: #1c5986; /* Background color on press */
+    -fx-text-fill: #bdc3c7;        /* Text color on press */
+    -fx-border-color: #1c5986;     /* Border color on press */
 }
 .infoLabel{
     -fx-background-color: lightgray; 

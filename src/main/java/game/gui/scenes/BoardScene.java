@@ -30,7 +30,7 @@ public class BoardScene{
     Label infoLabel;
 
     public void makeboardScene(String[] dicePNGs) {
-        infoLabel = new Label("The current round is: \nThe current Active player is: \n The current turn number is: ");    //the round information should be here and is set in the DiceRealms class
+        infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
         infoLabel.getStyleClass().add("infoLabel");
 
         // Create the AnchorPane
@@ -143,7 +143,9 @@ public class BoardScene{
     public ImageView getArcaneDice() {
         return arcaneDice;
     }
-    public Scene getBoardScene() {
+
+    public Scene getBoardScene(int currentRound, int currentTurn, String playerName) {
+        infoLabel.setText("The current round is: "+currentRound+"The current Active player is:  "+playerName+"The current turn number is: "+currentTurn);
         return boardScene;
     }
 }
