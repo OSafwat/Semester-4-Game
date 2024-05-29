@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import game.engine.enums.RealmColor;
 
-public class GameBoard {
+public class GameBoard implements Cloneable{
     private GameStatus gameStatus;
     private Player player1;
     private Player player2;
@@ -136,6 +136,15 @@ public class GameBoard {
     }
     void removeFromAvailable(Dice die){
         availableDice.remove(die);
+    }
+
+    @Override
+    public GameBoard clone() {
+        try {
+            return (GameBoard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // cant happen
+        }
     }
 
 }

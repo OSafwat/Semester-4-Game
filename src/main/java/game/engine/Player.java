@@ -6,7 +6,7 @@ import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.enums.*;
 
-public class Player {
+public class Player implements Cloneable {
     private String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
@@ -98,5 +98,16 @@ public class Player {
     }
     public void addToUsedArcaneDice(Dice die) {
         usedArcaneDice.add(die);
+    }
+
+
+    //ai
+    @Override
+    public Player clone() {
+        try {
+            return (Player) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // cant happen
+        }
     }
 }

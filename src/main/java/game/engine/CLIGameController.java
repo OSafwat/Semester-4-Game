@@ -1285,9 +1285,14 @@ public class CLIGameController {
     }
 
     public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        cli.startGame();
-       
+        CLIGameController cli = new CLIGameController();        
+        // Create instances of Player and GameBoard
+        Player player = new Player(PlayerStatus.ACTIVE);
+        GameBoard board = new GameBoard();
+        // Call findBestMove
+        Move bestMove = cli.findBestMove(player, board, 1); // replace 3 with the depth you want
+        // Print the best move
+        System.out.println(bestMove+"FLAG HI");
     }
 
 
@@ -1318,10 +1323,17 @@ public class CLIGameController {
             int maxEval = Integer.MIN_VALUE;
             int eval=0;
             for (Move move : player.getAllPossibleMoves()) {    //dfs sum
+                Player playerBeforeMove = player.clone();
+                GameBoard boardBeforeMove = board.clone();
+
                 makeMove(player,move);                  //should momentarily keep track of the player total score and also the board
                 eval += maxmax(player,board, depth - 1);    //+=?
-                //reset the board for the next move in the list
-                maxEval = Math.max(maxEval, eval);
+                // restore the state
+                player = playerBeforeMove;
+                board = boardBeforeMove;
+
+        //reset the board for the next move in the list
+        maxEval = Math.max(maxEval, eval);
             }
             return maxEval;
     }
