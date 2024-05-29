@@ -20,9 +20,9 @@ public class MainMenuScene{
     Button optionsButton;
     Button exitButton;
 
-    Button pvp;
-    Button pvAI;
-    Button goBack;
+    Button PvPButton;
+    Button PvAIButton;
+    Button goBackButton;
 
     AnchorPane root;
 
@@ -57,20 +57,20 @@ public class MainMenuScene{
             exitButton.setLayoutY(650);
             exitButton.getStyleClass().add("exit");
 
-        pvp = new Button("Player VS Player");
-            pvp.setLayoutX(758);
-            pvp.setLayoutY(355);
-            pvp.getStyleClass().add("start-game");
-            pvp.getStyleClass().add("");
+        PvPButton = new Button("Player VS Player");
+            PvPButton.setLayoutX(758);
+            PvPButton.setLayoutY(355);
+            PvPButton.getStyleClass().add("start-game");
+            PvPButton.getStyleClass().add("");
     
-        pvAI = new Button("Player VS AI (work in progress)");
-            pvAI.setLayoutX(806);
-            pvAI.setLayoutY(496);
-            pvAI.getStyleClass().add("options");
+        PvAIButton = new Button("Player VS AI (work in progress)");
+            PvAIButton.setLayoutX(806);
+            PvAIButton.setLayoutY(496);
+            PvAIButton.getStyleClass().add("options");
 
-        goBack = new Button("return");
-            goBack.setLayoutX(877);
-            goBack.setLayoutY(650);
+        goBackButton = new Button("return");
+            goBackButton.setLayoutX(877);
+            goBackButton.setLayoutY(650);
             //exitButton.getStyleClass().add("");
 
 
@@ -86,12 +86,12 @@ public class MainMenuScene{
     }
     
     public void switchToMain(){
-        pvp = new Button();
+        PvPButton = new Button();
         root.getChildren().clear();
-        root.getChildren().addAll(background,pvp, pvAI,goBack);
+        root.getChildren().addAll(background,PvPButton, PvAIButton,goBackButton);
     }
     public void switchFromMain(){
-        pvp = new Button();
+        PvPButton = new Button();
         root.getChildren().clear();
         root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
     }
@@ -110,16 +110,16 @@ public class MainMenuScene{
     public Button getOptionsButton() {
         return optionsButton;
     }
-    public Button getExiButton(){
+    public Button getExitButton(){
         return exitButton;
     }
-    public Button getPvp(){
-        return pvp;
+    public Button getPvPButton(){
+        return PvPButton;
     }
-    public Button getPvAI(){
-        return pvAI;
+    public Button getPvAIButton(){
+        return PvAIButton;
     }
-    public Button getGoBack(){
-        return goBack;
+    public Button getGoBackButton(){
+        return goBackButton;
     }
 }
