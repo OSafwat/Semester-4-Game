@@ -58,19 +58,19 @@ public class MainMenuScene{
             exitButton.getStyleClass().add("exit");
 
         PvPButton = new Button("Player VS Player");
-            PvPButton.setLayoutX(758);
-            PvPButton.setLayoutY(355);
+            PvPButton.setLayoutX(692);
+            PvPButton.setLayoutY(242);
             PvPButton.getStyleClass().add("start-game");
-            PvPButton.getStyleClass().add("");
+            //PvPButton.getStyleClass().add("");
     
-        PvAIButton = new Button("Player VS AI (work in progress)");
-            PvAIButton.setLayoutX(806);
-            PvAIButton.setLayoutY(496);
+        PvAIButton = new Button("Player VS AI (WIP)");
+            PvAIButton.setLayoutX(652);
+            PvAIButton.setLayoutY(351);
             PvAIButton.getStyleClass().add("options");
 
-        goBackButton = new Button("return");
-            goBackButton.setLayoutX(877);
-            goBackButton.setLayoutY(650);
+        goBackButton = new Button("Return");
+            goBackButton.setLayoutX(832);
+            goBackButton.setLayoutY(470);
             //exitButton.getStyleClass().add("");
 
 
@@ -85,12 +85,12 @@ public class MainMenuScene{
         return scene;
     }
     
-    public void switchToMain(){
+    public void switchFromMain(){
         PvPButton = new Button();
         root.getChildren().clear();
         root.getChildren().addAll(background,PvPButton, PvAIButton,goBackButton);
     }
-    public void switchFromMain(){
+    public void switchToMain(){
         PvPButton = new Button();
         root.getChildren().clear();
         root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
