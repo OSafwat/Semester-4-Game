@@ -160,7 +160,7 @@ public class DiceRealms extends Application {
     public void startGame() {
         handlePlayerNameInputs();
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
-        
+
 
     }
 
@@ -178,6 +178,7 @@ public class DiceRealms extends Application {
         } catch (NoSuchElementException e) {
             player1Name = handleNames("");
         }
+        textInputDialog = new TextInputDialog();
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 2's name");
@@ -194,7 +195,7 @@ public class DiceRealms extends Application {
         guiGameController.getPlayer1().setName(player1Name);
         guiGameController.getPlayer2().setName(player2Name);
     }
-    
+
     public String handleNames(String playerName) {
         String[] magicNames = {
                 "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
