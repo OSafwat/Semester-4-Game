@@ -267,16 +267,9 @@ public class DiceRealms extends Application {
 
             case "giu":
                 playerName = guiGameController.changeToRainbowText(playerName);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
                 break;
             case "guc":
                 playerName = guiGameController.changeToRainbowText(playerName);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-
             case "meow":
                 playerName = guiGameController.changeToRainbowText(playerName);
 
