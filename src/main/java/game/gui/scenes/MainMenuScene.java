@@ -113,4 +113,13 @@ public class MainMenuScene{
     public Button getExiButton(){
         return exitButton;
     }
+    public Button getPvp(){
+        return pvp;
+    }
+    public Button getPvAI(){
+        return pvAI;
+    }
+    public Button getGoBack(){
+        return goBack;
+    }
 }
