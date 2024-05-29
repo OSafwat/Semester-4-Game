@@ -1,5 +1,7 @@
 package game.gui.scenes;
 
+import java.util.ArrayList;
+
 import game.dice.Dice;
 import game.gui.scenes.RedScene;
 import javafx.application.Application;
@@ -43,47 +45,88 @@ public class BoardScene{
         mainBoard.setFitWidth(1920);
         mainBoard.setLayoutX(-3);
 
-        // Red dice image
-        redDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[0]))); 
-        redDice.setFitHeight(150);
-        redDice.setFitWidth(150);
-        redDice.setLayoutX(408);
-        redDice.setLayoutY(439);
+        ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
+        ImageView temp ;
+        for (String imageString : dicePNGs) {
+            temp= new ImageView(new Image(getClass().getResourceAsStream(imageString))); 
+            imagePaths.add(temp);
+            temp.setFitHeight(150);
+            temp.setFitWidth(150);
+            if (imageString.contains("red")){
+                redDice=temp;
+                temp.setLayoutX(408);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.contains("blue")){
+                blueDice= temp;
+                temp.setLayoutX(884);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.contains("green")){
+                greenDice = temp;
+                temp.setLayoutX(661);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.contains("magenta")){
+                magentaDice = temp;
+                temp.setLayoutX(1148);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.contains("yellow")){
+                yellowDice= temp;
+                temp.setLayoutX(1363);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.contains("white")){
+                arcaneDice = temp;
+                arcaneDice.setLayoutX(884);
+                arcaneDice.setLayoutY(624);
+            }
+            
+        }
 
-        // Green dice image
-        greenDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[1])));
-        greenDice.setFitHeight(150);
-        greenDice.setFitWidth(150);
-        greenDice.setLayoutX(661);
-        greenDice.setLayoutY(439);
 
-        //Blue dice image
-        blueDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[2]))); 
-        blueDice.setFitHeight(150);
-        blueDice.setFitWidth(150);
-        blueDice.setLayoutX(884);
-        blueDice.setLayoutY(439);
+        // // Red dice image
+        // redDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[0]))); 
+        // redDice.setFitHeight(150);
+        // redDice.setFitWidth(150);
+        // redDice.setLayoutX(408);
+        // redDice.setLayoutY(439);
 
-        // Magenta dice image
-        magentaDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[3]))); 
-        magentaDice.setFitHeight(150);
-        magentaDice.setFitWidth(150);
-        magentaDice.setLayoutX(1148);
-        magentaDice.setLayoutY(439);
+        // // Green dice image
+        // greenDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[1])));
+        // greenDice.setFitHeight(150);
+        // greenDice.setFitWidth(150);
+        // greenDice.setLayoutX(661);
+        // greenDice.setLayoutY(439);
 
-        // Yellow dice image
-        yellowDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[4]))); 
-        yellowDice.setFitHeight(150);
-        yellowDice.setFitWidth(150);
-        yellowDice.setLayoutX(1363);
-        yellowDice.setLayoutY(439);
+        // //Blue dice image
+        // blueDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[2]))); 
+        // blueDice.setFitHeight(150);
+        // blueDice.setFitWidth(150);
+        // blueDice.setLayoutX(884);
+        // blueDice.setLayoutY(439);
 
-        // White dice image
-        arcaneDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[5]))); 
-        arcaneDice.setFitHeight(150);
-        arcaneDice.setFitWidth(150);
-        arcaneDice.setLayoutX(884);
-        arcaneDice.setLayoutY(624);
+        // // Magenta dice image
+        // magentaDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[3]))); 
+        // magentaDice.setFitHeight(150);
+        // magentaDice.setFitWidth(150);
+        // magentaDice.setLayoutX(1148);
+        // magentaDice.setLayoutY(439);
+
+        // // Yellow dice image
+        // yellowDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[4]))); 
+        // yellowDice.setFitHeight(150);
+        // yellowDice.setFitWidth(150);
+        // yellowDice.setLayoutX(1363);
+        // yellowDice.setLayoutY(439);
+
+        // // White dice image
+        // arcaneDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[5]))); 
+        // arcaneDice.setFitHeight(150);
+        // arcaneDice.setFitWidth(150);
+        // arcaneDice.setLayoutX(884);
+        // arcaneDice.setLayoutY(624);
 
         // Grimoire image (left)
          leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
@@ -108,7 +151,10 @@ public class BoardScene{
         wizardHat.setLayoutY(14);
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire,arcaneDice,magentaDice, greenDice, redDice, yellowDice, blueDice, wizardHat, infoLabel);
+        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire, wizardHat, infoLabel);
+        for (ImageView diceImage : imagePaths) {
+            anchorPane.getChildren().addAll(diceImage);
+        }
 
         // Create the scene
         Scene scene = new Scene(anchorPane);
