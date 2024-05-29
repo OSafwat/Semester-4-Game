@@ -86,6 +86,29 @@ public class DiceRealms extends Application {
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
+        sceneController.getDragon1().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(1);
+            //handle dragon part
+        });
+        sceneController.getDragon2().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(2);
+            //handle dragon part
+        });
+        sceneController.getDragon3().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(3);
+            //handle dragon part
+        });
+        sceneController.getDragon4().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(4);
+            //handle dragon part
+        });
+        //To-Do
+        /*
+        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
+        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
+        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
+        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
+         */
     }
 
     public void handleMove(String color) {
