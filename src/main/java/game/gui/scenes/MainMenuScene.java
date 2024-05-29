@@ -19,57 +19,48 @@ public class MainMenuScene{
     Button optionsButton;
 
     public Scene createMainScene() {
-        VBox root = new VBox();
-        root.setPrefHeight(400);
-        root.setPrefWidth(640);
+        
 
         // AnchorPane
-        AnchorPane anchorPane = new AnchorPane();
+        AnchorPane root = new AnchorPane();
+        root.setPrefSize(1920, 1080);
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/images/Main menu.png")));
+        background.setFitWidth(1920);
+        background.setFitHeight(1080);
+        background.getStyleClass().add("root");
+        AnchorPane.setTopAnchor(background, -6.0);
+        //background.setImage());
 
-        // ImageView
-        ImageView imageView = new ImageView();
-        imageView.setFitHeight(759);
-        imageView.setFitWidth(794);
-        imageView.setPickOnBounds(true);
-        imageView.setPreserveRatio(true);
-        imageView.setImage(new Image(getClass().getResourceAsStream("/images/Main Screen.png")));
 
-        // Buttons
+        // Create the buttons
         startGameButton = new Button("Start Game");
-        startGameButton.setLayoutX(0);
-        startGameButton.setLayoutY(54);
-        startGameButton.setPrefHeight(37);
-        startGameButton.setPrefWidth(151);
-        startGameButton.setStyle("-fx-text-fill: #b0c8b7;");
-        startGameButton.setFont(new Font(16));
-        startGameButton.getStyleClass().add("main_menu_buttons");
+        startGameButton.setLayoutX(758);
+        startGameButton.setLayoutY(355);
+        startGameButton.getStyleClass().add("start-game");
 
         optionsButton = new Button("Options");
-        optionsButton.setLayoutY(92);
-        optionsButton.setPrefHeight(37);
-        optionsButton.setPrefWidth(151);
-        optionsButton.setStyle("-fx-text-fill: #b0c8b7;");
-        optionsButton.setFont(new Font(16));
-        optionsButton.getStyleClass().add("main_menu_buttons");
+        optionsButton.setLayoutX(806);
+        optionsButton.setLayoutY(496);
+        optionsButton.getStyleClass().add("options");
 
         Button exitButton = new Button("Exit");
-        exitButton.setLayoutX(-13);
-        exitButton.setLayoutY(130);
-        exitButton.setPrefHeight(37);
-        exitButton.setPrefWidth(151);
-        exitButton.setStyle("-fx-text-fill: #b0c8b7;");
-        exitButton.setFont(new Font(16));
-        exitButton.getStyleClass().add("main_menu_buttons");
+        exitButton.setLayoutX(877);
+        exitButton.setLayoutY(650);
+        exitButton.getStyleClass().add("exit");
+
+
+
 
         // Add children to AnchorPane
-        anchorPane.getChildren().addAll(imageView, startGameButton, optionsButton, exitButton);
+        root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
 
         // Scene
-        Scene scene = new Scene(anchorPane);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         return scene;
     }
+    
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
         thisIsAnAlert.setTitle("ScoreSheet");
