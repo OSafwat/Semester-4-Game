@@ -11,7 +11,6 @@ public abstract class RealmScene {
     public AnchorPane root;
     public ImageView goBackButton;
     public void createScene() {
-        root = new AnchorPane();
         goBackButton = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueGoBackButton.png")));
         goBackButton.setFitWidth(150);
         goBackButton.setFitHeight(150);

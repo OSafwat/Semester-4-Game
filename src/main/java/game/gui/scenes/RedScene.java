@@ -28,16 +28,17 @@ public class RedScene extends RealmScene {
     @Override
     public void createScene() {
         root = new AnchorPane();
-        mainScene = new Scene(root, 1920, 1080);
-
         ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/Emberfall-Dominion.png")));
+
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);
+
         root.getChildren().add(backgroundView);
         root.setPadding(javafx.geometry.Insets.EMPTY);
 
         initializeDragons();
+        super.createScene();
     }
 
     private void initializeDragons() {
@@ -121,5 +122,21 @@ public class RedScene extends RealmScene {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public ImageView getDragon1() {
+        return dragon1;
+    }
+
+    public ImageView getDragon2() {
+        return dragon2;
+    }
+
+    public ImageView getDragon3() {
+        return dragon3;
+    }
+
+    public ImageView getDragon4() {
+        return dragon4;
     }
 }
