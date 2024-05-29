@@ -75,12 +75,16 @@ public class DiceRealms extends Application {
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); 
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
+        sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
+        sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
         sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
+        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchFromMain());
+        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchToMain());
     }
 
     public void handleMove(String color) {
@@ -156,7 +160,7 @@ public class DiceRealms extends Application {
     public void startGame() {
         handlePlayerNameInputs();
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
-        
+
 
     }
 
@@ -174,6 +178,7 @@ public class DiceRealms extends Application {
         } catch (NoSuchElementException e) {
             player1Name = handleNames("");
         }
+        textInputDialog = new TextInputDialog();
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 2's name");
@@ -190,7 +195,7 @@ public class DiceRealms extends Application {
         guiGameController.getPlayer1().setName(player1Name);
         guiGameController.getPlayer2().setName(player2Name);
     }
-    
+
     public String handleNames(String playerName) {
         String[] magicNames = {
                 "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
@@ -263,16 +268,9 @@ public class DiceRealms extends Application {
 
             case "giu":
                 playerName = guiGameController.changeToRainbowText(playerName);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
                 break;
             case "guc":
                 playerName = guiGameController.changeToRainbowText(playerName);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-
             case "meow":
                 playerName = guiGameController.changeToRainbowText(playerName);
 
