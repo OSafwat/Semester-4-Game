@@ -519,7 +519,7 @@ public class CLIGameController {
 
     public void resetRed() {
         if(getAvailableDice().length != 0 && getAvailableDice()[0] instanceof RedDice) {
-            ((RedDice) getAvailableDice()[0]).selectsDragon(-1);
+            ((RedDice) getAvailableDice()[0]).selectsDragon(0);
         }
     }
 
@@ -540,12 +540,8 @@ public class CLIGameController {
                 try {
                     resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
-                } catch (InvalidDiceSelectionException e) {
-                    System.out.println("I will now give you a chance to select properly.");
-                    handleDiceDisplay(diceSet, indicator);
-                    continue;
-                } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                    e.displayMessage();
                     handleDiceDisplay(diceSet, indicator);
                     continue;
                 }
@@ -628,12 +624,8 @@ public class CLIGameController {
         while (!valid) {
             try {
                 chosenDie = handleDiceSelection(player, availableDice);
-            } catch (InvalidDiceSelectionException e) {
-                System.out.println("Invalid input.\nI will now give you a chance to select properly.");
-                handleDiceDisplay(availableDice, 2);
-                continue;
-            } catch (NoAvailableMovesException e) {
-                System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+            } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                e.displayMessage();
                 handleDiceDisplay(availableDice, 2);
                 continue;
             }
@@ -1021,10 +1013,10 @@ public class CLIGameController {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    e.displayMessage();
                     return true;
                 } catch (InvalidBonusSelectionException e) {
-                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    e.displayMessage();
                     continue;
                 } catch (InvalidDiceSelectionException e) {
                     continue;
@@ -1040,10 +1032,10 @@ public class CLIGameController {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
-                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        e.displayMessage();
                         return true;
                     } catch (InvalidBonusSelectionException e) {
-                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        e.displayMessage();
                         continue;
                     } catch (InvalidDiceSelectionException e) {
                         continue;
@@ -1056,7 +1048,7 @@ public class CLIGameController {
             return true;
         }
         catch (InvalidMoveException Im){
-            System.out.println("It seems that this move is invalid.\nPlease try again.");
+            Im.displayMessage();
             return false;
         }
     }
@@ -1273,7 +1265,7 @@ public class CLIGameController {
         System.out.println();
     }
 
-    public static String changeToRainbowText(String text) {
+    public String changeToRainbowText(String text) {
         int colorIndex = 0;
         String output = "";
         for (char c : text.toCharArray()) {
@@ -1284,10 +1276,6 @@ public class CLIGameController {
         return output;
     }
 
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        cli.startGame();
-    }
 }
 
 

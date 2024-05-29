@@ -1,6 +1,66 @@
-.main_menu_buttons {
-    -fx-font-color: #b0c8b7 ;
-    -fx-background-color:  rgba(0,0,0,0);
-    -fx-font-weight: bold;
-    /*-fx-stroke: ;*/
+/* Base Styles */
+.root {
+    /*-fx-background-image: url('path_to_your_image.png');*/
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+    -fx-font-family: 'Press Start 2P';
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-height: 100vh;
+    -fx-display: flex;
+    -fx-justify-content: center;
+    -fx-align-items: center;
 }
+
+/* Container to hold the buttons */
+.menu-container {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-padding: 20px;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-display: inline-block;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: black;
+    -fx-font-size: 70px;
+    -fx-padding: 10px 20px;
+    -fx-margin: 10px 0;
+    -fx-text-transform: uppercase;
+    -fx-cursor: hand;
+    -fx-font-family: 'serif';
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
+}
+
+.button:pressed {
+    -fx-background-color: #1c5986; /* Background color on press */
+    -fx-text-fill: #bdc3c7;        /* Text color on press */
+    -fx-border-color: #1c5986;     /* Border color on press */
+}
+.infoLabel{
+    -fx-background-color: lightgray; 
+    -fx-padding: 5px; 
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+/* Specific button colors (optional) */
+/* .start-game {
+    -fx-background-color: rgba(76,175,80,.4); /* Green */
+/*}
+
+.options {
+    -fx-background-color: #FF9800; /* Orange */
+/*}
+
+.exit {
+    -fx-background-color: #F44336; Red */
+/*  }*/
