@@ -43,6 +43,10 @@ public class SceneController {
         return boardScene.getYellowDice();
     }
 
+    public ImageView getArcaneDice() {
+        return boardScene.getArcaneDice();
+    }
+
     public ImageView getPhoenix() {
         return magentaScene.getPhoenix();
     }
