@@ -1,6 +1,7 @@
 package game.gui;
 
 import game.gui.scenes.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
 public class SceneController {
@@ -44,5 +45,37 @@ public class SceneController {
 
     public ImageView getPhoenix() {
         return magentaScene.getPhoenix();
+    }
+
+    public Button getOptionsButton() {
+        return mainMenuScene.getOptionsButton();
+    }
+
+    public Button getStartGameButton() {
+        return mainMenuScene.getStartGameButton();
+    }
+
+    public Button getPvAIButton() {
+        return mainMenuScene.getPvAIButton();
+    }
+
+    public Button getPvPButton() {
+        return mainMenuScene.getPvPButton();
+    }
+
+    public Button getGoBackButton() {
+        return mainMenuScene.getGoBackButton();
+    }
+
+    public Button getExitButton() {
+        return mainMenuScene.getExitButton();
+    }
+
+    public void switchToMain() {
+        mainMenuScene.switchToMain();
+    }
+
+    public void switchFromMain() {
+        mainMenuScene.switchFromMain();
     }
 }
