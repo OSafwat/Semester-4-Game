@@ -85,7 +85,6 @@ public class BoardScene{
             
         }
 
-
         // // Red dice image
         // redDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[0]))); 
         // redDice.setFitHeight(150);
@@ -161,6 +160,7 @@ public class BoardScene{
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         boardScene = scene;
     }
+
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
         thisIsAnAlert.setTitle("ScoreSheet");

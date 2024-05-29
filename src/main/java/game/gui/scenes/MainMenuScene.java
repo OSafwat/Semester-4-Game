@@ -14,43 +14,64 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainMenuScene{
+    ImageView background;
 
     Button startGameButton;
     Button optionsButton;
     Button exitButton;
 
+    Button pvp;
+    Button pvAI;
+    Button goBack;
+
+    AnchorPane root;
+
     public Scene createMainScene() {
         
 
         // AnchorPane
-        AnchorPane root = new AnchorPane();
+        root = new AnchorPane();
         root.setPrefSize(1920, 1080);
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/images/Main menu.png")));
-        background.setFitWidth(1920);
-        background.setFitHeight(1080);
-        background.getStyleClass().add("root");
-        AnchorPane.setTopAnchor(background, -6.0);
-        //background.setImage());
+        background = new ImageView(new Image(getClass().getResourceAsStream("/images/Main menu.png")));
+            background.setFitWidth(1920);
+            background.setFitHeight(1080);
+            background.getStyleClass().add("root");
+            AnchorPane.setTopAnchor(background, -6.0);
+            //background.setImage());
 
 
         // Create the buttons
         startGameButton = new Button("Start Game");
-        startGameButton.setLayoutX(758);
-        startGameButton.setLayoutY(355);
-        startGameButton.getStyleClass().add("start-game");
-        startGameButton.getStyleClass().add("rainbow");
+            startGameButton.setLayoutX(758);
+            startGameButton.setLayoutY(355);
+            startGameButton.getStyleClass().add("start-game");
+            startGameButton.getStyleClass().add("rainbow");
 
         optionsButton = new Button("Options");
-        optionsButton.setLayoutX(806);
-        optionsButton.setLayoutY(496);
-        optionsButton.getStyleClass().add("options");
+            optionsButton.setLayoutX(806);
+            optionsButton.setLayoutY(496);
+            optionsButton.getStyleClass().add("options");
 
         exitButton = new Button("Exit");
-        exitButton.setLayoutX(877);
-        exitButton.setLayoutY(650);
-        exitButton.getStyleClass().add("exit");
+            exitButton.setLayoutX(877);
+            exitButton.setLayoutY(650);
+            exitButton.getStyleClass().add("exit");
 
+        pvp = new Button("Player VS Player");
+            pvp.setLayoutX(758);
+            pvp.setLayoutY(355);
+            pvp.getStyleClass().add("start-game");
+            pvp.getStyleClass().add("");
+    
+        pvAI = new Button("Player VS AI (work in progress)");
+            pvAI.setLayoutX(806);
+            pvAI.setLayoutY(496);
+            pvAI.getStyleClass().add("options");
 
+        goBack = new Button("return");
+            goBack.setLayoutX(877);
+            goBack.setLayoutY(650);
+            //exitButton.getStyleClass().add("");
 
 
 
@@ -62,6 +83,17 @@ public class MainMenuScene{
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         return scene;
+    }
+    
+    public void switchToMain(){
+        pvp = new Button();
+        root.getChildren().clear();
+        root.getChildren().addAll(background,pvp, pvAI,goBack);
+    }
+    public void switchFromMain(){
+        pvp = new Button();
+        root.getChildren().clear();
+        root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
     }
     
     public void displayAlert(){
