@@ -82,4 +82,20 @@ public class SceneController {
     public void switchFromMain() {
         mainMenuScene.switchFromMain();
     }
+
+    public ImageView getDragon1() {
+        return redScene.getDragon1();
+    }
+
+    public ImageView getDragon2() {
+        return redScene.getDragon2();
+    }
+
+    public ImageView getDragon3() {
+        return redScene.getDragon3();
+    }
+
+    public ImageView getDragon4() {
+        return redScene.getDragon4();
+    }
 }
