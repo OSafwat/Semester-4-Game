@@ -75,12 +75,16 @@ public class DiceRealms extends Application {
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); 
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
+        sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
+        sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
         sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
+        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchFromMain());
+        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchToMain());
     }
 
     public void handleMove(String color) {
