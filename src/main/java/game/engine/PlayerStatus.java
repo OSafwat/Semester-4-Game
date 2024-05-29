@@ -1,4 +1,4 @@
-package game.engine.enums;
+package game.engine;
 
 public enum PlayerStatus {
     ACTIVE, PASSIVE

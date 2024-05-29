@@ -57,7 +57,7 @@ public class ScoreSheet {
         res += "\u001B[35m" + phoenix.getScoreSheet() + "\u001B[0m";
         res +="\n";
         res += "\u001B[33m" + lion.getScoreSheet() + "\u001B[0m";
-        System.out.println(res);
+        System.out.println(res + "\n");
     }
 
     public void displayScoreSheet(){
@@ -74,7 +74,7 @@ public class ScoreSheet {
         res += phoenix.getScoreSheet();
         res +="\n";
         res += lion.getScoreSheet();
-        return res;
+        return res + "\n";
     }
 
     //red    green  blue    magenta    yellow

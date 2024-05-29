@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Scanner;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -38,7 +39,7 @@ public class Gaia extends Creature{
     private String [] colreward;
     private String [] rowreward;
     private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost","GreenBonus"};
-    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest"};
+    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest","EssenceBonus","null"};
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
@@ -226,7 +227,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    private Guardians getGuardians(int c){
+private Guardians getGuardians(int c){
         if(c<2 || c>12)
         return null;
         //int index =1;
@@ -289,10 +290,8 @@ private void killGaiaGuardian(Guardians g){
     }
 }
 
-//EXP  gets the number of  still allive guradians
-private int getAlliveGuardians(){
-    return alliveGuardians;
-}
+
+
  
 private int getDeadGuardians(){
     return deadGuardians;
@@ -355,7 +354,8 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-     public boolean makeMove(Dice dice) throws BonusException,InvalidMoveException   {
+
+     public boolean makeMove(Dice dice) throws BonusException,InvalidMoveException {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
        else  if(!checkMove1(dice))
@@ -384,6 +384,7 @@ private  void updateRow(int r){
                
                 if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
+                
                     throw new BonusException(realm);
                 }
 
@@ -397,6 +398,7 @@ private  void updateRow(int r){
                 // I will only need to change  in the whichCollectableCol(colToCheck);
                 if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
+                    
                     throw new BonusException(realm);
                 }
                 return true;
@@ -407,31 +409,32 @@ private  void updateRow(int r){
                 String act2 = whichCollectableRow(rowToCheck);
                 int act1Prtority = this.getPriorityValue(act1);
                 int act2Prtority=this.getPriorityValue(act2);
-                if(act1Prtority==1 && act2Prtority==1){
+                if(act1Prtority==0 && act2Prtority==0){
                     this.applyNotBonusCollectable(act1);
                     this.applyNotBonusCollectable(act2);
                 }
-                else if(act1Prtority>1 && act2Prtority==1){
+                else if(act1Prtority>0 && act2Prtority==0){
                     this.applyNotBonusCollectable(act2);
                     RealmColor  realm= this.getCorrectRealm(act1);
-                    throw new BonusException(realm);
+                     throw new BonusException(realm);
 
                 }
-                else if(act1Prtority==1 && act2Prtority>1){
+                else if(act1Prtority==0 && act2Prtority>0){
                     this.applyNotBonusCollectable(act1);
                     RealmColor  realm= this.getCorrectRealm(act2);
-                    throw new BonusException(realm);
+                   throw new BonusException(realm);
 
                 }
                 else if(act1Prtority>act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act1);
                     RealmColor realm2 = this.getCorrectRealm(act2);
-                    throw new BonusException(realm1, realm2);
+                 throw new BonusException(realm1, realm2);
                 }
                 else if(act1Prtority<act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act2);
                     RealmColor realm2 = this.getCorrectRealm(act1);
-                    throw new BonusException(realm1, realm2);
+                  
+                     throw new BonusException(realm1, realm2);
                 }     
                 return true;
             }
@@ -487,7 +490,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|4    ";
-    if(checkRow(0))
+    if(checkRow(0) && !whichCollectableRow(0).equals("null"))
     returnValue = returnValue +"|X    |\n"+"|  2  ";
     else{
         String s = this.whichCollectableRow(0);
@@ -514,7 +517,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|8    ";
-    if(checkRow(1))
+    if(checkRow(1)&& !whichCollectableRow(1).equals("null"))
     returnValue = returnValue +"|X    |\n"+"|  3  ";
     else{
         String s = this.whichCollectableRow(1);
@@ -542,7 +545,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|12   ";
-    if(checkRow(2))
+    if(checkRow(2)&& !whichCollectableRow(2).equals("null"))
     returnValue = returnValue +"|X    |\n";
     else{
         String s = this.whichCollectableRow(2);
@@ -550,28 +553,28 @@ public String getScoreSheet(){
     returnValue = returnValue +"|"+f+"   |\n";
     }
     returnValue=returnValue+"+-----------------------------------+\n"+"|  R  ";
-    if(checkCol(0))
+    if(checkCol(0)&& !whichCollectableCol(0).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(0);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(1))
+    if(checkCol(1)&& !whichCollectableCol(1).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(1);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(2))
+    if(checkCol(2)&& !whichCollectableCol(2).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(2);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(3))
+    if(checkCol(3)&& !whichCollectableCol(3).equals("null"))
     returnValue = returnValue +"|X    " +"|     |\n";
     else{
         String s = this.whichCollectableCol(3);
@@ -585,7 +588,7 @@ public String getScoreSheet(){
 
 }
 
-  //return number of elemental crests for each realm will be 0 or 1 
+  //return number of elemental crests for each realm 
   public  int getElementalCrest(){
    return elementalCrestCount;
   }
@@ -607,6 +610,7 @@ private RealmColor getCorrectRealm(String s){
         case "BlueBonus": return RealmColor.BLUE;
         case "MagentaBonus": return RealmColor.MAGENTA;
         case "YellowBonus":return RealmColor.YELLOW;
+        case "EssenceBonus": return RealmColor.WHITE;
         default :return null;
     }
 }
@@ -619,7 +623,8 @@ private int getPriorityValue(String s){
         case "BlueBonus": return 4;
         case "MagentaBonus": return 3;
         case "YellowBonus":return 2;
-        default: return 1;
+        case "EssenceBonus":return 1;
+        default: return 0;
             
     }
 
@@ -637,6 +642,8 @@ private String getCorrectBonusInScore(String s){
         case "TimeWarp" : return"TW";
         case "ArcaneBoost" : return"AB";
         case "ElementalCrest": return"EC";
+        case "EssenceBonus" : return "EB";
+        case "null": return "  ";
         default: return "";
             
     }
@@ -675,6 +682,9 @@ private boolean applyNotBonusCollectable(String s){
         return true ;
 
     }
+    else if (s.equals("null"))
+    return true;
+    else
     return false;
 
 }

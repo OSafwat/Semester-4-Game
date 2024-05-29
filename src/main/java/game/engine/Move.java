@@ -34,9 +34,6 @@ public class Move implements Comparable{
         }
         if (  this.dice.getValue()== dice.getValue() && dice.getRealm() == this.dice.getRealm())  
             return 0;
-        else if (this.dice.getRealm() == RealmColor.YELLOW && dice.getRealm() == RealmColor.YELLOW) {
-            return 1;
-        }
         else return -1;
     }
     // public boolean makeMove(Dice dice, Creature creature){

@@ -3,7 +3,6 @@ package game.engine;
 import game.collectibles.*;
 import game.exceptions.*;
 import game.dice.*;
-import game.creatures.*;
 import game.creatures.greenclasses.Gaia;
 import game.engine.enums.*;
 
@@ -19,12 +18,12 @@ public class CLIGameController {
     GameBoard gameBoard;
     Scanner scanner;
     static final String[] magicNames = {
-        "Akiramenai", "Hitler", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
+        "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
         "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
-        "Dumbbelldoor", "CNC", "Hitler", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
+        "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
         "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
         "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
-        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hitler"
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Square Moustache guy", "Hooba"
     };
 
     // ANSI escape codes for various colors
@@ -37,7 +36,7 @@ public class CLIGameController {
         "\u001B[34m", // Blue
         "\u001B[35m", // Magenta
     };
-    
+
 
     // constructor(s):
     public CLIGameController() {
@@ -46,10 +45,10 @@ public class CLIGameController {
     }
     public void getRewardsProp(){
         try {
-            FileReader SettingsfileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");    
+            FileReader SettingsfileReader = new FileReader("src/main/resources/config/RoundsRewards.properties");
             Properties p = new Properties();
-            p.load(SettingsfileReader); 
-            System.out.println(p.get("round1Reward")); // making sure the properties file is loaded correctly 
+            p.load(SettingsfileReader);
+            System.out.println(p.get("round1Reward")); // making sure the properties file is loaded correctly
 
         } catch (IOException e) {
             System.out.println("the file has not been found the default rewards will be used");
@@ -99,8 +98,7 @@ public class CLIGameController {
                 }
             }
         }
-        int temp [] =  {numberOfRounds, numebrOfTurnsPerRound};
-        return temp;
+        return new int[]{numberOfRounds, numebrOfTurnsPerRound};
     }
 
     public String [] getRewards(int numberOfRounds){
@@ -173,7 +171,7 @@ public class CLIGameController {
     public void startGame(){
         System.out.println("please input the name of player 1:");
         String player1Name = scanner.nextLine();
-        if (player1Name.trim().equals("")) {
+        if (player1Name.trim().isEmpty()) {
             Random random = new Random();
 
             // Get a random index between 0 and the length of the array
@@ -191,13 +189,14 @@ public class CLIGameController {
                 player1Name = changeToRainbowText(player1Name);
                 break;
             
+            case "slmat":    
             case "doctor":
             case "dr":
             case "dr.":
             case "doc":
             case "ahmed hussein":
-                player1Name = changeToRainbowText("slmat");
-                printRainbowText("Hi slmat");
+                player1Name = changeToRainbowText("slmat27");
+                printRainbowText("Hi slmat27");
                 break;
             
             case "noureldin":
@@ -206,6 +205,8 @@ public class CLIGameController {
             case "elephant":
             case "elephanto":
             case "elephanto gyat":
+            case "elephantogyat":
+            case "0ping":
             case "safwat":
             case "hamed":
             case "hotdog":
@@ -238,24 +239,27 @@ public class CLIGameController {
             
             case "giu":
                 player1Name = changeToRainbowText(player1Name);
-                System.out.println("\u001B[41m#####################\u001B[0m");
-                System.out.println("\u001B[43m#####################\u001B[0m");
-                System.out.println("\u001B[40m#####################\u001B[0m");
+                System.out.println("\u001B[31m#####################\u001B[0m");
+                System.out.println("\u001B[33m#####################\u001B[0m");
+                System.out.println("\u001B[30m#####################\u001B[0m");
                 break;
             case "guc":
                 player1Name = changeToRainbowText(player1Name);
                 System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[47m########\u001B[43m#####\u001B[47m########\u001B[0m");
-                System.out.println("\u001B[40m#####################\u001B[0m");
+                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                System.out.println("\u001B[30m#####################\u001B[0m");
+            
+            case "meow":
+                player1Name = changeToRainbowText(player1Name);
+                printRainbowText("blawg is NOT a cat ");
                 
             default:
                 break;
         }
-
         getActivePlayer().setName(player1Name);
-        
         System.out.println("please input the name of player 2:");
         String player2Name = scanner.nextLine();
+
         if (player2Name.trim().equals("")) {
             Random random = new Random();
             String randomName;
@@ -277,13 +281,14 @@ public class CLIGameController {
                 player2Name = changeToRainbowText(player2Name);
                 break;
             
+            case "slmat":    
             case "doctor":
             case "dr":
             case "dr.":
             case "doc":
             case "ahmed hussein":
-                player2Name = changeToRainbowText("slmat");
-                printRainbowText("Hi slmat");
+                player2Name = changeToRainbowText("slmat27");
+                printRainbowText("Hi slmat27");
                 break;
             
             case "noureldin":
@@ -292,13 +297,15 @@ public class CLIGameController {
             case "elephant":
             case "elephanto":
             case "elephanto gyat":
+            case "elephantogyat":
+            case "0ping":
             case "safwat":
             case "hamed":
             case "hotdog":
             case "hotdawg":
             case "tamer":
             case "kirat":
-                player2Name = changeToRainbowText("Xx" + player2Name + "xX");
+               player2Name = changeToRainbowText("Xx" + player2Name + "xX");
                 printRainbowText("^_^ Hello Chat. Is this W-rizz?");
                 break;
             
@@ -313,12 +320,12 @@ public class CLIGameController {
             case "akiraminai":
             case "badawayyy":
             case "zeus":
-                player2Name = changeToRainbowText(player2Name);
+               player2Name = changeToRainbowText(player2Name);
                 printRainbowText("=_= Hello losers.");
                 break;
 
             case "sharazad":
-                player2Name = changeToRainbowText(player2Name);
+               player2Name = changeToRainbowText(player2Name);
                 printRainbowText("Don't cry over spilled Fruit Punch");
                 break;
             
@@ -331,13 +338,16 @@ public class CLIGameController {
             case "guc":
                 player2Name = changeToRainbowText(player2Name);
                 System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("########\u001B[33m#####\u001B[0m########");
+                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
                 System.out.println("\u001B[30m#####################\u001B[0m");
+            
+            case "meow":
+                player2Name = changeToRainbowText(player2Name);
+                printRainbowText("blawg is NOT a cat ");
                 
             default:
                 break;
         }
-
         getPassivePlayer().setName(player2Name);
 
         int [] temp = getSettings();
@@ -364,16 +374,12 @@ public class CLIGameController {
         for (int round = 0; round < numberOfRounds; round++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            moveAllIntoForgotten();
-            playForgottenTurn(getPassivePlayer());
+            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
             gameBoard.resetAllDice();
             switchPlayer();
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            moveAllIntoForgotten();
-            playForgottenTurn(getPassivePlayer());
+            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
             gameBoard.resetAllDice();
             switchPlayer();
         }
@@ -425,31 +431,42 @@ public class CLIGameController {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
                 handleDiceDisplay(gameBoard.getForgottenRealmDice(), 1);
-                System.out.println("Hm.. it seems that this set of forgotten dice will not allow you to play any move.\nBetter luck next time!");
+                e.displayMessage();
                 return;
             }
         }
-        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
-        while (usedArcaneBoost) {
-            handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
-        }
     }
 
-    public void playRound(Player player, String reward, int turnCount) {
+    public void playRound(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
         gameBoard.resetGreenPostColorBonus();
-        handleRoundRewards(player, reward);
+        handleRoundRewards(activePlayer, reward);
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
-            boolean valid = playTurn(player, false);
+            boolean valid = playTurn(activePlayer, false);
             if (!valid)
                 break;
         }
-        boolean usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
-        while (usedArcaneBoost) {
-            handleArcaneBoostCall(player);
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(player));
+        moveAllIntoForgotten();
+        playForgottenTurn(passivePlayer);
+        boolean usedArcaneBoost;
+        try {
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            usedArcaneBoost = false;
+        }
+        if (usedArcaneBoost) {
+            handleArcaneBoostCall(activePlayer);
+        }
+        try {
+            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            usedArcaneBoost = false;
+        }
+        if (usedArcaneBoost) {
+            handleArcaneBoostCall(passivePlayer);
         }
     }
 
@@ -465,7 +482,13 @@ public class CLIGameController {
         if (isThisATimeWarpRerollCall)
             System.out.println("I will now reroll the dice...");
         rollDice();
-        boolean useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+        boolean useTimeWarp;
+        try {
+           useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+        } catch (ExhaustedResourceException e) {
+            e.displayMessage();
+            useTimeWarp = false;
+        }
         if (useTimeWarp) {
             return playTurn(player, true);
         }
@@ -480,7 +503,11 @@ public class CLIGameController {
                     diceSet[i] = availableDice.get(i);
                 handleDiceDisplay(diceSet, 0);
                 System.out.println("Hmm... it seems that this set of dice will not allow you to play any move against any of your Realms.");
-                useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+                try {
+                    useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
+                } catch (ExhaustedResourceException f) {
+                    f.displayMessage();
+                }
                 if (useTimeWarp) {
                     return playTurn(player, true);
                 }
@@ -499,6 +526,9 @@ public class CLIGameController {
     public boolean turnCompletion(Player player) throws NoAvailableMovesException{
         gameBoard.resetGreenPostColorBonus();
         Dice[] diceSet = player.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        Move[] moveSet = getAllPossibleMovesForDiceSet(player, diceSet);
+        if (moveSet.length == 0)
+            throw new NoAvailableMovesException("Hmm, it seems that this set of dice has no possible moves. How unfortunate.");
         Arrays.sort(diceSet);
         boolean valid = false;
         Dice finalDie;
@@ -510,12 +540,8 @@ public class CLIGameController {
                 try {
                     resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
-                } catch (InvalidDiceSelectionException e) {
-                    System.out.println("I will now give you a chance to select properly.");
-                    handleDiceDisplay(diceSet, indicator);
-                    continue;
-                } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                    e.displayMessage();
                     handleDiceDisplay(diceSet, indicator);
                     continue;
                 }
@@ -523,8 +549,13 @@ public class CLIGameController {
             }
             finalDie = null;
             if (chosenDie instanceof ArcanePrism) {
-                while (Objects.equals(finalDie, null)) {
-                    finalDie = handleArcanePrism(chosenDie, player);
+                while (true) {
+                    try {
+                        finalDie = handleArcanePrism(chosenDie, player);
+                    } catch (NoAvailableMovesException e) {
+                        e.displayMessage();
+                    }
+                    break;
                 }
             } else
                 finalDie = chosenDie;
@@ -554,11 +585,11 @@ public class CLIGameController {
         return true;
     }
 
-    public Dice[] getArcaneBoostDice() {
+    public Dice[] getArcaneBoostDice(Player player) {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
-        ArrayList<Dice> bannedDice = gameBoard.getArcaneDice();
-        for (Dice die: possibleDice) {
+        ArrayList<Dice> bannedDice = player.getUsedArcaneDice();
+        outer: for (Dice die: possibleDice) {
             if (!bannedDice.contains(die))
                 diceExcludingPreviouslySelectedByArcaneBoosts.add(die);
         }
@@ -571,13 +602,21 @@ public class CLIGameController {
     }
     public void handleArcaneBoostCall(Player player) {
         gameBoard.resetGreenPostColorBonus();
-        Dice[] availableDice = getArcaneBoostDice();
+        Dice[] availableDice = getArcaneBoostDice(player);
         Arrays.sort(availableDice);
         handleDiceDisplay(availableDice, 2);
         try {
             getAllPossibleMovesForDiceSet(player, availableDice);
         } catch (NoAvailableMovesException e) {
-            System.out.println("Hmm.. this is terrible. It seems that you have wasted your Arcane Boost. Better luck next time!");
+            System.out.println("Hmm.. this is terrible. It seems that this Arcane Boost is useless. Be careful next time.");
+            //resetting the arcane boost to be acquired
+            ArcaneBoost[] playerArcaneBoosts = getArcaneBoostPowers(player);
+            for (ArcaneBoost arcaneBoost: playerArcaneBoosts) {
+                if (arcaneBoost.getStatus().equals(RewardStates.USED)) {
+                    arcaneBoost.setStatus(RewardStates.ACQUIRED);
+                    break;
+                }
+            }
             return;
         }
         Dice chosenDie;
@@ -585,19 +624,20 @@ public class CLIGameController {
         while (!valid) {
             try {
                 chosenDie = handleDiceSelection(player, availableDice);
-            } catch (InvalidDiceSelectionException e) {
-                System.out.println("Invalid input.\nI will now give you a chance to select properly.");
-                handleDiceDisplay(availableDice, 2);
-                continue;
-            } catch (NoAvailableMovesException e) {
-                System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+            } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                e.displayMessage();
                 handleDiceDisplay(availableDice, 2);
                 continue;
             }
             Dice finalDie = null;
             if (chosenDie instanceof ArcanePrism) {
-                while (Objects.equals(finalDie, null)) {
-                    finalDie = handleArcanePrism(chosenDie, player);
+                while (true) {
+                    try {
+                        finalDie = handleArcanePrism(chosenDie, player);
+                    } catch (NoAvailableMovesException e) {
+                        e.displayMessage();
+                    }
+                    break;
                 }
             } else
                 finalDie = chosenDie;
@@ -607,15 +647,16 @@ public class CLIGameController {
                     try {
                         finalDie = handleRedDice((RedDice) finalDie);
                     } catch (InvalidDiceSelectionException e) {
-                        System.out.println("Invalid input.\nPlease try again.");
+                        e.displayMessage();
                         continue;
                     }
                     valid2 = true;
                 }
             }
             valid = makeMove(player, new Move(finalDie, getScoreSheet(player).getCreatureByColor(finalDie.getRealm())));
-            if (valid)
-                gameBoard.moveToArcaneDice(finalDie);
+            if (valid) {
+                player.addToUsedArcaneDice(finalDie);
+            }
         }
         player.getScoreSheet().displayColoredScoreSheet();
     }
@@ -623,13 +664,13 @@ public class CLIGameController {
     public RedDice handleRedDice(RedDice finalDie) throws InvalidDiceSelectionException{
         System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
         System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-        int selectedDragon = -1;
+        int selectedDragon;
         String input = scanner.next();
         while (input.isEmpty()) {
             input = scanner.next();
         }
         if (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4"))
-            throw new InvalidDiceSelectionException();
+            throw new InvalidDiceSelectionException("This dragon does not exist, please try again.");
         selectedDragon = Integer.parseInt(input);
         finalDie.selectsDragon(selectedDragon);
         return finalDie;
@@ -684,19 +725,18 @@ public class CLIGameController {
                 break;
             }
             else {
-                System.out.println("Invalid input, please try again.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("Invalid input, please try again.");
             }
         }
         Dice chosenDie = diceSet[chosenDiceIndex-1];
         Move[] moveList = getPossibleMovesForADie(player, chosenDie);
         if (moveList.length == 0) {
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("This die has no possible moves. Please select another die to play with.");
         }
         return chosenDie;
     }
 
-    public Dice handleArcanePrism(Dice chosenDie, Player player) {
+    public Dice handleArcanePrism(Dice chosenDie, Player player) throws NoAvailableMovesException {
         System.out.println("You have chosen to play with the Arcane Prism! This dice can be used to attack any realm.");
         System.out.println("Please enter a number from 1 to 5 to choose the realm you would like to attack.");
         System.out.println("1. \u001B[31m" + "Red Realm " + "\u001B[0m" + "\n" +
@@ -722,9 +762,7 @@ public class CLIGameController {
         }
         Move[] moveList = getPossibleMovesForADie(player, diceAfterSelection);
         if (moveList.length == 0) {
-            System.out.println("Unfortunately, you can not cast the Arcane Prism into this form because it has no valid moves.");
-            System.out.println("I shall now rewind time to give you another chance at casting your Arcane Prism. Good luck!");
-            return null;
+            throw new NoAvailableMovesException("Unfortunately, you cannot cast the Arcane Prism into this form because it has no possible moves.\nPlease try again.");
         }
         return diceAfterSelection;
     }
@@ -738,23 +776,24 @@ public class CLIGameController {
             case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
         }
     }
-    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts){
+    public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts, Player player) throws ExhaustedResourceException{
         if (arcaneBoosts.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
         //dummy value initialization for loop entry
-        gameBoard.resetGreenPostColorBonus();
         char c = 'a';
         int arcaneBoostCount = 0;
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
                 arcaneBoostCount++;
         }
+        if (arcaneBoostCount == 0)
+            throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
                 System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
                 System.out.println("You have a total of " + arcaneBoostCount + " Arcane Boost(s).");
-                Dice[] arcaneBoostDice = getArcaneBoostDice();
+                Dice[] arcaneBoostDice = getArcaneBoostDice(player);
                 handleDiceDisplay(arcaneBoostDice, 4);
                 System.out.println("Please enter 'y' if you want to use an Arcane Boost, or 'n' if you don't want to.");
                 do {
@@ -803,8 +842,7 @@ public class CLIGameController {
         player.updateGameScore();
         player.updateAllPossibleMoves();
     }
-    public boolean handleTimeWarps(TimeWarp[] timewarps){
-        gameBoard.resetGreenPostColorBonus();
+    public boolean handleTimeWarps(TimeWarp[] timewarps) throws ExhaustedResourceException{
         if (timewarps.length == 0)
             return false;
         // System.out.println("are you disatisfied by such rotten luck and would like to get another roll at your fate (this will use one of your aqcuired timewarps becuase nothing in this life is for free)\n (press 'y' or 'y' because no one is satisfied aslan no just kidding ");
@@ -815,6 +853,8 @@ public class CLIGameController {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED)
                 timeWarpCount++;
         }
+        if (timeWarpCount == 0)
+            throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (TimeWarp timeWarp: timewarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
                 handleDiceDisplay(getAvailableDice(), 0);
@@ -836,10 +876,8 @@ public class CLIGameController {
                         System.out.println("Invalid input, please try again.");
                         System.out.println("Please enter 'y' if you want to use a Time Warp, or 'n' if you don't want to.");
                     }
-                } while (c != 'y' && c != 'n');
-                if (c == 'y') {
-                    timeWarp.setStatus(RewardStates.USED);
-                }
+                } while (c != 'y');
+                timeWarp.setStatus(RewardStates.USED);
                 break;
             }
         }
@@ -874,7 +912,7 @@ public class CLIGameController {
         removeGreenDuplicate(moveSet);
         int moveSetSize = moveSet.size();
         if (moveSetSize == 0)
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("Hmm, it seems that this set of dice has no possible moves. How unfortunate.");
         Move[] moves = new Move[moveSetSize];
         for (int index = 0; index < moveSetSize; index++) {
             moves[index] = moveSet.get(index);
@@ -919,6 +957,18 @@ public class CLIGameController {
             }
             return finalResult;
         }
+        else if (dice instanceof RedDice && ((RedDice)dice).getDragonNumber() != -1) {
+            for (int i = 0; i < playerAllMoves.length; i++) {
+                if ((playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue() && ((RedDice)playerAllMoves[i].getDice()).getDragonNumber() == ((RedDice)dice).getDragonNumber())){
+                    result.add(playerAllMoves[i]);
+                }
+            }
+            Move [] finalResult = new Move[result.size()];
+            for (int i=0; i<result.size(); i++) {
+                finalResult[i] = result.get(i);
+            }
+            return finalResult;
+        }
         else{
             for (int i = 0; i < playerAllMoves.length; i++) {
                 if (playerAllMoves[i].getDice().getRealm() == dice.getRealm() && playerAllMoves[i].getDice().getValue() == dice.getValue()){
@@ -951,7 +1001,6 @@ public class CLIGameController {
             else {
                 player.updateGameScore();
                 player.updateAllPossibleMoves();
-                gameBoard.resetGreenPostColorBonus();
                 return true;
             }
         } catch (BonusException bException) {
@@ -964,11 +1013,10 @@ public class CLIGameController {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
-                    gameBoard.resetGreenPostColorBonus();
+                    e.displayMessage();
                     return true;
                 } catch (InvalidBonusSelectionException e) {
-                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    e.displayMessage();
                     continue;
                 } catch (InvalidDiceSelectionException e) {
                     continue;
@@ -984,11 +1032,10 @@ public class CLIGameController {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
-                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
-                        gameBoard.resetGreenPostColorBonus();
+                        e.displayMessage();
                         return true;
                     } catch (InvalidBonusSelectionException e) {
-                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        e.displayMessage();
                         continue;
                     } catch (InvalidDiceSelectionException e) {
                         continue;
@@ -997,13 +1044,11 @@ public class CLIGameController {
                 }
                 player.updateGameScore();
                 player.updateAllPossibleMoves();
-                gameBoard.resetGreenPostColorBonus();
             }
             return true;
         }
         catch (InvalidMoveException Im){
-            System.out.println("It seems that this move is invalid.\nPlease try again.");
-            gameBoard.resetGreenPostColorBonus();
+            Im.displayMessage();
             return false;
         }
     }
@@ -1016,7 +1061,7 @@ public class CLIGameController {
         if (color == RealmColor.WHITE) {
             Move[] possibleMoves = getAllPossibleMoves(player);
             if (possibleMoves.length == 0)
-                throw new NoAvailableMovesException();
+                throw new NoAvailableMovesException("How horrible! You cannot use your essence bonus because you have no available moves at all.");
             while (input.isEmpty()) {
                 System.out.println("You have just obtained an Essence Bonus! This will allow you to play any Move against any Realm you want!");
                 System.out.println("Please enter a number from 1 to 5 to choose the Color that you want to morph your Essence Bonus into.");
@@ -1030,8 +1075,7 @@ public class CLIGameController {
                 for (int i = 1; i <= 5 && !validInput; i++)
                     validInput = input.equals("" + i);
                 if (!validInput) {
-                    input = "";
-                    System.out.println("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
+                    throw new InvalidBonusSelectionException("This is not a valid Realm...\nI will now give you another chance to select properly.\n");
                 }
             }
             int value = Integer.parseInt(input);
@@ -1048,7 +1092,7 @@ public class CLIGameController {
                 canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
             }
             if (!canYouUseThisBonus) {
-                throw new InvalidBonusSelectionException();
+                throw new InvalidBonusSelectionException("Unfortunately you cannot cast your Essence Bonus into this form because it will not have any available moves.\nPlease try again.");
             }
         }
         System.out.println("You have just obtained a " + color + " Bonus (Or you have morphed your Essence Bonus into a " + color + " Bonus)!\n");
@@ -1058,7 +1102,7 @@ public class CLIGameController {
             canYouUseThisBonus = canYouUseThisBonus || move.getDice().getRealm().equals(color);
         }
         if (!canYouUseThisBonus) {
-            throw new NoAvailableMovesException();
+            throw new NoAvailableMovesException("Unfortunately, you cannot use this bonus because it has no available moves.");
         }
         if (color == RealmColor.GREEN) {
             System.out.println("Please input a value between 2-12 that you would like to use to attack the GREEN Realm with!");
@@ -1067,8 +1111,7 @@ public class CLIGameController {
             for (int i = 2; i <= 12 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             finalDie = new GreenDice(value);
@@ -1081,19 +1124,11 @@ public class CLIGameController {
             for (int i = 1; i <= 6 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             finalDie = new RedDice(value);
-            System.out.println("Since you have chosen to attack the Red Realm, you must also select which Dragon you would like to attack.");
-            System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-            input = scanner.next();
-            while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
-                System.out.println("That dragon does not exist.\nI will now give you another chance to select properly.\n");
-                System.out.println("Please select a number between 1 and 4 to indicate which Dragon you would like to attack!");
-                input = scanner.next();
-            }
+            finalDie = handleRedDice((RedDice)finalDie);
             ((RedDice)finalDie).selectsDragon(Integer.parseInt(input));
         }
         else {
@@ -1103,8 +1138,7 @@ public class CLIGameController {
             for (int i = 1; i <= 6 && !validInput; i++)
                 validInput = input.equals("" + i);
             if (!validInput) {
-                System.out.println("This is not a valid input... \nI will give you another chance to select properly.");
-                throw new InvalidDiceSelectionException();
+                throw new InvalidDiceSelectionException("This is not a valid input... \nI will give you another chance to select properly.");
             }
             int value = Integer.parseInt(input);
             switch (color) {
@@ -1231,7 +1265,7 @@ public class CLIGameController {
         System.out.println();
     }
 
-    public static String changeToRainbowText(String text) {
+    public String changeToRainbowText(String text) {
         int colorIndex = 0;
         String output = "";
         for (char c : text.toCharArray()) {
@@ -1242,10 +1276,6 @@ public class CLIGameController {
         return output;
     }
 
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();
-        cli.startGame();
-    }
 }
 
 

@@ -16,6 +16,7 @@ public class Player {
     private ArrayList<TimeWarp> timeWarps;
     private Move[] allPossibleMoves;
     private ArrayList<Dice> playedDice;
+    private ArrayList<Dice> usedArcaneDice;
 
 
     public void setName(String name){
@@ -26,6 +27,7 @@ public class Player {
         this.playerStatus= status;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
+        this.usedArcaneDice = new ArrayList<>();
         allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
         playedDice = new ArrayList<>();
@@ -88,6 +90,13 @@ public class Player {
         this.allPossibleMoves = getAllPossibleMoves();
     }
 
-
-
+    public ArrayList<Dice> getUsedArcaneDice() {
+        return usedArcaneDice;
+    }
+    public void resetUsedArcaneDice() {
+        usedArcaneDice.clear();
+    }
+    public void addToUsedArcaneDice(Dice die) {
+        usedArcaneDice.add(die);
+    }
 }

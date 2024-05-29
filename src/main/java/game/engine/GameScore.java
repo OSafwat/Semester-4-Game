@@ -2,7 +2,7 @@ package game.engine;
 
 public class GameScore {
     private int allScores[];
-    private int elementalCrestCounter;
+    public int elementalCrestCounter;
 
     public GameScore(){
         allScores= new int[5];
@@ -12,6 +12,9 @@ public class GameScore {
     void updateScores(int [] scores, int elementalCrests ){
         this.allScores = scores;
         this.elementalCrestCounter=elementalCrests;
+    }
+    int getElementalCrestCounter() {
+        return elementalCrestCounter;
     }
 
     int getRedRealmScore() {

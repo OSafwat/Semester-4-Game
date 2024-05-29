@@ -287,7 +287,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.engine`
 - **Type**: Class
-- **Description**: This class represents the main controller for the game. 
+- **Description**: This class represents the main controller for the game. It extends the `GameController` class.
 
 #### Methods:
 
@@ -517,23 +517,74 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 #### Methods:
 
-1. `void selectsDragon(int dragonNumber)`
-   - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+1. `public Dice(int num)`
+   - **Description**: A constructor that initializes a Dice instance with the given number
    - **Parameter**:
-     - `dragonNumber`: The value that the instance variable should be changed to.
+     - `num`: An integer value that would be used as the dice value
    - **Return Type**: `void`
 
-2. `int getDragonNumber()`
-   - **Description**: returns the `dragonNumber` instance variable
+2. `public Dice()`
+   - **Description**: A constructor that initializes a Dice instance with a random number by calling `rollDice()`
+   - **Parameter**:
+   - **Return Type**: `void`
+
+3. `public int getValue()`
+   - **Description**: Returns the value of the dice on which the method was called on
    - **Parameter**:
    - **Return Type**: `int`
-     - The `dragonNumber` instance variable
+      - The `num` instance variable
+
+4. `public void setValue(int num)`
+   - **Description**: Sets the value of the dice on which the method was called on
+   - **Parameter**:
+      - `num`: The value to which the `num` instance variable in the dice class would be set to
+   - **Return Type**: `void`
+
+5. `public void rollDice()`
+   - **Description**: Sets the dice value to a random number
+   - **Parameter**:
+   - **Return Type**: `void`
+
+6. `public int compareTo(Object dice)`
+   - **Description**: A method that returns a value depending on how another object compares to the current instance of dice
+   - **Parameter**:
+      - `dice` : Potentially a `Dice` Object that would be compared to the current instance of the `Dice` class on which the method is called
+   - **Return Type**: `int`
+     - The method returns the difference between the value of the die if they share the same realm 
+     - The method returns the value provided by `compareTo()` on the respecitve realm of each dice if they don't have the same realm
+
+7. `public RealmColor getRealm()`
+   - **Description**: A dummy method that always returns the `RealmColor` of the dice as `PARENT` which is used in some cases in the `ScoreSheet` class
+   - **Parameter**:
+   - **Return Type**:
+      - `RealmColor` : The realm color of the dice, which is `PARENT` by default
+
+8. `public String toString()`
+   - **Description**: Returns a string description of the dice.
+   - **Parameter**:
+   - **Return Type**: `String`
+     - `String`: A string containing the dice color (realm) and value.
 
 ### `RedDice` class
 
 - **Package**: `game.dice`
 - **Type**: Class
-- **Description**: This class represents the red dice in the game
+- **Description**: This class represents the red dice in the game and it extends the `Dice` class
+
+#### Methods:
+
+1. `void selectsDragon(int dragonNumber)`
+    - **Description**: sets the `dragonNumber` instance variable to the value passed as a parameter
+    - **Parameter**:
+        - `dragonNumber`: The value that the instance variable should be changed to.
+    - **Return Type**: `void`
+
+2. `int getDragonNumber()`
+    - **Description**: returns the `dragonNumber` instance variable
+    - **Parameter**:
+    - **Return Type**: `int`
+        - The `dragonNumber` instance variable
+
 
 
 ### `Move` class
@@ -727,43 +778,141 @@ For each package, add the skeleton details for the class and duplicate as much a
    - **Parameter**: 
    - **Return Type**: `void`
 
-### `GreenRealm` class
 
-- **Package**: `game.engine`
-- **Type**: Class
-- **Description**: This class is going to represent the realm that has the gaia guardians.
+### `Gaia` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the GaiaGaurdian in the game.
 
 #### Methods:
-1. `int getScore()`
-   - **Description**: Returns the current score of this realm.
+
+1. `boolean makeMove(Dice dice)`
+   - **Description**: Executes an attack on a GaiaGaurdian.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player for the move.
+   - **Return Type**: `boolean`
+     - `true` if the move is successfully completed,
+     - `false` otherwise.
+
+2. `boolean checkMove(Dice dice)`
+   - **Description**: Check if a move on a GaiaGaurdian is possible.
+   - **Parameter**: 
+     - `dice`: The dice selected by the active player to check for the move.
+   - **Return Type**: `boolean`
+     - `True` if the move is possible,
+     - `False` otherwise.
+
+3. `String getScoresheet()`
+   - **Description**: Outputs a string containing the details of the GaiaGaurdian.
+   - **Return Type**: `String`
+     - The String containing the GaiaGaurdian.
+4. `private Guardians getGuardians(int c)`
+   - **Description**: gets a specific guardian in the Gaia.
+   - **Parameter**: 
+     - `c`: Number of specific guardian.
+   - **Return Type**: `Guardians`
+5. `private int getGuardiansRow(int c)`
+   - **Description**: gets a specific guardian row position in the Gaia.
+   - **Parameter**: 
+     - `c`: Row of specific guardian.
    - **Return Type**: `int`
+6. `private void killGaiaGuardian(Guardians g)`
+   - **Description**: kills a a given guardian if not already killed.
+   - **Parameter**: 
+     - `g`: specific guardian.
+   - **Return Type**: `void`
+7. `private int getDeadGuardians()`
+   - **Description**:return number of dead quardians.
+   - **Return Type**: `int`
+8. `private boolean checkCol(int c)`
+   - **Description**:checks if all guardians in a given col are dead if yes then true.
+   - **Parameter**: 
+     - `c`: col of specific guardian.
+   - **Return Type**: `boolean`
+9. `private boolean checkRow(int c)`
+   - **Description**:checks if all guardians in a given row are dead if yes then true.
+   - **Parameter**: 
+     - `c`: row of specific guardian.
+   - **Return Type**: `boolean`
+10. `private  void updateCol(int c)`
+   - **Description**:check if a col is already killed and update the  instance array accordingly.
+   - **Parameter**: 
+     - `c`: col of specific guardian.
+   - **Return Type**: `void`
+11. `private  void updateRow(int c)`
+   - **Description**:check if a row is already killed and update the  instance array accordingly.
+   - **Parameter**: 
+     - `c`: row of specific guardian.
+   - **Return Type**: `void`
+12. `private String whichCollectableCol (int c)`
+   - **Description**:gives the respective bonus for each col.
+   - **Parameter**: 
+     - `c`: col of specific bonus.
+   - **Return Type**: `String`
+13. `private String whichCollectableRow (int c)`
+   - **Description**:gives the respective bonus for each row.
+   - **Parameter**: 
+     - `c`: row of specific bonus.
+   - **Return Type**: `String`
+14. `public ArrayList<Move> getAllPossibleMoves()`
+   - **Description**:method to get all possible moves.
+   - **Return Type**: `ArrayList<Move>`
+15. `public  int getElementalCrest()`
+   - **Description**:return number of elemental crests for each realm .
+    - **Return Type**: `int`
+16. `public  ArrayList<TimeWarp> getAllTimeWarps()`
+   - **Description**:return all aquired time warp in Gaia .
+    - **Return Type**: `ArrayList<TimeWarp>`
+17. `public   ArrayList<ArcaneBoost> getAllArcaneBoosts()`
+   - **Description**:return all aquired  arcane boost in Gaia .
+    - **Return Type**: `ArrayList<ArcaneBoost>`
+18. `private RealmColor getCorrectRealm(String s)`
+   - **Description**:get correct realm where bonus should be applied .
+   - **Parameter**: 
+     - `s`: bonus.
+    - **Return Type**: `RealmColor`
+19. `private int getPriorityValue(String s)`
+   - **Description**:return the priority of a given bonus or boost.
+   - **Parameter**: 
+     - `s`: bonus.
+    - **Return Type**: `int`
+20. `private String getCorrectBonusInScore(String s))`
+   - **Description**:used in the Bonus class.
+   - **Parameter**: 
+     - `s`: bonus.
+    - **Return Type**: `String`
+21. `private boolean applyNotBonusCollectable(String s)`
+   - **Description**:apply powers.
+   - **Parameter**: 
+     - `s`: bonus.
+    - **Return Type**: `String`
 
-2. `void updateScore()`
-   - **Description**: Updates the value of the score of this realm according to the guardian that has been defeated.
+### `Guardians` class
+
+- **Package**: `game.creatures`
+- **Type**: class
+- **Description**: This class represents the Gaurdians in the Gaia.
+
+#### Methods:
+1. `protected int getGuardianValue()`
+   - **Description**: get the value of a guardian.
+   - **Return Type**: `int`
+2. `protected boolean isDead()`
+   - **Description**: returns the status of a guardian killed or not.
+   - **Return Type**: `boolean`
+3. `protected void  kill()`
+   - **Description**: kills a specific guardian.
    - **Return Type**: `void`
 
-3. `boolean checkMove(Dice dice, Creature creature)`
-   - **Description**: Checks if a move using a specific dice can be used against a specific guardian.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player.
-     - `creature`: The target guardian selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is possible.
-     - `false` otherwise.
 
-4. `boolean makeMove(Dice dice, Creature creature)`
-   - **Description**: Executes an attack on a specific guardian using a specific dice.
-   - **Parameter**: 
-     - `dice`: The dice selected by the player for the move.
-     - `creature`: The target guardian selected by the player.
-   - **Return Type**: `boolean`
-     - `true` if the move is successfully completed.
-     - `false` otherwise.
 
-5. `void print()`
-   - **Description**: Displays data related to the realm.
-   - **Parameter**: 
-   - **Return Type**: `void`
+
+
+
+
+
+
 
 ### `YellowRealm` class
 
@@ -834,7 +983,7 @@ For each package, add the skeleton details for the class and duplicate as much a
 
 - **Package**: `game.creatures`
 - **Type**: class
-- **Description**: This class represents the PyroDragon in the game. It extends the Creature class.
+- **Description**: This class represents the PyroDragon in the game. It extends the `Creature` class.
 
 #### Methods:
 
