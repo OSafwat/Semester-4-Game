@@ -189,7 +189,11 @@ public class BoardScene{
     }
 
     public Scene getBoardScene(int currentRound, int currentTurn, String playerName) {
-        infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
-        return boardScene;
+        if (currentTurn != -1)
+            infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
+        else 
+            infoLabel.setText("The current round is: Forgotten Round"+"       The current Passive player is: "+playerName);
+            
+            return boardScene;
     }
 }

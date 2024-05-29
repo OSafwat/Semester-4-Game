@@ -42,13 +42,13 @@ public class MainMenuScene{
 
         // Create the buttons
         startGameButton = new Button("Start Game");
-            startGameButton.setLayoutX(758);
+            startGameButton.setLayoutX(765);
             startGameButton.setLayoutY(355);
             startGameButton.getStyleClass().add("start-game");
             startGameButton.getStyleClass().add("rainbow");
 
         optionsButton = new Button("Options");
-            optionsButton.setLayoutX(806);
+            optionsButton.setLayoutX(820);
             optionsButton.setLayoutY(496);
             optionsButton.getStyleClass().add("options");
 
@@ -59,18 +59,17 @@ public class MainMenuScene{
 
         PvPButton = new Button("Player VS Player");
             PvPButton.setLayoutX(692);
-            PvPButton.setLayoutY(242);
-            PvPButton.getStyleClass().add("start-game");
-            //PvPButton.getStyleClass().add("");
+            PvPButton.setLayoutY(355);
+            PvPButton.getStyleClass().add("options");
     
         PvAIButton = new Button("Player VS AI (WIP)");
             PvAIButton.setLayoutX(652);
-            PvAIButton.setLayoutY(351);
+            PvAIButton.setLayoutY(496);
             PvAIButton.getStyleClass().add("options");
 
         goBackButton = new Button("Return");
             goBackButton.setLayoutX(832);
-            goBackButton.setLayoutY(470);
+            goBackButton.setLayoutY(650);
             //exitButton.getStyleClass().add("");
 
 
@@ -86,12 +85,10 @@ public class MainMenuScene{
     }
     
     public void switchFromMain(){
-        PvPButton = new Button();
         root.getChildren().clear();
-        root.getChildren().addAll(background,PvPButton, PvAIButton,goBackButton);
+        root.getChildren().addAll(background,PvPButton, PvAIButton, goBackButton);
     }
     public void switchToMain(){
-        PvPButton = new Button();
         root.getChildren().clear();
         root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
     }

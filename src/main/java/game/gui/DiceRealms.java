@@ -83,8 +83,8 @@ public class DiceRealms extends Application {
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
-        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchFromMain());
-        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchToMain());
+        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
+        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
     }
 
     public void handleMove(String color) {
