@@ -3,6 +3,7 @@ package game.engine;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
+import game.dice.RedDice;
 import game.engine.enums.RealmColor;
 import game.exceptions.*;
 import game.gui.DiceRealms;
@@ -71,33 +72,7 @@ public class GUIGameController extends CLIGameController {
         if (Objects.equals(move, null)) {
             exception = new InvalidMoveException();
         }
-        try {
-            Dice diceToBeMovedWith= move.getDice();
-            if (move.getCreature() instanceof Gaia) {
-                GreenDice greenDice = (GreenDice) gameBoard.getGreen();
-                Dice arcanePrism = gameBoard.getWhite();
-                int greenVal = greenDice.getValue();
-                int whiteVal = arcanePrism.getValue();
-                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
-            }
-            boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
-            if (!temp)
-                throw new InvalidMoveException();
-            else {
-                player.updateGameScore();
-                player.updateAllPossibleMoves();
-                return true;
-            }
-        } catch (BonusException bException) {
-            player.updateGameScore();
-            player.updateAllPossibleMoves();
-            exception = bException;
-            return false;
-        }
-        catch (InvalidMoveException Im){
-            exception = Im;
-            return false;
-        }
+        return makeMove(player, move);
     }
 
     public Player getPlayer1() {
@@ -119,6 +94,10 @@ public class GUIGameController extends CLIGameController {
 
     public int getCurrentTurn() {
         return currentTurn;
+    }
+
+    public void setSelectedDragon(int dragon) {
+        ((RedDice)getAllDice()[0]).selectsDragon(dragon);
     }
 
     public Exception getException() {
