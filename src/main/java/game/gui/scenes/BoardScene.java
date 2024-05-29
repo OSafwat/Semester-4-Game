@@ -5,6 +5,7 @@ import game.gui.scenes.RedScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -23,7 +24,15 @@ public class BoardScene{
     ImageView magentaDice;
     ImageView yellowDice;
     ImageView arcaneDice;
+    ImageView wizardHat;    // will be used to switch to information menu or to display information popup
+    ImageView rightGrimoire;    //will be used to diplay the scoresheets
+    ImageView leftGrimoire;
+    Label infoLabel;
+
     public void makeboardScene(String[] dicePNGs) {
+        infoLabel = new Label("The current round is: \nThe current Active player is: \n The current turn number is: ");    //the round information should be here and is set in the DiceRealms class
+        infoLabel.getStyleClass().add("infoLabel");
+
         // Create the AnchorPane
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefSize(1920,1080 );
@@ -77,7 +86,7 @@ public class BoardScene{
         arcaneDice.setLayoutY(624);
 
         // Grimoire image (left)
-        ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); // Update the path as necessary
+         leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); // Update the path as necessary
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
         leftGrimoire.setLayoutX(276);
@@ -85,7 +94,7 @@ public class BoardScene{
         //leftGrimoire.setOnMousePressed(event -> executeThis()); // Uncomment and define the method if needed
 
         // Grimoire image (right)
-        ImageView rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); // Update the path as necessary
+         rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); // Update the path as necessary
         rightGrimoire.setFitHeight(200);
         rightGrimoire.setFitWidth(200);
         rightGrimoire.setLayoutX(1438);
@@ -93,14 +102,19 @@ public class BoardScene{
         rightGrimoire.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
         rightGrimoire.setOnMousePressed(event -> displayAlert()); // Uncomment and define the method if needed
 
-        // Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
-        // thisIsAnAlert.setContentText("hellloooo!");
+        // ImageView for Wizard Hat
+        wizardHat = new ImageView(new Image(getClass().getResourceAsStream("/images/wizard hat.png")));
+        wizardHat.setFitHeight(200);
+        wizardHat.setFitWidth(200);
+        wizardHat.setLayoutX(834);
+        wizardHat.setLayoutY(14);
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire,arcaneDice,magentaDice, greenDice, redDice, yellowDice, blueDice);
+        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire,arcaneDice,magentaDice, greenDice, redDice, yellowDice, blueDice, wizardHat, infoLabel);
 
         // Create the scene
         Scene scene = new Scene(anchorPane);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         boardScene = scene;
     }
     public void displayAlert(){

@@ -39,7 +39,12 @@
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
 }
-
+.infoLabel{
+    -fx-background-color: lightgray; 
+    -fx-padding: 5px; 
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
 
 /* Specific button colors (optional) */
 /* .start-game {
