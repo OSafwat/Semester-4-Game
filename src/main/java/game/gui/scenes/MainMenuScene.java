@@ -37,6 +37,7 @@ public class MainMenuScene{
         startGameButton.setLayoutX(758);
         startGameButton.setLayoutY(355);
         startGameButton.getStyleClass().add("start-game");
+        startGameButton.getStyleClass().add("rainbow");
 
         optionsButton = new Button("Options");
         optionsButton.setLayoutX(806);

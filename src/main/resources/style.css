@@ -38,14 +38,6 @@
     -fx-font-family: 'serif';
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
- 
-
-}
-
-.button:hover {
-    -fx-background-color: #FFF;
-    -fx-text-fill: #000;
-    -fx-border-color: #000;
 }
 
 
