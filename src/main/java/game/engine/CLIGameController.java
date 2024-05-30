@@ -636,6 +636,7 @@ public class CLIGameController {
                         finalDie = handleArcanePrism(chosenDie, player);
                     } catch (NoAvailableMovesException e) {
                         e.displayMessage();
+                        continue;
                     }
                     break;
                 }
