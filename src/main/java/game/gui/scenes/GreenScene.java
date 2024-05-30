@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class GreenScene extends RealmScene {
-    Button killButton;
+    Button attackButton;
     ImageView backgroundView;
 
     @Override
@@ -17,15 +17,15 @@ public class GreenScene extends RealmScene {
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);
-        killButton = new Button();
-        killButton.setPrefHeight(700);
-        killButton.setPrefWidth(700);
+        attackButton = new Button();
+        attackButton.setPrefHeight(700);
+        attackButton.setPrefWidth(700);
         root.getChildren().add(backgroundView);
         root.setPadding(javafx.geometry.Insets.EMPTY);
-        root.getChildren().add(killButton);
+        root.getChildren().add(attackButton);
         // Set the position of the button
-        root.setLeftAnchor(killButton, 764.0);
-        root.setTopAnchor(killButton, 466.0);
+        root.setLeftAnchor(attackButton, 764.0);
+        root.setTopAnchor(attackButton, 466.0);
 
         root.getStylesheets().add(getClass().getResource("/GreenScene.css").toExternalForm());
 
@@ -37,6 +37,6 @@ public class GreenScene extends RealmScene {
     }
 
     public Button getGreenAttackButton() {
-        return killButton;
+        return attackButton;
     }
 }
