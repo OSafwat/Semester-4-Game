@@ -79,7 +79,7 @@ public class MainMenuScene{
 
         // Scene
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
 
         return scene;
     }

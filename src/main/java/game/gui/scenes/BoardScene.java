@@ -157,7 +157,7 @@ public class BoardScene{
 
         // Create the scene
         Scene scene = new Scene(anchorPane);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
     }
 
