@@ -86,6 +86,7 @@ public class DiceRealms extends Application {
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
+        sceneController.getRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
         sceneController.getDragon1().setOnMouseClicked(e -> {
             guiGameController.setSelectedDragon(1);
             //handle dragon part

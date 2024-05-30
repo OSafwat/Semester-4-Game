@@ -98,4 +98,8 @@ public class SceneController {
     public ImageView getDragon4() {
         return redScene.getDragon4();
     }
+
+    public ImageView getRealmGoBackButton() {
+        return redScene.getGoBackButton();
+    }
 }

@@ -16,6 +16,14 @@ public abstract class RealmScene {
     public AnchorPane root;
     public ImageView goBackButton;
     public void createScene() {
+        mainScene = new Scene(root,1920,1080);
+    };
+
+    public Scene getScene() {
+        return mainScene;
+    }
+
+    public void createGoBackButton() {
         goBackButton = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueGoBackButton.png")));
         goBackButton.setFitWidth(150);
         goBackButton.setFitHeight(150);
@@ -48,12 +56,9 @@ public abstract class RealmScene {
         innerShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
         goBackButton.setOnMousePressed(event -> goBackButton.setEffect(innerShadow));
         goBackButton.setOnMouseReleased(event -> goBackButton.setEffect(dropShadow));
-                
-        root.getChildren().addAll(goBackButton);
-        mainScene = new Scene(root,1920,1080);
-    };
+    }
 
-    public Scene getScene() {
-        return mainScene;
+    public ImageView getGoBackButton() {
+        return goBackButton;
     }
 }

@@ -38,6 +38,8 @@ public class RedScene extends RealmScene {
         root.setPadding(javafx.geometry.Insets.EMPTY);
 
         initializeDragons();
+        super.createGoBackButton();
+        root.getChildren().add(getGoBackButton());
         super.createScene();
     }
 
