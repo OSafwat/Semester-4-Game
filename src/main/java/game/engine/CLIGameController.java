@@ -540,12 +540,8 @@ public class CLIGameController {
                 try {
                     resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
-                } catch (InvalidDiceSelectionException e) {
-                    System.out.println("I will now give you a chance to select properly.");
-                    handleDiceDisplay(diceSet, indicator);
-                    continue;
-                } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+                } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                    e.displayMessage();
                     handleDiceDisplay(diceSet, indicator);
                     continue;
                 }
@@ -628,12 +624,8 @@ public class CLIGameController {
         while (!valid) {
             try {
                 chosenDie = handleDiceSelection(player, availableDice);
-            } catch (InvalidDiceSelectionException e) {
-                System.out.println("Invalid input.\nI will now give you a chance to select properly.");
-                handleDiceDisplay(availableDice, 2);
-                continue;
-            } catch (NoAvailableMovesException e) {
-                System.out.println("Hmm.. It seems that this die does not have any valid moves.\nI will now rewind time to give you a chance to reselect your die.\nGood luck!");
+            } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
+                e.displayMessage();
                 handleDiceDisplay(availableDice, 2);
                 continue;
             }
@@ -1021,10 +1013,10 @@ public class CLIGameController {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
-                    System.out.println("Hmm.. it seems that the " + realmColor1 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                    e.displayMessage();
                     return true;
                 } catch (InvalidBonusSelectionException e) {
-                    System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                    e.displayMessage();
                     continue;
                 } catch (InvalidDiceSelectionException e) {
                     continue;
@@ -1040,10 +1032,10 @@ public class CLIGameController {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
-                        System.out.println("Hmm.. it seems that the " + realmColor2 + " Bonus that you have obtained will not allow you to play any moves. Better luck next time!");
+                        e.displayMessage();
                         return true;
                     } catch (InvalidBonusSelectionException e) {
-                        System.out.println("The bonus color that you have chosen unfortunately has no moves. I will now give you another shot at morphing your WHITE bonus.\nGood luck!");
+                        e.displayMessage();
                         continue;
                     } catch (InvalidDiceSelectionException e) {
                         continue;
@@ -1056,7 +1048,7 @@ public class CLIGameController {
             return true;
         }
         catch (InvalidMoveException Im){
-            System.out.println("It seems that this move is invalid.\nPlease try again.");
+            Im.displayMessage();
             return false;
         }
     }
@@ -1273,7 +1265,7 @@ public class CLIGameController {
         System.out.println();
     }
 
-    public static String changeToRainbowText(String text) {
+    public String changeToRainbowText(String text) {
         int colorIndex = 0;
         String output = "";
         for (char c : text.toCharArray()) {
@@ -1284,134 +1276,6 @@ public class CLIGameController {
         return output;
     }
 
-    public static void main (String[] args) {
-        CLIGameController cli = new CLIGameController();        
-        // Create instances of Player and GameBoard
-        Player player = new Player(PlayerStatus.ACTIVE);
-        GameBoard board = new GameBoard();
-        // Call findBestMove
-        Move bestMove = cli.findBestMove(player, board, 1); // replace 3 with the depth you want
-        // Print the best move
-        System.out.println(bestMove+"FLAG HI");
-    }
-
-
-
-    //AI PART
-
-    public Move findBestMove(Player player,GameBoard board, int depth) {
-        int bestValue = Integer.MIN_VALUE;
-        Move bestMove = null;
-        
-        for (Move move : player.getAllPossibleMoves()) {
-            makeMove(player, move);
-            int boardValue = maxmax(player,board, depth - 1);
-
-            if (boardValue > bestValue) {
-                bestValue = boardValue;
-                bestMove = move;
-            }
-        }
-        return bestMove;
-    }
-
-    public int maxmax(Player player, GameBoard board, int depth) {
-        if (depth <= 0 || player.getAllPossibleMoves()==null) {
-            return evaluate(player,board);
-        }
-
-            int maxEval = Integer.MIN_VALUE;
-            int eval=0;
-            for (Move move : player.getAllPossibleMoves()) {    //dfs sum
-                Player playerBeforeMove = player.clone();
-                GameBoard boardBeforeMove = board.clone();
-
-                makeMove(player,move);                  //should momentarily keep track of the player total score and also the board
-                eval += maxmax(player,board, depth - 1);    //+=?
-                // restore the state
-                player = playerBeforeMove;
-                board = boardBeforeMove;
-
-        //reset the board for the next move in the list
-        maxEval = Math.max(maxEval, eval);
-            }
-            return maxEval;
-    }
-
-    public int evaluate(Player player,GameBoard board){
-        int score =0;
-        score=player.getGameScore().getTotalScore();
-
-        Dice[] dice=board.getForgottenRealmDice();
-        int forgottenRealmScore=evaluateDiceScore(dice);
-        score-=forgottenRealmScore;
-
-        int arcaneBoostCount = 0;
-        for (ArcaneBoost arcaneBoost: player.getArcaneBoosts()) {
-            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
-                arcaneBoostCount++;
-        }
-        score+=arcaneBoostCount*10;
-
-        int timeWarpCount = 0;
-        for(TimeWarp timeWarp: player.getTimeWarps()){
-            if(timeWarp.getStatus() == RewardStates.ACQUIRED)
-                timeWarpCount++;
-        }
-        score+=timeWarpCount*5;
-
-        return score;
-    }
-    public int evaluateDiceScore(Dice[] dice){
-        int score=0;
-        for(Dice die: dice){
-           score+=evaluateDice(die);
-        }
-        return score;
-    }
-    public int evaluateDice(Dice dice){
-        if(dice==null) return 0;
-        switch (dice.getRealm()) {
-            case RED:
-                return evaluateRedDice(dice);
-            case GREEN:
-                return evaluateGreenDice(dice);
-            case BLUE:
-                return evaluateBlueDice(dice);
-            case MAGENTA:
-                return evaluateMagentaDice(dice);
-            case YELLOW:
-                return evaluateYellowDice(dice);
-            case WHITE:
-                return evaluateWhiteDice(dice);
-            default:
-            return 3;  //idk just smth random  
-        }
-    }
-    public int evaluateRedDice(Dice dice){
-        //should check if this dice can end a column/row
-        return dice.getValue();
-    }
-    public int evaluateGreenDice(Dice dice){
-        // the green+white value
-        return dice.getValue();
-    }
-    public int evaluateBlueDice(Dice dice){
-        // check if the move is possible
-        return dice.getValue();
-    }
-    public int evaluateMagentaDice(Dice dice){
-        // the hashmap thing
-        return dice.getValue();
-    }
-    public int evaluateYellowDice(Dice dice){
-        return dice.getValue();
-    }
-    public int evaluateWhiteDice(Dice dice){
-        int highestScore=Math.max(evaluateRedDice(dice),Math.max(evaluateGreenDice(dice),Math.max(evaluateBlueDice(dice),
-        Math.max(evaluateMagentaDice(dice),evaluateYellowDice(dice)))));
-        return highestScore;
-    }
 }
 
 

@@ -23,7 +23,7 @@ public class Dragon extends Creature {
     private Integer tail;
     private Integer heart;
     private DragonNumber dragonNumber;
-    private Dragon[] Dragons;
+    private Dragon[] dragons;
     private int[] pointMap;
     private ArrayList<Move> allPossibleMoves;
     private ArrayList<TimeWarp> timeWarps;
@@ -34,16 +34,16 @@ public class Dragon extends Creature {
 
     //Constructor to be used in the CLIcontroller to initialize the Dragon array
     public Dragon() {
-        Dragons = new Dragon[4];
-        Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
-        Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
-        Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
-        Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
+        dragons = new Dragon[4];
+        dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
+        dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
+        dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
+        dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         elementalCrestCount = 0;
         initialization();
     }
 
-    //Constructor used inside the first one to initialize the actual Dragons themselves
+    //Constructor used inside the first one to initialize the actual dragons themselves
     public Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
@@ -131,17 +131,17 @@ public class Dragon extends Creature {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            if (!Objects.equals(Dragons[i].face, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
+            if (!Objects.equals(dragons[i].face, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].face, i), this));
             }
-            if (!Objects.equals(Dragons[i].wings, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
+            if (!Objects.equals(dragons[i].wings, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].wings, i), this));
             }
-            if (!Objects.equals(Dragons[i].tail, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
+            if (!Objects.equals(dragons[i].tail, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].tail, i), this));
             }
-            if (!Objects.equals(Dragons[i].heart, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
+            if (!Objects.equals(dragons[i].heart, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].heart, i), this));
             }
         }
     }
@@ -151,7 +151,7 @@ public class Dragon extends Creature {
     public int getScore() {
         int score = 0;
         for (int i = 0; i < 4; i++) {
-            score += Dragons[i].isDead() ? pointMap[i] : 0;
+            score += dragons[i].isDead() ? pointMap[i] : 0;
         }
         return score;
     }
@@ -205,7 +205,7 @@ public class Dragon extends Creature {
     public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
-        Dragon targetDragon = Dragons[dragonIndex];
+        Dragon targetDragon = dragons[dragonIndex];
         boolean valid = targetDragon.checkMove(dice);
         if (!valid)
             return false;
@@ -390,22 +390,22 @@ public class Dragon extends Creature {
         scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  F  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].face)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].face)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(0)).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].wings)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].wings)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(1)).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].tail)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].tail)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(2)).append("   |\n");
         scoreSheet.append("|  H  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].heart)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].heart)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(3)).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
@@ -423,27 +423,42 @@ public class Dragon extends Creature {
     }
 
     private String getFirstRowRewardString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X " : encode(rewards[0]);
+        return dragons[0].face == null && dragons[1].face == null && dragons[2].face == null ? "X " : encode(rewards[0]);
     }
 
     private String getSecondRowRewardString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X " : encode(rewards[1]);
+        return dragons[0].wings == null && dragons[1].wings == null && dragons[3].wings == null ? "X " : encode(rewards[1]);
     }
 
     private String getThirdRowRewardString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X " : encode(rewards[2]);
+        return dragons[0].tail == null && dragons[2].tail == null && dragons[3].tail == null ? "X " : encode(rewards[2]);
     }
 
     private String getFourthRowRewardString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X " : encode(rewards[3]);
+        return dragons[1].heart == null && dragons[2].heart == null && dragons[3].heart == null ? "X " : encode(rewards[3]);
     }
 
     private String getCornerRewardString() {
-        return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
+        return dragons[0].face == null && dragons[1].wings == null && dragons[2].tail == null && dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
     private String encode (String reward) {
         return reward.replaceAll("[^A-Z]", "");
+    }
+
+    public String getImage(int dragonIndex) {
+        StringBuilder string = new StringBuilder("/images/RedRealmImages/");
+        Dragon dragon = dragons[dragonIndex];
+    //new Image(getClass().getResourceAsStream("/images/Main Screen.png"))
+        if (Objects.equals(dragon.face, null))
+            string.append("face-");
+        if (Objects.equals(dragon.wings, null))
+            string.append("wings-");
+        if (Objects.equals(dragon.tail, null))
+            string.append("tail-");
+        if (Objects.equals(dragon.heart, null))
+            string.append("heart-");
+        return string.deleteCharAt(string.length() - 1).append(".png").toString();
     }
 }
