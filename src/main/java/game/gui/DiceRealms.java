@@ -49,6 +49,7 @@ public class DiceRealms extends Application {
         primaryStage.setScene(sceneController.mainMenuScene.createMainScene());
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         sceneController.redScene.createScene();
+        sceneController.initDragons(guiGameController.getDragonPaths());
         sceneController.greenScene.createScene();
         sceneController.blueScene.createScene();
         sceneController.magentaScene.createScene();
@@ -120,22 +121,7 @@ public class DiceRealms extends Application {
         sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
 
-        sceneController.getDragon1().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(1);
-            //handle dragon part
-        });
-        sceneController.getDragon2().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(2);
-            //handle dragon part
-        });
-        sceneController.getDragon3().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(3);
-            //handle dragon part
-        });
-        sceneController.getDragon4().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(4);
-            //handle dragon part
-        });
+        initDragonEventListeners();
         //To-Do
         /*
         sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
@@ -143,6 +129,29 @@ public class DiceRealms extends Application {
         sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
         sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
          */
+    }
+
+    public void initDragonEventListeners() {
+        sceneController.getDragon1().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(1);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon2().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(2);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon3().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(3);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon4().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(4);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
     }
 
     public void initDiceEventListeners() {
