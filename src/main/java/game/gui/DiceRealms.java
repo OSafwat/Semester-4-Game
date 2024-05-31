@@ -105,17 +105,13 @@ public class DiceRealms extends Application {
     }
 
     public void initEventListeners() {
-        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); 
+        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
-        sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
-        sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
-        sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
-        sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
-        sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
-        sceneController.getArcaneDice().setOnMouseClicked(e -> setupRealmScene("White"));
-        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
+        initDiceEventListeners();
+        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
         sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
@@ -149,7 +145,16 @@ public class DiceRealms extends Application {
          */
     }
 
-    public void handleMove(String color) {
+    public void initDiceEventListeners() {
+        sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
+        sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
+        sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
+        sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
+        sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
+        sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0));
+    }
+
+    public void handleMove(int num, int callLayer) {
         //change this later
         if (color.equals("Magenta")) {
             MagentaDice currDice = (MagentaDice) guiGameController.getGameBoard().getAllDice()[3];
