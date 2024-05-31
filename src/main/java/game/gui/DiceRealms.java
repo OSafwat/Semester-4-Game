@@ -112,7 +112,7 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         initDiceEventListeners();
-        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0));
+        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
         sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
@@ -123,12 +123,12 @@ public class DiceRealms extends Application {
 
         initDragonEventListeners();
         //To-Do
-        /*
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-         */
+
+        sceneController.getFace().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("face")));
+        sceneController.getWings().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("wings")));
+        sceneController.getTail().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("tail")));
+        sceneController.getHeart().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("heart")));
+
     }
 
     public void initDragonEventListeners() {
@@ -163,7 +163,7 @@ public class DiceRealms extends Application {
         sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0));
     }
 
-    public void handleMove(int num, int callLayer) {
+    public void handleMove(int num, int callLayer, int dragonPart) {
         //change this later
         RealmColor realmColor;
         Dice currDice;
