@@ -125,7 +125,7 @@ public class GameBoard {
         availableDice.remove(die);
         forgottenRealmDice.add(die);
     }
-    void resetAllDice(){
+    public void resetAllDice(){
         forgottenRealmDice.clear();
         availableDice.clear();
         player1.resetUsedArcaneDice();
