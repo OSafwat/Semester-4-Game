@@ -189,6 +189,6 @@ public class BoardScene{
         else 
             infoLabel.setText("The current round is: Forgotten Round"+"       The current Passive player is: "+playerName);
             
-            return boardScene;
+        return boardScene;
     }
 }
