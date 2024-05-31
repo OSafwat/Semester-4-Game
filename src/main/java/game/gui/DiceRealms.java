@@ -11,16 +11,18 @@ import game.engine.Move;
 import game.engine.Player;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
+import game.exceptions.NoAvailableMovesException;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
@@ -29,6 +31,7 @@ public class DiceRealms extends Application {
     GUIGameController guiGameController;
     SceneController sceneController;
     Stage primaryStage;
+    boolean isForgotten;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -54,6 +57,7 @@ public class DiceRealms extends Application {
         sceneController.yellowScene.createScene();
         initEventListeners();
         primaryStage.show();
+        isForgotten = false;
     }
 
     public String[] getDicePNGs(Dice[] dice) {
@@ -169,6 +173,15 @@ public class DiceRealms extends Application {
                 }
             }
         }
+    }
+
+    public void handleForgottenTurn() {
+        guiGameController.moveAllIntoForgotten();
+        //initiate forgotten realm turn
+        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getForgottenRealmDice()));
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+        isForgotten = true;
+        initDiceEventListeners();
     }
     public void illegalMoveAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.WARNING);
