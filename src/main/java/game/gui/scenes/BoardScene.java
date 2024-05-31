@@ -36,13 +36,14 @@ public class BoardScene{
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
     ImageView leftGrimoire;
     Label infoLabel;
+    AnchorPane anchorPane;
 
     public void makeboardScene(String[] dicePNGs) {
         infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
         infoLabel.getStyleClass().add("infoLabel");
 
         // Create the AnchorPane
-        AnchorPane anchorPane = new AnchorPane();
+        anchorPane = new AnchorPane();
         anchorPane.setPrefSize(1920,1080 );
 
         // Main game board image
@@ -145,7 +146,10 @@ public class BoardScene{
             tmp.setOnAction(event -> dialog.setResult(pathString.split("/")[4]));
             buttons.add(tmp);
         }
-     
+        Button close = new Button();
+        close.setText("Go back");
+        buttons.add(close);
+        close.setOnAction(event -> dialog.setResult("CLOSED"));
         // Create a container to hold the buttons
         FlowPane buttonBox = new FlowPane(10,10);   // if you want it horizontal instead of change it to an HBox
         for (Button dialogButton : buttons) {
@@ -190,5 +194,17 @@ public class BoardScene{
             infoLabel.setText("The current round is: Forgotten Round"+"       The current Passive player is: "+playerName);
             
         return boardScene;
+    }
+
+    public ImageView getRightGrimoire () {
+        return rightGrimoire;
+    }
+
+    public ImageView getLeftGrimoire () {
+        return leftGrimoire;
+    }
+
+    public void addToAnchorPane(StackPane stackPane) {
+        anchorPane.getChildren().add(stackPane);
     }
 }
