@@ -461,4 +461,24 @@ public class Dragon extends Creature {
             string.append("heart-");
         return string.deleteCharAt(string.length() - 1).append(".png").toString();
     }
+
+    public Integer getFace() {
+        return face;
+    }
+
+    public Integer getWings() {
+        return wings;
+    }
+
+    public Integer getTail() {
+        return tail;
+    }
+
+    public Integer getHeart() {
+        return heart;
+    }
+
+    public Dragon[] getDragons() {
+        return dragons;
+    }
 }
