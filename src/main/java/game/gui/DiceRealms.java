@@ -19,8 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -69,6 +67,28 @@ public class DiceRealms extends Application {
             dicePNGs[i] += " " + dice[i].getValue() + ".png";
         }
         return dicePNGs;
+    }
+
+    public void openLeftGrimoire() {
+        StackPane leftGrimoire = new StackPane();
+        leftGrimoire.setPrefSize(1500, 800);
+        leftGrimoire.setLayoutX(300);
+        leftGrimoire.setLayoutY(300);
+        Label scoreSheet = new Label();
+        scoreSheet.setText(guiGameController.getScoreSheet(guiGameController.getPlayer1()).toString());
+        Image image = new Image(getClass().getResourceAsStream("/images/grimoire.png"));
+        BackgroundSize backgroundSize = new BackgroundSize(1500, 800, true, true, false, true);
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                backgroundSize);
+        Background background = new Background(backgroundImage);
+        leftGrimoire.setBackground(background);
+        leftGrimoire.getChildren().add(scoreSheet);
+        sceneController.boardScene.addToAnchorPane(leftGrimoire);
+
     }
 
     public String getColorAsString(Dice dice) {
