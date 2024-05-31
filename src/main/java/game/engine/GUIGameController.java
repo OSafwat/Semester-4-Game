@@ -109,4 +109,30 @@ public class GUIGameController extends CLIGameController {
     public Exception getException() {
         return new Exception(exception);
     }
+
+    public void incrementTurnCount () {
+        if (currentTurn == -1) {
+            switchPlayer();
+            currentPlayer = getActivePlayer();
+            if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
+                incrementRoundCount();
+            else {
+                String[] rewards = getRewards(maxRounds);
+                handleRoundRewards(currentPlayer, rewards[currentRound-1]);
+            }
+            currentTurn = 1;
+            return;
+        }
+        currentTurn++;
+        if (currentTurn % (maxTurns+1) == 0) {
+            currentTurn = -1;
+            currentPlayer = getPassivePlayer();
+        }
+    }
+
+    public void incrementRoundCount() {
+        currentRound++;
+        if (currentRound % (maxRounds+1) == 0)
+            return;
+    }
 }
