@@ -19,6 +19,7 @@ public class GUIGameController extends CLIGameController {
     int currentRound;
     int currentTurn;
     Exception exception;
+    Player currentPlayer;
 
     public GUIGameController() {
         super();
@@ -26,6 +27,7 @@ public class GUIGameController extends CLIGameController {
         maxTurns = getSettings()[1];
         currentRound = 1;
         currentTurn = 1;
+        currentPlayer = getPlayer1();
     }
     @Override
     public void startGame() {}
@@ -81,6 +83,10 @@ public class GUIGameController extends CLIGameController {
 
     public Player getPlayer2() {
         return getGameBoard().getPlayer2();
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
     @Override
