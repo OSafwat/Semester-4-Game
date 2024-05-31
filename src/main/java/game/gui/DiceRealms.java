@@ -464,23 +464,7 @@ public class DiceRealms extends Application {
             case "blue": scene = sceneController.blueScene.getScene(); break;
             case "magenta": scene = sceneController.magentaScene.getScene(); break;
             case "yellow": scene = sceneController.yellowScene.getScene(); break;
-            case "white": 
-                        int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
-                        Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
-                        String [] tmp = getDicePNGs(dietmp);
-                        Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(tmp);
-                        String result =(String) whiteDialog.showAndWait().get();
-                        String [] resultAsArray= result.split(" ");
-                        switch (resultAsArray[0]){
-                            case "red":     scene = sceneController.redScene.getScene();break;
-                            case "green":   scene = sceneController.greenScene.getScene(); break;
-                            case "blue":    scene = sceneController.blueScene.getScene(); break;
-                            case "magenta": scene = sceneController.magentaScene.getScene(); break;
-                            case "yellow":  scene = sceneController.yellowScene.getScene(); break;
-                            default:        scene = null;
-                        }
-                        
-                        break;
+
 
             default: scene = null;
         }
