@@ -150,4 +150,24 @@ public class GUIGameController extends CLIGameController {
         if (currentRound % (maxRounds+1) == 0)
             return;
     }
+
+    public String[] getDragonPaths() {
+        Dragon dragon = (Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED);
+        Dragon[] dragons = dragon.getDragons();
+        //images/RedRealmImages/face.png
+        String[] paths = new String[4];
+        for (int i = 0; i < 4; i++) {
+            StringBuilder y = new StringBuilder("/images/RedRealmImages/");
+            if (Objects.equals(dragons[i].getFace(), null))
+                y.append("face-");
+            if (Objects.equals(dragons[i].getWings(), null))
+                y.append("wings-");
+            if (Objects.equals(dragons[i].getTail(), null))
+                y.append("tail-");
+            if (Objects.equals(dragons[i].getHeart(),null))
+                y.append("heart-");
+            paths[i] = y.substring(0,y.length()-1) + ".png";
+        }
+        return paths;
+    }
 }
