@@ -160,7 +160,7 @@ public class DiceRealms extends Application {
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
-        sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0));
+        sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0,0));
     }
 
     public void handleMove(int num, int callLayer, int dragonPart) {
@@ -214,6 +214,13 @@ public class DiceRealms extends Application {
             }
             realmColor = currDice.getRealm();
             creature = guiGameController.getCurrentPlayer().getScoreSheet().getCreatureByColor(realmColor);
+        }
+        if (currDice instanceof RedDice) {
+            if (currDice.getValue() != dragonPart) {
+                illegalMoveAlert();
+                primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+                return;
+            }
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
@@ -468,7 +475,7 @@ public class DiceRealms extends Application {
     public void setupRealmScene(String realmColor) {
         Scene scene;
         switch (realmColor.toLowerCase()) {
-            case "red": scene = sceneController.redScene.getScene();break;
+            case "red": sceneController.initDragons(guiGameController.getDragonPaths()); initDragonEventListeners(); scene = sceneController.redScene.getScene();break;
             case "green": scene = sceneController.greenScene.getScene(); break;
             case "blue": scene = sceneController.blueScene.getScene(); break;
             case "magenta": scene = sceneController.magentaScene.getScene(); break;
