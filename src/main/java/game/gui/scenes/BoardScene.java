@@ -1,18 +1,24 @@
 package game.gui.scenes;
 
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.Flow;
 
 import game.dice.Dice;
 import game.gui.scenes.RedScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -85,48 +91,6 @@ public class BoardScene{
             
         }
 
-        // // Red dice image
-        // redDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[0]))); 
-        // redDice.setFitHeight(150);
-        // redDice.setFitWidth(150);
-        // redDice.setLayoutX(408);
-        // redDice.setLayoutY(439);
-
-        // // Green dice image
-        // greenDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[1])));
-        // greenDice.setFitHeight(150);
-        // greenDice.setFitWidth(150);
-        // greenDice.setLayoutX(661);
-        // greenDice.setLayoutY(439);
-
-        // //Blue dice image
-        // blueDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[2]))); 
-        // blueDice.setFitHeight(150);
-        // blueDice.setFitWidth(150);
-        // blueDice.setLayoutX(884);
-        // blueDice.setLayoutY(439);
-
-        // // Magenta dice image
-        // magentaDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[3]))); 
-        // magentaDice.setFitHeight(150);
-        // magentaDice.setFitWidth(150);
-        // magentaDice.setLayoutX(1148);
-        // magentaDice.setLayoutY(439);
-
-        // // Yellow dice image
-        // yellowDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[4]))); 
-        // yellowDice.setFitHeight(150);
-        // yellowDice.setFitWidth(150);
-        // yellowDice.setLayoutX(1363);
-        // yellowDice.setLayoutY(439);
-
-        // // White dice image
-        // arcaneDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[5]))); 
-        // arcaneDice.setFitHeight(150);
-        // arcaneDice.setFitWidth(150);
-        // arcaneDice.setLayoutX(884);
-        // arcaneDice.setLayoutY(624);
-
         // Grimoire image (left)
          leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
         leftGrimoire.setFitHeight(200);
@@ -161,6 +125,37 @@ public class BoardScene{
         boardScene = scene;
     }
 
+    /*the following method takes a string array which represent the choosable dice correspondong to the white dice chosen by the useer in the board scene and 
+     * returns a dialog that will be shown by the dice realms class to be chosen from by  the user
+     */
+    public Dialog handleWhiteDice(String whiteDiceOptions[]){       
+        // Create the custom dialog
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Select an Option");
+
+        // Create buttons with images
+
+        ArrayList<Button> buttons = new ArrayList<>();
+        for (String  pathString : whiteDiceOptions) {
+            Button tmp = new Button();
+            ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(pathString)));
+            tempImage.setFitHeight(150);
+            tempImage.setFitWidth(150);
+            tmp.setGraphic(tempImage);
+            tmp.setOnAction(event -> dialog.setResult(pathString.split("/")[4]));
+            buttons.add(tmp);
+        }
+     
+        // Create a container to hold the buttons
+        FlowPane buttonBox = new FlowPane(10,10);   // if you want it horizontal instead of change it to an HBox
+        for (Button dialogButton : buttons) {
+            buttonBox.getChildren().add(dialogButton);
+        }
+        // Set the dialog content
+        dialog.getDialogPane().setContent(buttonBox);
+        
+        return dialog;
+    } 
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
         thisIsAnAlert.setTitle("ScoreSheet");
