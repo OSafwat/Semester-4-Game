@@ -30,6 +30,7 @@ import javafx.geometry.Pos;
 public class RedScene extends RealmScene {
 
     private ImageView dragon1, dragon2, dragon3, dragon4;
+    private ImageView dragonFace, dragonWings, dragonTail, dragonHeart;
     Player currentPlayer = new Player(PlayerStatus.ACTIVE);
     private boolean isPopupOpen = false;
     private AnchorPane dragonPartSelectionMenu;
@@ -47,7 +48,6 @@ public class RedScene extends RealmScene {
         root.getChildren().add(backgroundView);
         root.setPadding(javafx.geometry.Insets.EMPTY);
 
-        initializeDragons();
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
         initDragonPartSelectionMenu();
@@ -55,67 +55,20 @@ public class RedScene extends RealmScene {
         super.createScene();
     }
 
-    private void initializeDragons() {
-        Dragon dragon = (Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED);
-        dragon1 = createDragon(dragon.getImage(0), 197, 484);
-        dragon2 = createDragon(dragon.getImage(1), 697, 221);
-        dragon3 = createDragon(dragon.getImage(2), 1149, 493);
-        dragon4 = createDragon(dragon.getImage(3), 668, 619);
+    public void initializeDragons(String[] paths) {
+        dragon1 = createDragon(paths[0], 197, 484);
+        dragon2 = createDragon(paths[1], 697, 221);
+        dragon3 = createDragon(paths[2], 1149, 493);
+        dragon4 = createDragon(paths[3], 668, 619);
 
-        dragon1.setOnMouseClicked(event -> showCustomPopup("You clicked on Dragon 1. Please select the body part you would like to attack."));
-        dragon2.setOnMouseClicked(event -> showCustomPopup("You clicked on Dragon 2. Please select the body part you would like to attack."));
-        dragon3.setOnMouseClicked(event -> showCustomPopup("You clicked on Dragon 3. Please select the body part you would like to attack."));
-        dragon4.setOnMouseClicked(event -> showCustomPopup("You clicked on Dragon 4. Please select the body part you would like to attack."));
+        dragon1.setOnMouseClicked(event -> showDragonPartSelectionMenu());
+        dragon2.setOnMouseClicked(event -> showDragonPartSelectionMenu());
+        dragon3.setOnMouseClicked(event -> showDragonPartSelectionMenu());
+        dragon4.setOnMouseClicked(event -> showDragonPartSelectionMenu());
 
         root.getChildren().addAll(dragon1, dragon2, dragon3, dragon4);
     }
 
-    private void showCustomPopup(String message) {
-        if (isPopupOpen) {
-            return;
-        }
-
-        isPopupOpen = true;
-
-        StackPane popupPane = new StackPane();
-        popupPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8); -fx-background-radius: 10; -fx-padding: 20;");
-        popupPane.setMaxWidth(1280);
-        popupPane.setMaxHeight(720);
-        popupPane.setAlignment(Pos.CENTER);
-
-        Label messageLabel = new Label(message);
-        messageLabel.setTextFill(Color.WHITE);
-        messageLabel.setFont(new Font("Arial", 24));
-        messageLabel.setAlignment(Pos.TOP_CENTER);
-
-        Button closeDragonPartSelectionMenuButton = new Button("Close");
-        closeDragonPartSelectionMenuButton.setOnAction(event -> {
-            root.getChildren().remove(popupPane);
-            isPopupOpen = false;
-        });
-
-        VBox vbox = new VBox(700); // Spacing between elements
-        vbox.setPrefHeight(720);
-        vbox.setPrefWidth(1280);
-        vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.getChildren().addAll(messageLabel, closeDragonPartSelectionMenuButton);
-
-        popupPane.getChildren().add(vbox);
-
-        root.getChildren().add(popupPane);
-
-        popupPane.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
-            AnchorPane.setTopAnchor(popupPane, (root.getHeight() - newBounds.getHeight()) / 2);
-            AnchorPane.setLeftAnchor(popupPane, (root.getWidth() - newBounds.getWidth()) / 2);
-        });
-
-        root.widthProperty().addListener((obs, oldVal, newVal) ->
-                AnchorPane.setLeftAnchor(popupPane, (root.getWidth() - popupPane.getPrefWidth()) / 2)
-        );
-        root.heightProperty().addListener((obs, oldVal, newVal) ->
-                AnchorPane.setTopAnchor(popupPane, (root.getHeight() - popupPane.getPrefHeight()) / 2)
-        );
-    }
     private ImageView createDragon(String imagePath, double x, double y) {
         Image image = new Image(getClass().getResourceAsStream(imagePath));
         ImageView imageView = new ImageView(image);
@@ -200,10 +153,10 @@ public class RedScene extends RealmScene {
         // Set the background to transparent
         hbox.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
 
-        ImageView dragonFace = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/face body part.png")));
-        ImageView dragonHeart = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/heart body part.png")));
-        ImageView dragonWings = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/wings body part.png")));
-        ImageView dragonTail = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/tail body part.png")));
+        dragonFace = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/face body part.png")));
+        dragonHeart = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/heart body part.png")));
+        dragonWings = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/wings body part.png")));
+        dragonTail = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/tail body part.png")));
 
         hbox.getChildren().addAll(dragonFace, dragonHeart, dragonWings, dragonTail);
         vbox.getChildren().addAll(titleLabel, hbox);
@@ -229,9 +182,7 @@ public class RedScene extends RealmScene {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
-
         closeDragonPartSelectionMenuButton.setOnAction(event -> dialogStage.close());
-
         Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
 
         dialogStage.setScene(dialogScene);
@@ -252,5 +203,16 @@ public class RedScene extends RealmScene {
 
     public ImageView getDragon4() {
         return dragon4;
+    }
+
+    public ImageView getDragonFace() {return dragonFace;}
+    public ImageView getDragonWings() {
+        return dragonWings;
+    }
+    public ImageView getDragonTail() {
+        return dragonTail;
+    }
+    public ImageView getDragonHeart() {
+        return dragonHeart;
     }
 }
