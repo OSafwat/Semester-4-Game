@@ -21,10 +21,13 @@ public class MagentaScene extends RealmScene {
         root.getChildren().add(backgroundView);
         root.getChildren().add(phoenix);
         root.setPadding(javafx.geometry.Insets.EMPTY);
+        super.createGoBackButton();
+        root.getChildren().add(getGoBackButton());
         super.createScene();
     }
 
     public ImageView getPhoenix() {
         return phoenix;
     }
+
 }

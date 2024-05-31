@@ -16,6 +16,9 @@ public class BlueScene extends RealmScene {
         backgroundView.setPreserveRatio(false);
         root.getChildren().add(backgroundView);
         root.setPadding(javafx.geometry.Insets.EMPTY);
+        super.createGoBackButton();
+        root.getChildren().add(getGoBackButton());
         super.createScene();
     }
+
 }
