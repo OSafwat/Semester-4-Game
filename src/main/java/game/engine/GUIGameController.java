@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.creatures.Dragon;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
@@ -104,6 +105,20 @@ public class GUIGameController extends CLIGameController {
 
     public void setSelectedDragon(int dragon) {
         ((RedDice)getAllDice()[0]).selectsDragon(dragon);
+    }
+
+    public int getValue(String part) {
+        int dragonValue = ((RedDice)getAllDice()[0]).getDragonNumber();
+        Dragon dragon = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
+        int result = -1;
+        switch (part) {
+            case "face": result = Objects.equals(dragon.getFace(), null) ? -1 : dragon.getFace(); break;
+            case "wings": result = Objects.equals(dragon.getWings(), null) ? -1 : dragon.getWings(); break;
+            case "tail": result = Objects.equals(dragon.getTail(), null) ? -1 : dragon.getTail(); break;
+            case "heart": result = Objects.equals(dragon.getHeart(), null) ? -1 : dragon.getHeart(); break;
+            default: ;
+        }
+        return result;
     }
 
     public Exception getException() {
