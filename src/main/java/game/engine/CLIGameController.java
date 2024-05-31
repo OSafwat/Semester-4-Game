@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class CLIGameController {
-    GameBoard gameBoard;
+    public GameBoard gameBoard;
     Scanner scanner;
     static final String[] magicNames = {
         "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
