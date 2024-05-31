@@ -421,7 +421,7 @@ public class DiceRealms extends Application {
             case "hotdawg":
             case "tamer":
             case "kirat":
-                playerName = guiGameController.changeToRainbowText("Xx" + playerName + "xX");
+                playerName = playerName;
                 break;
 
             case "ace":
@@ -435,20 +435,20 @@ public class DiceRealms extends Application {
             case "akiraminai":
             case "badawayyy":
             case "zeus":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = (playerName);
                 break;
 
             case "sharazad":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
                 break;
 
             case "giu":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
                 break;
             case "guc":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
             case "meow":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
 
             default:
                 break;
