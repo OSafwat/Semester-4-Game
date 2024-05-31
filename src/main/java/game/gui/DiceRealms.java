@@ -157,12 +157,22 @@ public class DiceRealms extends Application {
                 }
                 else {
                     //put in a popup that tells the user that he has done an illegal move
+                    illegalMoveAlert(); 
                     //logic here
                     //and go back to the dice board
                     primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
                 }
             }
         }
+    }
+    public void illegalMoveAlert(){
+        Alert thisIsAnAlert = new Alert(AlertType.WARNING);
+        thisIsAnAlert.setTitle("Alert");
+        Label contentLabel = new Label("You have made an Illegal Move");
+        contentLabel.setStyle("-fx-font-size: 30px;");
+        // Set the Label as the content of the alert
+        thisIsAnAlert.getDialogPane().setContent(contentLabel);
+        thisIsAnAlert.showAndWait();
     }
 
     public void handleEssenceBonus() {
