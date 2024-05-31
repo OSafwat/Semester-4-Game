@@ -118,4 +118,23 @@ public class SceneController {
     public ImageView getYellowRealmGoBackButton() {
         return yellowScene.getGoBackButton();
     }
+
+    public void initDragons(String[] paths) {
+        redScene.initializeDragons(paths);
+    }
+
+    public ImageView getFace() {
+        return redScene.getDragonFace();
+    }
+    public ImageView getWings() {
+        return redScene.getDragonWings();
+    }
+
+    public ImageView getTail() {
+        return redScene.getDragonTail();
+    }
+
+    public ImageView getHeart() {
+        return redScene.getDragonHeart();
+    }
 }
