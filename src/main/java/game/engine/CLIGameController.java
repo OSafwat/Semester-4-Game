@@ -379,7 +379,7 @@ public class CLIGameController {
             switchPlayer();
             System.out.println();
             System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
+            playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
             gameBoard.resetAllDice();
             switchPlayer();
         }
@@ -439,7 +439,8 @@ public class CLIGameController {
 
     public void playRound(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
         gameBoard.resetGreenPostColorBonus();
-        handleRoundRewards(activePlayer, reward);
+        if (!reward.equals("skip"))
+            handleRoundRewards(activePlayer, reward);
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
@@ -449,24 +450,31 @@ public class CLIGameController {
         }
         moveAllIntoForgotten();
         playForgottenTurn(passivePlayer);
-        boolean usedArcaneBoost;
-        try {
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
-        } catch (ExhaustedResourceException e) {
-            e.displayMessage();
-            usedArcaneBoost = false;
+        boolean usedArcaneBoost = true;
+        if (reward.equals("ArcaneBoost"))
+            handleRoundRewards(passivePlayer, reward);
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(activePlayer);
+            }
         }
-        if (usedArcaneBoost) {
-            handleArcaneBoostCall(activePlayer);
-        }
-        try {
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
-        } catch (ExhaustedResourceException e) {
-            e.displayMessage();
-            usedArcaneBoost = false;
-        }
-        if (usedArcaneBoost) {
-            handleArcaneBoostCall(passivePlayer);
+        usedArcaneBoost = true;
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(passivePlayer);
+            }
         }
     }
 
@@ -792,7 +800,8 @@ public class CLIGameController {
             throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
-                System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
+                System.out.println("Hey, " + player.getName() + "!");
+                System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?" );
                 System.out.println("You have a total of " + arcaneBoostCount + " Arcane Boost(s).");
                 Dice[] arcaneBoostDice = getArcaneBoostDice(player);
                 handleDiceDisplay(arcaneBoostDice, 4);
