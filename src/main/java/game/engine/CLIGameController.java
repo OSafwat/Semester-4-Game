@@ -548,7 +548,7 @@ public class CLIGameController {
                 switchPlayer();
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-                playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
+                playRound(getActivePlayer(), getPassivePlayer(),rewards[round] , numebrOfTurnsPerRound);
                 gameBoard.resetAllDice();
                 switchPlayer();
             }
@@ -622,8 +622,6 @@ public class CLIGameController {
         moveAllIntoForgotten();
         playForgottenTurn(passivePlayer);
         boolean usedArcaneBoost = true;
-        if (reward.equals("ArcaneBoost"))
-            handleRoundRewards(passivePlayer, reward);
         while (usedArcaneBoost) {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
