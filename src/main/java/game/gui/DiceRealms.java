@@ -345,7 +345,28 @@ public class DiceRealms extends Application {
                         dialog.getDialogPane().setContent(tmp);
                         dialog.showAndWait();
                         System.out.println("Meow1!");
+                        int oldRoundCount = guiGameController.getCurrentRound();
                         guiGameController.incrementTurnCount();
+                        int newRoundCount = guiGameController.getCurrentRound();
+                        if (newRoundCount == guiGameController.getMaxRounds() + 1) {
+                            //end the game
+                        }
+                        else if (newRoundCount != oldRoundCount) {
+                            String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
+                            String currentReward = rewards[newRoundCount-1];
+                            if (currentReward.toLowerCase().contains("bonus")) {
+                                if (currentReward.toLowerCase().contains("red"))
+                                    handleBonus(RealmColor.RED);
+                                else if (currentReward.toLowerCase().contains("green"))
+                                    handleBonus(RealmColor.GREEN);
+                                else if (currentReward.toLowerCase().contains("blue"))
+                                    handleBonus(RealmColor.BLUE);
+                                else if (currentReward.toLowerCase().contains("magenta"))
+                                    handleBonus(RealmColor.MAGENTA);
+                                else if (currentReward.toLowerCase().contains("yellow"))
+                                    handleBonus(RealmColor.YELLOW);
+                            }
+                        }
                         continue;
                     }
                     break;
