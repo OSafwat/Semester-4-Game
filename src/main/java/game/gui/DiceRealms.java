@@ -447,17 +447,36 @@ public class DiceRealms extends Application {
 
     }
 
-        // Show the dialog and capture the input
-        Optional<String> result = textInputDialog.showAndWait();
-        String realm = "";
-
-        while (realm.isEmpty() || !checkRealmValidity(realm)) {
-            try {
-                realm = result.get();
-            } catch (NoSuchElementException e) {}
+    public ArrayList<Button> bonusDialogFill(RealmColor realmColor, Dialog<String> bonusDialog) {
+        //fix green later
+        String color;
+        switch (realmColor) {
+            case RED: color = "Red"; break;
+            case GREEN: color = "Green"; break;
+            case BLUE: color = "Blue"; break;
+            case MAGENTA: color = "Magenta"; break;
+            case YELLOW: color = "Yellow";break;
+            default: return null;
         }
+        if (!realmColor.equals(RealmColor.GREEN)) {
+            ArrayList<Button> buttons = new ArrayList<>();
+            //   Color/color dice value.png
+            String path = "/images/Dice/";
+            for (int i = 1; i <= 6; i++) {
+                Button tmp = new Button();
+                ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(path + color + "/" + color.toLowerCase() + " dice " + i + ".png")));
 
-        setupRealmScene(realm);
+                tempImage.setFitHeight(150);
+                tempImage.setFitWidth(150);
+                tmp.setGraphic(tempImage);
+                String value = " " + i;
+                tmp.setOnAction(event -> bonusDialog.setResult(color + value));
+                buttons.add(tmp);
+            }
+            return buttons;
+
+        }
+        return null;
     }
 
     public boolean checkRealmValidity(String realm) {
