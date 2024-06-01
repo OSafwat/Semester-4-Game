@@ -9,13 +9,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class GreenScene extends RealmScene {
-    ImageView gaurdian;
+    ImageView gaurdian, backgroundView;
 
     @Override
     public void createScene() {
         root = new AnchorPane();
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's_Heartland_11.png")));
+        backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's_Heartland_11.png")));
         gaurdian = new ImageView(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/GaiaGuardian.png")));
         gaurdian.setLayoutX(727);
         gaurdian.setLayoutY(457);
@@ -45,6 +45,10 @@ public class GreenScene extends RealmScene {
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
         super.createScene();
+    }
+
+    public void changeGreenSceneBackgroundView(String path) {
+        backgroundView.setImage(new Image(path));
     }
 
     public ImageView getGuardian() {
