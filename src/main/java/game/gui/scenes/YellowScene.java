@@ -45,4 +45,7 @@ public class YellowScene extends RealmScene {
         super.createScene();
     }
 
+    public ImageView getLion() {
+        return lion;
+    }
 }
