@@ -256,7 +256,10 @@ public class DiceRealms extends Application {
             if (currDice.getValue() != dragonPart) {
                 illegalMoveAlert();
                 primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
-                return;
+                if (bonusValue != -1) {
+                    handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
+                }
+                return false;
             }
         }
         Player player = guiGameController.getCurrentPlayer();
