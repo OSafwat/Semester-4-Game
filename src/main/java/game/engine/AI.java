@@ -1,5 +1,11 @@
 package game.engine;
 
+import java.util.ArrayList;
+
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
+import game.dice.Dice;
+
 /*IDEAS:-
  *  - EVALUATION:-
  *      - make calculated guesses for all the parameters then fuck around with them to optimize them
@@ -58,6 +64,27 @@ package game.engine;
  * 
  */
 
-public class AI {
+public class AI extends Player implements Cloneable {
+    
+    private PlayerStatus playerStatus;
+    private GameScore gameScore;
+    private ScoreSheet scoreSheet;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private ArrayList<TimeWarp> timeWarps;
+    private Move[] allPossibleMoves;
+    private ArrayList<Dice> playedDice;
+    private ArrayList<Dice> usedArcaneDice;
+
+    public AI(PlayerStatus status){
+        super(status);
+        this.scoreSheet= new ScoreSheet();
+        this.playerStatus= status;
+        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
+        this.timeWarps=scoreSheet.getAllTimeWarps();
+        this.usedArcaneDice = new ArrayList<>();
+        allPossibleMoves = getAllPossibleMoves();
+        gameScore = new GameScore();
+        playedDice = new ArrayList<>();
+    }
     
 }

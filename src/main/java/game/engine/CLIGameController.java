@@ -169,9 +169,10 @@ public class CLIGameController {
     }
 
     public void startGame(){
-        System.out.println("enter 1 if you wanna play against the humand and 2 if you wanna play against the computer");
+        System.out.println("enter 1 if you wanna play against the human and 2 if you wanna play against the computer");
         String modeChoice = scanner.nextLine();
-        while(!modeChoice.equals("1") && !choice.equals("2")) {
+        //TODO CHECK FOR THE VALIDITY OF THE INPUT
+        while(!modeChoice.equals("1") && !modeChoice.equals("2")) {
             System.out.println("Invalid input. Please try again.");
             modeChoice = scanner.nextLine();
         }
@@ -358,7 +359,7 @@ public class CLIGameController {
             getPassivePlayer().setName(player2Name);
 
             int [] temp = getSettings();
-            int numberOfRounds= temp[0];
+            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
             int numebrOfTurnsPerRound=temp[1];
 
 
@@ -428,7 +429,164 @@ public class CLIGameController {
         }
 
         else{//ai shit
+            System.out.println("please input the name of player 1:");
+            String player1Name = scanner.nextLine();
+            if (player1Name.trim().isEmpty()) {
+                Random random = new Random();
 
+                // Get a random index between 0 and the length of the array
+                int randomIndex = random.nextInt(magicNames.length);
+
+                // Get the random name from the array
+                String randomName = magicNames[randomIndex];
+
+                player1Name = randomName;
+            }
+
+            switch(player1Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player1Name = changeToRainbowText(player1Name);
+                    break;
+                
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player1Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                    player1Name = changeToRainbowText("Xx" + player1Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
+
+                case "sharazad":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getActivePlayer().setName(player1Name);
+
+            int [] temp = getSettings();
+            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numebrOfTurnsPerRound=temp[1];
+
+
+            System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
+            do {
+                String choice = scanner.nextLine();
+                if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
+                    System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                    break;
+                } else if (!choice.isEmpty() && choice.charAt(0)=='c')
+                    break;
+                else
+                    System.out.println("Please choose sth correct\n");
+            } while (true);
+
+            //the following is taking in the round rewards from the properties file
+            String rewards [] = getRewards(numberOfRounds);
+
+             //the following is trying to start the game loop: and needs to be changed
+             // the scoresheet for the ai should be displayed once after the end of each round for better transparency and strategy for the human player
+             for (int round = 0; round < numberOfRounds; round++) {
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                gameBoard.resetAllDice();
+                switchPlayer();
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayer();
+            }
+            Player player1= gameBoard.getPlayer1();
+            Player player2= gameBoard.getPlayer2();
+            System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
+            player1.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player1.getGameScore().toString() + "\n");
+            int player1Score= player1.getGameScore().getTotalScore();
+
+            System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
+            player2.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player2.getGameScore().toString() + "\n");
+            int player2Score= player2.getGameScore().getTotalScore();
+
+            if (player1Score == player2Score)
+            {
+                int[] player1Scores = player1.getGameScore().getAllScores();
+                int[] player2Scores = player2.getGameScore().getAllScores();
+                for (int i = 0; i < player2Scores.length; i++) {
+                    if (player1Scores[i] > player2Scores[i]) {
+                        player1Score = 100;
+                        player2Score = 0;
+                    }
+                    else if (player1Scores[i] < player2Scores[i]) {
+                        player1Score = 0;
+                        player2Score = 100;
+                    }
+                }
+            }
+            if (player1Score > player2Score)
+                System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
+            else if (player1Score < player2Score)
+                System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+            else {
+                System.out.println("It is a draw!");
+            }
+            scanner.close();
 
         }
     }
@@ -1297,6 +1455,225 @@ public class CLIGameController {
             colorIndex = (colorIndex + 1) % COLORS.length;
         }
         return output;
+    }
+
+    public static void main (String[] args) {
+        CLIGameController cli = new CLIGameController();        
+        // Create instances of Player and GameBoard
+        Player player = new Player(PlayerStatus.ACTIVE);
+        GameBoard board = new GameBoard();
+        // Call findBestMove
+        Move bestMove = cli.findBestMove(player, board, 2); // replace with the depth you want
+        // Print the best move
+        System.out.println(bestMove+" FLAG HI");
+    }
+
+
+    //AI PART
+
+    // RULE-BASED
+    // TODO special conditions for the last turn
+
+    public Dice findSecondLowest(Player player){
+
+        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone again
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        
+        int min=Integer.MAX_VALUE;
+        for(Dice dice: diceSet){
+            if(dice.getValue()<min){
+                    min=dice.getValue();
+            }
+        }
+        boolean flag=false;
+        boolean flagPriority=false;
+        for(Dice dice: diceSet){
+            if(dice.getValue()==min && flag==false){
+                flag=true;
+            }
+            // the following block just checks if theres a dice with the same value in a different realm and if so decides which one to pick based on
+            // their respective priorities. if there is no such dice it just returns the first dice with the 2nd lowest value
+            else if(dice.getValue()>=min && flag==true){
+                int x=dice.getValue();
+
+                for(Dice die: diceSet){
+                    if(die.getValue()==x&&die.getRealm()!=dice.getRealm()){
+                        flagPriority=true;
+                    }
+                }
+                if(flagPriority==false){
+                    return dice;
+                }
+                else{
+                    //TODO PRIORITY HERE
+                }
+
+            }
+        }
+    }
+    
+    public Dice findHighestPriority(Dice[] diceSet){
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //MAXMAX STUFF
+    public Move findBestMove(Player player,GameBoard board, int depth) {
+        int bestValue = Integer.MIN_VALUE;
+        Move bestMove = null;
+        
+        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone again
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        Move[] moveSet;
+
+        try {
+            moveSet = getAllPossibleMovesForDiceSet(pclone, diceSet);
+        } catch (NoAvailableMovesException e) {
+            System.out.println("you cant make any moves my guy");
+            return null;
+        }
+
+        Collections.shuffle(Arrays.asList(moveSet));
+        for (Move move : moveSet) {
+            Player playerBeforeMove = player.clone();
+            GameBoard boardBeforeMove = board.clone();
+
+            makeMove(player, move);     //check the invalidmove shit
+            int boardValue = maxmax(player,board, depth - 1);
+
+            player = playerBeforeMove;
+            board = boardBeforeMove;
+
+            if (boardValue >= bestValue) {
+                bestValue = boardValue;
+                bestMove = move;
+            }
+
+        }
+        return bestMove;
+    }
+
+    public int maxmax(Player player, GameBoard board, int depth) {
+        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        Move[] moveSet;
+
+        try {
+            moveSet = getAllPossibleMovesForDiceSet(pclone, diceSet);
+        } catch (NoAvailableMovesException e) {
+            return evaluate(player, board);
+        }
+
+        if (depth <= 0 || moveSet==null) {
+            return evaluate(player,board);
+        }
+        int maxEval = Integer.MIN_VALUE;
+        int eval=0;
+        
+        Collections.shuffle(Arrays.asList(moveSet));
+        for (Move move : moveSet) {    //dfs sum
+            Player playerBeforeMove = player.clone();
+            GameBoard boardBeforeMove = board.clone();
+
+            makeMove(player,move);                  //should momentarily keep track of the player total score and also the board
+            //makemove needs to be like simulatemove instead
+            eval += maxmax(player,board, depth - 1);    //+=?
+            // restore the state
+            player = playerBeforeMove;
+            board = boardBeforeMove;
+
+            if(eval>=maxEval){
+                maxEval=eval;
+            }
+        }
+            return maxEval;
+    }
+
+    public int evaluate(Player player,GameBoard board){
+        int score =0;
+        score=player.getGameScore().getTotalScore();
+
+        Dice[] dice=board.getForgottenRealmDice();
+        int forgottenRealmScore=evaluateDiceScore(dice);
+        score-=forgottenRealmScore;
+
+        int arcaneBoostCount = 0;
+        for (ArcaneBoost arcaneBoost: player.getArcaneBoosts()) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
+                arcaneBoostCount++;
+        }
+        score+=arcaneBoostCount*10;
+
+        int timeWarpCount = 0;
+        for(TimeWarp timeWarp: player.getTimeWarps()){
+            if(timeWarp.getStatus() == RewardStates.ACQUIRED)
+                timeWarpCount++;
+        }
+        score+=timeWarpCount*5;
+
+        return score;
+    }
+    public int evaluateDiceScore(Dice[] dice){
+        int score=0;
+        for(Dice die: dice){
+           score+=evaluateDice(die);
+        }
+        return score;
+    }
+    public int evaluateDice(Dice dice){
+        if(dice==null) return 0;
+        switch (dice.getRealm()) {
+            case RED:
+                return evaluateRedDice(dice);
+            case GREEN:
+                return evaluateGreenDice(dice);
+            case BLUE:
+                return evaluateBlueDice(dice);
+            case MAGENTA:
+                return evaluateMagentaDice(dice);
+            case YELLOW:
+                return evaluateYellowDice(dice);
+            case WHITE:
+                return evaluateWhiteDice(dice);
+            default:
+            return 0;  //idk just smth random  
+        }
+    }
+    public int evaluateRedDice(Dice dice){
+        //should check if this dice can end a column/row
+        return dice.getValue();
+    }
+    public int evaluateGreenDice(Dice dice){
+        // the green+white value
+        return dice.getValue();
+    }
+    public int evaluateBlueDice(Dice dice){
+        // check if the move is possible
+        return dice.getValue();
+    }
+    public int evaluateMagentaDice(Dice dice){
+        // the hashmap thing
+        return dice.getValue();
+    }
+    public int evaluateYellowDice(Dice dice){
+        return dice.getValue();
+    }
+    public int evaluateWhiteDice(Dice dice){
+        int highestScore=Math.max(evaluateRedDice(dice),Math.max(evaluateGreenDice(dice),Math.max(evaluateBlueDice(dice),
+        Math.max(evaluateMagentaDice(dice),evaluateYellowDice(dice)))));
+        return highestScore;
     }
 
 }
