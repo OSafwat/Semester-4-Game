@@ -16,12 +16,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
@@ -31,6 +31,11 @@ public class DiceRealms extends Application {
     SceneController sceneController;
     Stage primaryStage;
     boolean isForgotten;
+    int arcaneValue;
+    RealmColor bonusRealmColor;
+    int wasEssenceBonus;
+    int bonusValue;
+    volatile boolean awaitingInput;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -47,6 +52,11 @@ public class DiceRealms extends Application {
 
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
+        wasEssenceBonus = 0;
+        bonusRealmColor = RealmColor.PARENT;
+        awaitingInput = false;
+        bonusValue = -1;
+        arcaneValue = -1;
         primaryStage.setScene(sceneController.mainMenuScene.createMainScene());
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         sceneController.redScene.createScene();
@@ -233,6 +243,8 @@ public class DiceRealms extends Application {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
             Exception exception = guiGameController.getException();
+            arcaneValue = -1;
+            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
             if (exception instanceof BonusException) {
                 switch (((BonusException)exception).getRealmColor1()) {
                     case RED: setupRealmScene("Red"); break;
@@ -262,11 +274,27 @@ public class DiceRealms extends Application {
                 //logic here
                 //and go back to the dice board
                 primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
-                return;
+                if (bonusValue != -1) {
+                    handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
+                }
+                return false;
             }
         }
+        if (bonusValue != -1) {
+            bonusValue = -1;
+            wasEssenceBonus = 0;
+            bonusRealmColor = RealmColor.PARENT;
+            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+            System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
+            return true;
+        }
         if (callLayer == 0) {
-            guiGameController.selectDice(num == 6 ? guiGameController.getAllDice()[5] : currDice, guiGameController.getCurrentPlayer());
+            if (arcaneValue != -1){
+                arcaneValue = -1;
+                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
+            }
+            else
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
             guiGameController.incrementTurnCount();
             if (guiGameController.getCurrentTurn() == -1) {
                 handleForgottenTurn();
