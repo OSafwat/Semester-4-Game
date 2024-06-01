@@ -1124,7 +1124,6 @@ public class CLIGameController {
         }
         gameBoard.resetGreenPostColorBonus();
         Move[] playerAllMoves= player.getAllPossibleMoves();
-        //System.out.println(playerAllMoves.length);
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
@@ -1165,7 +1164,6 @@ public class CLIGameController {
     }
 
 
-    // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
         try {
             Dice diceToBeMovedWith= move.getDice();
@@ -1463,9 +1461,9 @@ public class CLIGameController {
         Player player = new Player(PlayerStatus.ACTIVE);
         GameBoard board = new GameBoard();
         // Call findBestMove
-        Move bestMove = cli.findBestMove(player, board, 2); // replace with the depth you want
+        Move bestMove = cli.findBestMove(player, board, 10); // replace with the depth you want
         // Print the best move
-        System.out.println(bestMove+" FLAG HI");
+        System.out.println(bestMove);
     }
 
 
@@ -1474,7 +1472,7 @@ public class CLIGameController {
     // RULE-BASED
     // TODO special conditions for the last turn
 
-    public Dice findSecondLowest(Player player){
+    /*public Dice findSecondLowest(Player player){
 
         Player pclone=player.clone();       //uhh idk tbh just trying to make a clone again
         Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
@@ -1510,11 +1508,11 @@ public class CLIGameController {
 
             }
         }
-    }
+    }*/
     
-    public Dice findHighestPriority(Dice[] diceSet){
+    /*public Dice findHighestPriority(Dice[] diceSet){
 
-    }
+    }*/
 
 
 
@@ -1534,7 +1532,8 @@ public class CLIGameController {
         int bestValue = Integer.MIN_VALUE;
         Move bestMove = null;
         
-        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone again
+        Player pclone=player.clone();
+
         Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         Move[] moveSet;
 
@@ -1549,24 +1548,34 @@ public class CLIGameController {
         for (Move move : moveSet) {
             Player playerBeforeMove = player.clone();
             GameBoard boardBeforeMove = board.clone();
+            try {
+                //red got an error so i added the first condition
+                if(move.getDice().getRealm()!=RealmColor.RED&&move.getCreature().checkMove(move.getDice())){
+                    makeMoveAI(player, move);     //check the invalidmove shit
+                    int boardValue = maxmax(player,board, depth - 1);
 
-            makeMove(player, move);     //check the invalidmove shit
-            int boardValue = maxmax(player,board, depth - 1);
+                    player = playerBeforeMove;
+                    board = boardBeforeMove;
 
-            player = playerBeforeMove;
-            board = boardBeforeMove;
+                    if (boardValue >= bestValue) {
+                    bestValue = boardValue;
+                    bestMove = move;
 
-            if (boardValue >= bestValue) {
-                bestValue = boardValue;
-                bestMove = move;
-            }
+                    }
+                }
+            } 
+            catch (InvalidMoveException e) {
+                System.out.println("error in the findbestmove method");
+                e.printStackTrace();
+            } 
 
         }
         return bestMove;
     }
 
     public int maxmax(Player player, GameBoard board, int depth) {
-        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone
+        Player pclone=player.clone();
+
         Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
         Move[] moveSet;
 
@@ -1586,16 +1595,21 @@ public class CLIGameController {
         for (Move move : moveSet) {    //dfs sum
             Player playerBeforeMove = player.clone();
             GameBoard boardBeforeMove = board.clone();
+            try {
+                if(move.getDice().getRealm()!=RealmColor.RED &&move.getCreature().checkMove(move.getDice())){
+                    makeMoveAI(player,move);                  //should momentarily keep track of the player total score and also the board
+                    eval += maxmax(player,board, depth - 1);    //+=?
+                    // restore the state
+                    player = playerBeforeMove;
+                    board = boardBeforeMove;
 
-            makeMove(player,move);                  //should momentarily keep track of the player total score and also the board
-            //makemove needs to be like simulatemove instead
-            eval += maxmax(player,board, depth - 1);    //+=?
-            // restore the state
-            player = playerBeforeMove;
-            board = boardBeforeMove;
-
-            if(eval>=maxEval){
-                maxEval=eval;
+                    if(eval>=maxEval){
+                        maxEval=eval;
+                    }
+                }
+            } catch (InvalidMoveException e) {
+                System.out.println("problem in the maxmax method");
+                e.printStackTrace();
             }
         }
             return maxEval;
@@ -1603,13 +1617,13 @@ public class CLIGameController {
 
     public int evaluate(Player player,GameBoard board){
         int score =0;
-        score=player.getGameScore().getTotalScore();
+        //score=player.getGameScore().getTotalScore();
 
-        Dice[] dice=board.getForgottenRealmDice();
-        int forgottenRealmScore=evaluateDiceScore(dice);
-        score-=forgottenRealmScore;
+        //Dice[] dice=board.getForgottenRealmDice();
+        //int forgottenRealmScore=evaluateDiceScore(dice);
+        //score-=forgottenRealmScore;
 
-        int arcaneBoostCount = 0;
+        /*int arcaneBoostCount = 0;
         for (ArcaneBoost arcaneBoost: player.getArcaneBoosts()) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
                 arcaneBoostCount++;
@@ -1621,13 +1635,14 @@ public class CLIGameController {
             if(timeWarp.getStatus() == RewardStates.ACQUIRED)
                 timeWarpCount++;
         }
-        score+=timeWarpCount*5;
+        score+=timeWarpCount*5;*/
 
+        score+=player.getGameScore().getTotalScore();
         return score;
     }
-    public int evaluateDiceScore(Dice[] dice){
+    public int evaluateDiceScore(ArrayList<Dice> arrayList){
         int score=0;
-        for(Dice die: dice){
+        for(Dice die: arrayList){
            score+=evaluateDice(die);
         }
         return score;
@@ -1676,6 +1691,207 @@ public class CLIGameController {
         return highestScore;
     }
 
+    public boolean makeMoveAI(Player player, Move move)  {
+        try {
+            Dice diceToBeMovedWith= move.getDice();
+            if (move.getCreature() instanceof Gaia) {
+                GreenDice greenDice = (GreenDice) gameBoard.getGreen();
+                Dice arcanePrism = gameBoard.getWhite();
+                int greenVal = greenDice.getValue();
+                int whiteVal = arcanePrism.getValue();
+                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
+            }
+            boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
+            if (!temp)
+                throw new InvalidMoveException();
+            else {
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+                return true;
+            }
+        } catch (BonusException bException) {
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
+            RealmColor realmColor1 = bException.getRealmColor1();
+            Dice bonusDice=null;
+            switch (realmColor1) {
+                case RED:
+                    /*boolean flag=false;
+                    for(int i=4;i>=1;i--){
+                        if(flag==true) break;
+                        for(int j=6;j>=1;j--){
+                            RedDice redDice = new RedDice(j);
+                            redDice.selectsDragon(4);
+                            Move redMove = new Move(redDice,player.getScoreSheet().getCreatureByColor(RealmColor.RED));
+                            try {
+                                if(redMove.getCreature().checkMove(redMove.getDice())){
+                                    bonusDice=redMove.getDice();
+                                    flag=true;
+                                    break;
+                                }
+                            } catch (InvalidMoveException e) {
+                                System.out.println("error in the makeMoveAI method red part");
+                                e.printStackTrace();
+                            }
+                        }
+                    }*/
+
+                    //temporary bc red doesnt work
+                    bonusDice=new YellowDice(1);
+                    break;
+                case GREEN:
+                        Dice dice12 = new GreenDice(12);
+                        Dice dice11 = new GreenDice(11);
+                        Dice dice10 = new GreenDice(10);
+                        Dice dice9 = new GreenDice(9);
+                        Dice dice2 = new GreenDice(2);
+                        Dice dice3 = new GreenDice(3);
+                        Dice dice4 = new GreenDice(4);
+                        Dice dice8 = new GreenDice(8);
+                        Dice dice5 = new GreenDice(5);
+                        Dice dice6 = new GreenDice(6);
+                        Dice dice7 = new GreenDice(7);
+                        Move move12= new Move(dice12,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move11= new Move(dice11,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move10= new Move(dice10,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move9= new Move(dice9,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move2= new Move(dice2,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move3= new Move(dice3,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move4= new Move(dice4,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move8= new Move(dice8,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move5= new Move(dice5,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move6= new Move(dice6,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move7= new Move(dice7,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move[] moves = {move12,move11,move10,move9,move2,move3,move4,move8,move5,move6,move7};
+                        for(Move m:moves){
+                            try {
+                                if(m.getCreature().checkMove(m.getDice())){
+                                    bonusDice=m.getDice();
+                                    break;
+                                }
+                            } catch (InvalidMoveException e) {
+                                System.out.println("error in the makeMoveAI method green part");
+                                e.printStackTrace();
+                            }
+                        }
+                        break; 
+
+                case BLUE:
+                    bonusDice=new BlueDice(6);
+                    break;
+
+                case MAGENTA:
+                    bonusDice=new MagentaDice(6);
+                    break;
+
+                case YELLOW:
+                    bonusDice=new YellowDice(6);
+                    break;   
+
+                default:
+                    bonusDice=new YellowDice(1);//RANDOM SHIT
+                    System.out.println("error in the switch case");
+                    break;
+            }
+            if(bonusDice==null){
+                System.out.println("something wrong with the bonus dice");
+            }
+            Move finalMove=new Move(bonusDice,player.getScoreSheet().getCreatureByColor(bonusDice.getRealm()));
+            makeMoveAI(player, finalMove);
+
+            if (bException.getRealmColor2() != RealmColor.PARENT) {
+                RealmColor realmColor2 = bException.getRealmColor2();
+                Dice bonusDice2=null;
+                switch (realmColor2) {
+                    case RED:
+                        boolean flag=false;
+                        for(int i=4;i>=1;i--){
+                            if(flag==true) break;
+                            for(int j=6;j>=1;j--){
+                                RedDice redDice = new RedDice(j);
+                                redDice.selectsDragon(4);
+                                Move redMove = new Move(redDice,player.getScoreSheet().getCreatureByColor(RealmColor.RED));
+                                try {
+                                    if(redMove.getCreature().checkMove(redMove.getDice())){
+                                        bonusDice2=redMove.getDice();
+                                        flag=true;
+                                        break;
+                                    }
+                                } catch (InvalidMoveException e) {
+                                    System.out.println("error in the makeMoveAI method red part");
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        break;
+                    case GREEN:
+                            Dice dice12 = new GreenDice(12);
+                            Dice dice11 = new GreenDice(11);
+                            Dice dice10 = new GreenDice(10);
+                            Dice dice9 = new GreenDice(9);
+                            Dice dice2 = new GreenDice(2);
+                            Dice dice3 = new GreenDice(3);
+                            Dice dice4 = new GreenDice(4);
+                            Dice dice8 = new GreenDice(8);
+                            Dice dice5 = new GreenDice(5);
+                            Dice dice6 = new GreenDice(6);
+                            Dice dice7 = new GreenDice(7);
+                            Move move12= new Move(dice12,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move11= new Move(dice11,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move10= new Move(dice10,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move9= new Move(dice9,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move2= new Move(dice2,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move3= new Move(dice3,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move4= new Move(dice4,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move8= new Move(dice8,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move5= new Move(dice5,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move6= new Move(dice6,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move move7= new Move(dice7,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                            Move[] moves = {move12,move11,move10,move9,move2,move3,move4,move8,move5,move6,move7};
+                            for(Move m:moves){
+                                try {
+                                    if(m.getCreature().checkMove(m.getDice())){
+                                        bonusDice2=m.getDice();
+                                        break;
+                                    }
+                                } catch (InvalidMoveException e) {
+                                    System.out.println("error in the makeMoveAI method green part");
+                                    e.printStackTrace();
+                                }
+                            }
+                            break; 
+    
+                    case BLUE:
+                        bonusDice2=new BlueDice(6);
+                        break;
+    
+                    case MAGENTA:
+                        bonusDice2=new MagentaDice(6);
+                        break;
+    
+                    case YELLOW:
+                        bonusDice2=new YellowDice(6);
+                        break;   
+    
+                    default:
+                        bonusDice2=new YellowDice(1);//smth random for the default case
+                        System.out.println("error in the switch case");
+                        break;
+                }
+                if(bonusDice2==null){
+                System.out.println("something wrong with the bonus dice");
+                }
+                Move finalMove2=new Move(bonusDice2,player.getScoreSheet().getCreatureByColor(bonusDice2.getRealm()));
+                makeMoveAI(player, finalMove2);
+
+            }
+            return true;
+        }
+        catch (InvalidMoveException Im){
+            Im.displayMessage();
+            return false;
+        }
+    }
 }
 
 

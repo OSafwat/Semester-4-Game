@@ -132,10 +132,12 @@ public class Hydra extends Creature{
             }
         }
 
-        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
+        /*if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
             return 1;
         else   
-            return 0;
+            return 0;*/
+        //temp bc error
+        return 0;
     }
 
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
@@ -162,7 +164,8 @@ public class Hydra extends Creature{
 
     // Method that checks if the move is possible.
     @Override
-    protected boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) {
+        if(this.serpent==null||this.serpent.size()==0) return false;
         return dice.getValue() >= this.serpent.peek();
     }
 

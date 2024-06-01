@@ -302,7 +302,7 @@ public class Dragon extends Creature {
     }
 
     //Method that checks if a move can be done
-    protected boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) {
         int targetValue = dice.getValue();
         return moveHelper(targetValue, false);
     }

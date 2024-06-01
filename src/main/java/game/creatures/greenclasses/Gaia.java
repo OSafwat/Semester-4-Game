@@ -197,7 +197,7 @@ public class Gaia extends Creature{
 
 
     // EXP checks if a given move is possible
-    protected boolean checkMove(Dice dice)throws InvalidMoveException{
+    public boolean checkMove(Dice dice)throws InvalidMoveException{
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
         GreenDice greendie = (GreenDice) dice;
