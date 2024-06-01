@@ -107,6 +107,10 @@ public class GUIGameController extends CLIGameController {
         ((RedDice)getAllDice()[0]).selectsDragon(dragon);
     }
 
+    public int getSelectedDragon() {
+        return ((RedDice)getAllDice()[0]).getDragonNumber()+1;
+    }
+
     public int getValue(String part) {
         int dragonValue = ((RedDice)getAllDice()[0]).getDragonNumber();
         Dragon dragon = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
