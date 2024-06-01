@@ -116,6 +116,13 @@ public class DiceRealms extends Application {
         return colorString.toString();
     }
 
+    public void goBackEvent() {
+        if (bonusValue == -1)
+            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
+        else {
+
+        }
+    }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
         sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());
