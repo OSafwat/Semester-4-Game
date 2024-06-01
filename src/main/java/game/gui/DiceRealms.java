@@ -173,11 +173,11 @@ public class DiceRealms extends Application {
     }
 
     public void initDiceEventListeners() {
-        sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Red");});
-        sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Green");});
-        sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Blue");});
-        sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Magenta");});
-        sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Yellow");});
+        sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Red");});
+        sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Green");});
+        sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Blue");});
+        sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Magenta");});
+        sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
         sceneController.getArcaneDice().setOnMouseClicked(e -> handleArcanePrism());
     }
 
@@ -264,6 +264,7 @@ public class DiceRealms extends Application {
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        System.out.println(currDice);
         if (!moveDone) {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
@@ -502,7 +503,7 @@ public class DiceRealms extends Application {
             else if (currentReward.toLowerCase().contains("yellow"))
                 handleBonus(RealmColor.YELLOW);
         }
-
+        guiGameController.rollDice();
     }
 
     public void handlePlayerNameInputs() {
