@@ -174,4 +174,8 @@ public class GUIGameController extends CLIGameController {
         }
         return paths;
     }
+
+    public int getMaxRounds() {
+        return maxRounds;
+    }
 }
