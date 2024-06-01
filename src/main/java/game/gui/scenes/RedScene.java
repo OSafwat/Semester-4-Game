@@ -35,6 +35,7 @@ public class RedScene extends RealmScene {
     private boolean isPopupOpen = false;
     private AnchorPane dragonPartSelectionMenu;
     public Button closeDragonPartSelectionMenuButton;
+    Stage dragonPartSelectionMenuDialogueStage;
 
     @Override
     public void createScene() {
@@ -176,17 +177,18 @@ public class RedScene extends RealmScene {
         AnchorPane.setTopAnchor(vbox, centerY);
 
         dragonPartSelectionMenu.getChildren().add(closeDragonPartSelectionMenuButton);
+
+        dragonPartSelectionMenuDialogueStage = new Stage();
+        dragonPartSelectionMenuDialogueStage.initModality(Modality.WINDOW_MODAL);
+        dragonPartSelectionMenuDialogueStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
+        closeDragonPartSelectionMenuButton.setOnAction(event -> dragonPartSelectionMenuDialogueStage.close());
+        Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
+
+        dragonPartSelectionMenuDialogueStage.setScene(dialogScene);
     }
 
     public void showDragonPartSelectionMenu() {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
-        closeDragonPartSelectionMenuButton.setOnAction(event -> dialogStage.close());
-        Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
-
-        dialogStage.setScene(dialogScene);
-        dialogStage.showAndWait(); // This will block until the dialog is closed
+        dragonPartSelectionMenuDialogueStage.showAndWait(); // This will block until the dialog is closed
     }
 
     public ImageView getDragon1() {
