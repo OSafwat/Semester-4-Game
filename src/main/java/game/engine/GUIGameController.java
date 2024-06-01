@@ -135,10 +135,6 @@ public class GUIGameController extends CLIGameController {
             currentPlayer = getActivePlayer();
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
                 incrementRoundCount();
-            else {
-                String[] rewards = getRewards(maxRounds);
-                handleRoundRewards(currentPlayer, rewards[currentRound-1]);
-            }
             currentTurn = 1;
             return;
         }
@@ -151,8 +147,6 @@ public class GUIGameController extends CLIGameController {
 
     public void incrementRoundCount() {
         currentRound++;
-        if (currentRound % (maxRounds+1) == 0)
-            return;
     }
 
     public String[] getDragonPaths() {
