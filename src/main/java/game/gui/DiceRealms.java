@@ -133,11 +133,11 @@ public class DiceRealms extends Application {
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
-        sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
-        sceneController.getGreenRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
-        sceneController.getBlueRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
-        sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
-        sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+        sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
+        sceneController.getGreenRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
+        sceneController.getBlueRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
+        sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
+        sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
 
         initDragonEventListeners();
         //To-Do
