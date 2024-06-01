@@ -20,10 +20,10 @@ public class CLIGameController {
     static final String[] magicNames = {
         "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
         "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
-        "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
-        "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+        "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Arion", "Liora", "Valerian",
+        "Esmeray", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
         "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
-        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Square Moustache guy", "Hooba"
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hooba"
     };
 
     // ANSI escape codes for various colors
@@ -169,255 +169,268 @@ public class CLIGameController {
     }
 
     public void startGame(){
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        if (player1Name.trim().isEmpty()) {
-            Random random = new Random();
-
-            // Get a random index between 0 and the length of the array
-            int randomIndex = random.nextInt(magicNames.length);
-
-            // Get the random name from the array
-            String randomName = magicNames[randomIndex];
-
-            player1Name = randomName;
+        System.out.println("enter 1 if you wanna play against the humand and 2 if you wanna play against the computer");
+        String modeChoice = scanner.nextLine();
+        while(!modeChoice.equals("1") && !choice.equals("2")) {
+            System.out.println("Invalid input. Please try again.");
+            modeChoice = scanner.nextLine();
         }
+        if (modeChoice.equals("1")) {
+            System.out.println("please input the name of player 1:");
+            String player1Name = scanner.nextLine();
+            if (player1Name.trim().isEmpty()) {
+                Random random = new Random();
 
-        switch(player1Name.toLowerCase()) {
-            case "dimension6":
-                printRainbowText("The Best Team");
-                player1Name = changeToRainbowText(player1Name);
-                break;
-            
-            case "slmat":    
-            case "doctor":
-            case "dr":
-            case "dr.":
-            case "doc":
-            case "ahmed hussein":
-                player1Name = changeToRainbowText("slmat27");
-                printRainbowText("Hi slmat27");
-                break;
-            
-            case "noureldin":
-            case "nesegemaa":
-            case "mahmoud":
-            case "elephant":
-            case "elephanto":
-            case "elephanto gyat":
-            case "elephantogyat":
-            case "0ping":
-            case "safwat":
-            case "hamed":
-            case "hotdog":
-            case "hotdawg":
-            case "tamer":
-            case "kirat":
-                player1Name = changeToRainbowText("Xx" + player1Name + "xX");
-                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
-                break;
-            
-            case "ace":
-            case "rewe":
-            case "el le3ba":
-            case "le3ba":
-            case "dumbbeldoor":
-            case "sixfold":
-            case "amrosgy":
-            case "utopia":
-            case "akiraminai":
-            case "badawayyy":
-            case "zeus":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("=_= Hello losers.");
-                break;
-
-            case "sharazad":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("Don't cry over spilled Fruit Punch");
-                break;
-            
-            case "giu":
-                player1Name = changeToRainbowText(player1Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-                break;
-            case "guc":
-                player1Name = changeToRainbowText(player1Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-            
-            case "meow":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("blawg is NOT a cat ");
-                
-            default:
-                break;
-        }
-        getActivePlayer().setName(player1Name);
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-
-        if (player2Name.trim().equals("")) {
-            Random random = new Random();
-            String randomName;
-
-            do {
                 // Get a random index between 0 and the length of the array
                 int randomIndex = random.nextInt(magicNames.length);
 
                 // Get the random name from the array
-                randomName = magicNames[randomIndex];
-            } while (randomName.equals(player1Name));
+                String randomName = magicNames[randomIndex];
 
-            player2Name = randomName;
-        }
+                player1Name = randomName;
+            }
 
-        switch(player2Name.toLowerCase()) {
-            case "dimension6":
-                printRainbowText("The Best Team");
-                player2Name = changeToRainbowText(player2Name);
-                break;
-            
-            case "slmat":    
-            case "doctor":
-            case "dr":
-            case "dr.":
-            case "doc":
-            case "ahmed hussein":
-                player2Name = changeToRainbowText("slmat27");
-                printRainbowText("Hi slmat27");
-                break;
-            
-            case "noureldin":
-            case "nesegemaa":
-            case "mahmoud":
-            case "elephant":
-            case "elephanto":
-            case "elephanto gyat":
-            case "elephantogyat":
-            case "0ping":
-            case "safwat":
-            case "hamed":
-            case "hotdog":
-            case "hotdawg":
-            case "tamer":
-            case "kirat":
-               player2Name = changeToRainbowText("Xx" + player2Name + "xX");
-                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
-                break;
-            
-            case "ace":
-            case "rewe":
-            case "el le3ba":
-            case "le3ba":
-            case "dumbbeldoor":
-            case "sixfold":
-            case "amrosgy":
-            case "utopia":
-            case "akiraminai":
-            case "badawayyy":
-            case "zeus":
-               player2Name = changeToRainbowText(player2Name);
-                printRainbowText("=_= Hello losers.");
-                break;
-
-            case "sharazad":
-               player2Name = changeToRainbowText(player2Name);
-                printRainbowText("Don't cry over spilled Fruit Punch");
-                break;
-            
-            case "giu":
-                player2Name = changeToRainbowText(player2Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-                break;
-            case "guc":
-                player2Name = changeToRainbowText(player2Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-            
-            case "meow":
-                player2Name = changeToRainbowText(player2Name);
-                printRainbowText("blawg is NOT a cat ");
+            switch(player1Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player1Name = changeToRainbowText(player1Name);
+                    break;
                 
-            default:
-                break;
-        }
-        getPassivePlayer().setName(player2Name);
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player1Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                    player1Name = changeToRainbowText("Xx" + player1Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
 
-        int [] temp = getSettings();
-        int numberOfRounds= temp[0];
-        int numebrOfTurnsPerRound=temp[1];
+                case "sharazad":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getActivePlayer().setName(player1Name);
+            System.out.println("please input the name of player 2:");
+            String player2Name = scanner.nextLine();
+
+            if (player2Name.trim().equals("")) {
+                Random random = new Random();
+                String randomName;
+
+                do {
+                    // Get a random index between 0 and the length of the array
+                    int randomIndex = random.nextInt(magicNames.length);
+
+                    // Get the random name from the array
+                    randomName = magicNames[randomIndex];
+                } while (randomName.equals(player1Name));
+
+                player2Name = randomName;
+            }
+
+            switch(player2Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player2Name = changeToRainbowText(player2Name);
+                    break;
+                
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player2Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                player2Name = changeToRainbowText("Xx" + player2Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
+
+                case "sharazad":
+                player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player2Name = changeToRainbowText(player2Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player2Name = changeToRainbowText(player2Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getPassivePlayer().setName(player2Name);
+
+            int [] temp = getSettings();
+            int numberOfRounds= temp[0];
+            int numebrOfTurnsPerRound=temp[1];
 
 
-        System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
-        do {
-            String choice = scanner.nextLine();
-            if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
-                System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
-                break;
-            } else if (!choice.isEmpty() && choice.charAt(0)=='c')
-                break;
-            else
-                System.out.println("Please choose sth correct\n");
-        } while (true);
+            System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
+            do {
+                String choice = scanner.nextLine();
+                if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
+                    System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                    break;
+                } else if (!choice.isEmpty() && choice.charAt(0)=='c')
+                    break;
+                else
+                    System.out.println("Please choose sth correct\n");
+            } while (true);
 
-        //the following is taking in the round rewards from the properties file
-        String rewards [] = getRewards(numberOfRounds);
+            //the following is taking in the round rewards from the properties file
+            String rewards [] = getRewards(numberOfRounds);
 
-        //the following is trying to start the game loop:
-        for (int round = 0; round < numberOfRounds; round++) {
-            System.out.println();
-            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            gameBoard.resetAllDice();
-            switchPlayer();
-            System.out.println();
-            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
-            gameBoard.resetAllDice();
-            switchPlayer();
-        }
-        Player player1= gameBoard.getPlayer1();
-        Player player2= gameBoard.getPlayer2();
-        System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
-        player1.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player1.getGameScore().toString() + "\n");
-        int player1Score= player1.getGameScore().getTotalScore();
+            //the following is trying to start the game loop:
+            for (int round = 0; round < numberOfRounds; round++) {
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayer();
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayer();
+            }
+            Player player1= gameBoard.getPlayer1();
+            Player player2= gameBoard.getPlayer2();
+            System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
+            player1.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player1.getGameScore().toString() + "\n");
+            int player1Score= player1.getGameScore().getTotalScore();
 
-        System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
-        player2.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player2.getGameScore().toString() + "\n");
-        int player2Score= player2.getGameScore().getTotalScore();
+            System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
+            player2.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player2.getGameScore().toString() + "\n");
+            int player2Score= player2.getGameScore().getTotalScore();
 
-        if (player1Score == player2Score)
-        {
-            int[] player1Scores = player1.getGameScore().getAllScores();
-            int[] player2Scores = player2.getGameScore().getAllScores();
-            for (int i = 0; i < player2Scores.length; i++) {
-                if (player1Scores[i] > player2Scores[i]) {
-                    player1Score = 100;
-                    player2Score = 0;
-                }
-                else if (player1Scores[i] < player2Scores[i]) {
-                    player1Score = 0;
-                    player2Score = 100;
+            if (player1Score == player2Score)
+            {
+                int[] player1Scores = player1.getGameScore().getAllScores();
+                int[] player2Scores = player2.getGameScore().getAllScores();
+                for (int i = 0; i < player2Scores.length; i++) {
+                    if (player1Scores[i] > player2Scores[i]) {
+                        player1Score = 100;
+                        player2Score = 0;
+                    }
+                    else if (player1Scores[i] < player2Scores[i]) {
+                        player1Score = 0;
+                        player2Score = 100;
+                    }
                 }
             }
+            if (player1Score > player2Score)
+                System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
+            else if (player1Score < player2Score)
+                System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+            else {
+                System.out.println("It is a draw!");
+            }
+            scanner.close();
         }
-        if (player1Score > player2Score)
-            System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-        else if (player1Score < player2Score)
-            System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
-        else {
-            System.out.println("It is a draw!");
+
+        else{//ai shit
+
+
         }
-        scanner.close();
     }
 
     public void playForgottenTurn(Player player) {
