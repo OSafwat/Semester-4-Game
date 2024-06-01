@@ -32,7 +32,6 @@ public class RedScene extends RealmScene {
     private ImageView dragon1, dragon2, dragon3, dragon4;
     private ImageView dragonFace, dragonWings, dragonTail, dragonHeart;
     Player currentPlayer = new Player(PlayerStatus.ACTIVE);
-    private boolean isPopupOpen = false;
     private AnchorPane dragonPartSelectionMenu;
     public Button closeDragonPartSelectionMenuButton;
 
