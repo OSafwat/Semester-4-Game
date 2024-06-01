@@ -175,7 +175,11 @@ public class DiceRealms extends Application {
             int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
             Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
             String [] tmp = getDicePNGs(dietmp);
-            Dialog whiteDialog = sceneController.boardScene.handleWhiteDice((ArrayList)Arrays.asList(tmp));
+            ArrayList<String> dicePaths = new ArrayList<>();
+            for (String string: tmp) {
+                dicePaths.add(string);
+            }
+            Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(dicePaths);
             String result =(String) whiteDialog.showAndWait().get();
             if (result.equals("CLOSED"))
                 return;
