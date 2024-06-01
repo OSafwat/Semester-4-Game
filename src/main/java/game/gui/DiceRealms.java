@@ -173,12 +173,12 @@ public class DiceRealms extends Application {
     }
 
     public void initDiceEventListeners() {
-        sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
-        sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
-        sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
-        sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
-        sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
-        sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0,0));
+        sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Red");});
+        sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Green");});
+        sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Blue");});
+        sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Magenta");});
+        sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = 0; setupRealmScene("Yellow");});
+        sceneController.getArcaneDice().setOnMouseClicked(e -> handleArcanePrism());
     }
 
     public void handleMove(int num, int callLayer, int dragonPart) {
