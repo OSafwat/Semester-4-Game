@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -34,7 +35,7 @@ public class BoardScene{
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
     ImageView leftGrimoire;
     Label infoLabel;
-    AnchorPane anchorPane;
+    public AnchorPane anchorPane;
 
     public void makeboardScene(String[] dicePNGs) {
         infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
@@ -225,7 +226,15 @@ public class BoardScene{
         return leftGrimoire;
     }
 
-    public void addToAnchorPane(StackPane stackPane) {
-        anchorPane.getChildren().add(stackPane);
+    public void addToAnchorPane(StackPane miniRoot) {
+        anchorPane.getChildren().addAll(miniRoot);
+        //anchorPane.getChildren().add(close);
+    }
+    public void addToAnchorPane(ImageView bg, TextArea textarea) {
+        anchorPane.getChildren().addAll(bg, textarea);
+        //anchorPane.getChildren().add(close);
+    }
+    public void removeFromAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
+        anchorPane.getChildren().removeAll(bg, textarea, close);
     }
 }

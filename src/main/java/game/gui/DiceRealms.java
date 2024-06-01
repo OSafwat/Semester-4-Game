@@ -81,27 +81,42 @@ public class DiceRealms extends Application {
         return dicePNGs;
     }
 
-    public void openLeftGrimoire() {
-        StackPane leftGrimoire = new StackPane();
-        leftGrimoire.setPrefSize(1500, 800);
-        leftGrimoire.setLayoutX(300);
-        leftGrimoire.setLayoutY(300);
-        Label scoreSheet = new Label();
-        scoreSheet.setText(guiGameController.getScoreSheet(guiGameController.getPlayer1()).toString());
-        Image image = new Image(getClass().getResourceAsStream("/images/grimoire.png"));
-        BackgroundSize backgroundSize = new BackgroundSize(1500, 800, true, true, false, true);
-        BackgroundImage backgroundImage = new BackgroundImage(
-                image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize);
-        Background background = new Background(backgroundImage);
-        leftGrimoire.setBackground(background);
-        leftGrimoire.getChildren().add(scoreSheet);
-        sceneController.boardScene.addToAnchorPane(leftGrimoire);
 
-    }
+    public void openLeftGrimoire() {        
+        TextArea textArea = new TextArea();
+        textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
+        // for (String text : arr) {        //uncomment when the string is being passed
+        //     textArea.appendText(text);
+        // }
+        textArea.setWrapText(true); // Optional: Wrap text to fit width
+        textArea.setPrefWidth(387);
+        textArea.setPrefHeight(779);
+        textArea.setLayoutX(761);
+        textArea.setLayoutY(72);
+    
+        textArea.setEditable(false);// Disable editing in the TextArea
+    
+        textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
+    
+        ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
+        bg.setFitHeight(1134);
+        bg.setFitWidth(712);
+        bg.setLayoutX(589);
+        bg.setLayoutY(-89); 
+        
+        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea);
+
+        ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
+        close.setFitHeight(120);
+        close.setFitWidth(120);
+        close.setLayoutX(1068);
+        close.setLayoutY(34);
+        
+        close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});
+        
+        sceneController.boardScene.anchorPane.getChildren().addAll(close);
+            
+    }      
 
     public String getColorAsString(Dice dice) {
         StringBuilder colorString = new StringBuilder("/images/Dice/");
@@ -125,7 +140,7 @@ public class DiceRealms extends Application {
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  // will be passed a string array containing what to be displayed
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
