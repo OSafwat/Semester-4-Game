@@ -181,7 +181,37 @@ public class DiceRealms extends Application {
         sceneController.getArcaneDice().setOnMouseClicked(e -> handleArcanePrism());
     }
 
-    public void handleMove(int num, int callLayer, int dragonPart) {
+    public void handleArcanePrism() {
+        Scene scene;
+
+        int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
+        Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
+        String [] tmp = getDicePNGs(dietmp);
+        ArrayList<String> dicePaths = new ArrayList<>();
+        for (String string: tmp) {
+            dicePaths.add(string);
+        }
+        Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(dicePaths);
+        String result =(String) whiteDialog.showAndWait().get();
+        if (result.equals("CLOSED"))
+            return;
+        String [] resultAsArray= result.split(" ");
+        int value = Integer.parseInt(resultAsArray[2].substring(0,1));
+        switch (resultAsArray[0]){
+            case "red":     scene = sceneController.redScene.getScene();break;
+            case "green":   scene = sceneController.greenScene.getScene();break;
+            case "blue":    scene = sceneController.blueScene.getScene();break;
+            case "magenta": scene = sceneController.magentaScene.getScene();break;
+            case "yellow":  scene = sceneController.yellowScene.getScene(); break;
+            default:        return;
+        }
+        if (!resultAsArray[0].equals("green"))
+            arcaneValue = value;
+
+        primaryStage.setScene(scene);
+    }
+
+    public boolean handleMove(int num, int callLayer, int dragonPart) {
         //change this later
         RealmColor realmColor;
         Dice currDice;
