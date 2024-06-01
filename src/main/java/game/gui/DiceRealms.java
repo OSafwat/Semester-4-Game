@@ -397,12 +397,55 @@ public class DiceRealms extends Application {
         thisIsAnAlert.showAndWait();
     }
 
-    public void handleEssenceBonus() {
-        TextInputDialog textInputDialog = new TextInputDialog();
+    public void handleBonus(RealmColor realmColor) {
+        if (realmColor.equals(RealmColor.WHITE))
+            wasEssenceBonus = 1;
+        arcaneValue = -1;
+        awaitingInput = true;
+        Dialog<String> bonusDialog = new Dialog<>();
+        FlowPane buttonBox = new FlowPane(20,20);
+        buttonBox.setPrefWrapLength(1200);
+        if (realmColor.equals(RealmColor.WHITE)) {
+            RealmColor[] realmColors = RealmColor.values();
+            for (int i = 0; i <= 4; i++) {
+                ArrayList<Button> buttons = bonusDialogFill(realmColors[i], bonusDialog);
+                for (Button dialogButton : buttons) {
+                    buttonBox.getChildren().add(dialogButton);
+                }
+            }
+        }
+        else {
+            ArrayList<Button> buttons = bonusDialogFill(realmColor, bonusDialog);
+            for (Button dialogButton : buttons) {
+                buttonBox.getChildren().add(dialogButton);
+            }
+        }
+        bonusDialog.getDialogPane().setContent(buttonBox);
+        bonusDialog.showAndWait();
+        String result = bonusDialog.getResult();
+        bonusValue = result.charAt(result.length()-2) == ' ' ? Integer.parseInt(result.substring(result.length()-1)) : Integer.parseInt(result.substring(result.length()-2));
+        if (result.contains("Red")) {
+            bonusRealmColor = RealmColor.RED;
+            setupRealmScene("Red");
+        }
+        else if (result.contains("Blue")) {
+            bonusRealmColor = RealmColor.BLUE;
+            setupRealmScene("Blue");
+        }
+        else if (result.contains("Green")) {
+            bonusRealmColor = RealmColor.GREEN;
+            setupRealmScene("Green");
+        }
+        else if (result.contains("Magenta")) {
+            bonusRealmColor = RealmColor.MAGENTA;
+            setupRealmScene("Magenta");
+        }
+        else if (result.contains("Yellow")) {
+            bonusRealmColor = RealmColor.YELLOW;
+            setupRealmScene("Yellow");
+        }
 
-        // Set the dialog title and header text
-        textInputDialog.setTitle("Essence Bonus");
-        textInputDialog.setHeaderText("You have obtained an Essence Bonus! Please input the name of the Realm you would like to attack! Be careful while inputting, because you can't go back.");
+    }
 
         // Show the dialog and capture the input
         Optional<String> result = textInputDialog.showAndWait();
