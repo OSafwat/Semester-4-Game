@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -174,7 +175,7 @@ public class DiceRealms extends Application {
             int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
             Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
             String [] tmp = getDicePNGs(dietmp);
-            Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(tmp);
+            Dialog whiteDialog = sceneController.boardScene.handleWhiteDice((ArrayList)Arrays.asList(tmp));
             String result =(String) whiteDialog.showAndWait().get();
             if (result.equals("CLOSED"))
                 return;

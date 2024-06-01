@@ -1,10 +1,8 @@
 package game.gui.scenes;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.Flow;
-
 import game.dice.Dice;
+import game.engine.enums.RealmColor;
 import game.gui.scenes.RedScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -129,7 +127,7 @@ public class BoardScene{
     /*the following method takes a string array which represent the choosable dice correspondong to the white dice chosen by the useer in the board scene and 
      * returns a dialog that will be shown by the dice realms class to be chosen from by  the user
      */
-    public Dialog handleWhiteDice(String whiteDiceOptions[]){       
+    public Dialog handleWhiteDice(ArrayList<String> whiteDiceOptions){       
         // Create the custom dialog
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Select an Option");
@@ -151,7 +149,8 @@ public class BoardScene{
         buttons.add(close);
         close.setOnAction(event -> dialog.setResult("CLOSED"));
         // Create a container to hold the buttons
-        FlowPane buttonBox = new FlowPane(10,10);   // if you want it horizontal instead of change it to an HBox
+        FlowPane buttonBox = new FlowPane(20,20);   // if you want it horizontal instead of change it to an HBox
+        buttonBox.setPrefWrapLength(1200); // added this so that the ArcaneBoost dice can all fit comfortably in the screen
         for (Button dialogButton : buttons) {
             buttonBox.getChildren().add(dialogButton);
         }
@@ -160,6 +159,28 @@ public class BoardScene{
         
         return dialog;
     } 
+    public Dialog handleBonus(String color){
+        ArrayList<String> paths = new ArrayList<>();
+        if (color == "white"){
+            paths.addAll(getPaths("red"));
+            paths.addAll(getPaths("blue"));
+            paths.addAll(getPaths("yellow"));
+            paths.addAll(getPaths("magenta"));
+            paths.addAll(getPaths("green"));
+        }
+        else 
+            paths.addAll(getPaths(color));
+         return  handleWhiteDice(paths);
+    }
+    public ArrayList<String> getPaths(String color){
+        ArrayList<String>  arr = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            char c ;
+            arr.add( "/images/Dice/"+color.substring(0,1).toUpperCase()+color.substring(1)+"/"+color+" dice "+i+".png");
+        }
+        return arr;
+    }
+
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
         thisIsAnAlert.setTitle("ScoreSheet");
