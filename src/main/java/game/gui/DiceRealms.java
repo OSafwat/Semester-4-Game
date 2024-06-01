@@ -487,7 +487,21 @@ public class DiceRealms extends Application {
     public void startGame() {
         handlePlayerNameInputs();
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
-
+        String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
+        String currentReward = rewards[0];
+        System.out.println(currentReward);
+        if (currentReward.toLowerCase().contains("bonus")) {
+            if (currentReward.toLowerCase().contains("red"))
+                handleBonus(RealmColor.RED);
+            else if (currentReward.toLowerCase().contains("green"))
+                handleBonus(RealmColor.GREEN);
+            else if (currentReward.toLowerCase().contains("blue"))
+                handleBonus(RealmColor.BLUE);
+            else if (currentReward.toLowerCase().contains("magenta"))
+                handleBonus(RealmColor.MAGENTA);
+            else if (currentReward.toLowerCase().contains("yellow"))
+                handleBonus(RealmColor.YELLOW);
+        }
 
     }
 
