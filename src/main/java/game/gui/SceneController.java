@@ -99,7 +99,42 @@ public class SceneController {
         return redScene.getDragon4();
     }
 
-    public ImageView getRealmGoBackButton() {
+    public ImageView getRedRealmGoBackButton() {
         return redScene.getGoBackButton();
+    }
+
+    public ImageView getGreenRealmGoBackButton() {
+        return greenScene.getGoBackButton();
+    }
+
+    public ImageView getBlueRealmGoBackButton() {
+        return blueScene.getGoBackButton();
+    }
+
+    public ImageView getMagentaRealmGoBackButton() {
+        return magentaScene.getGoBackButton();
+    }
+
+    public ImageView getYellowRealmGoBackButton() {
+        return yellowScene.getGoBackButton();
+    }
+
+    public void initDragons(String[] paths) {
+        redScene.initializeDragons(paths);
+    }
+
+    public ImageView getFace() {
+        return redScene.getDragonFace();
+    }
+    public ImageView getWings() {
+        return redScene.getDragonWings();
+    }
+
+    public ImageView getTail() {
+        return redScene.getDragonTail();
+    }
+
+    public ImageView getHeart() {
+        return redScene.getDragonHeart();
     }
 }

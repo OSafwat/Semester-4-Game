@@ -1,18 +1,26 @@
 package game.gui;
 import game.creatures.Creature;
+import game.dice.BlueDice;
 import game.dice.Dice;
+import game.dice.GreenDice;
 import game.dice.MagentaDice;
+import game.dice.RedDice;
+import game.dice.YellowDice;
 import game.engine.GUIGameController;
 import game.engine.Move;
 import game.engine.Player;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
+import game.exceptions.NoAvailableMovesException;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert.AlertType;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
@@ -21,6 +29,7 @@ public class DiceRealms extends Application {
     GUIGameController guiGameController;
     SceneController sceneController;
     Stage primaryStage;
+    boolean isForgotten;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -40,12 +49,14 @@ public class DiceRealms extends Application {
         primaryStage.setScene(sceneController.mainMenuScene.createMainScene());
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         sceneController.redScene.createScene();
+        sceneController.initDragons(guiGameController.getDragonPaths());
         sceneController.greenScene.createScene();
         sceneController.blueScene.createScene();
         sceneController.magentaScene.createScene();
         sceneController.yellowScene.createScene();
         initEventListeners();
         primaryStage.show();
+        isForgotten = false;
     }
 
     public String[] getDicePNGs(Dice[] dice) {
@@ -57,6 +68,28 @@ public class DiceRealms extends Application {
             dicePNGs[i] += " " + dice[i].getValue() + ".png";
         }
         return dicePNGs;
+    }
+
+    public void openLeftGrimoire() {
+        StackPane leftGrimoire = new StackPane();
+        leftGrimoire.setPrefSize(1500, 800);
+        leftGrimoire.setLayoutX(300);
+        leftGrimoire.setLayoutY(300);
+        Label scoreSheet = new Label();
+        scoreSheet.setText(guiGameController.getScoreSheet(guiGameController.getPlayer1()).toString());
+        Image image = new Image(getClass().getResourceAsStream("/images/grimoire.png"));
+        BackgroundSize backgroundSize = new BackgroundSize(1500, 800, true, true, false, true);
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                backgroundSize);
+        Background background = new Background(backgroundImage);
+        leftGrimoire.setBackground(background);
+        leftGrimoire.getChildren().add(scoreSheet);
+        sceneController.boardScene.addToAnchorPane(leftGrimoire);
+
     }
 
     public String getColorAsString(Dice dice) {
@@ -73,88 +106,222 @@ public class DiceRealms extends Application {
     }
 
     public void initEventListeners() {
-        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame()); 
+        sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
+        initDiceEventListeners();
+        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0));
+        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
+        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
+        sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+        sceneController.getGreenRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+        sceneController.getBlueRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+        sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+        sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
+
+        initDragonEventListeners();
+        //To-Do
+
+        sceneController.getFace().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("face")));
+        sceneController.getWings().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("wings")));
+        sceneController.getTail().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("tail")));
+        sceneController.getHeart().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("heart")));
+
+    }
+
+    public void initDragonEventListeners() {
+        sceneController.getDragon1().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(1);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon2().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(2);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon3().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(3);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+        sceneController.getDragon4().setOnMouseClicked(e -> {
+            guiGameController.setSelectedDragon(4);
+            sceneController.redScene.showDragonPartSelectionMenu();
+            //handle dragon part
+        });
+    }
+
+    public void initDiceEventListeners() {
         sceneController.getRedDice().setOnMouseClicked(e -> setupRealmScene("Red"));
         sceneController.getGreenDice().setOnMouseClicked(e -> setupRealmScene("Green"));
         sceneController.getBlueDice().setOnMouseClicked(e -> setupRealmScene("Blue"));
         sceneController.getMagentaDice().setOnMouseClicked(e -> setupRealmScene("Magenta"));
         sceneController.getYellowDice().setOnMouseClicked(e -> setupRealmScene("Yellow"));
-        sceneController.getArcaneDice().setOnMouseClicked(e -> setupRealmScene("White"));
-        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove("Magenta"));
-        sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
-        sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
-        sceneController.getRealmGoBackButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() )));
-        sceneController.getDragon1().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(1);
-            //handle dragon part
-        });
-        sceneController.getDragon2().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(2);
-            //handle dragon part
-        });
-        sceneController.getDragon3().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(3);
-            //handle dragon part
-        });
-        sceneController.getDragon4().setOnMouseClicked(e -> {
-            guiGameController.setSelectedDragon(4);
-            //handle dragon part
-        });
-        //To-Do
-        /*
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-        sceneController.getDragonWings().setOnMouseClicked(e -> handleMove());
-         */
+        sceneController.getArcaneDice().setOnMouseClicked(e -> handleMove(6,0,0));
     }
 
-    public void handleMove(String color) {
+    public void handleMove(int num, int callLayer, int dragonPart) {
         //change this later
-        if (color.equals("Magenta")) {
-            MagentaDice currDice = (MagentaDice) guiGameController.getGameBoard().getAllDice()[3];
-            Creature creature = guiGameController.getActivePlayer().getScoreSheet().getCreatureByColor(RealmColor.MAGENTA);
-            Player player = guiGameController.getActivePlayer();
-            boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-            if (!moveDone) {
-                //if we enter here, that means that some sort of exception has been caught
-                //either a bonus exception or an invalid move exception
-                Exception exception = guiGameController.getException();
-                if (exception instanceof BonusException) {
-                    switch (((BonusException)exception).getRealmColor1()) {
-                        case RED: setupRealmScene("Red"); break;
-                        case GREEN: setupRealmScene("Green"); break;
-                        case BLUE: setupRealmScene("Blue"); break;
-                        case MAGENTA: setupRealmScene("Magenta"); break;
-                        case YELLOW: setupRealmScene("Yellow"); break;
-                        default: handleEssenceBonus(); break;
-                    }
+        RealmColor realmColor;
+        Dice currDice;
+        Creature creature;
+        if (num == 6) {
+            Scene scene;
 
-                    //put in the bonus make move logic
+            int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
+            Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
+            String [] tmp = getDicePNGs(dietmp);
+            Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(tmp);
+            String result =(String) whiteDialog.showAndWait().get();
+            if (result.equals("CLOSED"))
+                return;
+            String [] resultAsArray= result.split(" ");
+            int value = Integer.parseInt(resultAsArray[2].substring(0,1));
+            switch (resultAsArray[0]){
+                case "red":     scene = sceneController.redScene.getScene(); realmColor = RealmColor.RED; currDice = new RedDice(value); break;
+                case "green":   scene = sceneController.greenScene.getScene(); realmColor = RealmColor.GREEN; currDice = guiGameController.getAllDice()[1]; break;
+                case "blue":    scene = sceneController.blueScene.getScene(); realmColor = RealmColor.BLUE; currDice = new BlueDice(value); break;
+                case "magenta": scene = sceneController.magentaScene.getScene(); realmColor = RealmColor.MAGENTA; currDice = new MagentaDice(value); break;
+                case "yellow":  scene = sceneController.yellowScene.getScene(); realmColor = RealmColor.YELLOW; currDice = new YellowDice(value); break;
+                default:        return;
+            }
+            creature = guiGameController.getCurrentPlayer().getScoreSheet().getCreatureByColor(realmColor);
 
-                    switch (((BonusException)exception).getRealmColor2()) {
-                        case RED: setupRealmScene("Red"); break;
-                        case GREEN: setupRealmScene("Green"); break;
-                        case BLUE: setupRealmScene("Blue"); break;
-                        case MAGENTA: setupRealmScene("Magenta"); break;
-                        case YELLOW: setupRealmScene("Yellow"); break;
-                        case WHITE: handleEssenceBonus(); break;
-                        default: return;
-                    }
-
-                    //put in the bonus make move logic
+            primaryStage.setScene(scene);
+        }
+        else {
+            switch (num) {
+                case 1:
+                    currDice = guiGameController.getAllDice()[0];
+                    break;
+                case 2:
+                    currDice = guiGameController.getAllDice()[1];
+                    break;
+                case 3:
+                    currDice = guiGameController.getAllDice()[2];
+                    break;
+                case 4:
+                    currDice = guiGameController.getAllDice()[3];
+                    break;
+                case 5:
+                    currDice = guiGameController.getAllDice()[4];
+                    break;
+                default:
+                    return;
+            }
+            realmColor = currDice.getRealm();
+            creature = guiGameController.getCurrentPlayer().getScoreSheet().getCreatureByColor(realmColor);
+        }
+        if (currDice instanceof RedDice) {
+            if (currDice.getValue() != dragonPart) {
+                illegalMoveAlert();
+                primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+                return;
+            }
+        }
+        Player player = guiGameController.getCurrentPlayer();
+        boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        if (!moveDone) {
+            //if we enter here, that means that some sort of exception has been caught
+            //either a bonus exception or an invalid move exception
+            Exception exception = guiGameController.getException();
+            if (exception instanceof BonusException) {
+                switch (((BonusException)exception).getRealmColor1()) {
+                    case RED: setupRealmScene("Red"); break;
+                    case GREEN: setupRealmScene("Green"); break;
+                    case BLUE: setupRealmScene("Blue"); break;
+                    case MAGENTA: setupRealmScene("Magenta"); break;
+                    case YELLOW: setupRealmScene("Yellow"); break;
+                    default: handleEssenceBonus(); break;
                 }
-                else {
-                    //put in a popup that tells the user that he has done an illegal move
-                    //logic here
-                    //and go back to the dice board
-                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
+
+                //put in the bonus make move logic
+
+                switch (((BonusException)exception).getRealmColor2()) {
+                    case RED: setupRealmScene("Red"); break;
+                    case GREEN: setupRealmScene("Green"); break;
+                    case BLUE: setupRealmScene("Blue"); break;
+                    case MAGENTA: setupRealmScene("Magenta"); break;
+                    case YELLOW: setupRealmScene("Yellow"); break;
+                    case WHITE: handleEssenceBonus(); break;
+                    default:;
+                }
+                //put in the bonus make move logic
+            }
+            else {
+                //put in a popup that tells the user that he has done an illegal move
+                illegalMoveAlert();
+                //logic here
+                //and go back to the dice board
+                primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+                return;
+            }
+        }
+        if (callLayer == 0) {
+            guiGameController.selectDice(num == 6 ? guiGameController.getAllDice()[5] : currDice, guiGameController.getCurrentPlayer());
+            guiGameController.incrementTurnCount();
+            if (guiGameController.getCurrentTurn() == -1) {
+                handleForgottenTurn();
+            }
+            else {
+                if (isForgotten) {
+                    isForgotten = false;
+                    guiGameController.getGameBoard().resetAllDice();
+                    guiGameController.rollDice();
+                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
+                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+                    initDiceEventListeners();
+                    return;
+                }
+                while (guiGameController.getCurrentTurn() != -1) {
+                    guiGameController.rollDice();
+                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
+                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+
+                    initDiceEventListeners();
+                    try {
+                        Move[] possible = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
+                        System.out.println(Arrays.toString(possible));
+                    } catch (NoAvailableMovesException e) {
+                        Dialog<String> dialog = new Dialog<>();
+                        dialog.setTitle("Select an Option");
+                        Button tmp = new Button();
+                        tmp.setText("close11");
+                        tmp.setOnAction(event -> dialog.setResult("placeholder"));
+                        dialog.getDialogPane().setContent(tmp);
+                        dialog.showAndWait();
+                        System.out.println("Meow1!");
+                        guiGameController.incrementTurnCount();
+                        continue;
+                    }
+                    break;
+                }
+                if (guiGameController.getCurrentTurn() == -1) {
+                    handleForgottenTurn();
                 }
             }
         }
+    }
+
+    public void handleForgottenTurn() {
+        guiGameController.moveAllIntoForgotten();
+        //initiate forgotten realm turn
+        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getForgottenRealmDice()));
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+        isForgotten = true;
+        initDiceEventListeners();
+    }
+    public void illegalMoveAlert(){
+        Alert thisIsAnAlert = new Alert(AlertType.WARNING);
+        thisIsAnAlert.setTitle("Alert");
+        Label contentLabel = new Label("You have made an Illegal Move");
+        contentLabel.setStyle("-fx-font-size: 30px;");
+        // Set the Label as the content of the alert
+        thisIsAnAlert.getDialogPane().setContent(contentLabel);
+        thisIsAnAlert.showAndWait();
     }
 
     public void handleEssenceBonus() {
@@ -270,7 +437,7 @@ public class DiceRealms extends Application {
             case "hotdawg":
             case "tamer":
             case "kirat":
-                playerName = guiGameController.changeToRainbowText("Xx" + playerName + "xX");
+                playerName = playerName;
                 break;
 
             case "ace":
@@ -284,20 +451,20 @@ public class DiceRealms extends Application {
             case "akiraminai":
             case "badawayyy":
             case "zeus":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = (playerName);
                 break;
 
             case "sharazad":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
                 break;
 
             case "giu":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
                 break;
             case "guc":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
             case "meow":
-                playerName = guiGameController.changeToRainbowText(playerName);
+                playerName = playerName;
 
             default:
                 break;
@@ -308,11 +475,13 @@ public class DiceRealms extends Application {
     public void setupRealmScene(String realmColor) {
         Scene scene;
         switch (realmColor.toLowerCase()) {
-            case "red": scene = sceneController.redScene.getScene();break;
+            case "red": sceneController.initDragons(guiGameController.getDragonPaths()); initDragonEventListeners(); scene = sceneController.redScene.getScene();break;
             case "green": scene = sceneController.greenScene.getScene(); break;
             case "blue": scene = sceneController.blueScene.getScene(); break;
             case "magenta": scene = sceneController.magentaScene.getScene(); break;
             case "yellow": scene = sceneController.yellowScene.getScene(); break;
+
+
             default: scene = null;
         }
         primaryStage.setScene(scene);

@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.creatures.Dragon;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
@@ -19,6 +20,7 @@ public class GUIGameController extends CLIGameController {
     int currentRound;
     int currentTurn;
     Exception exception;
+    Player currentPlayer;
 
     public GUIGameController() {
         super();
@@ -26,6 +28,7 @@ public class GUIGameController extends CLIGameController {
         maxTurns = getSettings()[1];
         currentRound = 1;
         currentTurn = 1;
+        currentPlayer = getPlayer1();
     }
     @Override
     public void startGame() {}
@@ -83,6 +86,10 @@ public class GUIGameController extends CLIGameController {
         return getGameBoard().getPlayer2();
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     @Override
     public int[] getSettings() {
         return super.getSettings();
@@ -100,7 +107,67 @@ public class GUIGameController extends CLIGameController {
         ((RedDice)getAllDice()[0]).selectsDragon(dragon);
     }
 
+    public int getValue(String part) {
+        int dragonValue = ((RedDice)getAllDice()[0]).getDragonNumber();
+        Dragon dragon = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
+        int result = -1;
+        switch (part) {
+            case "face": result = Objects.equals(dragon.getFace(), null) ? -1 : dragon.getFace(); break;
+            case "wings": result = Objects.equals(dragon.getWings(), null) ? -1 : dragon.getWings(); break;
+            case "tail": result = Objects.equals(dragon.getTail(), null) ? -1 : dragon.getTail(); break;
+            case "heart": result = Objects.equals(dragon.getHeart(), null) ? -1 : dragon.getHeart(); break;
+            default: ;
+        }
+        return result;
+    }
+
     public Exception getException() {
         return new Exception(exception);
+    }
+
+    public void incrementTurnCount () {
+        if (currentTurn == -1) {
+            switchPlayer();
+            currentPlayer = getActivePlayer();
+            if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
+                incrementRoundCount();
+            else {
+                String[] rewards = getRewards(maxRounds);
+                handleRoundRewards(currentPlayer, rewards[currentRound-1]);
+            }
+            currentTurn = 1;
+            return;
+        }
+        currentTurn++;
+        if (currentTurn % (maxTurns+1) == 0) {
+            currentTurn = -1;
+            currentPlayer = getPassivePlayer();
+        }
+    }
+
+    public void incrementRoundCount() {
+        currentRound++;
+        if (currentRound % (maxRounds+1) == 0)
+            return;
+    }
+
+    public String[] getDragonPaths() {
+        Dragon dragon = (Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED);
+        Dragon[] dragons = dragon.getDragons();
+        //images/RedRealmImages/face.png
+        String[] paths = new String[4];
+        for (int i = 0; i < 4; i++) {
+            StringBuilder y = new StringBuilder("/images/RedRealmImages/");
+            if (Objects.equals(dragons[i].getFace(), null))
+                y.append("face-");
+            if (Objects.equals(dragons[i].getWings(), null))
+                y.append("wings-");
+            if (Objects.equals(dragons[i].getTail(), null))
+                y.append("tail-");
+            if (Objects.equals(dragons[i].getHeart(),null))
+                y.append("heart-");
+            paths[i] = y.substring(0,y.length()-1) + ".png";
+        }
+        return paths;
     }
 }
