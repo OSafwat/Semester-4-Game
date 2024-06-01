@@ -47,4 +47,7 @@ public class GreenScene extends RealmScene {
         super.createScene();
     }
 
+    public ImageView getGuardian() {
+        return gaurdian;
+    }
 }
