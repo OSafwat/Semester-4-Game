@@ -20,11 +20,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
-
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
+
 
 public class DiceRealms extends Application {
     GUIGameController guiGameController;
@@ -503,7 +503,8 @@ public class DiceRealms extends Application {
             else if (currentReward.toLowerCase().contains("yellow"))
                 handleBonus(RealmColor.YELLOW);
         }
-        guiGameController.rollDice();
+        else
+            guiGameController.handleRoundRewards(guiGameController.getCurrentPlayer(), currentReward);
     }
 
     public void handlePlayerNameInputs() {
