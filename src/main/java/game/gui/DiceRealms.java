@@ -271,15 +271,6 @@ public class DiceRealms extends Application {
             arcaneValue = -1;
             primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
             if (exception instanceof BonusException) {
-                switch (((BonusException)exception).getRealmColor1()) {
-                    case RED: setupRealmScene("Red"); break;
-                    case GREEN: setupRealmScene("Green"); break;
-                    case BLUE: setupRealmScene("Blue"); break;
-                    case MAGENTA: setupRealmScene("Magenta"); break;
-                    case YELLOW: setupRealmScene("Yellow"); break;
-                    default: handleEssenceBonus(); break;
-                }
-
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
                 while (awaitingInput) {
