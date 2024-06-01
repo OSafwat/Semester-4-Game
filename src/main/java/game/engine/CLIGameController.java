@@ -517,7 +517,7 @@ public class CLIGameController {
                     break;
             }
             getActivePlayer().setName(player1Name);
-
+            String AI="AI";
             int [] temp = getSettings();
             int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
             int numebrOfTurnsPerRound=temp[1];
@@ -543,12 +543,12 @@ public class CLIGameController {
              for (int round = 0; round < numberOfRounds; round++) {
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-                playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                playRoundHuman(gameBoard.getPlayer1(), gameBoard.getAi(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
                 gameBoard.resetAllDice();
                 switchPlayer();
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+" AI TURN ");
-                playRoundAI(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
+                playRoundAI(gameBoard.getAi(), gameBoard.getPlayer1(), rewards[round], numebrOfTurnsPerRound);
                 gameBoard.resetAllDice();
                 switchPlayer();
             }
@@ -1782,6 +1782,47 @@ public class CLIGameController {
         }
     }
     
+    public void playRoundHuman(Player activePlayer,AI passivePlayer,String reward, int turnCount){
+        gameBoard.resetGreenPostColorBonus();
+        if (!reward.equals("skip"))
+            handleRoundRewards(activePlayer, reward);
+        for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
+            System.out.println();
+            System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
+            boolean valid = playTurn(activePlayer, false);
+            if (!valid)
+                break;
+        }
+        moveAllIntoForgotten();
+        //ai passive
+
+        Dice[] avDice = gameBoard.getForgottenRealmDice();
+        Move[] avMoves=null;
+        try {
+            avMoves = getAllPossibleMovesForDiceSet(passivePlayer, avDice);
+        } catch (NoAvailableMovesException e) {
+            System.out.println("problem with the playturnai method");
+            e.printStackTrace();
+        }
+        AI ai=(AI) passivePlayer;
+        Move aiMove=ai.decideNextMove(avMoves);
+        makeMoveAI(passivePlayer, aiMove);
+
+        boolean usedArcaneBoost = true;
+        if (reward.equals("ArcaneBoost"))
+            handleRoundRewards(passivePlayer, reward);
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(activePlayer);
+            }
+        }
+    }
 
     public Dice handleBonusAI (Player player,RealmColor realmColor){
         Dice dice=chooseBonusAI(player, realmColor);
@@ -1892,6 +1933,16 @@ public class CLIGameController {
         makeMoveAI(player, aiMove);
         return true;
     }
+
+    public boolean switchPlayerAI(){
+        try {
+            gameBoard.getPlayer1().switchStatus();
+            gameBoard.getAi().switchStatus();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+        }
 
 }
 

@@ -11,6 +11,7 @@ public class GameBoard implements Cloneable{
     private GameStatus gameStatus;
     private Player player1;
     private Player player2;
+    private AI ai;
     private Dice [] allDice;
     private ArrayList<Dice> availableDice;
     private ArrayList<Dice> forgottenRealmDice;
@@ -78,7 +79,7 @@ public class GameBoard implements Cloneable{
 
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
-
+        ai = new AI(PlayerStatus.PASSIVE);
         this.whiteValue = -1;
         this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
@@ -92,7 +93,9 @@ public class GameBoard implements Cloneable{
     Player getPlayer2() {
         return player2;
     }
-
+    AI getAi(){
+        return ai;
+    }
     //game status getter
     GameStatus getGameStatus(){
         return this.gameStatus;
