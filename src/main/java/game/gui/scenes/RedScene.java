@@ -181,7 +181,7 @@ public class RedScene extends RealmScene {
         dragonPartSelectionMenuDialogueStage = new Stage();
         dragonPartSelectionMenuDialogueStage.initModality(Modality.WINDOW_MODAL);
         dragonPartSelectionMenuDialogueStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
-        closeDragonPartSelectionMenuButton.setOnAction(event -> dragonPartSelectionMenuDialogueStage.close());
+        closeDragonPartSelectionMenuButton.setOnAction(event -> closeDragonPartSelectionMenu());
         Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
 
         dragonPartSelectionMenuDialogueStage.setScene(dialogScene);
@@ -189,6 +189,10 @@ public class RedScene extends RealmScene {
 
     public void showDragonPartSelectionMenu() {
         dragonPartSelectionMenuDialogueStage.showAndWait(); // This will block until the dialog is closed
+    }
+
+    public void closeDragonPartSelectionMenu() {
+        dragonPartSelectionMenuDialogueStage.close(); // This will block until the dialog is closed
     }
 
     public ImageView getDragon1() {
