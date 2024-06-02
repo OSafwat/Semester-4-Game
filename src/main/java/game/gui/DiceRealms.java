@@ -785,6 +785,92 @@ public class DiceRealms extends Application {
         primaryStage.setScene(scene);
     }
 
+    public void timeWarpSequence(Player player) {
+        if (isArcaneBoostPower)
+            return;
+        Dialog<String> dialog = new Dialog<>();
+        Button accept = new Button();
+        accept.setText("Yes");
+        Button decline = new Button();
+        decline.setText("No");
+        accept.setOnMouseClicked(e -> dialog.setResult("YES"));
+        decline.setOnMouseClicked(e -> dialog.setResult("NO"));
+        dialog.setContentText("Would you like to use one of your time warps?");
+        FlowPane buttons = new FlowPane();
+        buttons.getChildren().add(accept);
+        buttons.getChildren().add(decline);
+        dialog.getDialogPane().setContent(buttons);
+        boolean proceed = dialog.getResult().equals("Yes");
+        if (proceed) {
+            try {
+                guiGameController.handleTimeWarps(player);
+            } catch (ExhaustedResourceException e) {
+                //display error
+                return;
+            }
+            handleDiceReroll();
+        }
+    }
+
+    public void arcaneBoostSequence(Player player) {
+        if (isArcaneBoostPower)
+            return;
+        Dialog<String> dialog = new Dialog<>();
+        Button accept = new Button();
+        accept.setText("Yes");
+        Button decline = new Button();
+        decline.setText("No");
+        accept.setOnMouseClicked(e -> dialog.setResult("YES"));
+        decline.setOnMouseClicked(e -> dialog.setResult("NO"));
+        dialog.setContentText("Would you like to use one of your arcane boosts?");
+        FlowPane buttons = new FlowPane();
+        buttons.getChildren().add(accept);
+        buttons.getChildren().add(decline);
+        dialog.getDialogPane().setContent(buttons);
+        boolean proceed = dialog.getResult().equals("Yes");
+        if (proceed) {
+            try {
+                guiGameController.handleArcaneBoosts(player);
+            } catch (ExhaustedResourceException e) {
+                //display error
+                return;
+            }
+            Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(player);
+            //display the scene with the arcaneBoostDice
+            sceneController.boardScene.makeboardScene(getDicePNGs(arcaneBoostDice));
+            initDiceEventListeners();
+            primaryStage.setScene(sceneController.boardScene.getBoardScene(guiGameController.getCurrentRound(), guiGameController.getCurrentTurn(), player.getName()));
+
+            //setup is done, leave the rest to the player
+            isArcaneBoostPower = true;
+            guiGameController.setArcaneBoostPlayer(player);
+        }
+    }
+
+    private void handleDiceReroll() {
+        sceneController.boardScene.makeboardScene(getDiceGIFs(guiGameController.getAvailableDice()));
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Sleep for 1 second (1000 milliseconds)
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDiceBoard();
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+
     public static void main(String[] args) {
         launch(args);
     }
