@@ -112,12 +112,10 @@ public class DiceRealms extends Application {
     }   
     public void openLeftGrimoire() {        
 
-        Player player = guiGameController.getPlayer1();
+        Player player = guiGameController.getActivePlayer();
         String arr [] =getInformation(player); 
 
         TextArea textArea = new TextArea();
-        //textArea.setText(player.getScoreSheet().toString());
-        System.out.println(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString());
         for (String text : arr) {        //uncomment when the string is being passed
             textArea.appendText(text);
         }
@@ -146,9 +144,12 @@ public class DiceRealms extends Application {
         close.setLayoutX(1275);
         close.setLayoutY(80);
         
-        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea, close);
+        sceneController.boardScene.addToAnchorPane(bg, textArea, close);
 
-        close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});
+        close.setOnMouseClicked(e -> {
+            sceneController.boardScene.removeFromAnchorPane(bg, textArea, close);
+          //  sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(event -> openLeftGrimoire());  
+        });
         
         //sceneController.boardScene.anchorPane.getChildren().addAll(close);
             
@@ -175,7 +176,7 @@ public class DiceRealms extends Application {
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->  {System.out.println("LeftGrimoire clicked"); openLeftGrimoire();});  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
