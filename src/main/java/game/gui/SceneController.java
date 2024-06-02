@@ -164,7 +164,7 @@ public class SceneController {
         if (count == 0)
             path = null;
         else
-            path = "/images/YellowRealmImages/Radiant_Savanna.png";
+            path = "/images/YellowRealmImages/SolarLions.png";
         yellowScene.changeYellowSceneView(path);
     }
 
