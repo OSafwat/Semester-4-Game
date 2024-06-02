@@ -100,7 +100,7 @@ public class Phoenix extends Creature{
     }
 
     @Override
-    protected boolean checkMove(Dice dice) {
+    public boolean checkMove(Dice dice) {
         int diceValue = dice.getValue();
         if ((dice instanceof MagentaDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0) {
             if (killedPhoenixes >= 11) {
@@ -441,5 +441,10 @@ public class Phoenix extends Creature{
         }
 
         return output;
+    }
+    public int getLastHit() {
+        if(killedPhoenixes == 0) return 0;
+        if(phoenixes[killedPhoenixes - 1] == 6) return 0;
+        return phoenixes[killedPhoenixes - 1];
     }
 }

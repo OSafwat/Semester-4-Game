@@ -45,3 +45,6 @@ buildNumber.properties
 *.project
 *.classpath
 .vscode/
+
+#ignore Statistics file
+.VSCodeCounter

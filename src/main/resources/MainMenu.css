@@ -8,10 +8,18 @@
     -fx-text-fill: white;
     -fx-alignment: center;
     -fx-padding: 0;
-    -fx-height: 100vh;
+    -fx-height: 100pt;
     -fx-display: flex;
     -fx-justify-content: center;
     -fx-align-items: center;
+}
+
+.grimoire{
+    -fx-background-color: transparent; 
+    -fx-background: transparent; 
+    -fx-control-inner-background: transparent; 
+    -fx-text-fill: black;
+    -fx-font-size: 15;
 }
 
 /* Container to hold the buttons */

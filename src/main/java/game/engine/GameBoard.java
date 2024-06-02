@@ -7,10 +7,11 @@ import java.util.ArrayList;
 
 import game.engine.enums.RealmColor;
 
-public class GameBoard {
+public class GameBoard implements Cloneable{
     private GameStatus gameStatus;
     private Player player1;
     private Player player2;
+    private AI ai;
     private Dice [] allDice;
     private ArrayList<Dice> availableDice;
     private ArrayList<Dice> forgottenRealmDice;
@@ -78,7 +79,7 @@ public class GameBoard {
 
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
-
+        ai = new AI(PlayerStatus.PASSIVE);
         this.whiteValue = -1;
         this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
@@ -92,7 +93,9 @@ public class GameBoard {
     Player getPlayer2() {
         return player2;
     }
-
+    AI getAi(){
+        return ai;
+    }
     //game status getter
     GameStatus getGameStatus(){
         return this.gameStatus;
@@ -125,7 +128,7 @@ public class GameBoard {
         availableDice.remove(die);
         forgottenRealmDice.add(die);
     }
-    void resetAllDice(){
+    public void resetAllDice(){
         forgottenRealmDice.clear();
         availableDice.clear();
         player1.resetUsedArcaneDice();
@@ -135,7 +138,21 @@ public class GameBoard {
         availableDice.addAll(Arrays.asList(allDice));
     }
     void removeFromAvailable(Dice die){
-        availableDice.remove(die);
+        ArrayList<Dice> newAvailableDice = new ArrayList<>();
+        for (Dice dice: availableDice) {
+            if (dice.compareTo(die) != 0)
+                newAvailableDice.add(dice);
+        }
+        availableDice = newAvailableDice;
+    }
+
+    @Override
+    public GameBoard clone() {
+        try {
+            return (GameBoard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // cant happen
+        }
     }
 
 }

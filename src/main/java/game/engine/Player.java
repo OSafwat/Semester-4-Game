@@ -6,12 +6,11 @@ import game.collectibles.TimeWarp;
 import game.dice.Dice;
 import game.engine.enums.*;
 
-public class Player {
+public class Player implements Cloneable {
     private String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
-    //private ElementalCrest elementalCrest;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
     private Move[] allPossibleMoves;
@@ -28,9 +27,13 @@ public class Player {
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         this.usedArcaneDice = new ArrayList<>();
-        allPossibleMoves = getAllPossibleMoves();
+        this.allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
         playedDice = new ArrayList<>();
+    }
+
+    public Player() {
+
     }
 
     public Move[] getAllPossibleMoves(){
@@ -98,5 +101,31 @@ public class Player {
     }
     public void addToUsedArcaneDice(Dice die) {
         usedArcaneDice.add(die);
+    }
+    public int getArcaneBoostsNum(){
+        int counter=0;
+        for (ArcaneBoost tmp : this.arcaneBoosts) {
+            if (tmp.getStatus() == RewardStates.ACQUIRED  )
+                counter++;
+        }
+        return counter;
+    }
+    public int getTimeWarpsNum(){
+        int counter=0;
+        for (TimeWarp tmp : this.timeWarps) {
+            if (tmp.getStatus() == RewardStates.ACQUIRED  )
+                counter++;
+        }
+        return counter;
+    }
+
+    //ai
+    @Override
+    public Player clone() {
+        try {
+            return (Player) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // cant happen
+        }
     }
 }

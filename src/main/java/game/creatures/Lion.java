@@ -30,6 +30,7 @@ public class Lion extends Creature {
     private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     private static final String[] mappedRewardLocations = new String[11];
     private final Properties properties;
+    private final Properties multipliers;
 
     public Lion(){
         arcaneBoosts= new ArrayList<>();
@@ -60,7 +61,6 @@ public class Lion extends Creature {
             properties.setProperty("hit10Reward", "MagentaBonus");
             properties.setProperty("hit11Reward", "null");
         }
-
         for(int i = 1; i <= 11; i++) {
             if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
                 ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
@@ -70,8 +70,29 @@ public class Lion extends Creature {
                 TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
                 this.timeWarps.add(tw);
               }
-            }
-                initScoreSheet();
+        }
+
+        multipliers = new Properties();
+        try {
+            File config = new File("src/main/resources/config/RadiantSvannaMultipliers.properties");
+            FileReader configReader = new FileReader(config);
+            multipliers.load(configReader);
+        } catch (IOException e) {
+            //smth wrong in the multipliers file brodie :3
+            properties.setProperty("hit1Value", "1");
+            properties.setProperty("hit2Value", "1");
+            properties.setProperty("hit3Value", "1");
+            properties.setProperty("hit4Value", "2");
+            properties.setProperty("hit5Value", "1");
+            properties.setProperty("hit6Value", "1");
+            properties.setProperty("hit7Value", "2");
+            properties.setProperty("hit8Value", "1");
+            properties.setProperty("hit9Value", "2");
+            properties.setProperty("hit10Value", "1");
+            properties.setProperty("hit11Value", "3");
+        }
+
+        initScoreSheet();
     }
 
     @Override
@@ -144,8 +165,25 @@ public class Lion extends Creature {
         sb.append("\n");
 
         sb.append("|  M  |");
-        for(int i = 1; i <= 11; i++) { 
+        int counter=0;
+        try{
+             for(int i = 1; i <= 11; i++) { 
              sb.append(getMultiplier(i)+"   |"); 
+             counter=i;
+            }
+        }
+        catch(Exception e){
+            for(int i=counter+1;i<=11;i++){
+                if(i==4||i==7||i==9){
+                    sb.append("x2   |");
+                }
+                else if(i==11){
+                    sb.append("x3   |");
+                }
+                else{
+                    sb.append("     |");
+                }
+            }
         }
         sb.append("\n");
 
@@ -180,9 +218,27 @@ public class Lion extends Creature {
         temp.append("\n");
 
         temp.append("|  M  |");
-        for(int i = 1; i <= 11; i++) { 
+        int counter=0;
+        try{
+             for(int i = 1; i <= 11; i++) { 
              temp.append(getMultiplier(i)+"   |"); 
+             counter=i;
+            }
         }
+        catch(Exception e){
+            for(int i=counter+1;i<=11;i++){
+                if(i==4||i==7||i==9){
+                    temp.append("x2   |");
+                }
+                else if(i==11){
+                    temp.append("x3   |");
+                }
+                else{
+                    temp.append("     |");
+                }
+            }
+        }
+
         temp.append("\n");
 
         temp.append("|  R  |");
@@ -211,7 +267,7 @@ public class Lion extends Creature {
     }
 
     @Override
-    protected boolean checkMove(Dice dice){
+    public boolean checkMove(Dice dice){
         int diceValue = dice.getValue();
         return(dice instanceof YellowDice || dice instanceof ArcanePrism) && diceValue <= 6 && diceValue > 0 && deadLions < 11;
     }
@@ -354,8 +410,9 @@ public class Lion extends Creature {
 
     private String getMultiplier(int value) {
         String ans="  ";
-        if(properties.getProperty("hit"+value+"Multiplier").equals("1"))   ans="  "; //one-indexed
-        else ans= "x"+properties.getProperty("hit"+value+"Multiplier");
+        if(multipliers.getProperty("hit"+value+"Multiplier").equals("1"))   ans="  "; //one-indexed
+        else if(multipliers.getProperty("hit"+value+"Multiplier").equals("")) ans="  ";
+        else ans= "x"+multipliers.getProperty("hit"+value+"Multiplier");
         return ans;
     }
 

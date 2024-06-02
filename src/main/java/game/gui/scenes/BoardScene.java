@@ -1,16 +1,23 @@
 package game.gui.scenes;
 
+import java.util.ArrayList;
 import game.dice.Dice;
+import game.engine.enums.RealmColor;
 import game.gui.scenes.RedScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -26,15 +33,16 @@ public class BoardScene{
     ImageView arcaneDice;
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
-    ImageView leftGrimoire;
+    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); ;
     Label infoLabel;
+    public AnchorPane anchorPane;
 
     public void makeboardScene(String[] dicePNGs) {
         infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
         infoLabel.getStyleClass().add("infoLabel");
 
         // Create the AnchorPane
-        AnchorPane anchorPane = new AnchorPane();
+        anchorPane = new AnchorPane();
         anchorPane.setPrefSize(1920,1080 );
 
         // Main game board image
@@ -43,50 +51,48 @@ public class BoardScene{
         mainBoard.setFitWidth(1920);
         mainBoard.setLayoutX(-3);
 
-        // Red dice image
-        redDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[0]))); 
-        redDice.setFitHeight(150);
-        redDice.setFitWidth(150);
-        redDice.setLayoutX(408);
-        redDice.setLayoutY(439);
-
-        // Green dice image
-        greenDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[1])));
-        greenDice.setFitHeight(150);
-        greenDice.setFitWidth(150);
-        greenDice.setLayoutX(661);
-        greenDice.setLayoutY(439);
-
-        //Blue dice image
-        blueDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[2]))); 
-        blueDice.setFitHeight(150);
-        blueDice.setFitWidth(150);
-        blueDice.setLayoutX(884);
-        blueDice.setLayoutY(439);
-
-        // Magenta dice image
-        magentaDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[3]))); 
-        magentaDice.setFitHeight(150);
-        magentaDice.setFitWidth(150);
-        magentaDice.setLayoutX(1148);
-        magentaDice.setLayoutY(439);
-
-        // Yellow dice image
-        yellowDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[4]))); 
-        yellowDice.setFitHeight(150);
-        yellowDice.setFitWidth(150);
-        yellowDice.setLayoutX(1363);
-        yellowDice.setLayoutY(439);
-
-        // White dice image
-        arcaneDice = new ImageView(new Image(getClass().getResourceAsStream(dicePNGs[5]))); 
-        arcaneDice.setFitHeight(150);
-        arcaneDice.setFitWidth(150);
-        arcaneDice.setLayoutX(884);
-        arcaneDice.setLayoutY(624);
+        ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
+        ImageView temp ;
+        for (String imageString : dicePNGs) {
+            temp= new ImageView(new Image(getClass().getResourceAsStream(imageString))); 
+            imagePaths.add(temp);
+            temp.setFitHeight(150);
+            temp.setFitWidth(150);
+            if (imageString.toLowerCase().contains("red")){
+                redDice=temp;
+                temp.setLayoutX(408);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.toLowerCase().contains("blue")){
+                blueDice= temp;
+                temp.setLayoutX(884);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.toLowerCase().contains("green")){
+                greenDice = temp;
+                temp.setLayoutX(661);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.toLowerCase().contains("magenta")){
+                magentaDice = temp;
+                temp.setLayoutX(1148);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.toLowerCase().contains("yellow")){
+                yellowDice= temp;
+                temp.setLayoutX(1363);
+                temp.setLayoutY(439);
+            }
+            else if (imageString.toLowerCase().contains("white") || imageString.toLowerCase().contains("arcane")){
+                arcaneDice = temp;
+                arcaneDice.setLayoutX(884);
+                arcaneDice.setLayoutY(624);
+            }
+            
+        }
 
         // Grimoire image (left)
-         leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
+        // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
         leftGrimoire.setLayoutX(276);
@@ -108,13 +114,74 @@ public class BoardScene{
         wizardHat.setLayoutY(14);
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire,arcaneDice,magentaDice, greenDice, redDice, yellowDice, blueDice, wizardHat, infoLabel);
+        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire, wizardHat, infoLabel);
+        for (ImageView diceImage : imagePaths) {
+            anchorPane.getChildren().addAll(diceImage);
+        }
 
         // Create the scene
         Scene scene = new Scene(anchorPane);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
     }
+
+    /*the following method takes a string array which represent the choosable dice correspondong to the white dice chosen by the useer in the board scene and 
+     * returns a dialog that will be shown by the dice realms class to be chosen from by  the user
+     */
+    public Dialog handleWhiteDice(ArrayList<String> whiteDiceOptions){       
+        // Create the custom dialog
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Select an Option");
+
+        // Create buttons with images
+
+        ArrayList<Button> buttons = new ArrayList<>();
+        for (String  pathString : whiteDiceOptions) {
+            Button tmp = new Button();
+            ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(pathString)));
+            tempImage.setFitHeight(150);
+            tempImage.setFitWidth(150);
+            tmp.setGraphic(tempImage);
+            tmp.setOnAction(event -> dialog.setResult(pathString.split("/")[4]));
+            buttons.add(tmp);
+        }
+        Button close = new Button();
+        close.setText("Go back");
+        buttons.add(close);
+        close.setOnAction(event -> dialog.setResult("CLOSED"));
+        // Create a container to hold the buttons
+        FlowPane buttonBox = new FlowPane(20,20);   // if you want it horizontal instead of change it to an HBox
+        buttonBox.setPrefWrapLength(1200); // added this so that the ArcaneBoost dice can all fit comfortably in the screen
+        for (Button dialogButton : buttons) {
+            buttonBox.getChildren().add(dialogButton);
+        }
+        // Set the dialog content
+        dialog.getDialogPane().setContent(buttonBox);
+        
+        return dialog;
+    } 
+    public Dialog handleBonus(String color){
+        ArrayList<String> paths = new ArrayList<>();
+        if (color == "white"){
+            paths.addAll(getPaths("red"));
+            paths.addAll(getPaths("blue"));
+            paths.addAll(getPaths("yellow"));
+            paths.addAll(getPaths("magenta"));
+            paths.addAll(getPaths("green"));
+        }
+        else 
+            paths.addAll(getPaths(color));
+         return  handleWhiteDice(paths);
+    }
+    public ArrayList<String> getPaths(String color){
+        ArrayList<String>  arr = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            char c ;
+            arr.add( "/images/Dice/"+color.substring(0,1).toUpperCase()+color.substring(1)+"/"+color+" dice "+i+".png");
+        }
+        return arr;
+    }
+
     public void displayAlert(){
         Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
         thisIsAnAlert.setTitle("ScoreSheet");
@@ -143,7 +210,26 @@ public class BoardScene{
     }
 
     public Scene getBoardScene(int currentRound, int currentTurn, String playerName) {
-        infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
+        if (currentTurn != -1)
+            infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
+        else 
+            infoLabel.setText("The current round is: Forgotten Round"+"       The current Passive player is: "+playerName);
+            
         return boardScene;
+    }
+
+    public ImageView getRightGrimoire () {
+        return rightGrimoire;
+    }
+
+    public ImageView getLeftGrimoire () {
+        return leftGrimoire;
+    }
+
+    public void addToAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
+        anchorPane.getChildren().addAll(bg, textarea, close);
+    }
+    public void removeFromAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
+        anchorPane.getChildren().removeAll(bg, textarea, close);
     }
 }

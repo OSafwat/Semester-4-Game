@@ -53,7 +53,7 @@ public class Move implements Comparable{
     void setCreature(Creature creature){
         this.creature = creature;
     }
-    Dice getDice(){
+    public Dice getDice(){
         return this.dice;
     }
     public String toString(){

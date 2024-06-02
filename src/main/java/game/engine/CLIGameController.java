@@ -3,7 +3,11 @@ package game.engine;
 import game.collectibles.*;
 import game.exceptions.*;
 import game.dice.*;
+import game.creatures.Creature;
+import game.creatures.Dragon;
+import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
+import game.creatures.greenclasses.Guardians;
 import game.engine.enums.*;
 
 ///import static org.junit.Assert.assertEquals;
@@ -15,15 +19,15 @@ import java.io.IOException;
 import java.util.*;
 
 public class CLIGameController {
-    GameBoard gameBoard;
+    public GameBoard gameBoard;
     Scanner scanner;
     static final String[] magicNames = {
         "Akiramenai", "Clown", "Zephyrion", "Luminara", "Amrosgy", "Elandor", "Celestia", "Drakonis",
         "Seraphina", "Faelan", "Azura", "Eldric", "Isilme", "Badawayyy", "Aelar", "Lyra", "Vesper",
-        "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Adolf", "Arion", "Liora", "Valerian",
-        "Esmeray", "Adolf", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
+        "Dumbbelldoor", "CNC", "Boring", "Sylphine", "Zeus", "Arion", "Liora", "Valerian",
+        "Esmeray", "Amara", "Kael", "MONSTER...THE DRINK", "Oberon", "Elara", "Utopia", "Morrigan",
         "Za3bola", "Kaelen", "REWE", "Dumbledore", "Fenris", "Gandalf", "Dimension6", "Arwen", "Serapis",
-        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Square Moustache guy", "Hooba"
+        "ACE", "Sixfold", "Marianna", "El Le3ba", "Za3bola", "Hooba"
     };
 
     // ANSI escape codes for various colors
@@ -169,255 +173,427 @@ public class CLIGameController {
     }
 
     public void startGame(){
-        System.out.println("please input the name of player 1:");
-        String player1Name = scanner.nextLine();
-        if (player1Name.trim().isEmpty()) {
-            Random random = new Random();
-
-            // Get a random index between 0 and the length of the array
-            int randomIndex = random.nextInt(magicNames.length);
-
-            // Get the random name from the array
-            String randomName = magicNames[randomIndex];
-
-            player1Name = randomName;
+        System.out.println("enter 1 if you wanna play against the human and 2 if you wanna play against the computer");
+        String modeChoice = scanner.nextLine();
+        //TODO CHECK FOR THE VALIDITY OF THE INPUT
+        while(!modeChoice.equals("1") && !modeChoice.equals("2")) {
+            System.out.println("Invalid input. Please try again.");
+            modeChoice = scanner.nextLine();
         }
+        if (modeChoice.equals("1")) {
+            System.out.println("please input the name of player 1:");
+            String player1Name = scanner.nextLine();
+            if (player1Name.trim().isEmpty()) {
+                Random random = new Random();
 
-        switch(player1Name.toLowerCase()) {
-            case "dimension6":
-                printRainbowText("The Best Team");
-                player1Name = changeToRainbowText(player1Name);
-                break;
-            
-            case "slmat":    
-            case "doctor":
-            case "dr":
-            case "dr.":
-            case "doc":
-            case "ahmed hussein":
-                player1Name = changeToRainbowText("slmat27");
-                printRainbowText("Hi slmat27");
-                break;
-            
-            case "noureldin":
-            case "nesegemaa":
-            case "mahmoud":
-            case "elephant":
-            case "elephanto":
-            case "elephanto gyat":
-            case "elephantogyat":
-            case "0ping":
-            case "safwat":
-            case "hamed":
-            case "hotdog":
-            case "hotdawg":
-            case "tamer":
-            case "kirat":
-                player1Name = changeToRainbowText("Xx" + player1Name + "xX");
-                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
-                break;
-            
-            case "ace":
-            case "rewe":
-            case "el le3ba":
-            case "le3ba":
-            case "dumbbeldoor":
-            case "sixfold":
-            case "amrosgy":
-            case "utopia":
-            case "akiraminai":
-            case "badawayyy":
-            case "zeus":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("=_= Hello losers.");
-                break;
-
-            case "sharazad":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("Don't cry over spilled Fruit Punch");
-                break;
-            
-            case "giu":
-                player1Name = changeToRainbowText(player1Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-                break;
-            case "guc":
-                player1Name = changeToRainbowText(player1Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-            
-            case "meow":
-                player1Name = changeToRainbowText(player1Name);
-                printRainbowText("blawg is NOT a cat ");
-                
-            default:
-                break;
-        }
-        getActivePlayer().setName(player1Name);
-        System.out.println("please input the name of player 2:");
-        String player2Name = scanner.nextLine();
-
-        if (player2Name.trim().equals("")) {
-            Random random = new Random();
-            String randomName;
-
-            do {
                 // Get a random index between 0 and the length of the array
                 int randomIndex = random.nextInt(magicNames.length);
 
                 // Get the random name from the array
-                randomName = magicNames[randomIndex];
-            } while (randomName.equals(player1Name));
+                String randomName = magicNames[randomIndex];
 
-            player2Name = randomName;
-        }
+                player1Name = randomName;
+            }
 
-        switch(player2Name.toLowerCase()) {
-            case "dimension6":
-                printRainbowText("The Best Team");
-                player2Name = changeToRainbowText(player2Name);
-                break;
-            
-            case "slmat":    
-            case "doctor":
-            case "dr":
-            case "dr.":
-            case "doc":
-            case "ahmed hussein":
-                player2Name = changeToRainbowText("slmat27");
-                printRainbowText("Hi slmat27");
-                break;
-            
-            case "noureldin":
-            case "nesegemaa":
-            case "mahmoud":
-            case "elephant":
-            case "elephanto":
-            case "elephanto gyat":
-            case "elephantogyat":
-            case "0ping":
-            case "safwat":
-            case "hamed":
-            case "hotdog":
-            case "hotdawg":
-            case "tamer":
-            case "kirat":
-               player2Name = changeToRainbowText("Xx" + player2Name + "xX");
-                printRainbowText("^_^ Hello Chat. Is this W-rizz?");
-                break;
-            
-            case "ace":
-            case "rewe":
-            case "el le3ba":
-            case "le3ba":
-            case "dumbbeldoor":
-            case "sixfold":
-            case "amrosgy":
-            case "utopia":
-            case "akiraminai":
-            case "badawayyy":
-            case "zeus":
-               player2Name = changeToRainbowText(player2Name);
-                printRainbowText("=_= Hello losers.");
-                break;
-
-            case "sharazad":
-               player2Name = changeToRainbowText(player2Name);
-                printRainbowText("Don't cry over spilled Fruit Punch");
-                break;
-            
-            case "giu":
-                player2Name = changeToRainbowText(player2Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[33m#####################\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-                break;
-            case "guc":
-                player2Name = changeToRainbowText(player2Name);
-                System.out.println("\u001B[31m#####################\u001B[0m");
-                System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
-                System.out.println("\u001B[30m#####################\u001B[0m");
-            
-            case "meow":
-                player2Name = changeToRainbowText(player2Name);
-                printRainbowText("blawg is NOT a cat ");
+            switch(player1Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player1Name = changeToRainbowText(player1Name);
+                    break;
                 
-            default:
-                break;
-        }
-        getPassivePlayer().setName(player2Name);
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player1Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                    player1Name = changeToRainbowText("Xx" + player1Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
 
-        int [] temp = getSettings();
-        int numberOfRounds= temp[0];
-        int numebrOfTurnsPerRound=temp[1];
+                case "sharazad":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getActivePlayer().setName(player1Name);
+            System.out.println("please input the name of player 2:");
+            String player2Name = scanner.nextLine();
+
+            if (player2Name.trim().equals("")) {
+                Random random = new Random();
+                String randomName;
+
+                do {
+                    // Get a random index between 0 and the length of the array
+                    int randomIndex = random.nextInt(magicNames.length);
+
+                    // Get the random name from the array
+                    randomName = magicNames[randomIndex];
+                } while (randomName.equals(player1Name));
+
+                player2Name = randomName;
+            }
+
+            switch(player2Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player2Name = changeToRainbowText(player2Name);
+                    break;
+                
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player2Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                player2Name = changeToRainbowText("Xx" + player2Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
+
+                case "sharazad":
+                player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player2Name = changeToRainbowText(player2Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player2Name = changeToRainbowText(player2Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player2Name = changeToRainbowText(player2Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getPassivePlayer().setName(player2Name);
+
+            int [] temp = getSettings();
+            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numebrOfTurnsPerRound=temp[1];
 
 
-        System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
-        do {
-            String choice = scanner.nextLine();
-            if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
-                System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
-                break;
-            } else if (!choice.isEmpty() && choice.charAt(0)=='c')
-                break;
-            else
-                System.out.println("Please choose sth correct\n");
-        } while (true);
+            System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
+            do {
+                String choice = scanner.nextLine();
+                if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
+                    System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                    break;
+                } else if (!choice.isEmpty() && choice.charAt(0)=='c')
+                    break;
+                else
+                    System.out.println("Please choose sth correct\n");
+            } while (true);
 
-        //the following is taking in the round rewards from the properties file
-        String rewards [] = getRewards(numberOfRounds);
+            //the following is taking in the round rewards from the properties file
+            String rewards [] = getRewards(numberOfRounds);
 
-        //the following is trying to start the game loop:
-        for (int round = 0; round < numberOfRounds; round++) {
-            System.out.println();
-            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            gameBoard.resetAllDice();
-            switchPlayer();
-            System.out.println();
-            System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-            playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
-            gameBoard.resetAllDice();
-            switchPlayer();
-        }
-        Player player1= gameBoard.getPlayer1();
-        Player player2= gameBoard.getPlayer2();
-        System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
-        player1.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player1.getGameScore().toString() + "\n");
-        int player1Score= player1.getGameScore().getTotalScore();
+            //the following is trying to start the game loop:
+            for (int round = 0; round < numberOfRounds; round++) {
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round], numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayer();
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRound(getActivePlayer(), getPassivePlayer(), rewards[round].equals("ArcaneBoost") ? "skip" : rewards[round] , numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayer();
+            }
+            Player player1= gameBoard.getPlayer1();
+            Player player2= gameBoard.getPlayer2();
+            System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
+            player1.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player1.getGameScore().toString() + "\n");
+            int player1Score= player1.getGameScore().getTotalScore();
 
-        System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
-        player2.getScoreSheet().displayColoredScoreSheet();
-        System.out.println( player2.getGameScore().toString() + "\n");
-        int player2Score= player2.getGameScore().getTotalScore();
+            System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
+            player2.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player2.getGameScore().toString() + "\n");
+            int player2Score= player2.getGameScore().getTotalScore();
 
-        if (player1Score == player2Score)
-        {
-            int[] player1Scores = player1.getGameScore().getAllScores();
-            int[] player2Scores = player2.getGameScore().getAllScores();
-            for (int i = 0; i < player2Scores.length; i++) {
-                if (player1Scores[i] > player2Scores[i]) {
-                    player1Score = 100;
-                    player2Score = 0;
-                }
-                else if (player1Scores[i] < player2Scores[i]) {
-                    player1Score = 0;
-                    player2Score = 100;
+            if (player1Score == player2Score)
+            {
+                int[] player1Scores = player1.getGameScore().getAllScores();
+                int[] player2Scores = player2.getGameScore().getAllScores();
+                for (int i = 0; i < player2Scores.length; i++) {
+                    if (player1Scores[i] > player2Scores[i]) {
+                        player1Score = 100;
+                        player2Score = 0;
+                    }
+                    else if (player1Scores[i] < player2Scores[i]) {
+                        player1Score = 0;
+                        player2Score = 100;
+                    }
                 }
             }
+            if (player1Score > player2Score)
+                System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
+            else if (player1Score < player2Score)
+                System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+            else {
+                System.out.println("It is a draw!");
+            }
+            scanner.close();
         }
-        if (player1Score > player2Score)
-            System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-        else if (player1Score < player2Score)
-            System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
-        else {
-            System.out.println("It is a draw!");
+
+        else{//ai shit
+            System.out.println("please input the name of player 1:");
+            String player1Name = scanner.nextLine();
+            if (player1Name.trim().isEmpty()) {
+                Random random = new Random();
+
+                // Get a random index between 0 and the length of the array
+                int randomIndex = random.nextInt(magicNames.length);
+
+                // Get the random name from the array
+                String randomName = magicNames[randomIndex];
+
+                player1Name = randomName;
+            }
+
+            switch(player1Name.toLowerCase()) {
+                case "dimension6":
+                    printRainbowText("The Best Team");
+                    player1Name = changeToRainbowText(player1Name);
+                    break;
+                
+                case "slmat":    
+                case "doctor":
+                case "dr":
+                case "dr.":
+                case "doc":
+                case "ahmed hussein":
+                    player1Name = changeToRainbowText("slmat27");
+                    printRainbowText("Hi slmat27");
+                    break;
+                
+                case "noureldin":
+                case "nesegemaa":
+                case "mahmoud":
+                case "elephant":
+                case "elephanto":
+                case "elephanto gyat":
+                case "elephantogyat":
+                case "0ping":
+                case "safwat":
+                case "hamed":
+                case "hotdog":
+                case "hotdawg":
+                case "tamer":
+                case "kirat":
+                    player1Name = changeToRainbowText("Xx" + player1Name + "xX");
+                    printRainbowText("^_^ Hello Chat. Is this W-rizz?");
+                    break;
+                
+                case "ace":
+                case "rewe":
+                case "el le3ba":
+                case "le3ba":
+                case "dumbbeldoor":
+                case "sixfold":
+                case "amrosgy":
+                case "utopia":
+                case "akiraminai":
+                case "badawayyy":
+                case "zeus":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("=_= Hello losers.");
+                    break;
+
+                case "sharazad":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("Don't cry over spilled Fruit Punch");
+                    break;
+                
+                case "giu":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[33m#####################\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                    break;
+                case "guc":
+                    player1Name = changeToRainbowText(player1Name);
+                    System.out.println("\u001B[31m#####################\u001B[0m");
+                    System.out.println("\u001B[37m########\u001B[33m#####\u001B[37m########\u001B[0m");
+                    System.out.println("\u001B[30m#####################\u001B[0m");
+                
+                case "meow":
+                    player1Name = changeToRainbowText(player1Name);
+                    printRainbowText("blawg is NOT a cat ");
+                    
+                default:
+                    break;
+            }
+            getActivePlayer().setName(player1Name);
+            String AI="AI";
+            int [] temp = getSettings();
+            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numebrOfTurnsPerRound=temp[1];
+
+
+            System.out.println("Welcome to the mystical lands of Eldoria! \nPress 'i' to get more information about the game or 'c' to continue straight away to the game");
+            do {
+                String choice = scanner.nextLine();
+                if (!choice.isEmpty() && 'i' == choice.charAt(0)) {
+                    System.out.println("\r\n" + "Welcome to the enchanting realm of Eldoria, where wizards are summoned to embark on a daring quest of conquest and elemental mastery! In this mystical land teeming with ancient magic and untamed wilderness, players will venture forth to claim the coveted Elemental Crests. These crests, symbols of unparalleled power and dominion over the elements, are scattered across the realms guarded by formidable elemental creatures.\r\n" + "\r\n" +"Prepare to encounter the blazing fury of Pyroclast Dragons, the indomitable strength of Gaia Guardians, the serpentine mysteries of Hydra Serpents, the soaring majesty of Majestic Phoenixes, and the radiant splendor of Solar Lions. As wizards, you must harness your magical prowess, exercise cunning strategy, and unleash your wits to subdue these elemental beings and seize the crests.\r\n" + "\r\n" + "Only by mastering the elements and outwitting your rivals can you ascend to become the most formidable mage in all of Eldoria. Are you ready to embark on this epic journey and claim your rightful place among the legends of magic? The fate of Eldoria awaits your command!");
+                    break;
+                } else if (!choice.isEmpty() && choice.charAt(0)=='c')
+                    break;
+                else
+                    System.out.println("Please choose sth correct\n");
+            } while (true);
+
+            //the following is taking in the round rewards from the properties file
+            String rewards [] = getRewards(numberOfRounds);
+
+             //the following is trying to start the game loop: and needs to be changed
+             // the scoresheet for the ai should be displayed once after the end of each round for better transparency and strategy for the human player
+             for (int round = 0; round < numberOfRounds; round++) {
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
+                playRoundHuman(gameBoard.getPlayer1(), gameBoard.getAi(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                gameBoard.resetAllDice();
+                switchPlayerAI();
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+"\n AI TURN ");
+                playRoundAI(gameBoard.getAi(), gameBoard.getPlayer1(), rewards[round], numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayerAI();
+            }
+            Player player1= gameBoard.getPlayer1();
+            Player aiPlayer= gameBoard.getAi();
+            System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
+            player1.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( player1.getGameScore().toString() + "\n");
+            int player1Score= player1.getGameScore().getTotalScore();
+
+            System.out.println("The scoresheet of Player "+ aiPlayer.getName()+" is the following:");
+            aiPlayer.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( aiPlayer.getGameScore().toString() + "\n");
+            int aiPlayerScore= aiPlayer.getGameScore().getTotalScore();
+
+            if (player1Score == aiPlayerScore)
+            {
+                int[] player1Scores = player1.getGameScore().getAllScores();
+                int[] player2Scores = aiPlayer.getGameScore().getAllScores();
+                for (int i = 0; i < player2Scores.length; i++) {
+                    if (player1Scores[i] > player2Scores[i]) {
+                        player1Score = 100;
+                        aiPlayerScore = 0;
+                    }
+                    else if (player1Scores[i] < player2Scores[i]) {
+                        player1Score = 0;
+                        aiPlayerScore = 100;
+                    }
+                }
+            }
+            if (player1Score > aiPlayerScore)
+                System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
+            else if (player1Score < aiPlayerScore)
+                System.out.println("Congratulations, "+AI+"! You have emerged victorious in this wonderful battle!");
+            else {
+                System.out.println("It is a draw!");
+            }
+            scanner.close();
+
+
         }
-        scanner.close();
     }
 
     public void playForgottenTurn(Player player) {
@@ -439,7 +615,8 @@ public class CLIGameController {
 
     public void playRound(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
         gameBoard.resetGreenPostColorBonus();
-        handleRoundRewards(activePlayer, reward);
+        if (!reward.equals("skip"))
+            handleRoundRewards(activePlayer, reward);
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
             System.out.println();
             System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
@@ -449,24 +626,29 @@ public class CLIGameController {
         }
         moveAllIntoForgotten();
         playForgottenTurn(passivePlayer);
-        boolean usedArcaneBoost;
-        try {
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
-        } catch (ExhaustedResourceException e) {
-            e.displayMessage();
-            usedArcaneBoost = false;
+        boolean usedArcaneBoost = true;
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(activePlayer);
+            }
         }
-        if (usedArcaneBoost) {
-            handleArcaneBoostCall(activePlayer);
-        }
-        try {
-            usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
-        } catch (ExhaustedResourceException e) {
-            e.displayMessage();
-            usedArcaneBoost = false;
-        }
-        if (usedArcaneBoost) {
-            handleArcaneBoostCall(passivePlayer);
+        usedArcaneBoost = true;
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(passivePlayer);
+            }
         }
     }
 
@@ -636,6 +818,7 @@ public class CLIGameController {
                         finalDie = handleArcanePrism(chosenDie, player);
                     } catch (NoAvailableMovesException e) {
                         e.displayMessage();
+                        continue;
                     }
                     break;
                 }
@@ -791,7 +974,8 @@ public class CLIGameController {
             throw new ExhaustedResourceException("You have no available Time Warps to use.");
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
-                System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?");
+                System.out.println("Hey, " + player.getName() + "!");
+                System.out.println("You have available Arcane Boosts! Would you like to use one of them to attack one of your Realms again?" );
                 System.out.println("You have a total of " + arcaneBoostCount + " Arcane Boost(s).");
                 Dice[] arcaneBoostDice = getArcaneBoostDice(player);
                 handleDiceDisplay(arcaneBoostDice, 4);
@@ -943,7 +1127,6 @@ public class CLIGameController {
         }
         gameBoard.resetGreenPostColorBonus();
         Move[] playerAllMoves= player.getAllPossibleMoves();
-        //System.out.println(playerAllMoves.length);
         ArrayList<Move> result = new ArrayList<>();
         if (dice instanceof ArcanePrism){
             Dice[] possibleDice = {new RedDice(dice.getValue()), gameBoard.getGreen(), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
@@ -984,7 +1167,6 @@ public class CLIGameController {
     }
 
 
-    // makeMove(new player(), new Move(new RedDice(), new Gaia()))
     public boolean makeMove(Player player, Move move)  {
         try {
             Dice diceToBeMovedWith= move.getDice();
@@ -1276,6 +1458,724 @@ public class CLIGameController {
         return output;
     }
 
-}
+    public static void main (String[] args) {
+        CLIGameController cli = new CLIGameController();        
+        // Create instances of Player and GameBoard
+        Player player = new Player(PlayerStatus.ACTIVE);
+        GameBoard board = new GameBoard();
+        board.rollDice();
+        // Call findBestMove
+        Move bestMove = cli.findBestMove(board.getAllDice(),player); // replace with the depth you want
+        // Print the best move
+        Dice[] diceSet = board.getAllDice();
+        for(Dice dice: diceSet){
+            System.out.print(dice.getRealm()+" "+dice.getValue()+" "+cli.evaluateDice(player, dice));
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println(bestMove);
+    }
 
+
+    //AI PART
+
+    // RULE-BASED
+    // TODO special conditions for the last turn
+
+    /*public Dice findSecondLowest(Player player){
+
+        Player pclone=player.clone();       //uhh idk tbh just trying to make a clone again
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        
+        int min=Integer.MAX_VALUE;
+        for(Dice dice: diceSet){
+            if(dice.getValue()<min){
+                    min=dice.getValue();
+            }
+        }
+        boolean flag=false;
+        boolean flagPriority=false;
+        for(Dice dice: diceSet){
+            if(dice.getValue()==min && flag==false){
+                flag=true;
+            }
+            // the following block just checks if theres a dice with the same value in a different realm and if so decides which one to pick based on
+            // their respective priorities. if there is no such dice it just returns the first dice with the 2nd lowest value
+            else if(dice.getValue()>=min && flag==true){
+                int x=dice.getValue();
+
+                for(Dice die: diceSet){
+                    if(die.getValue()==x&&die.getRealm()!=dice.getRealm()){
+                        flagPriority=true;
+                    }
+                }
+                if(flagPriority==false){
+                    return dice;
+                }
+                else{
+                    //TODO PRIORITY HERE
+                }
+
+            }
+        }
+    }*/
+    
+    /*public Dice findHighestPriority(Dice[] diceSet){
+
+    }*/
+
+
+    //kinda like rule-based 
+    public Move findBestMove(Dice[] diceSet,Player player){
+        Move bestMove=null;
+        if(diceSet.length==0) return null;
+        int bestValue=Integer.MIN_VALUE;
+        for(Dice dice: diceSet){
+            int value=evaluateDice(player,dice);
+            if(value>bestValue){
+                bestValue=value;
+                bestMove=new Move(dice,player.getScoreSheet().getCreatureByColor(dice.getRealm()));
+            }
+        }
+        return bestMove;
+    }
+
+
+
+
+
+
+
+
+
+
+    //MAXMAX STUFF
+    public Move findBestMove(Player player,GameBoard board, int depth) {        //add a parameter for the turn number and if its the last turn 
+        // then call th
+        int bestValue = Integer.MIN_VALUE;
+        Move bestMove = null;
+        
+        Player pclone=player.clone();
+
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        Move[] moveSet;
+
+        try {
+            moveSet = getAllPossibleMovesForDiceSet(pclone, diceSet);
+        } catch (NoAvailableMovesException e) {
+            System.out.println("you cant make any moves my guy");
+            return null;
+        }
+
+        Collections.shuffle(Arrays.asList(moveSet));
+        for (Move move : moveSet) {
+            Player playerBeforeMove = player.clone();
+            GameBoard boardBeforeMove = board.clone();
+            try {
+                //red got an error so i added the first condition
+                if(move.getDice().getRealm()!=RealmColor.RED&&move.getCreature().checkMove(move.getDice())){
+                    makeMoveAI(player, move);     //check the invalidmove shit
+                    int boardValue = maxmax(player,board, depth - 1);
+
+                    player = playerBeforeMove;
+                    board = boardBeforeMove;
+
+                    if (boardValue >= bestValue) {
+                    bestValue = boardValue;
+                    bestMove = move;
+
+                    }
+                }
+            } 
+            catch (InvalidMoveException e) {
+                System.out.println("error in the findbestmove method");
+                e.printStackTrace();
+            } 
+
+        }
+        return bestMove;
+    }
+
+    public int maxmax(Player player, GameBoard board, int depth) {
+        Player pclone=player.clone();
+
+        Dice[] diceSet = pclone.getPlayerStatus() == PlayerStatus.ACTIVE ? getAvailableDice() : getForgottenRealmDice();
+        Move[] moveSet;
+
+        try {
+            moveSet = getAllPossibleMovesForDiceSet(pclone, diceSet);
+        } catch (NoAvailableMovesException e) {
+            return evaluate(player, board);
+        }
+
+        if (depth <= 0 || moveSet==null) {
+            return evaluate(player,board);
+        }
+        int maxEval = Integer.MIN_VALUE;
+        int eval=0;
+        
+        Collections.shuffle(Arrays.asList(moveSet));
+        for (Move move : moveSet) {    //dfs sum
+            Player playerBeforeMove = player.clone();
+            GameBoard boardBeforeMove = board.clone();
+            try {
+                if(move.getDice().getRealm()!=RealmColor.RED &&move.getCreature().checkMove(move.getDice())){
+                    makeMoveAI(player,move);                  //should momentarily keep track of the player total score and also the board
+                    eval += maxmax(player,board, depth - 1);    //+=?
+                    // restore the state
+                    player = playerBeforeMove;
+                    board = boardBeforeMove;
+
+                    if(eval>=maxEval){
+                        maxEval=eval;
+                    }
+                }
+            } catch (InvalidMoveException e) {
+                System.out.println("problem in the maxmax method");
+                e.printStackTrace();
+            }
+        }
+            return maxEval;
+    }
+
+    public int evaluate(Player player,GameBoard board){
+        int score =0;
+        //score=player.getGameScore().getTotalScore();
+
+        //Dice[] dice=board.getForgottenRealmDice();
+        //int forgottenRealmScore=evaluateDiceScore(dice);
+        //score-=forgottenRealmScore;
+
+        /*int arcaneBoostCount = 0;
+        for (ArcaneBoost arcaneBoost: player.getArcaneBoosts()) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED)
+                arcaneBoostCount++;
+        }
+        score+=arcaneBoostCount*10;
+
+        int timeWarpCount = 0;
+        for(TimeWarp timeWarp: player.getTimeWarps()){
+            if(timeWarp.getStatus() == RewardStates.ACQUIRED)
+                timeWarpCount++;
+        }
+        score+=timeWarpCount*5;*/
+
+        score+=player.getGameScore().getTotalScore();
+        return score;
+    }
+    public int evaluateDiceScore(Player player,ArrayList<Dice> diceSet){
+        int score=0;
+        for(Dice die: diceSet){
+           score+=evaluateDice(player,die);
+        }
+        return score;
+    }
+    public int evaluateDice(Player player,Dice dice){
+        if(dice==null) return 0;
+        switch (dice.getRealm()) {
+            case RED:
+                return evaluateRedDice(player,dice);
+            case GREEN:
+                return evaluateGreenDice(player,dice);
+            case BLUE:
+                return evaluateBlueDice(player,dice);
+            case MAGENTA:
+                return evaluateMagentaDice(player,dice);
+            case YELLOW:
+                return evaluateYellowDice(player,dice);
+            case WHITE:
+                return evaluateWhiteDice(player,dice);
+            default:
+            return 0;  //idk just smth random  
+        }
+    }
+    public int evaluateRedDice(Player player,Dice dice){
+        //should check if this dice can end a column/row
+        int value=dice.getValue();
+        if(completeRowRed(player,dice)&&completeColumnRed(player,dice)) return 25;
+        if(completeColumnRed(player, dice)) return 20;
+        if(completeRowRed(player, dice)) return 10;
+        if(value==4) return 10;
+        if(value==5) return 8;
+        if(value==6) return 9;
+        if(value==3) return 7;
+        if(value==2) return 4;
+        if(value==1) return 4;
+
+
+        return dice.getValue();
+    }
+    public boolean completeRowRed(Player player,Dice dice){
+        int value=dice.getValue();
+        ScoreSheet scoreSheet=player.getScoreSheet();
+        Dragon dragon= (Dragon) scoreSheet.getCreatureByColor(RealmColor.RED);
+        Dragon[] dragons=dragon.getDragons();
+        int firstCounter=0;
+        int secondCounter=0;
+        int thirdCounter=0;
+        int fourthCounter=0;
+        int missingFirstValue=0;
+        int missingSecondValue=0;
+        int missingThirdValue=0;
+        int missingFourthValue=0;
+        
+        for(int i=0;i<4;i++){
+            if(dragons[i].getFace()==null){
+                firstCounter++;
+            }
+            else{
+                missingFirstValue=dragons[i].getFace();
+            }
+            if(dragons[i].getWings()==null){
+                secondCounter++;
+            }
+            else{
+                missingSecondValue=dragons[i].getWings();
+            }
+            if(dragons[i].getTail()==null){
+                thirdCounter++;
+            }
+            else{
+                missingThirdValue=dragons[i].getTail();
+            }
+            if(dragons[i].getHeart()==null){
+                fourthCounter++;
+            }
+            else{
+                missingFourthValue=dragons[i].getHeart();
+            }
+        }
+        if(firstCounter==3&&value==missingFirstValue){
+            return true;
+        }
+        if(secondCounter==3&&value==missingSecondValue){
+            return true;
+        }
+        if(thirdCounter==3&&value==missingThirdValue){
+            return true;
+        }
+        if(fourthCounter==3&&value==missingFourthValue){
+            return true;
+        }
+        return false;
+    }
+    public boolean completeColumnRed(Player player,Dice dice){
+        int value=dice.getValue();
+        ScoreSheet scoreSheet=player.getScoreSheet();
+        Dragon dragon= (Dragon) scoreSheet.getCreatureByColor(RealmColor.RED);
+        Dragon[] dragons=dragon.getDragons();
+        
+        for(int i=0;i<4;i++){
+            int counter =0;
+            int missingValue=0;
+            if(dragons[i].getFace()==null){
+                counter++;
+            }
+            else{
+                missingValue=dragons[i].getFace();
+            }
+            if(dragons[i].getWings()==null){
+                counter++;
+            }
+            else{
+                missingValue=dragons[i].getWings();
+            }
+            if(dragons[i].getTail()==null){
+                counter++;
+            }
+            else{
+                missingValue=dragons[i].getTail();
+            }
+            if(dragons[i].getHeart()==null){
+                counter++;
+            }
+            else{
+                missingValue=dragons[i].getHeart();
+            }
+
+            if(counter==3&&value==missingValue){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int evaluateGreenDice(Player player, Dice dice){ //problem with adding the white dice
+        int value=dice.getValue();
+        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 20;
+        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 15;
+        if(value==2) return 9;
+        if(value==3) return 7;
+        if(value==4) return 6;
+        if(value==5) return 6;
+        if(value==6) return 5;
+        if(value==7) return 5;
+        if(value==8) return 5;
+        if(value==9) return 10;
+        if(value==10) return 10;
+        if(value==11) return 10;
+        if(value==12) return 10;
+        return 0;
+    }
+    public boolean completeRowGreen(Player player,Dice dice){
+        int value=dice.getValue();
+        ScoreSheet scoreSheet=player.getScoreSheet();
+        Gaia gaia=(Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN);
+        Guardians[][] guardians=gaia.getGuardians();
+        for(int i=0;i<3;i++){
+            int counter=0;
+            int missingValue=0;
+            for(int j=0;j<4;j++){
+                if(!(i==0&&j==0)){
+                    if(guardians[i][j].isDead()){
+                        counter++;
+                    }
+                    else{
+                        missingValue=i*4+j+1;
+                    }
+                }
+            }
+            if(i==0 && counter==2&&value==missingValue){
+                return true;
+            }
+            if(i!=0 &&counter==3&&value==missingValue){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean completeColumnGreen(Player player,Dice dice){
+        int value=dice.getValue();
+        ScoreSheet scoreSheet=player.getScoreSheet();
+        Gaia gaia=(Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN);
+        Guardians[][] guardians=gaia.getGuardians();
+        for(int i=0;i<4;i++){
+            int counter=0;
+            int missingValue=0;
+            for(int j=0;j<3;j++){
+                if(!(i==0&&j==0)){
+                    if(guardians[j][i].isDead()){
+                        counter++;
+                    }
+                    else{
+                        missingValue=j*4+i+1;
+                    }
+                }
+            }
+            if(i==0 && counter==1&&value==missingValue){
+                return true;
+            }
+            if(counter==2&&value==missingValue){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int evaluateBlueDice(Player player,Dice dice){
+        int value=dice.getValue();
+        Move[] moves=getPossibleMovesForADie(player, dice);
+        for(Move move:moves){
+            if(move.getDice().getValue()==value){
+                return 10;
+            }
+        }
+        return 0;
+    }
+
+    public int evaluateMagentaDice(Player player,Dice dice){
+        int value=dice.getValue();
+        ScoreSheet scoreSheet=player.getScoreSheet();
+        Phoenix phoenix=(Phoenix) scoreSheet.getCreatureByColor(RealmColor.MAGENTA);
+        int lastHit=phoenix.getLastHit();
+        if(value==6) return 15;
+        if(lastHit==0) return 10+value;
+        if(value>lastHit) return 12+(lastHit-value);//trying to minimize the difference so we dont make a 1 then 5 for example
+        return 0;
+    }
+
+    public int evaluateYellowDice(Player player, Dice dice){
+        return dice.getValue()+5;
+    }
+
+    public int evaluateWhiteDice(Player player, Dice dice){//problem with the green dice
+        int highestScore=Math.max(evaluateRedDice(player,dice),Math.max(evaluateGreenDice(player,dice),Math.max(evaluateBlueDice(player,dice),
+        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))));
+        return highestScore;
+    }
+
+    public boolean makeMoveAI(Player player, Move move)  {
+        try {
+            Dice diceToBeMovedWith= move.getDice();
+            if (move.getCreature() instanceof Gaia) {
+                GreenDice greenDice = (GreenDice) gameBoard.getGreen();
+                Dice arcanePrism = gameBoard.getWhite();
+                int greenVal = greenDice.getValue();
+                int whiteVal = arcanePrism.getValue();
+                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
+            }
+            boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
+            if (!temp)
+                throw new InvalidMoveException();
+            else {
+                player.updateGameScore();
+                player.updateAllPossibleMoves();
+                return true;
+            }
+        } catch (BonusException bException) {
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
+            RealmColor realmColor1 = bException.getRealmColor1();
+            Dice bonusDice=chooseBonusAI(player,realmColor1);
+            if(bonusDice==null){
+                System.out.println("something wrong with the bonus dice");
+            }
+            Move finalMove=new Move(bonusDice,player.getScoreSheet().getCreatureByColor(bonusDice.getRealm()));
+            makeMoveAI(player, finalMove);
+
+            if (bException.getRealmColor2() != RealmColor.PARENT) {
+                RealmColor realmColor2 = bException.getRealmColor2();
+                Dice bonusDice2=chooseBonusAI(player, realmColor2);
+                if(bonusDice2==null){
+                System.out.println("something wrong with the 2nd bonus dice");
+                }
+                Move finalMove2=new Move(bonusDice2,player.getScoreSheet().getCreatureByColor(bonusDice2.getRealm()));
+                makeMoveAI(player, finalMove2);
+
+            }
+            return true;
+        }
+        catch (InvalidMoveException Im){
+            Im.displayMessage();
+            return false;
+        }
+    }
+
+    public void playRoundAI(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
+        gameBoard.resetGreenPostColorBonus();
+
+        if (!reward.equals("skip"))
+            handleRoundRewardsAI(activePlayer, reward);
+
+        for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
+            boolean valid = playTurnAI(activePlayer, false);
+            if (!valid)
+                break;
+        }
+
+
+        activePlayer.getScoreSheet().displayColoredScoreSheet();
+        System.out.println();
+        moveAllIntoForgotten();
+
+
+        //for the human player
+        playForgottenTurn(passivePlayer);
+        boolean usedArcaneBoost = true;
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(passivePlayer);
+            }
+        }
+    }
+    
+    public void handleRoundRewardsAI(Player player, String reward){
+        switch(reward){
+            case "ArcaneBoost": player.getArcaneBoosts().add(new ArcaneBoost(RewardStates.ACQUIRED)); break;
+            case "TimeWarp":   player.getTimeWarps().add(new TimeWarp(RewardStates.ACQUIRED)); break;
+            case "EssenceBonus": handleBonusAI(player, RealmColor.WHITE); break;
+            case "RedBonus":    handleBonusAI(player, RealmColor.RED); break;
+            case "GreenBonus": handleBonusAI(player, RealmColor.GREEN); break;
+            case "BlueBonus": handleBonusAI(player, RealmColor.BLUE); break;
+            case "MagentaBonus": handleBonusAI(player,RealmColor.MAGENTA); break;
+            case "YellowBonus": handleBonusAI(player, RealmColor.YELLOW); break;
+            default: System.out.println("7azak en el round da mafhoosh bonus");
+        }
+    }
+    
+    public void playRoundHuman(Player activePlayer,Player passivePlayer,String reward, int turnCount){
+        gameBoard.resetGreenPostColorBonus();
+        if (!reward.equals("skip"))
+            handleRoundRewards(activePlayer, reward);
+        for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
+            System.out.println();
+            System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
+            boolean valid = playTurn(activePlayer, false);
+            if (!valid)
+                break;
+        }
+        moveAllIntoForgotten();
+        //ai passive
+
+        Dice[] avDice = gameBoard.getForgottenRealmDice();
+        ScoreSheet scoreSheet = passivePlayer.getScoreSheet();
+        boolean flag=false;
+        ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
+        for(Dice someDice:avDice){
+            try {
+                if(scoreSheet.getCreatureByColor(someDice.getRealm()).checkMove(someDice)){
+                    flag=true;
+                    actuallyAvailableDice.add(someDice);
+                }
+            } catch (InvalidMoveException e) {
+                System.out.println("problem with the playturnai method");
+                e.printStackTrace();
+            }
+        }
+        AI ai=(AI) passivePlayer;
+        if(flag){
+            Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
+            Move aiMove=findBestMove(avDiceArray, passivePlayer);
+            makeMoveAI(passivePlayer, aiMove);
+        }
+
+        boolean usedArcaneBoost = true;
+        while (usedArcaneBoost) {
+            try {
+                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
+            } catch (ExhaustedResourceException e) {
+                e.displayMessage();
+                usedArcaneBoost = false;
+            }
+            if (usedArcaneBoost) {
+                handleArcaneBoostCall(activePlayer);
+            }
+        }
+    }
+
+    public Dice handleBonusAI (Player player,RealmColor realmColor){
+        Dice dice=chooseBonusAI(player, realmColor);
+        Move move=new Move(dice,player.getScoreSheet().getCreatureByColor(realmColor));
+        makeMoveAI(player, move);
+        return dice;
+    }
+    public Dice chooseBonusAI(Player player,RealmColor realmColor){
+        Dice bonusDice=null;
+        switch(realmColor){
+        case RED:
+                    /*boolean flag=false;
+                    for(int i=4;i>=1;i--){
+                        if(flag==true) break;
+                        for(int j=6;j>=1;j--){
+                            RedDice redDice = new RedDice(j);
+                            redDice.selectsDragon(4);
+                            Move redMove = new Move(redDice,player.getScoreSheet().getCreatureByColor(RealmColor.RED));
+                            try {
+                                if(redMove.getCreature().checkMove(redMove.getDice())){
+                                    bonusDice=redMove.getDice();
+                                    flag=true;
+                                    break;
+                                }
+                            } catch (InvalidMoveException e) {
+                                System.out.println("error in the makeMoveAI method red part");
+                                e.printStackTrace();
+                            }
+                        }
+                    }*/
+
+                    //temporary bc red doesnt work
+                    bonusDice=new YellowDice(1);
+                    break;
+                case GREEN:
+                        Dice dice12 = new GreenDice(12);
+                        Dice dice11 = new GreenDice(11);
+                        Dice dice10 = new GreenDice(10);
+                        Dice dice9 = new GreenDice(9);
+                        Dice dice2 = new GreenDice(2);
+                        Dice dice3 = new GreenDice(3);
+                        Dice dice4 = new GreenDice(4);
+                        Dice dice8 = new GreenDice(8);
+                        Dice dice5 = new GreenDice(5);
+                        Dice dice6 = new GreenDice(6);
+                        Dice dice7 = new GreenDice(7);
+                        Move move12= new Move(dice12,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move11= new Move(dice11,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move10= new Move(dice10,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move9= new Move(dice9,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move2= new Move(dice2,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move3= new Move(dice3,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move4= new Move(dice4,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move8= new Move(dice8,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move5= new Move(dice5,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move6= new Move(dice6,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move move7= new Move(dice7,player.getScoreSheet().getCreatureByColor(RealmColor.GREEN));
+                        Move[] moves = {move12,move11,move10,move9,move2,move3,move4,move8,move5,move6,move7};
+                        for(Move m:moves){
+                            try {
+                                if(m.getCreature().checkMove(m.getDice())){
+                                    bonusDice=m.getDice();
+                                    break;
+                                }
+                            } catch (InvalidMoveException e) {
+                                System.out.println("error in the makeMoveAI method green part");
+                                e.printStackTrace();
+                            }
+                        }
+                        break; 
+
+                case BLUE:
+                    bonusDice=new BlueDice(6);
+                    break;
+
+                case MAGENTA:
+                    bonusDice=new MagentaDice(6);
+                    break;
+
+                case YELLOW:
+                    bonusDice=new YellowDice(6);
+                    break;   
+
+                default:
+                    bonusDice=new YellowDice(1);//RANDOM SHIT
+                    System.out.println("error in the switch case");
+                    break;
+        }
+        return bonusDice;
+    }
+
+    public boolean playTurnAI(Player player, boolean isThisATimeWarpRerollCall) {
+        AI ai=(AI) player;
+        gameBoard.resetGreenPostColorBonus();
+        rollDice();
+
+        ArrayList<Dice> avDice = gameBoard.getAvailableDice();
+
+        ScoreSheet scoreSheet = player.getScoreSheet();
+        boolean flag=false;
+        ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
+        for(Dice someDice:avDice){
+            try {
+                if(scoreSheet.getCreatureByColor(someDice.getRealm()).checkMove(someDice)){
+                    flag=true;
+                    actuallyAvailableDice.add(someDice);
+                }
+            } catch (InvalidMoveException e) {
+                System.out.println("problem with the playturnai method");
+                e.printStackTrace();
+            }
+        }
+        if(flag){
+            Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
+            Move aiMove=findBestMove(avDiceArray, player);
+            makeMoveAI(player, aiMove);
+        }        
+        return true;
+    }
+
+    public boolean switchPlayerAI(){
+        try {
+            gameBoard.getPlayer1().switchStatus();
+            gameBoard.getAi().switchStatus();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+        }
+}
 
