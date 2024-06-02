@@ -1,14 +1,15 @@
 package game.engine;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.creatures.Dragon;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.dice.RedDice;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.*;
-import game.gui.DiceRealms;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,6 +22,8 @@ public class GUIGameController extends CLIGameController {
     int currentTurn;
     Exception exception;
     Player currentPlayer;
+    Player arcaneBoostPlayer;
+    boolean canUseArcaneBoost;
 
     public GUIGameController() {
         super();
@@ -29,6 +32,7 @@ public class GUIGameController extends CLIGameController {
         currentRound = 1;
         currentTurn = 1;
         currentPlayer = getPlayer1();
+        canUseArcaneBoost = false;
     }
     @Override
     public void startGame() {}
@@ -60,20 +64,6 @@ public class GUIGameController extends CLIGameController {
             return false;
         }
         return true;
-    }
-
-    public boolean makeBonusMove(Player player, Dice dice) {
-        Move[] allPossibleMoves = getAllPossibleMoves(getActivePlayer());
-        Move move = null;
-        for (int i = 0; i < allPossibleMoves.length; i++) {
-            if (allPossibleMoves[i].compareTo(dice) == 0) {
-                move = allPossibleMoves[i];
-            }
-        }
-        if (Objects.equals(move, null)) {
-            exception = new InvalidMoveException();
-        }
-        return makeMove(player, move);
     }
 
     public Player getPlayer1() {
