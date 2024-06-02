@@ -78,7 +78,15 @@ public class AI extends Player implements Cloneable {
     private ArrayList<Dice> usedArcaneDice;
 
     public AI(PlayerStatus status){
-        super(status);
+        super();
+        this.scoreSheet= new ScoreSheet();
+        this.playerStatus= status;
+        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
+        this.timeWarps=scoreSheet.getAllTimeWarps();
+        this.usedArcaneDice = new ArrayList<>();
+        allPossibleMoves = getAllPossibleMoves();
+        gameScore = new GameScore();
+        playedDice = new ArrayList<>();
     }
     
     public Move[] getAllPossibleMoves(){
