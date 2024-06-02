@@ -112,19 +112,20 @@ public class DiceRealms extends Application {
     }   
     public void openLeftGrimoire() {        
 
-        Player player = guiGameController.getPlayer1();
+        Player player = guiGameController.getActivePlayer();
         String arr [] =getInformation(player); 
 
         TextArea textArea = new TextArea();
-        //textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
         for (String text : arr) {        //uncomment when the string is being passed
             textArea.appendText(text);
         }
         textArea.setWrapText(true); // Optional: Wrap text to fit width
-        textArea.setPrefWidth(550);
+        textArea.setPrefWidth(720);
         textArea.setPrefHeight(779);
-        textArea.setLayoutX(700);
+        textArea.setLayoutX(620);
         textArea.setLayoutY(158);
+        textArea.setStyle("-fx-font-family: 'Monospaced';");
+        textArea.setWrapText(false);
     
         textArea.setEditable(false);// Disable editing in the TextArea
         textArea.getStyleClass().add("grimoire");
@@ -133,21 +134,24 @@ public class DiceRealms extends Application {
 
         ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
         bg.setFitHeight(1280);
-        bg.setFitWidth(981);
-        bg.setLayoutX(461);
+        bg.setFitWidth(1200);
+        bg.setLayoutX(361);
         bg.setLayoutY(-72); 
         
-        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea);
-
         ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
         close.setFitHeight(120);
         close.setFitWidth(120);
-        close.setLayoutX(1142);
-        close.setLayoutY(34);
+        close.setLayoutX(1275);
+        close.setLayoutY(80);
         
-        close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});
+        sceneController.boardScene.addToAnchorPane(bg, textArea, close);
+
+        close.setOnMouseClicked(e -> {
+            sceneController.boardScene.removeFromAnchorPane(bg, textArea, close);
+          //  sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(event -> openLeftGrimoire());  
+        });
         
-        sceneController.boardScene.anchorPane.getChildren().addAll(close);
+        //sceneController.boardScene.anchorPane.getChildren().addAll(close);
             
     }      
 
@@ -172,7 +176,7 @@ public class DiceRealms extends Application {
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  // will be passed a string array containing what to be displayed
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->  {System.out.println("LeftGrimoire clicked"); openLeftGrimoire();});  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
@@ -333,6 +337,7 @@ public class DiceRealms extends Application {
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
@@ -346,16 +351,28 @@ public class DiceRealms extends Application {
             if (exception instanceof BonusException) {
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
-                while (awaitingInput) {
-                    Thread.onSpinWait();
-                }
+                new Thread(() -> {
+                    while (awaitingInput) {
+                        try {
+                            Thread.sleep(100); // Avoid busy-waiting
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
                 if (!((BonusException)exception).getRealmColor2().equals(RealmColor.PARENT))
                     handleBonus(((BonusException)exception).getRealmColor2());
 
-                while (awaitingInput) {
-                    Thread.onSpinWait();
-                }
+                new Thread(() -> {
+                    while (awaitingInput) {
+                        try {
+                            Thread.sleep(100); // Avoid busy-waiting
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
                 return true;
             }
@@ -376,14 +393,12 @@ public class DiceRealms extends Application {
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
             primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
-            System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
             return true;
         }
         if (callLayer == 0) {
             if (arcaneValue != -1){
                 arcaneValue = -1;
                 guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
-                System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
             }
             else
                 guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
@@ -402,7 +417,7 @@ public class DiceRealms extends Application {
                     sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
                     primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
                     initDiceEventListeners();
-                    handleReward(guiGameController.getRewardHandle());
+                    handleReward(guiGameController.getCurrentRound());
                     return true;
                 }
                 while (guiGameController.getCurrentTurn() != -1) {
@@ -433,7 +448,8 @@ public class DiceRealms extends Application {
                     initDiceEventListeners();
                     try {
                         Move[] possible = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
-                        System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
+                        if (possible.length == 0)
+                            throw new NoAvailableMovesException("");
                     } catch (NoAvailableMovesException e) {
                         Dialog<String> dialog = new Dialog<>();
                         dialog.setTitle("Select an Option");
@@ -442,7 +458,6 @@ public class DiceRealms extends Application {
                         tmp.setOnAction(event -> dialog.setResult("placeholder"));
                         dialog.getDialogPane().setContent(tmp);
                         dialog.showAndWait();
-                        System.out.println("Meow1!");
                         oldRoundCount = guiGameController.getCurrentRound();
                         guiGameController.incrementTurnCount();
                         newRoundCount = guiGameController.getCurrentRound();
@@ -489,7 +504,7 @@ public class DiceRealms extends Application {
             //end the game
         }
         else if (newRoundCount != oldRoundCount) {
-            handleReward(guiGameController.getRewardHandle());
+            handleReward(guiGameController.getCurrentRound());
         }
     }
 
