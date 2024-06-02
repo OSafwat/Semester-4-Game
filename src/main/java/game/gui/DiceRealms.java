@@ -240,7 +240,8 @@ public class DiceRealms extends Application {
         sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
         sceneController.getArcaneDice().setOnMouseClicked(e -> {
             handleArcanePrism();
-            sceneController.initDragons(guiGameController.getDragonPaths());
+            sceneController.changeDragons(guiGameController.getDragonPaths());
+            initDragonEventListeners();
             sceneController.initGaiaGuardians(guiGameController.getGreenCount());
             //setupRealmScene("Blue");
             sceneController.initPhoenix(guiGameController.getMagentaCount());
