@@ -198,15 +198,6 @@ public class GUIGameController extends CLIGameController {
         return 0;
     }
 
-    public int getRewardHandle() {
-        if (currentPlayer.getPlayerStatus().equals(getPlayer1().getPlayerStatus())) {
-            System.out.println("eowasd");
-            return currentRound - 1;
-        }
-        else
-            return currentRound;
-    }
-
     public int getMaxRounds() {
         return maxRounds;
     }
