@@ -49,10 +49,10 @@ public class GreenScene extends RealmScene {
 
     public void changeGreenSceneView(String path) {
         try {
-            backgroundView.setImage(new Image(path));
+            backgroundView.setImage(new Image(getClass().getResourceAsStream(path)));
             if (!root.getChildren().contains(gaurdian)) root.getChildren().add(gaurdian);
         } catch (NullPointerException e) {
-            backgroundView.setImage(new Image("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp"));
+            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp")));
             if (root.getChildren().contains(gaurdian)) root.getChildren().remove(gaurdian);
         }
     }

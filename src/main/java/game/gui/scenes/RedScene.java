@@ -217,7 +217,7 @@ public class RedScene extends RealmScene {
                     currentDragon = dragon1;
             }
             try {
-                currentDragon.setImage(new Image(path));
+                currentDragon.setImage(new Image(getClass().getResourceAsStream(path)));
                 if (!root.getChildren().contains(currentDragon)) root.getChildren().add(currentDragon);
             } catch (NullPointerException e) {
                 deadDragons += 1;
@@ -225,7 +225,7 @@ public class RedScene extends RealmScene {
             }
         }
 
-        if (deadDragons == 4) backgroundView.setImage(new Image("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp"));
+        if (deadDragons == 4) backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp")));
     }
 
     public ImageView getDragon1() {
