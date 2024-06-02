@@ -132,16 +132,16 @@ public class Dragon extends Creature {
         for (int i = 0; i < 4; i++)
         {
             if (!Objects.equals(dragons[i].face, null)) {
-                allPossibleMoves.add(new Move(new RedDice(dragons[i].face, i), this));
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].face, i+1), this));
             }
             if (!Objects.equals(dragons[i].wings, null)) {
-                allPossibleMoves.add(new Move(new RedDice(dragons[i].wings, i), this));
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].wings, i+1), this));
             }
             if (!Objects.equals(dragons[i].tail, null)) {
-                allPossibleMoves.add(new Move(new RedDice(dragons[i].tail, i), this));
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].tail, i+1), this));
             }
             if (!Objects.equals(dragons[i].heart, null)) {
-                allPossibleMoves.add(new Move(new RedDice(dragons[i].heart, i), this));
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].heart, i+1), this));
             }
         }
     }
