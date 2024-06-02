@@ -679,8 +679,8 @@ public class DiceRealms extends Application {
             case "red": sceneController.initDragons(guiGameController.getDragonPaths()); initDragonEventListeners(); scene = sceneController.redScene.getScene();break;
             case "green": sceneController.initGaiaGuardians(guiGameController.getGreenCount()); ;scene = sceneController.greenScene.getScene(); break;
             case "blue": scene = sceneController.blueScene.getScene(); break;
-            case "magenta": scene = sceneController.magentaScene.getScene(); break;
-            case "yellow": scene = sceneController.yellowScene.getScene(); break;
+            case "magenta": sceneController.initPhoenix(guiGameController.getMagentaCount()); ;scene = sceneController.magentaScene.getScene(); break;
+            case "yellow": sceneController.initLions(guiGameController.getYellowCount()); ;scene = sceneController.yellowScene.getScene(); break;
 
 
             default: scene = null;
