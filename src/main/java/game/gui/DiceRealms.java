@@ -613,6 +613,8 @@ public class DiceRealms extends Application {
                 handleBonus(RealmColor.MAGENTA);
             else if (currentReward.toLowerCase().contains("yellow"))
                 handleBonus(RealmColor.YELLOW);
+            else
+                handleBonus(RealmColor.WHITE);
         }
         else
             guiGameController.handleRoundRewards(guiGameController.getCurrentPlayer(), currentReward);
