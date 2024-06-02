@@ -286,25 +286,49 @@ public class DiceRealms extends Application {
         RealmColor realmColor;
         Dice currDice = null;
         Creature creature;
-
-        switch (num) {
-            case 1:
-                currDice = new RedDice(guiGameController.getAllDice()[0].getValue(), guiGameController.getSelectedDragon());
-                break;
-            case 2:
-                currDice = new GreenDice(guiGameController.getAllDice()[1].getValue());
-                break;
-            case 3:
-                currDice = new BlueDice(guiGameController.getAllDice()[2].getValue());
-                break;
-            case 4:
-                currDice = new MagentaDice(guiGameController.getAllDice()[3].getValue());
-                break;
-            case 5:
-                currDice = new YellowDice(guiGameController.getAllDice()[4].getValue());
-                break;
-            default:
-                return false;
+        if (isArcaneBoostPower) {
+            callLayer = -1;
+            //1 red, 2 green, 3 blue, 4 magenta, 5 yellow
+            Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(arcanePlayer);
+            for (int i = 0; i < arcaneBoostDice.length; i++) {
+                if (num == 1 && arcaneBoostDice[i].getRealm().equals(RealmColor.RED))
+                {
+                    currDice = new RedDice(arcaneBoostDice[i].getValue(), guiGameController.getSelectedDragon());
+                }
+                else if (num == 2 && arcaneBoostDice[i].getRealm().equals(RealmColor.GREEN)) {
+                    currDice = new GreenDice(arcaneBoostDice[i].getValue());
+                }
+                else if (num == 3 && arcaneBoostDice[i].getRealm().equals(RealmColor.BLUE)) {
+                    currDice = new BlueDice(arcaneBoostDice[i].getValue());
+                }
+                else if (num == 4 && arcaneBoostDice[i].getRealm().equals(RealmColor.MAGENTA)) {
+                    currDice = new MagentaDice(arcaneBoostDice[i].getValue());
+                }
+                else if (num == 5 && arcaneBoostDice[i].getRealm().equals(RealmColor.YELLOW)) {
+                    currDice = new YellowDice(arcaneBoostDice[i].getValue());
+                }
+            }
+        }
+        else {
+            switch (num) {
+                case 1:
+                    currDice = new RedDice(guiGameController.getAllDice()[0].getValue(), guiGameController.getSelectedDragon());
+                    break;
+                case 2:
+                    currDice = new GreenDice(guiGameController.getAllDice()[1].getValue());
+                    break;
+                case 3:
+                    currDice = new BlueDice(guiGameController.getAllDice()[2].getValue());
+                    break;
+                case 4:
+                    currDice = new MagentaDice(guiGameController.getAllDice()[3].getValue());
+                    break;
+                case 5:
+                    currDice = new YellowDice(guiGameController.getAllDice()[4].getValue());
+                    break;
+                default:
+                    return false;
+            }
         }
         int saveOldWhiteValue = -1;
         int saveOldGreenValue = -1;
