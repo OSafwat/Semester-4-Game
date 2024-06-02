@@ -34,17 +34,27 @@ public class BoardScene{
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
     ImageView leftGrimoire;
-    ImageView timeWarpButton;
-    ImageView arcaneBoostButton;
+    ImageView player1TimeWarpButton;
+    ImageView player1ArcaneBoostButton;
+    ImageView player2TimeWarpButton;
+    ImageView player2ArcaneBoostButton;
     Label infoLabel;
     public AnchorPane anchorPane;
 
-    public ImageView getTimeWarpButton() {
-        return timeWarpButton;
+    public ImageView getPlayer1TimeWarpButton() {
+        return player1TimeWarpButton;
     }
 
-    public ImageView getArcaneBoostButton() {
-        return arcaneBoostButton;
+    public ImageView getPlayer1ArcaneBoostButton() {
+        return player1ArcaneBoostButton;
+    }
+
+    public ImageView getPlayer2TimeWarpButton() {
+        return player2TimeWarpButton;
+    }
+
+    public ImageView getPlayer2ArcaneBoostButton() {
+        return player2ArcaneBoostButton;
     }
 
     public void makeboardScene(String[] dicePNGs) {
@@ -122,6 +132,11 @@ public class BoardScene{
         wizardHat.setFitWidth(200);
         wizardHat.setLayoutX(834);
         wizardHat.setLayoutY(14);
+
+        player1TimeWarpButton = new ImageView();
+        player1ArcaneBoostButton = new ImageView();
+        player2TimeWarpButton = new ImageView();
+        player2ArcaneBoostButton = new ImageView();
 
         // Add all ImageView nodes to the AnchorPane
         anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire, wizardHat, infoLabel);
