@@ -9,12 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class MagentaScene extends RealmScene {
-    private ImageView phoenix;
+    private ImageView phoenix, backgroundView;
     @Override
     public void createScene() {
         root = new AnchorPane();
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mysitcal_Sky.png")));
+        backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mysitcal_Sky.png")));
         phoenix = new ImageView(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/MajesticPhoenix.png")));
 
          // DropShadow effect
@@ -44,8 +44,15 @@ public class MagentaScene extends RealmScene {
         super.createScene();
     }
 
+    public void changeMagentaSceneBackgroundView(String path) {
+        try {
+            backgroundView.setImage(new Image(path));
+        } catch (NullPointerException e) {
+            backgroundView.setImage(new Image("/images/MagentaRealmImages/Mystical_Sky_Destroyed.webp"));
+        }
+    }
+
     public ImageView getPhoenix() {
         return phoenix;
     }
-
 }
