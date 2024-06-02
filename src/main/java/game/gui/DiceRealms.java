@@ -1,16 +1,12 @@
 package game.gui;
 import game.creatures.Creature;
-import game.dice.BlueDice;
-import game.dice.Dice;
-import game.dice.GreenDice;
-import game.dice.MagentaDice;
-import game.dice.RedDice;
-import game.dice.YellowDice;
+import game.dice.*;
 import game.engine.GUIGameController;
 import game.engine.Move;
 import game.engine.Player;
 import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
+import game.exceptions.ExhaustedResourceException;
 import game.exceptions.NoAvailableMovesException;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,6 +30,7 @@ public class DiceRealms extends Application {
     int wasEssenceBonus;
     int bonusValue;
     volatile boolean awaitingInput;
+    boolean isArcaneBoostPower;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -50,6 +47,7 @@ public class DiceRealms extends Application {
 
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
+        isArcaneBoostPower = false;
         wasEssenceBonus = 0;
         bonusRealmColor = RealmColor.PARENT;
         awaitingInput = false;
@@ -180,7 +178,7 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         initDiceEventListeners();
-        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0));
+        sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0, null));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
         sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
@@ -188,25 +186,27 @@ public class DiceRealms extends Application {
         sceneController.getBlueRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
-        sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0));
-        sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0));
+        sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
+        sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
+        //sceneController.getTimeWarpButton().setOnMouseClicked(e -> timeWarpSequence());
+        //sceneController.getArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence());
         initDragonEventListeners();
         //To-Do
 
         sceneController.getFace().setOnMouseClicked(e -> {
-            handleMove(1,0, guiGameController.getValue("face"));
+            handleMove(1,0, guiGameController.getValue("face"), null);
             sceneController.closeDragonPartSelectionMenu();
         });
         sceneController.getWings().setOnMouseClicked(e -> {
-            handleMove(1,0, guiGameController.getValue("wings"));
+            handleMove(1,0, guiGameController.getValue("wings"), null);
             sceneController.closeDragonPartSelectionMenu();
         });
         sceneController.getTail().setOnMouseClicked(e -> {
-            handleMove(1,0, guiGameController.getValue("tail"));
+            handleMove(1,0, guiGameController.getValue("tail"), null);
             sceneController.closeDragonPartSelectionMenu();
         });
         sceneController.getHeart().setOnMouseClicked(e -> {
-            handleMove(1,0, guiGameController.getValue("heart"));
+            handleMove(1,0, guiGameController.getValue("heart"), null);
             sceneController.closeDragonPartSelectionMenu();
         });
 
@@ -255,7 +255,7 @@ public class DiceRealms extends Application {
     public void handleArcanePrism() {
         Scene scene;
 
-        int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
+        int whiteVal = isArcaneBoostPower ? guiGameController.getArcaneBoostDice(guiGameController.getArcaneBoostPlayer())[5].getValue() : guiGameController.getGameBoard().getWhite().getValue();
         Dice [] dietmp= {new RedDice(whiteVal), new GreenDice(guiGameController.getGameBoard().getGreen().getValue()), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
         String [] tmp = getDicePNGs(dietmp);
         ArrayList<String> dicePaths = new ArrayList<>();
@@ -281,10 +281,10 @@ public class DiceRealms extends Application {
         primaryStage.setScene(scene);
     }
 
-    public boolean handleMove(int num, int callLayer, int dragonPart) {
+    public boolean handleMove(int num, int callLayer, int dragonPart, Player arcanePlayer) {
         //change this later
         RealmColor realmColor;
-        Dice currDice;
+        Dice currDice = null;
         Creature creature;
 
         switch (num) {
@@ -322,6 +322,12 @@ public class DiceRealms extends Application {
                 default: return false;
             }
         }
+        else if (isArcaneBoostPower && currDice.getRealm().equals(RealmColor.GREEN)) {
+            saveOldWhiteValue = guiGameController.getAllDice()[5].getValue();
+            saveOldGreenValue = guiGameController.getAllDice()[1].getValue();
+            guiGameController.getAllDice()[5].setValue(0);
+            guiGameController.getAllDice()[1].setValue(saveOldWhiteValue + saveOldGreenValue);
+        }
         realmColor = currDice.getRealm();
         creature = guiGameController.getCurrentPlayer().getScoreSheet().getCreatureByColor(realmColor);
         if (currDice instanceof RedDice) {
@@ -335,8 +341,10 @@ public class DiceRealms extends Application {
             }
         }
         Player player = guiGameController.getCurrentPlayer();
+        if (isArcaneBoostPower)
+            player = arcanePlayer;
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-        System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
+        System.out.println(player.getScoreSheet().toString());
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
@@ -348,6 +356,7 @@ public class DiceRealms extends Application {
             arcaneValue = -1;
             primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
             if (exception instanceof BonusException) {
+                isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
                 new Thread(() -> {
@@ -376,6 +385,10 @@ public class DiceRealms extends Application {
                 return true;
             }
             else {
+                if (isArcaneBoostPower) {
+                    guiGameController.restoreArcaneBoost(arcanePlayer);
+                }
+                isArcaneBoostPower = false;
                 //put in a popup that tells the user that he has done an illegal move
                 illegalMoveAlert();
                 //logic here
