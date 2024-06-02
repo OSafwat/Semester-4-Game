@@ -62,6 +62,36 @@ public class RedScene extends RealmScene {
         dragon3 = createDragon(paths[2], 1149, 493);
         dragon4 = createDragon(paths[3], 668, 619);
 
+
+        
+         // DropShadow effect
+         DropShadow dropShadow = new DropShadow();
+         dropShadow.setRadius(10);
+         dropShadow.setOffsetX(5);
+         dropShadow.setOffsetY(5);
+         dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+ 
+         
+ 
+         // Add glow effect on hover
+         Glow glow = new Glow(0.7);
+         
+         dragon1.setEffect(dropShadow);
+         dragon1.setOnMouseEntered(event -> dragon1.setEffect(glow));
+         dragon1.setOnMouseExited(event -> dragon1.setEffect(dropShadow));
+
+         dragon2.setEffect(dropShadow);
+         dragon2.setOnMouseEntered(event -> dragon2.setEffect(glow));
+         dragon2.setOnMouseExited(event -> dragon2.setEffect(dropShadow));
+         
+         dragon3.setEffect(dropShadow);
+         dragon3.setOnMouseEntered(event -> dragon3.setEffect(glow));
+         dragon3.setOnMouseExited(event -> dragon3.setEffect(dropShadow));
+
+         dragon4.setEffect(dropShadow);
+         dragon4.setOnMouseEntered(event -> dragon4.setEffect(glow));
+         dragon4.setOnMouseExited(event -> dragon4.setEffect(dropShadow));
+
         dragon1.setOnMouseClicked(event -> showDragonPartSelectionMenu());
         dragon2.setOnMouseClicked(event -> showDragonPartSelectionMenu());
         dragon3.setOnMouseClicked(event -> showDragonPartSelectionMenu());

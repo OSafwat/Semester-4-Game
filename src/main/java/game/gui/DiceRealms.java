@@ -116,15 +116,18 @@ public class DiceRealms extends Application {
         String arr [] =getInformation(player); 
 
         TextArea textArea = new TextArea();
-        //textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
+        //textArea.setText(player.getScoreSheet().toString());
+        System.out.println(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString());
         for (String text : arr) {        //uncomment when the string is being passed
             textArea.appendText(text);
         }
         textArea.setWrapText(true); // Optional: Wrap text to fit width
-        textArea.setPrefWidth(550);
+        textArea.setPrefWidth(720);
         textArea.setPrefHeight(779);
-        textArea.setLayoutX(700);
+        textArea.setLayoutX(620);
         textArea.setLayoutY(158);
+        textArea.setStyle("-fx-font-family: 'Monospaced';");
+        textArea.setWrapText(false);
     
         textArea.setEditable(false);// Disable editing in the TextArea
         textArea.getStyleClass().add("grimoire");
@@ -133,21 +136,21 @@ public class DiceRealms extends Application {
 
         ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
         bg.setFitHeight(1280);
-        bg.setFitWidth(981);
-        bg.setLayoutX(461);
+        bg.setFitWidth(1200);
+        bg.setLayoutX(361);
         bg.setLayoutY(-72); 
         
-        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea);
-
         ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
         close.setFitHeight(120);
         close.setFitWidth(120);
-        close.setLayoutX(1142);
-        close.setLayoutY(34);
+        close.setLayoutX(1275);
+        close.setLayoutY(80);
         
+        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea, close);
+
         close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});
         
-        sceneController.boardScene.anchorPane.getChildren().addAll(close);
+        //sceneController.boardScene.anchorPane.getChildren().addAll(close);
             
     }      
 
@@ -172,7 +175,7 @@ public class DiceRealms extends Application {
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  // will be passed a string array containing what to be displayed
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
