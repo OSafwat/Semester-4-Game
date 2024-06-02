@@ -500,7 +500,7 @@ public class DiceRealms extends Application {
             //end the game
         }
         else if (newRoundCount != oldRoundCount) {
-            handleReward(guiGameController.getRewardHandle());
+            handleReward(guiGameController.getCurrentRound());
         }
     }
 
