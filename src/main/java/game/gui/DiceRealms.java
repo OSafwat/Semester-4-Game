@@ -581,17 +581,14 @@ public class DiceRealms extends Application {
             Button tmp = new Button();
             ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(path + color + "/" + greenBonus + color.toLowerCase() + " dice " + i + ".png")));
 
-                tempImage.setFitHeight(150);
-                tempImage.setFitWidth(150);
-                tmp.setGraphic(tempImage);
-                String value = " " + i;
-                tmp.setOnAction(event -> bonusDialog.setResult(color + value));
-                buttons.add(tmp);
-            }
-            return buttons;
-
+            tempImage.setFitHeight(150);
+            tempImage.setFitWidth(150);
+            tmp.setGraphic(tempImage);
+            String value = " " + i;
+            tmp.setOnAction(event -> bonusDialog.setResult(color + value));
+            buttons.add(tmp);
         }
-        return null;
+        return buttons;
     }
 
     public boolean checkRealmValidity(String realm) {
