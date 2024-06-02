@@ -124,7 +124,10 @@ public class GUIGameController extends CLIGameController {
     }
 
     public Exception getException() {
-        return new Exception(exception);
+        if (exception instanceof BonusException)
+            return new BonusException(((BonusException)exception).getRealmColor1(), ((BonusException)exception).getRealmColor2());
+        else
+            return new InvalidMoveException();
     }
 
     public void incrementTurnCount () {
