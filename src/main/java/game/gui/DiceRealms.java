@@ -81,35 +81,50 @@ public class DiceRealms extends Application {
         return dicePNGs;
     }
 
-
+    public String [] getInformation(Player player){
+        String arr []= new String[5];
+        arr[0]= "Player Name is: "+player.getName();
+        arr[1]= player.getScoreSheet().toString();
+        int [] tmp = player.getScoreSheet().getScores();
+        arr[2] = "Score in Red: "+tmp[0] + "\nScore in Green: "+ tmp[1]+"\nScore in Blue: "+ tmp[2]+"\nScore in Magenta: "+ tmp[3]+"\nScore in Yellow: "+ tmp[4]+"\n";
+        arr[3]="The number of ArcaneBoosts acquired is:"+ player.getArcaneBoostsNum();
+        arr[4]="\nThe number of TimeWarps acquired is:"+ player.getArcaneBoostsNum();
+        return arr;
+    
+    }   
     public void openLeftGrimoire() {        
+
+        Player player = guiGameController.getPlayer1();
+        String arr [] =getInformation(player); 
+
         TextArea textArea = new TextArea();
-        textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
-        // for (String text : arr) {        //uncomment when the string is being passed
-        //     textArea.appendText(text);
-        // }
+        //textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
+        for (String text : arr) {        //uncomment when the string is being passed
+            textArea.appendText(text);
+        }
         textArea.setWrapText(true); // Optional: Wrap text to fit width
-        textArea.setPrefWidth(387);
+        textArea.setPrefWidth(550);
         textArea.setPrefHeight(779);
-        textArea.setLayoutX(761);
-        textArea.setLayoutY(72);
+        textArea.setLayoutX(700);
+        textArea.setLayoutY(158);
     
         textArea.setEditable(false);// Disable editing in the TextArea
-    
-        textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
-    
+        textArea.getStyleClass().add("grimoire");
+       // textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
+        textArea.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+
         ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
-        bg.setFitHeight(1134);
-        bg.setFitWidth(712);
-        bg.setLayoutX(589);
-        bg.setLayoutY(-89); 
+        bg.setFitHeight(1280);
+        bg.setFitWidth(981);
+        bg.setLayoutX(461);
+        bg.setLayoutY(-72); 
         
         sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea);
 
         ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
         close.setFitHeight(120);
         close.setFitWidth(120);
-        close.setLayoutX(1068);
+        close.setLayoutX(1142);
         close.setLayoutY(34);
         
         close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});

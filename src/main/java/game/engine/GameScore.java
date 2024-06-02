@@ -16,6 +16,9 @@ public class GameScore {
     int getElementalCrestCounter() {
         return elementalCrestCounter;
     }
+    public int [] getScores(){
+        return allScores;
+    }
 
     int getRedRealmScore() {
         return allScores[0];
