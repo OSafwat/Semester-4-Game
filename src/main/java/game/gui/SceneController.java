@@ -177,6 +177,14 @@ public class SceneController {
         magentaScene.changeMagentaSceneView(path);
     }
 
+    public ImageView getTimeWarpButton() {
+        return boardScene.getTimeWarpButton();
+    }
+
+    public ImageView getArcaneBoostButton() {
+        return boardScene.getArcaneBoostButton();
+    }
+
     public void changeDragons(String[] paths) {
         redScene.changeRedSceneView(paths);
     }
