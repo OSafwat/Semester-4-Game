@@ -47,9 +47,14 @@ public class YellowScene extends RealmScene {
 
     public void changeYellowSceneBackgroundView(String path) {
         try {
-            backgroundView.setImage(new Image(path));
+            lion.setImage(new Image(path));
+            if (!root.getChildren().contains(lion)) root.getChildren().add(lion);
         } catch (NullPointerException e) {
             backgroundView.setImage(new Image("/images/YellowRealmImages/Radiant_Savanna_Destroyed.webp"));
+            if (root.getChildren().contains(lion)) {
+                root.getChildren().clear();
+                root.getChildren().addAll(backgroundView, getGoBackButton());
+            }
         }
     }
 
