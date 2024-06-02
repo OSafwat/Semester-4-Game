@@ -11,7 +11,7 @@ public class RedDice extends Dice{
     }
     public RedDice(int num, int dragonNumber) {
         super(num);
-        this.dragonNumber = dragonNumber;
+        this.dragonNumber = dragonNumber-1;
     }
     public RealmColor getRealm(){return RealmColor.RED;}
     public void selectsDragon(int dragonNumber) {

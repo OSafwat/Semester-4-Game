@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -34,7 +35,7 @@ public class BoardScene{
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
     ImageView leftGrimoire;
     Label infoLabel;
-    AnchorPane anchorPane;
+    public AnchorPane anchorPane;
 
     public void makeboardScene(String[] dicePNGs) {
         infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
@@ -57,32 +58,32 @@ public class BoardScene{
             imagePaths.add(temp);
             temp.setFitHeight(150);
             temp.setFitWidth(150);
-            if (imageString.contains("red")){
+            if (imageString.toLowerCase().contains("red")){
                 redDice=temp;
                 temp.setLayoutX(408);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("blue")){
+            else if (imageString.toLowerCase().contains("blue")){
                 blueDice= temp;
                 temp.setLayoutX(884);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("green")){
+            else if (imageString.toLowerCase().contains("green")){
                 greenDice = temp;
                 temp.setLayoutX(661);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("magenta")){
+            else if (imageString.toLowerCase().contains("magenta")){
                 magentaDice = temp;
                 temp.setLayoutX(1148);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("yellow")){
+            else if (imageString.toLowerCase().contains("yellow")){
                 yellowDice= temp;
                 temp.setLayoutX(1363);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("white")){
+            else if (imageString.toLowerCase().contains("white") || imageString.toLowerCase().contains("arcane")){
                 arcaneDice = temp;
                 arcaneDice.setLayoutX(884);
                 arcaneDice.setLayoutY(624);
@@ -225,7 +226,15 @@ public class BoardScene{
         return leftGrimoire;
     }
 
-    public void addToAnchorPane(StackPane stackPane) {
-        anchorPane.getChildren().add(stackPane);
+    public void addToAnchorPane(StackPane miniRoot) {
+        anchorPane.getChildren().addAll(miniRoot);
+        //anchorPane.getChildren().add(close);
+    }
+    public void addToAnchorPane(ImageView bg, TextArea textarea) {
+        anchorPane.getChildren().addAll(bg, textarea);
+        //anchorPane.getChildren().add(close);
+    }
+    public void removeFromAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
+        anchorPane.getChildren().removeAll(bg, textarea, close);
     }
 }

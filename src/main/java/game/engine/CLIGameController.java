@@ -622,8 +622,6 @@ public class CLIGameController {
         moveAllIntoForgotten();
         playForgottenTurn(passivePlayer);
         boolean usedArcaneBoost = true;
-        if (reward.equals("ArcaneBoost"))
-            handleRoundRewards(passivePlayer, reward);
         while (usedArcaneBoost) {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
@@ -1458,6 +1456,12 @@ public class CLIGameController {
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();        
         // Create instances of Player and GameBoard
+        Player player = new Player(PlayerStatus.ACTIVE);
+        GameBoard board = new GameBoard();
+        // Call findBestMove
+        Move bestMove = cli.findBestMove(player, board, 10); // replace with the depth you want
+        // Print the best move
+        System.out.println(bestMove);
     }
 
 
@@ -1905,9 +1909,7 @@ public class CLIGameController {
                 case YELLOW:
                     bonusDice=new YellowDice(6);
                     break;   
-                case WHITE:
-                    bonusDice=new MagentaDice(6);//TODO OPTIMIZE
-                    break;
+
                 default:
                     bonusDice=new YellowDice(1);//RANDOM SHIT
                     System.out.println("error in the switch case");

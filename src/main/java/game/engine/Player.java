@@ -98,7 +98,22 @@ public class Player implements Cloneable {
     public void addToUsedArcaneDice(Dice die) {
         usedArcaneDice.add(die);
     }
-
+    public int getArcaneBoostsNum(){
+        int counter=0;
+        for (ArcaneBoost tmp : this.arcaneBoosts) {
+            if (tmp.getStatus() == RewardStates.ACQUIRED  )
+                counter++;
+        }
+        return counter;
+    }
+    public int getTimeWarpsNum(){
+        int counter=0;
+        for (TimeWarp tmp : this.timeWarps) {
+            if (tmp.getStatus() == RewardStates.ACQUIRED  )
+                counter++;
+        }
+        return counter;
+    }
 
     //ai
     @Override

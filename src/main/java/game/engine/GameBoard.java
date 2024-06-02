@@ -138,7 +138,12 @@ public class GameBoard implements Cloneable{
         availableDice.addAll(Arrays.asList(allDice));
     }
     void removeFromAvailable(Dice die){
-        availableDice.remove(die);
+        ArrayList<Dice> newAvailableDice = new ArrayList<>();
+        for (Dice dice: availableDice) {
+            if (dice.compareTo(die) != 0)
+                newAvailableDice.add(dice);
+        }
+        availableDice = newAvailableDice;
     }
 
     @Override

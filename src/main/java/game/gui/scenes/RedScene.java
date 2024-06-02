@@ -31,15 +31,16 @@ public class RedScene extends RealmScene {
 
     private ImageView dragon1, dragon2, dragon3, dragon4;
     private ImageView dragonFace, dragonWings, dragonTail, dragonHeart;
+    private ImageView backgroundView;
     Player currentPlayer = new Player(PlayerStatus.ACTIVE);
-    private boolean isPopupOpen = false;
     private AnchorPane dragonPartSelectionMenu;
     public Button closeDragonPartSelectionMenuButton;
+    Stage dragonPartSelectionMenuDialogueStage;
 
     @Override
     public void createScene() {
         root = new AnchorPane();
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/Emberfall-Dominion.png")));
+        backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/RedRealmImages/Emberfall-Dominion.png")));
 
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
@@ -74,21 +75,7 @@ public class RedScene extends RealmScene {
         ImageView imageView = new ImageView(image);
         imageView.setX(x);
         imageView.setY(y);
-        imageView.setOnMouseClicked(this::handleDragonClick);
         return imageView;
-    }
-
-    private void handleDragonClick(MouseEvent event) {
-        ImageView dragon = (ImageView) event.getSource();
-        showAttackPopup("You attacked the dragon");
-    }
-
-    private void showAttackPopup(String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Attack Result");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void initDragonPartSelectionMenu() {
@@ -176,17 +163,55 @@ public class RedScene extends RealmScene {
         AnchorPane.setTopAnchor(vbox, centerY);
 
         dragonPartSelectionMenu.getChildren().add(closeDragonPartSelectionMenuButton);
+
+        dragonPartSelectionMenuDialogueStage = new Stage();
+        dragonPartSelectionMenuDialogueStage.initModality(Modality.WINDOW_MODAL);
+        dragonPartSelectionMenuDialogueStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
+        closeDragonPartSelectionMenuButton.setOnAction(event -> closeDragonPartSelectionMenu());
+        Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
+
+        dragonPartSelectionMenuDialogueStage.setScene(dialogScene);
     }
 
     public void showDragonPartSelectionMenu() {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initStyle(StageStyle.UNDECORATED); // Remove title bar
-        closeDragonPartSelectionMenuButton.setOnAction(event -> dialogStage.close());
-        Scene dialogScene = new Scene(dragonPartSelectionMenu, 1920, 1080);
+        dragonPartSelectionMenuDialogueStage.showAndWait(); // This will block until the dialog is closed
+    }
 
-        dialogStage.setScene(dialogScene);
-        dialogStage.showAndWait(); // This will block until the dialog is closed
+    public void closeDragonPartSelectionMenu() {
+        dragonPartSelectionMenuDialogueStage.close(); // This will block until the dialog is closed
+    }
+
+    public void changeRedSceneView(String[] paths) {
+        int deadDragons = 0, counter = 0;
+        ImageView currentDragon;
+        for (String path : paths) {
+            counter++;
+            switch(counter) {
+                case 1: 
+                    currentDragon = dragon1;
+                    break;
+                case 2:
+                    currentDragon = dragon2;
+                    break;
+                case 3:
+                    currentDragon = dragon3;
+                    break;
+                case 4:
+                    currentDragon = dragon4;
+                    break;
+                default:
+                    currentDragon = dragon1;
+            }
+            try {
+                currentDragon.setImage(new Image(getClass().getResourceAsStream(path)));
+                if (!root.getChildren().contains(currentDragon)) root.getChildren().add(currentDragon);
+            } catch (NullPointerException e) {
+                deadDragons += 1;
+                if (root.getChildren().contains(currentDragon)) root.getChildren().remove(currentDragon);
+            }
+        }
+
+        if (deadDragons == 4) backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp")));
     }
 
     public ImageView getDragon1() {
@@ -205,13 +230,18 @@ public class RedScene extends RealmScene {
         return dragon4;
     }
 
-    public ImageView getDragonFace() {return dragonFace;}
+    public ImageView getDragonFace() {
+        return dragonFace;
+    }
+
     public ImageView getDragonWings() {
         return dragonWings;
     }
+
     public ImageView getDragonTail() {
         return dragonTail;
     }
+
     public ImageView getDragonHeart() {
         return dragonHeart;
     }

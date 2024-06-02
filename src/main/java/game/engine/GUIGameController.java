@@ -45,13 +45,10 @@ public class GUIGameController extends CLIGameController {
                 diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
             boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
             if (!temp)
                 throw new InvalidMoveException();
-            else {
-                player.updateGameScore();
-                player.updateAllPossibleMoves();
-                return true;
-            }
         } catch (BonusException bException) {
             player.updateGameScore();
             player.updateAllPossibleMoves();
@@ -62,6 +59,7 @@ public class GUIGameController extends CLIGameController {
             exception = Im;
             return false;
         }
+        return true;
     }
 
     public boolean makeBonusMove(Player player, Dice dice) {
@@ -107,6 +105,10 @@ public class GUIGameController extends CLIGameController {
         ((RedDice)getAllDice()[0]).selectsDragon(dragon);
     }
 
+    public int getSelectedDragon() {
+        return ((RedDice)getAllDice()[0]).getDragonNumber()+1;
+    }
+
     public int getValue(String part) {
         int dragonValue = ((RedDice)getAllDice()[0]).getDragonNumber();
         Dragon dragon = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
@@ -122,7 +124,10 @@ public class GUIGameController extends CLIGameController {
     }
 
     public Exception getException() {
-        return new Exception(exception);
+        if (exception instanceof BonusException)
+            return new BonusException(((BonusException)exception).getRealmColor1(), ((BonusException)exception).getRealmColor2());
+        else
+            return new InvalidMoveException();
     }
 
     public void incrementTurnCount () {
@@ -131,10 +136,6 @@ public class GUIGameController extends CLIGameController {
             currentPlayer = getActivePlayer();
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
                 incrementRoundCount();
-            else {
-                String[] rewards = getRewards(maxRounds);
-                handleRoundRewards(currentPlayer, rewards[currentRound-1]);
-            }
             currentTurn = 1;
             return;
         }
@@ -147,8 +148,6 @@ public class GUIGameController extends CLIGameController {
 
     public void incrementRoundCount() {
         currentRound++;
-        if (currentRound % (maxRounds+1) == 0)
-            return;
     }
 
     public String[] getDragonPaths() {
@@ -169,5 +168,46 @@ public class GUIGameController extends CLIGameController {
             paths[i] = y.substring(0,y.length()-1) + ".png";
         }
         return paths;
+    }
+
+    public int getGreenCount() {
+        Move[] moves = currentPlayer.getAllPossibleMoves();
+        int count = 0;
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i].getDice().getRealm().equals(RealmColor.GREEN))
+                count++;
+        }
+        return count;
+    }
+
+    public int getYellowCount() {
+        Move[] moves = currentPlayer.getAllPossibleMoves();
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i].getDice().getRealm().equals(RealmColor.YELLOW))
+                return 1;
+        }
+        return 0;
+    }
+
+    public int getMagentaCount() {
+        Move[] moves = currentPlayer.getAllPossibleMoves();
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i].getDice().getRealm().equals(RealmColor.MAGENTA))
+                return 1;
+        }
+        return 0;
+    }
+
+    public int getRewardHandle() {
+        if (currentPlayer.getPlayerStatus().equals(getPlayer1().getPlayerStatus())) {
+            System.out.println("eowasd");
+            return currentRound - 1;
+        }
+        else
+            return currentRound;
+    }
+
+    public int getMaxRounds() {
+        return maxRounds;
     }
 }

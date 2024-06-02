@@ -137,4 +137,47 @@ public class SceneController {
     public ImageView getHeart() {
         return redScene.getDragonHeart();
     }
+
+    public void closeDragonPartSelectionMenu() {
+        redScene.closeDragonPartSelectionMenu();
+    }
+    public ImageView getLion() {
+        return yellowScene.getLion();
+    }
+
+    public void initGaiaGuardians(int count) {
+        // images/GreenRealmImages/Terra's_Heartland_1.png
+        String path = "/images/GreenRealmImages/Terra's_Heartland_" + count + ".png";
+        if (count == 0) {
+            path = null;
+        }
+        System.out.println(path);
+        greenScene.changeGreenSceneView(path);
+    }
+
+    public ImageView getGaiaGuardian() {
+        return greenScene.getGuardian();
+    }
+
+    public void initLions(int count) {
+        String path;
+        if (count == 0)
+            path = null;
+        else
+            path = "/images/YellowRealmImages/SolarLions.png";
+        yellowScene.changeYellowSceneView(path);
+    }
+
+    public void initPhoenix(int count) {
+        String path;
+        if (count == 0)
+            path = null;
+        else
+            path = "/images/MagentaRealmImages/MajesticPhoenix.png";
+        magentaScene.changeMagentaSceneView(path);
+    }
+
+    public void changeDragons(String[] paths) {
+        redScene.changeRedSceneView(paths);
+    }
 }
