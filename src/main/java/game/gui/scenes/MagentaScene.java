@@ -44,7 +44,7 @@ public class MagentaScene extends RealmScene {
         super.createScene();
     }
 
-    public void changeMagentaSceneBackgroundView(String path) {
+    public void changeMagentaSceneView(String path) {
         try {
             phoenix.setImage(new Image(path));
             if (!root.getChildren().contains(phoenix)) root.getChildren().add(phoenix);

@@ -47,7 +47,7 @@ public class GreenScene extends RealmScene {
         super.createScene();
     }
 
-    public void changeGreenSceneBackgroundView(String path) {
+    public void changeGreenSceneView(String path) {
         try {
             backgroundView.setImage(new Image(path));
             if (!root.getChildren().contains(gaurdian)) root.getChildren().add(gaurdian);

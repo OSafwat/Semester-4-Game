@@ -45,7 +45,7 @@ public class YellowScene extends RealmScene {
         super.createScene();
     }
 
-    public void changeYellowSceneBackgroundView(String path) {
+    public void changeYellowSceneView(String path) {
         try {
             lion.setImage(new Image(path));
             if (!root.getChildren().contains(lion)) root.getChildren().add(lion);
