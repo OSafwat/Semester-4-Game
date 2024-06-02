@@ -687,5 +687,8 @@ private boolean applyNotBonusCollectable(String s){
     else
     return false;
 
-}
+    }
+    public Guardians[][] getGuardians(){
+        return this.gaiaGuardians;
+    }
 }

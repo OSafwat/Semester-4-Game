@@ -16,7 +16,7 @@ public class Guardians {
     return guardianValue;
 }
 
-protected boolean isDead(){
+public boolean isDead(){
 
     return !guardianStatus;
 }
