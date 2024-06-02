@@ -1,8 +1,15 @@
 package game.exceptions;
 
-public class InvalidMoveException extends PlayerActionException{
+public class InvalidMoveException extends Exception{
+
+    private String message;
 
     public InvalidMoveException() {
-        super("This is an invalid move. Please try again.");
+        message = "";
     }
+
+    public InvalidMoveException(String message) {
+        this.message = message;
+    }
+
 }

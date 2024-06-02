@@ -1,8 +1,15 @@
 package game.exceptions;
 
-public class InvalidDiceSelectionException extends PlayerActionException {
+public class InvalidDiceSelectionException extends Exception {
 
-    public InvalidDiceSelectionException (String message) {
-        super(message);
+    private String message;
+
+    public InvalidDiceSelectionException() {
+        message = "";
     }
+
+    public InvalidDiceSelectionException(String message) {
+        this.message = message;
+    }
+
 }
