@@ -442,4 +442,9 @@ public class Phoenix extends Creature{
 
         return output;
     }
+    public int getLastHit() {
+        if(killedPhoenixes == 0) return 0;
+        if(phoenixes[killedPhoenixes - 1] == 6) return 0;
+        return phoenixes[killedPhoenixes - 1];
+    }
 }
