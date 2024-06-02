@@ -571,13 +571,15 @@ public class DiceRealms extends Application {
             case YELLOW: color = "Yellow";break;
             default: return null;
         }
-        if (!realmColor.equals(RealmColor.GREEN)) {
-            ArrayList<Button> buttons = new ArrayList<>();
-            //   Color/color dice value.png
-            String path = "/images/Dice/";
-            for (int i = 1; i <= 6; i++) {
-                Button tmp = new Button();
-                ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(path + color + "/" + color.toLowerCase() + " dice " + i + ".png")));
+        ArrayList<Button> buttons = new ArrayList<>();
+        int lowerLimit = realmColor.equals(RealmColor.GREEN) ? 2 : 1;
+        int upperLimit = realmColor.equals(RealmColor.GREEN) ? 12 : 6;
+        //   Color/color dice value.png
+        String path = "/images/Dice/";
+        String greenBonus = realmColor.equals(RealmColor.GREEN) ? "Green Bonus/" : "";
+        for (int i = lowerLimit; i <= upperLimit; i++) {
+            Button tmp = new Button();
+            ImageView tempImage = new ImageView(new Image(getClass().getResourceAsStream(path + color + "/" + greenBonus + color.toLowerCase() + " dice " + i + ".png")));
 
                 tempImage.setFitHeight(150);
                 tempImage.setFitWidth(150);
