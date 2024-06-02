@@ -303,14 +303,16 @@ public class DiceRealms extends Application {
             default:
                 return false;
         }
-        if (arcaneValue != -1) {
+        int saveOldWhiteValue = -1;
+        int saveOldGreenValue = -1;
+        if (arcaneValue != -1 && !currDice.getRealm().equals(RealmColor.GREEN)) {
             currDice.setValue(arcaneValue);
         }
         else if (bonusValue != -1) {
             callLayer = -1;
             switch (bonusRealmColor) {
                 case RED: currDice = new RedDice(bonusValue, guiGameController.getSelectedDragon()); break;
-                case GREEN: currDice = new GreenDice(bonusValue); break;
+                case GREEN: currDice = new GreenDice(bonusValue); saveOldWhiteValue = guiGameController.getAllDice()[5].getValue(); saveOldGreenValue = guiGameController.getAllDice()[1].getValue() ; guiGameController.getAllDice()[5].setValue(0); guiGameController.getAllDice()[1].setValue(bonusValue);break;
                 case BLUE: currDice = new BlueDice(bonusValue); break;
                 case MAGENTA: currDice = new MagentaDice(bonusValue); break;
                 case YELLOW: currDice = new YellowDice(bonusValue); break;
@@ -331,7 +333,10 @@ public class DiceRealms extends Application {
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-        System.out.println(currDice);
+        if (saveOldWhiteValue != -1) {
+            guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
+            guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
+        }
         if (!moveDone) {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
