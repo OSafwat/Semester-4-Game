@@ -79,6 +79,26 @@ public class DiceRealms extends Application {
         return dicePNGs;
     }
 
+    public String[] getDiceGIFs(Dice[] dice) {
+        String[] diceGIFs = new String[dice.length];
+        // /images/Dice/Dice Animations/ArcanePrismAnimation.gif
+        String path = "/images/Dice/Dice Animations/";
+        for (int i = 0; i < dice.length; i++) {
+            String diceColor;
+            switch (dice[i].getRealm()) {
+                case RED: diceColor = "RedDice"; break;
+                case GREEN: diceColor = "GreenDice"; break;
+                case BLUE: diceColor = "BlueDice"; break;
+                case MAGENTA: diceColor = "MagentaDice"; break;
+                case YELLOW: diceColor = "YellowDice"; break;
+                default: diceColor = "ArcanePrism";
+            }
+            diceGIFs[i] = path + diceColor + "Animation.gif";
+            System.out.println(diceGIFs[i]);
+        }
+        return diceGIFs;
+    }
+
     public String [] getInformation(Player player){
         String arr []= new String[5];
         arr[0]= "Player Name is: "+player.getName();
