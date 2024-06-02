@@ -226,8 +226,8 @@ public class DiceRealms extends Application {
             sceneController.initDragons(guiGameController.getDragonPaths());
             sceneController.initGaiaGuardians(guiGameController.getGreenCount());
             //setupRealmScene("Blue");
-            //setupRealmScene("Magenta");
-            //setupRealmScene("Yellow");
+            sceneController.initPhoenix(guiGameController.getMagentaCount());
+            sceneController.initLions(guiGameController.getYellowCount());
         });
     }
 
