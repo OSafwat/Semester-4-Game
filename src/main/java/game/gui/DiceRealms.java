@@ -333,6 +333,7 @@ public class DiceRealms extends Application {
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
