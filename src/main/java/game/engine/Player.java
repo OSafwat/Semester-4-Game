@@ -32,6 +32,10 @@ public class Player implements Cloneable {
         playedDice = new ArrayList<>();
     }
 
+    public Player() {
+
+    }
+
     public Move[] getAllPossibleMoves(){
         ArrayList<Move> allMoves= new ArrayList<>();
         allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
