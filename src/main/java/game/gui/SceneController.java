@@ -176,4 +176,8 @@ public class SceneController {
             path = "/images/MagentaRealmImages/MajesticPhoenix.png";
         magentaScene.changeMagentaSceneView(path);
     }
+
+    public void changeDragons(String[] paths) {
+        redScene.changeRedSceneView(paths);
+    }
 }
