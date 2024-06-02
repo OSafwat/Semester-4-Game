@@ -48,7 +48,7 @@ public class GreenScene extends RealmScene {
     }
 
     public void changeGreenSceneBackgroundView(String path) {
-        backgroundView.setImage(new Image(path));
+        backgroundView.setImage(new Image(getClass().getResourceAsStream(path)));
     }
 
     public ImageView getGuardian() {
