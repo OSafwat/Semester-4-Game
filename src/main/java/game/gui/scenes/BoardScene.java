@@ -33,11 +33,12 @@ public class BoardScene{
     ImageView arcaneDice;
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
-    ImageView leftGrimoire;
+    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); ;
     ImageView player1TimeWarpButton;
     ImageView player1ArcaneBoostButton;
     ImageView player2TimeWarpButton;
     ImageView player2ArcaneBoostButton;
+
     Label infoLabel;
     public AnchorPane anchorPane;
 
@@ -112,7 +113,7 @@ public class BoardScene{
         }
 
         // Grimoire image (left)
-         leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
+        // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
         leftGrimoire.setLayoutX(276);
@@ -251,13 +252,8 @@ public class BoardScene{
         return leftGrimoire;
     }
 
-    public void addToAnchorPane(StackPane miniRoot) {
-        anchorPane.getChildren().addAll(miniRoot);
-        //anchorPane.getChildren().add(close);
-    }
-    public void addToAnchorPane(ImageView bg, TextArea textarea) {
-        anchorPane.getChildren().addAll(bg, textarea);
-        //anchorPane.getChildren().add(close);
+    public void addToAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
+        anchorPane.getChildren().addAll(bg, textarea, close);
     }
     public void removeFromAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
         anchorPane.getChildren().removeAll(bg, textarea, close);
