@@ -462,6 +462,7 @@ public class DiceRealms extends Application {
     private void loadDiceBoard() {
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+        initDiceEventListeners();
     }
     private void handleReward(int newRoundCount) {
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
