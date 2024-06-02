@@ -13,6 +13,7 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.exceptions.NoAvailableMovesException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -20,10 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
 public class DiceRealms extends Application {
