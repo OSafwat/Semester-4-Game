@@ -147,12 +147,33 @@ public class SceneController {
 
     public void initGaiaGuardians(int count) {
         // images/GreenRealmImages/Terra's_Heartland_1.png
-        String path = "/images/GreenRealmImages/Terra's_Heartland" + (count == 0 ? "" : "_" + count) + ".png";
+        String path = "/images/GreenRealmImages/Terra's_Heartland_" + count + ".png";
+        if (count == 0) {
+            path = null;
+        }
         System.out.println(path);
-        greenScene.changeGreenSceneBackgroundView(path);
+        greenScene.changeGreenSceneView(path);
     }
 
     public ImageView getGaiaGuardian() {
         return greenScene.getGuardian();
+    }
+
+    public void initLions(int count) {
+        String path;
+        if (count == 0)
+            path = null;
+        else
+            path = "/images/YellowRealmImages/Radiant_Savanna.png";
+        yellowScene.changeYellowSceneView(path);
+    }
+
+    public void initPhoenix(int count) {
+        String path;
+        if (count == 0)
+            path = null;
+        else
+            path = "/images/MagentaRealmImages/MajesticPhoenix.png";
+        magentaScene.changeMagentaSceneView(path);
     }
 }
