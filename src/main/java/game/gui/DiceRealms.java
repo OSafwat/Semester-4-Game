@@ -165,10 +165,9 @@ public class DiceRealms extends Application {
     }
 
     public void goBackEvent() {
-        if (bonusValue == -1)
-            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
-        else {
-
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
+        if (bonusValue != -1) {
+            handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
     }
     public void initEventListeners() {
