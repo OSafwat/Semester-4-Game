@@ -389,14 +389,12 @@ public class DiceRealms extends Application {
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
             primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
-            System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
             return true;
         }
         if (callLayer == 0) {
             if (arcaneValue != -1){
                 arcaneValue = -1;
                 guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
-                System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
             }
             else
                 guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
@@ -455,7 +453,6 @@ public class DiceRealms extends Application {
                         tmp.setOnAction(event -> dialog.setResult("placeholder"));
                         dialog.getDialogPane().setContent(tmp);
                         dialog.showAndWait();
-                        System.out.println("Meow1!");
                         oldRoundCount = guiGameController.getCurrentRound();
                         guiGameController.incrementTurnCount();
                         newRoundCount = guiGameController.getCurrentRound();
