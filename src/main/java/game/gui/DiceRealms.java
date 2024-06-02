@@ -407,9 +407,29 @@ public class DiceRealms extends Application {
                 }
                 while (guiGameController.getCurrentTurn() != -1) {
                     guiGameController.rollDice();
-                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
-                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
-
+                    if (guiGameController.getAvailableDice().length != 0) {
+                        sceneController.boardScene.makeboardScene(getDiceGIFs(guiGameController.getAvailableDice()));
+                        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    // Sleep for 1 second (1000 milliseconds)
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loadDiceBoard();
+                                    }
+                                });
+                            }
+                        }).start();
+                    } else {
+                        loadDiceBoard();
+                    }
                     initDiceEventListeners();
                     try {
                         Move[] possible = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
