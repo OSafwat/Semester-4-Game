@@ -169,6 +169,16 @@ public class GUIGameController extends CLIGameController {
         return paths;
     }
 
+    public int getGreenCount() {
+        Move[] moves = currentPlayer.getAllPossibleMoves();
+        int count = 0;
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i].getDice().getRealm().equals(RealmColor.GREEN))
+                count++;
+        }
+        return count;
+    }
+
     public int getMaxRounds() {
         return maxRounds;
     }

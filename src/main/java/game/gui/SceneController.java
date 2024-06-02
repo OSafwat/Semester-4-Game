@@ -137,4 +137,22 @@ public class SceneController {
     public ImageView getHeart() {
         return redScene.getDragonHeart();
     }
+
+    public void closeDragonPartSelectionMenu() {
+        redScene.closeDragonPartSelectionMenu();
+    }
+    public ImageView getLion() {
+        return yellowScene.getLion();
+    }
+
+    public void initGaiaGuardians(int count) {
+        // images/GreenRealmImages/Terra's_Heartland_1.png
+        String path = "/images/GreenRealmImages/Terra's_Heartland" + (count == 0 ? "" : "_" + count) + ".png";
+        System.out.println(path);
+        greenScene.changeGreenSceneBackgroundView(path);
+    }
+
+    public ImageView getGaiaGuardian() {
+        return greenScene.getGuardian();
+    }
 }
