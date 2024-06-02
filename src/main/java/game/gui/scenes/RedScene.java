@@ -75,21 +75,7 @@ public class RedScene extends RealmScene {
         ImageView imageView = new ImageView(image);
         imageView.setX(x);
         imageView.setY(y);
-        imageView.setOnMouseClicked(this::handleDragonClick);
         return imageView;
-    }
-
-    private void handleDragonClick(MouseEvent event) {
-        ImageView dragon = (ImageView) event.getSource();
-        showAttackPopup("You attacked the dragon");
-    }
-
-    private void showAttackPopup(String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Attack Result");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void initDragonPartSelectionMenu() {
