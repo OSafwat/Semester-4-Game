@@ -81,27 +81,57 @@ public class DiceRealms extends Application {
         return dicePNGs;
     }
 
-    public void openLeftGrimoire() {
-        StackPane leftGrimoire = new StackPane();
-        leftGrimoire.setPrefSize(1500, 800);
-        leftGrimoire.setLayoutX(300);
-        leftGrimoire.setLayoutY(300);
-        Label scoreSheet = new Label();
-        scoreSheet.setText(guiGameController.getScoreSheet(guiGameController.getPlayer1()).toString());
-        Image image = new Image(getClass().getResourceAsStream("/images/grimoire.png"));
-        BackgroundSize backgroundSize = new BackgroundSize(1500, 800, true, true, false, true);
-        BackgroundImage backgroundImage = new BackgroundImage(
-                image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize);
-        Background background = new Background(backgroundImage);
-        leftGrimoire.setBackground(background);
-        leftGrimoire.getChildren().add(scoreSheet);
-        sceneController.boardScene.addToAnchorPane(leftGrimoire);
+    public String [] getInformation(Player player){
+        String arr []= new String[5];
+        arr[0]= "Player Name is: "+player.getName();
+        arr[1]= player.getScoreSheet().toString();
+        int [] tmp = player.getScoreSheet().getScores();
+        arr[2] = "Score in Red: "+tmp[0] + "\nScore in Green: "+ tmp[1]+"\nScore in Blue: "+ tmp[2]+"\nScore in Magenta: "+ tmp[3]+"\nScore in Yellow: "+ tmp[4]+"\n";
+        arr[3]="The number of ArcaneBoosts acquired is:"+ player.getArcaneBoostsNum();
+        arr[4]="\nThe number of TimeWarps acquired is:"+ player.getArcaneBoostsNum();
+        return arr;
+    
+    }   
+    public void openLeftGrimoire() {        
 
-    }
+        Player player = guiGameController.getPlayer1();
+        String arr [] =getInformation(player); 
+
+        TextArea textArea = new TextArea();
+        //textArea.setText(guiGameController.getScoreSheet((guiGameController.getPlayer1())).toString()); // Replace with your text
+        for (String text : arr) {        //uncomment when the string is being passed
+            textArea.appendText(text);
+        }
+        textArea.setWrapText(true); // Optional: Wrap text to fit width
+        textArea.setPrefWidth(550);
+        textArea.setPrefHeight(779);
+        textArea.setLayoutX(700);
+        textArea.setLayoutY(158);
+    
+        textArea.setEditable(false);// Disable editing in the TextArea
+        textArea.getStyleClass().add("grimoire");
+       // textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
+        textArea.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+
+        ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
+        bg.setFitHeight(1280);
+        bg.setFitWidth(981);
+        bg.setLayoutX(461);
+        bg.setLayoutY(-72); 
+        
+        sceneController.boardScene.anchorPane.getChildren().addAll(bg, textArea);
+
+        ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
+        close.setFitHeight(120);
+        close.setFitWidth(120);
+        close.setLayoutX(1142);
+        close.setLayoutY(34);
+        
+        close.setOnMouseClicked(e -> {sceneController.boardScene.anchorPane.getChildren().removeAll(bg, textArea, close);});
+        
+        sceneController.boardScene.anchorPane.getChildren().addAll(close);
+            
+    }      
 
     public String getColorAsString(Dice dice) {
         StringBuilder colorString = new StringBuilder("/images/Dice/");
@@ -125,7 +155,7 @@ public class DiceRealms extends Application {
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e -> openLeftGrimoire());  // will be passed a string array containing what to be displayed
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
