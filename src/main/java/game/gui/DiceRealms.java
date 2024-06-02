@@ -387,11 +387,14 @@ public class DiceRealms extends Application {
             }
             else
                 guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
+            int oldRoundCount = guiGameController.getCurrentRound();
             guiGameController.incrementTurnCount();
+            int newRoundCount = guiGameController.getCurrentRound();
             if (guiGameController.getCurrentTurn() == -1) {
                 handleForgottenTurn();
             }
             else {
+                handleNewRound(oldRoundCount, newRoundCount);
                 if (isForgotten) {
                     isForgotten = false;
                     guiGameController.getGameBoard().resetAllDice();
@@ -399,6 +402,7 @@ public class DiceRealms extends Application {
                     sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
                     primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
                     initDiceEventListeners();
+                    handleReward(guiGameController.getRewardHandle());
                     return true;
                 }
                 while (guiGameController.getCurrentTurn() != -1) {
