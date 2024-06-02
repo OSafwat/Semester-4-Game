@@ -413,7 +413,7 @@ public class DiceRealms extends Application {
                     sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
                     primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
                     initDiceEventListeners();
-                    handleReward(guiGameController.getRewardHandle());
+                    handleReward(guiGameController.getCurrentRound());
                     return true;
                 }
                 while (guiGameController.getCurrentTurn() != -1) {
