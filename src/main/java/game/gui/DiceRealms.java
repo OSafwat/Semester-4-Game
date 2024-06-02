@@ -138,7 +138,8 @@ public class DiceRealms extends Application {
         sceneController.getBlueRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getMagentaRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
-
+        sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0));
+        sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0));
         initDragonEventListeners();
         //To-Do
 
@@ -185,7 +186,7 @@ public class DiceRealms extends Application {
         Scene scene;
 
         int whiteVal = guiGameController.getGameBoard().getWhite().getValue();
-        Dice [] dietmp= {new RedDice(whiteVal), guiGameController.getGameBoard().getGreen(), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
+        Dice [] dietmp= {new RedDice(whiteVal), new GreenDice(guiGameController.getGameBoard().getGreen().getValue()), new BlueDice(whiteVal), new MagentaDice(whiteVal), new YellowDice(whiteVal)};
         String [] tmp = getDicePNGs(dietmp);
         ArrayList<String> dicePaths = new ArrayList<>();
         for (String string: tmp) {
@@ -205,8 +206,7 @@ public class DiceRealms extends Application {
             case "yellow":  scene = sceneController.yellowScene.getScene(); break;
             default:        return;
         }
-        if (!resultAsArray[0].equals("green"))
-            arcaneValue = value;
+        arcaneValue = value;
 
         primaryStage.setScene(scene);
     }
@@ -627,7 +627,7 @@ public class DiceRealms extends Application {
         Scene scene;
         switch (realmColor.toLowerCase()) {
             case "red": sceneController.initDragons(guiGameController.getDragonPaths()); initDragonEventListeners(); scene = sceneController.redScene.getScene();break;
-            case "green": scene = sceneController.greenScene.getScene(); break;
+            case "green": sceneController.initGaiaGuardians(guiGameController.getGreenCount()); ;scene = sceneController.greenScene.getScene(); break;
             case "blue": scene = sceneController.blueScene.getScene(); break;
             case "magenta": scene = sceneController.magentaScene.getScene(); break;
             case "yellow": scene = sceneController.yellowScene.getScene(); break;
