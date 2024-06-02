@@ -3,10 +3,7 @@ package game.engine;
 import game.collectibles.*;
 import game.exceptions.*;
 import game.dice.*;
-import game.creatures.Creature;
-import game.creatures.Dragon;
 import game.creatures.greenclasses.Gaia;
-import game.creatures.greenclasses.Guardians;
 import game.engine.enums.*;
 
 ///import static org.junit.Assert.assertEquals;
@@ -548,12 +545,12 @@ public class CLIGameController {
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
                 playRoundHuman(gameBoard.getPlayer1(), gameBoard.getAi(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
                 gameBoard.resetAllDice();
-                switchPlayer();
+                switchPlayerAI();
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+"\n AI TURN ");
                 playRoundAI(gameBoard.getAi(), gameBoard.getPlayer1(), rewards[round], numebrOfTurnsPerRound);
                 gameBoard.resetAllDice();
-                switchPlayer();
+                switchPlayerAI();
             }
             Player player1= gameBoard.getPlayer1();
             Player aiPlayer= gameBoard.getAi();
@@ -1516,20 +1513,8 @@ public class CLIGameController {
     }*/
 
 
-    //kinda like rule-based 
-    public Move findBestMove(Dice[] diceSet,Player player){
-        Move bestMove=null;
-        if(diceSet.length==0) return null;
-        int bestValue=Integer.MIN_VALUE;
-        for(Dice dice: diceSet){
-            int value=evaluateDice(player,dice);
-            if(value>bestValue){
-                bestValue=value;
-                bestMove=new Move(dice,player.getScoreSheet().getCreatureByColor(dice.getRealm()));
-            }
-        }
-        return bestMove;
-    }
+
+
 
 
 
@@ -1541,8 +1526,7 @@ public class CLIGameController {
 
 
     //MAXMAX STUFF
-    public Move findBestMove(Player player,GameBoard board, int depth) {        //add a parameter for the turn number and if its the last turn 
-        // then call th
+    public Move findBestMove(Player player,GameBoard board, int depth) {
         int bestValue = Integer.MIN_VALUE;
         Move bestMove = null;
         
@@ -1654,247 +1638,54 @@ public class CLIGameController {
         score+=player.getGameScore().getTotalScore();
         return score;
     }
-    public int evaluateDiceScore(Player player,ArrayList<Dice> diceSet){
+    public int evaluateDiceScore(ArrayList<Dice> arrayList){
         int score=0;
-        for(Dice die: diceSet){
-           score+=evaluateDice(player,die);
+        for(Dice die: arrayList){
+           score+=evaluateDice(die);
         }
         return score;
     }
-    public int evaluateDice(Player player,Dice dice){
+    public int evaluateDice(Dice dice){
         if(dice==null) return 0;
         switch (dice.getRealm()) {
             case RED:
-                return evaluateRedDice(player,dice);
+                return evaluateRedDice(dice);
             case GREEN:
-                return evaluateGreenDice(player,dice);
+                return evaluateGreenDice(dice);
             case BLUE:
-                return evaluateBlueDice(player,dice);
+                return evaluateBlueDice(dice);
             case MAGENTA:
-                return evaluateMagentaDice(player,dice);
+                return evaluateMagentaDice(dice);
             case YELLOW:
-                return evaluateYellowDice(player,dice);
+                return evaluateYellowDice(dice);
             case WHITE:
-                return evaluateWhiteDice(player,dice);
+                return evaluateWhiteDice(dice);
             default:
             return 0;  //idk just smth random  
         }
     }
-    public int evaluateRedDice(Player player,Dice dice){
+    public int evaluateRedDice(Dice dice){
         //should check if this dice can end a column/row
-        int value=dice.getValue();
-        if(completeRowRed(player,dice)&&completeColumnRed(player,dice)) return 25;
-        if(completeColumnRed(player, dice)) return 20;
-        if(completeRowRed(player, dice)) return 10;
-        if(value==4) return 10;
-        if(value==5) return 8;
-        if(value==6) return 9;
-        if(value==3) return 7;
-        if(value==2) return 4;
-        if(value==1) return 4;
-
-
         return dice.getValue();
     }
-    public boolean completeRowRed(Player player,Dice dice){
-        int value=dice.getValue();
-        ScoreSheet scoreSheet=player.getScoreSheet();
-        Dragon dragon= (Dragon) scoreSheet.getCreatureByColor(RealmColor.RED);
-        Dragon[] dragons=dragon.getDragons();
-        int firstCounter=0;
-        int secondCounter=0;
-        int thirdCounter=0;
-        int fourthCounter=0;
-        int missingFirstValue=0;
-        int missingSecondValue=0;
-        int missingThirdValue=0;
-        int missingFourthValue=0;
-        
-        for(int i=0;i<4;i++){
-            if(dragons[i].getFace()==null){
-                firstCounter++;
-            }
-            else{
-                missingFirstValue=dragons[i].getFace();
-            }
-            if(dragons[i].getWings()==null){
-                secondCounter++;
-            }
-            else{
-                missingSecondValue=dragons[i].getWings();
-            }
-            if(dragons[i].getTail()==null){
-                thirdCounter++;
-            }
-            else{
-                missingThirdValue=dragons[i].getTail();
-            }
-            if(dragons[i].getHeart()==null){
-                fourthCounter++;
-            }
-            else{
-                missingFourthValue=dragons[i].getHeart();
-            }
-        }
-        if(firstCounter==3&&value==missingFirstValue){
-            return true;
-        }
-        if(secondCounter==3&&value==missingSecondValue){
-            return true;
-        }
-        if(thirdCounter==3&&value==missingThirdValue){
-            return true;
-        }
-        if(fourthCounter==3&&value==missingFourthValue){
-            return true;
-        }
-        return false;
+    public int evaluateGreenDice(Dice dice){
+        // the green+white value
+        return dice.getValue();
     }
-    public boolean completeColumnRed(Player player,Dice dice){
-        int value=dice.getValue();
-        ScoreSheet scoreSheet=player.getScoreSheet();
-        Dragon dragon= (Dragon) scoreSheet.getCreatureByColor(RealmColor.RED);
-        Dragon[] dragons=dragon.getDragons();
-        
-        for(int i=0;i<4;i++){
-            int counter =0;
-            int missingValue=0;
-            if(dragons[i].getFace()==null){
-                counter++;
-            }
-            else{
-                missingValue=dragons[i].getFace();
-            }
-            if(dragons[i].getWings()==null){
-                counter++;
-            }
-            else{
-                missingValue=dragons[i].getWings();
-            }
-            if(dragons[i].getTail()==null){
-                counter++;
-            }
-            else{
-                missingValue=dragons[i].getTail();
-            }
-            if(dragons[i].getHeart()==null){
-                counter++;
-            }
-            else{
-                missingValue=dragons[i].getHeart();
-            }
-
-            if(counter==3&&value==missingValue){
-                return true;
-            }
-        }
-        return false;
+    public int evaluateBlueDice(Dice dice){
+        // check if the move is possible
+        return dice.getValue();
     }
-
-    public int evaluateGreenDice(Player player, Dice dice){
-        int value=dice.getValue();
-        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 20;
-        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 15;
-        if(value==2) return 9;
-        if(value==3) return 7;
-        if(value==4) return 6;
-        if(value==5) return 6;
-        if(value==6) return 5;
-        if(value==7) return 5;
-        if(value==8) return 5;
-        if(value==9) return 10;
-        if(value==10) return 10;
-        if(value==11) return 10;
-        if(value==12) return 10;
-        return 0;
+    public int evaluateMagentaDice(Dice dice){
+        // the hashmap thing
+        return dice.getValue();
     }
-    public boolean completeRowGreen(Player player,Dice dice){
-        int value=dice.getValue();
-        ScoreSheet scoreSheet=player.getScoreSheet();
-        Gaia gaia=(Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN);
-        Guardians[][] guardians=gaia.getGuardians();
-        for(int i=0;i<3;i++){
-            int counter=0;
-            int missingValue=0;
-            for(int j=0;j<4;j++){
-                if(!(i==0&&j==0)){
-                    if(guardians[i][j].isDead()){
-                        counter++;
-                    }
-                    else{
-                        missingValue=i*4+j+1;
-                    }
-                }
-            }
-            if(i==0 && counter==2&&value==missingValue){
-                return true;
-            }
-            if(i!=0 &&counter==3&&value==missingValue){
-                return true;
-            }
-        }
-        return false;
+    public int evaluateYellowDice(Dice dice){
+        return dice.getValue();
     }
-    public boolean completeColumnGreen(Player player,Dice dice){
-        int value=dice.getValue();
-        ScoreSheet scoreSheet=player.getScoreSheet();
-        Gaia gaia=(Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN);
-        Guardians[][] guardians=gaia.getGuardians();
-        for(int i=0;i<4;i++){
-            int counter=0;
-            int missingValue=0;
-            for(int j=0;j<3;j++){
-                if(!(i==0&&j==0)){
-                    if(guardians[j][i].isDead()){
-                        counter++;
-                    }
-                    else{
-                        missingValue=j*4+i+1;
-                    }
-                }
-            }
-            if(i==0 && counter==1&&value==missingValue){
-                return true;
-            }
-            if(counter==2&&value==missingValue){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int evaluateBlueDice(Player player,Dice dice){
-        int value=dice.getValue();
-        Move[] moves=getPossibleMovesForADie(player, dice);
-        for(Move move:moves){
-            if(move.getDice().getValue()==value){
-                return 10;
-            }
-        }
-        return 0;
-    }
-
-    public int evaluateMagentaDice(Player player,Dice dice){
-        int value=dice.getValue();
-        if(value==6) return 15;
-        Move[] moves=getPossibleMovesForADie(player, dice);
-        int numberOfPossibleMoves=moves.length;
-        int lastMoveValue=6-numberOfPossibleMoves;
-        for(Move move:moves){
-            if(move.getDice().getValue()==value){
-                return 10+(value-lastMoveValue);
-            }
-        }
-        return 0;
-    }
-
-    public int evaluateYellowDice(Player player, Dice dice){
-        return dice.getValue()+5;
-    }
-
-    public int evaluateWhiteDice(Player player, Dice dice){
-        int highestScore=Math.max(evaluateRedDice(player,dice),Math.max(evaluateGreenDice(player,dice),Math.max(evaluateBlueDice(player,dice),
-        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))));
+    public int evaluateWhiteDice(Dice dice){
+        int highestScore=Math.max(evaluateRedDice(dice),Math.max(evaluateGreenDice(dice),Math.max(evaluateBlueDice(dice),
+        Math.max(evaluateMagentaDice(dice),evaluateYellowDice(dice)))));
         return highestScore;
     }
 

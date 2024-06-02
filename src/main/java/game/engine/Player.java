@@ -27,7 +27,7 @@ public class Player implements Cloneable {
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         this.usedArcaneDice = new ArrayList<>();
-        allPossibleMoves = getAllPossibleMoves();
+        this.allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
         playedDice = new ArrayList<>();
     }
