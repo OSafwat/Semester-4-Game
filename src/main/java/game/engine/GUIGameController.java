@@ -45,13 +45,10 @@ public class GUIGameController extends CLIGameController {
                 diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
             }
             boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
+            player.updateGameScore();
+            player.updateAllPossibleMoves();
             if (!temp)
                 throw new InvalidMoveException();
-            else {
-                player.updateGameScore();
-                player.updateAllPossibleMoves();
-                return true;
-            }
         } catch (BonusException bException) {
             player.updateGameScore();
             player.updateAllPossibleMoves();
