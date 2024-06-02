@@ -34,8 +34,18 @@ public class BoardScene{
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
     ImageView leftGrimoire;
+    ImageView timeWarpButton;
+    ImageView arcaneBoostButton;
     Label infoLabel;
     public AnchorPane anchorPane;
+
+    public ImageView getTimeWarpButton() {
+        return timeWarpButton;
+    }
+
+    public ImageView getArcaneBoostButton() {
+        return arcaneBoostButton;
+    }
 
     public void makeboardScene(String[] dicePNGs) {
         infoLabel = new Label();    //the round information should be here and is set in the DiceRealms class
