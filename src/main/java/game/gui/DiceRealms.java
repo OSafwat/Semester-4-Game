@@ -8,6 +8,7 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.exceptions.ExhaustedResourceException;
 import game.exceptions.NoAvailableMovesException;
+import game.exceptions.PlayerActionException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -188,8 +189,10 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
-        //sceneController.getTimeWarpButton().setOnMouseClicked(e -> timeWarpSequence());
-        //sceneController.getArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence());
+        sceneController.getPlayer1TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer1()));
+        sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
+        sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
+        sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
         initDragonEventListeners();
         //To-Do
 
@@ -807,6 +810,9 @@ public class DiceRealms extends Application {
             } catch (ExhaustedResourceException e) {
                 //display error
                 return;
+            } catch (PlayerActionException e) {
+                //display error
+                return;
             }
             handleDiceReroll();
         }
@@ -832,6 +838,9 @@ public class DiceRealms extends Application {
             try {
                 guiGameController.handleArcaneBoosts(player);
             } catch (ExhaustedResourceException e) {
+                //display error
+                return;
+            } catch (PlayerActionException e) {
                 //display error
                 return;
             }
