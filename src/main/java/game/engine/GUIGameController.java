@@ -190,10 +190,10 @@ public class GUIGameController extends CLIGameController {
         return 0;
     }
 
-    public boolean handleTimeWarps(Player player) throws ExhaustedResourceException{
+    public boolean handleTimeWarps(Player player) throws ExhaustedResourceException, PlayerActionException{
         ArrayList<TimeWarp> timeWarps = player.getTimeWarps();
         if (currentPlayer.getPlayerStatus().equals(PlayerStatus.PASSIVE))
-            return false;
+            throw new PlayerActionException();
         for (TimeWarp timeWarp: timeWarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
                 timeWarp.setStatus(RewardStates.USED);
@@ -203,10 +203,10 @@ public class GUIGameController extends CLIGameController {
         return false;
     }
 
-    public boolean handleArcaneBoosts(Player player) throws ExhaustedResourceException{
+    public boolean handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException{
         ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
         if (!canUseArcaneBoost)
-            return false;
+            throw new PlayerActionException();
         try {
             Move[] moves = getAllPossibleMovesForDiceSet(player, getArcaneBoostDice(player));
             if (moves.length == 0)
