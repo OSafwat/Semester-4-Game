@@ -547,42 +547,42 @@ public class CLIGameController {
                 gameBoard.resetAllDice();
                 switchPlayer();
                 System.out.println();
-                System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+" AI TURN ");
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+"\n AI TURN ");
                 playRoundAI(gameBoard.getAi(), gameBoard.getPlayer1(), rewards[round], numebrOfTurnsPerRound);
                 gameBoard.resetAllDice();
                 switchPlayer();
             }
             Player player1= gameBoard.getPlayer1();
-            Player player2= gameBoard.getPlayer2();
+            Player aiPlayer= gameBoard.getAi();
             System.out.println("The scoresheet of Player "+ player1.getName()+" is the following:");
             player1.getScoreSheet().displayColoredScoreSheet();
             System.out.println( player1.getGameScore().toString() + "\n");
             int player1Score= player1.getGameScore().getTotalScore();
 
-            System.out.println("The scoresheet of Player "+ player2.getName()+" is the following:");
-            player2.getScoreSheet().displayColoredScoreSheet();
-            System.out.println( player2.getGameScore().toString() + "\n");
-            int player2Score= player2.getGameScore().getTotalScore();
+            System.out.println("The scoresheet of Player "+ aiPlayer.getName()+" is the following:");
+            aiPlayer.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( aiPlayer.getGameScore().toString() + "\n");
+            int aiPlayerScore= aiPlayer.getGameScore().getTotalScore();
 
-            if (player1Score == player2Score)
+            if (player1Score == aiPlayerScore)
             {
                 int[] player1Scores = player1.getGameScore().getAllScores();
-                int[] player2Scores = player2.getGameScore().getAllScores();
+                int[] player2Scores = aiPlayer.getGameScore().getAllScores();
                 for (int i = 0; i < player2Scores.length; i++) {
                     if (player1Scores[i] > player2Scores[i]) {
                         player1Score = 100;
-                        player2Score = 0;
+                        aiPlayerScore = 0;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         player1Score = 0;
-                        player2Score = 100;
+                        aiPlayerScore = 100;
                     }
                 }
             }
-            if (player1Score > player2Score)
+            if (player1Score > aiPlayerScore)
                 System.out.println("Congratulations, "+player1.getName()+"! You have emerged victorious in this wonderful battle!");
-            else if (player1Score < player2Score)
-                System.out.println("Congratulations, "+player2.getName()+"! You have emerged victorious in this wonderful battle!");
+            else if (player1Score < aiPlayerScore)
+                System.out.println("Congratulations, "+AI+"! You have emerged victorious in this wonderful battle!");
             else {
                 System.out.println("It is a draw!");
             }

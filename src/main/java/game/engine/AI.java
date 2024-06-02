@@ -79,22 +79,15 @@ public class AI extends Player implements Cloneable {
 
     public AI(PlayerStatus status){
         super(status);
-        this.scoreSheet= new ScoreSheet();
-        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
-        this.timeWarps=scoreSheet.getAllTimeWarps();
-        this.usedArcaneDice = new ArrayList<>();
-        allPossibleMoves = getAllPossibleMoves();
-        gameScore = new GameScore();
-        playedDice = new ArrayList<>();
     }
     
     public Move[] getAllPossibleMoves(){
         ArrayList<Move> allMoves= new ArrayList<>();
-        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
-        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
-        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
-        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
-        allMoves.addAll(scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
         Move[] res = new Move[allMoves.size()];
         for (int i = 0; i < allMoves.size(); i++) {
             res[i] = allMoves.get(i);
