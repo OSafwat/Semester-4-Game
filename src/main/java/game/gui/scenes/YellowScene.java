@@ -9,12 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class YellowScene extends RealmScene {
-    ImageView lion;
+    ImageView lion, backgroundView;
     @Override
     public void createScene() {
         root = new AnchorPane();
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna.png")));
+        backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna.png")));
         lion = new ImageView(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/SolarLions.png")));
         lion.setLayoutX(648);
         lion.setLayoutY(383);
@@ -43,6 +43,14 @@ public class YellowScene extends RealmScene {
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
         super.createScene();
+    }
+
+    public void changeYellowSceneBackgroundView(String path) {
+        try {
+            backgroundView.setImage(new Image(path));
+        } catch (NullPointerException e) {
+            backgroundView.setImage(new Image("/images/YellowRealmImages/Radiant_Savanna_Destroyed.webp"));
+        }
     }
 
     public ImageView getLion() {
