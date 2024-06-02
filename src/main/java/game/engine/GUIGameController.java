@@ -59,6 +59,7 @@ public class GUIGameController extends CLIGameController {
             exception = Im;
             return false;
         }
+        return true;
     }
 
     public boolean makeBonusMove(Player player, Dice dice) {
