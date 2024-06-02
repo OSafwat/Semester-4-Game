@@ -602,7 +602,7 @@ public class CLIGameController {
                 valid = turnCompletion(player);
             } catch (NoAvailableMovesException e) {
                 handleDiceDisplay(gameBoard.getForgottenRealmDice(), 1);
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 return;
             }
         }
@@ -626,7 +626,7 @@ public class CLIGameController {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
             } catch (ExhaustedResourceException e) {
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 usedArcaneBoost = false;
             }
             if (usedArcaneBoost) {
@@ -638,7 +638,7 @@ public class CLIGameController {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
             } catch (ExhaustedResourceException e) {
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 usedArcaneBoost = false;
             }
             if (usedArcaneBoost) {
@@ -663,7 +663,7 @@ public class CLIGameController {
         try {
            useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
         } catch (ExhaustedResourceException e) {
-            e.displayMessage();
+            System.out.println(e.getMessage());
             useTimeWarp = false;
         }
         if (useTimeWarp) {
@@ -683,7 +683,7 @@ public class CLIGameController {
                 try {
                     useTimeWarp = handleTimeWarps(getTimeWarpPowers(player));
                 } catch (ExhaustedResourceException f) {
-                    f.displayMessage();
+                    System.out.println(f.getMessage());
                 }
                 if (useTimeWarp) {
                     return playTurn(player, true);
@@ -718,7 +718,7 @@ public class CLIGameController {
                     resetRed();
                     chosenDie = handleDiceSelection(player, diceSet);
                 } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
-                    e.displayMessage();
+                    System.out.println(e.getMessage());
                     handleDiceDisplay(diceSet, indicator);
                     continue;
                 }
@@ -730,7 +730,7 @@ public class CLIGameController {
                     try {
                         finalDie = handleArcanePrism(chosenDie, player);
                     } catch (NoAvailableMovesException e) {
-                        e.displayMessage();
+                        System.out.println(e.getMessage());
                     }
                     break;
                 }
@@ -802,7 +802,7 @@ public class CLIGameController {
             try {
                 chosenDie = handleDiceSelection(player, availableDice);
             } catch (InvalidDiceSelectionException | NoAvailableMovesException e) {
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 handleDiceDisplay(availableDice, 2);
                 continue;
             }
@@ -812,7 +812,7 @@ public class CLIGameController {
                     try {
                         finalDie = handleArcanePrism(chosenDie, player);
                     } catch (NoAvailableMovesException e) {
-                        e.displayMessage();
+                        System.out.println(e.getMessage());
                         continue;
                     }
                     break;
@@ -825,7 +825,7 @@ public class CLIGameController {
                     try {
                         finalDie = handleRedDice((RedDice) finalDie);
                     } catch (InvalidDiceSelectionException e) {
-                        e.displayMessage();
+                        System.out.println(e.getMessage());
                         continue;
                     }
                     valid2 = true;
@@ -1190,10 +1190,10 @@ public class CLIGameController {
                 try {
                     chosenDie = handleColorBonusException(realmColor1, player);
                 } catch (NoAvailableMovesException e) {
-                    e.displayMessage();
+                    System.out.println(e.getMessage());
                     return true;
                 } catch (InvalidBonusSelectionException e) {
-                    e.displayMessage();
+                    System.out.println(e.getMessage());
                     continue;
                 } catch (InvalidDiceSelectionException e) {
                     continue;
@@ -1209,10 +1209,10 @@ public class CLIGameController {
                     try {
                         chosenDie = handleColorBonusException(realmColor2, player);
                     } catch (NoAvailableMovesException e) {
-                        e.displayMessage();
+                        System.out.println(e.getMessage());
                         return true;
                     } catch (InvalidBonusSelectionException e) {
-                        e.displayMessage();
+                        System.out.println(e.getMessage());
                         continue;
                     } catch (InvalidDiceSelectionException e) {
                         continue;
@@ -1225,7 +1225,7 @@ public class CLIGameController {
             return true;
         }
         catch (InvalidMoveException Im){
-            Im.displayMessage();
+            System.out.println(Im.getMessage());
             return false;
         }
     }
@@ -1731,7 +1731,7 @@ public class CLIGameController {
             return true;
         }
         catch (InvalidMoveException Im){
-            Im.displayMessage();
+            System.out.println(Im.getMessage());
             return false;
         }
     }
@@ -1763,7 +1763,7 @@ public class CLIGameController {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
             } catch (ExhaustedResourceException e) {
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 usedArcaneBoost = false;
             }
             if (usedArcaneBoost) {
@@ -1819,7 +1819,7 @@ public class CLIGameController {
             try {
                 usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(activePlayer), activePlayer);
             } catch (ExhaustedResourceException e) {
-                e.displayMessage();
+                System.out.println(e.getMessage());
                 usedArcaneBoost = false;
             }
             if (usedArcaneBoost) {
