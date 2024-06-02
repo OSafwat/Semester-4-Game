@@ -346,16 +346,28 @@ public class DiceRealms extends Application {
             if (exception instanceof BonusException) {
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
-                while (awaitingInput) {
-                    Thread.onSpinWait();
-                }
+                new Thread(() -> {
+                    while (awaitingInput) {
+                        try {
+                            Thread.sleep(100); // Avoid busy-waiting
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
                 if (!((BonusException)exception).getRealmColor2().equals(RealmColor.PARENT))
                     handleBonus(((BonusException)exception).getRealmColor2());
 
-                while (awaitingInput) {
-                    Thread.onSpinWait();
-                }
+                new Thread(() -> {
+                    while (awaitingInput) {
+                        try {
+                            Thread.sleep(100); // Avoid busy-waiting
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
                 return true;
             }
