@@ -143,10 +143,22 @@ public class DiceRealms extends Application {
         initDragonEventListeners();
         //To-Do
 
-        sceneController.getFace().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("face")));
-        sceneController.getWings().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("wings")));
-        sceneController.getTail().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("tail")));
-        sceneController.getHeart().setOnMouseClicked(e -> handleMove(1,0, guiGameController.getValue("heart")));
+        sceneController.getFace().setOnMouseClicked(e -> {
+            handleMove(1,0, guiGameController.getValue("face"));
+            sceneController.closeDragonPartSelectionMenu();
+        });
+        sceneController.getWings().setOnMouseClicked(e -> {
+            handleMove(1,0, guiGameController.getValue("wings"));
+            sceneController.closeDragonPartSelectionMenu();
+        });
+        sceneController.getTail().setOnMouseClicked(e -> {
+            handleMove(1,0, guiGameController.getValue("tail"));
+            sceneController.closeDragonPartSelectionMenu();
+        });
+        sceneController.getHeart().setOnMouseClicked(e -> {
+            handleMove(1,0, guiGameController.getValue("heart"));
+            sceneController.closeDragonPartSelectionMenu();
+        });
 
     }
 
