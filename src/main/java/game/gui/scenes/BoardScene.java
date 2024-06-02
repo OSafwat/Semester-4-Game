@@ -58,32 +58,32 @@ public class BoardScene{
             imagePaths.add(temp);
             temp.setFitHeight(150);
             temp.setFitWidth(150);
-            if (imageString.contains("red")){
+            if (imageString.toLowerCase().contains("red")){
                 redDice=temp;
                 temp.setLayoutX(408);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("blue")){
+            else if (imageString.toLowerCase().contains("blue")){
                 blueDice= temp;
                 temp.setLayoutX(884);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("green")){
+            else if (imageString.toLowerCase().contains("green")){
                 greenDice = temp;
                 temp.setLayoutX(661);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("magenta")){
+            else if (imageString.toLowerCase().contains("magenta")){
                 magentaDice = temp;
                 temp.setLayoutX(1148);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("yellow")){
+            else if (imageString.toLowerCase().contains("yellow")){
                 yellowDice= temp;
                 temp.setLayoutX(1363);
                 temp.setLayoutY(439);
             }
-            else if (imageString.contains("white")){
+            else if (imageString.toLowerCase().contains("white") || imageString.toLowerCase().contains("arcane")){
                 arcaneDice = temp;
                 arcaneDice.setLayoutX(884);
                 arcaneDice.setLayoutY(624);
