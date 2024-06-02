@@ -191,7 +191,14 @@ public class DiceRealms extends Application {
         sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Blue");});
         sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Magenta");});
         sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
-        sceneController.getArcaneDice().setOnMouseClicked(e -> handleArcanePrism());
+        sceneController.getArcaneDice().setOnMouseClicked(e -> {
+            handleArcanePrism();
+            sceneController.initDragons(guiGameController.getDragonPaths());
+            sceneController.initGaiaGuardians(guiGameController.getGreenCount());
+            //setupRealmScene("Blue");
+            //setupRealmScene("Magenta");
+            //setupRealmScene("Yellow");
+        });
     }
 
     public void handleArcanePrism() {
@@ -323,6 +330,7 @@ public class DiceRealms extends Application {
             if (arcaneValue != -1){
                 arcaneValue = -1;
                 guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
+                System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
             }
             else
                 guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
