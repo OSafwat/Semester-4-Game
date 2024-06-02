@@ -444,7 +444,8 @@ public class DiceRealms extends Application {
                     initDiceEventListeners();
                     try {
                         Move[] possible = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
-                        System.out.println(guiGameController.getCurrentPlayer().getScoreSheet().toString());
+                        if (possible.length == 0)
+                            throw new NoAvailableMovesException("");
                     } catch (NoAvailableMovesException e) {
                         Dialog<String> dialog = new Dialog<>();
                         dialog.setTitle("Select an Option");
