@@ -443,28 +443,10 @@ public class DiceRealms extends Application {
                         dialog.getDialogPane().setContent(tmp);
                         dialog.showAndWait();
                         System.out.println("Meow1!");
-                        int oldRoundCount = guiGameController.getCurrentRound();
+                        oldRoundCount = guiGameController.getCurrentRound();
                         guiGameController.incrementTurnCount();
-                        int newRoundCount = guiGameController.getCurrentRound();
-                        if (newRoundCount == guiGameController.getMaxRounds() + 1) {
-                            //end the game
-                        }
-                        else if (newRoundCount != oldRoundCount) {
-                            String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
-                            String currentReward = rewards[newRoundCount-1];
-                            if (currentReward.toLowerCase().contains("bonus")) {
-                                if (currentReward.toLowerCase().contains("red"))
-                                    handleBonus(RealmColor.RED);
-                                else if (currentReward.toLowerCase().contains("green"))
-                                    handleBonus(RealmColor.GREEN);
-                                else if (currentReward.toLowerCase().contains("blue"))
-                                    handleBonus(RealmColor.BLUE);
-                                else if (currentReward.toLowerCase().contains("magenta"))
-                                    handleBonus(RealmColor.MAGENTA);
-                                else if (currentReward.toLowerCase().contains("yellow"))
-                                    handleBonus(RealmColor.YELLOW);
-                            }
-                        }
+                        newRoundCount = guiGameController.getCurrentRound();
+                        handleNewRound(oldRoundCount, newRoundCount);
                         continue;
                     }
                     break;
@@ -475,6 +457,39 @@ public class DiceRealms extends Application {
             }
         }
         return true;
+    }
+
+    private void loadDiceBoard() {
+        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+    }
+    private void handleReward(int newRoundCount) {
+        String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
+        String currentReward = rewards[newRoundCount-1];
+        System.out.println(currentReward);
+        if (currentReward.toLowerCase().contains("bonus")) {
+            if (currentReward.toLowerCase().contains("red"))
+                handleBonus(RealmColor.RED);
+            else if (currentReward.toLowerCase().contains("green"))
+                handleBonus(RealmColor.GREEN);
+            else if (currentReward.toLowerCase().contains("blue"))
+                handleBonus(RealmColor.BLUE);
+            else if (currentReward.toLowerCase().contains("magenta"))
+                handleBonus(RealmColor.MAGENTA);
+            else if (currentReward.toLowerCase().contains("yellow"))
+                handleBonus(RealmColor.YELLOW);
+            else
+                handleBonus(RealmColor.WHITE);
+        }
+    }
+
+    private void handleNewRound(int oldRoundCount, int newRoundCount) {
+        if (newRoundCount == guiGameController.getMaxRounds() + 1) {
+            //end the game
+        }
+        else if (newRoundCount != oldRoundCount) {
+            handleReward(guiGameController.getRewardHandle());
+        }
     }
 
     public void handleForgottenTurn() {
