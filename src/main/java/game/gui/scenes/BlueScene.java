@@ -34,6 +34,8 @@ public class BlueScene extends RealmScene {
 
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
+        hydra.setX(710);
+        hydra.setY(290);
         backgroundView.setPreserveRatio(false);
         root.getChildren().add(backgroundView);
         root.setPadding(javafx.geometry.Insets.EMPTY);
