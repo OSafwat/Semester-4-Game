@@ -181,6 +181,7 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         initDiceEventListeners();
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0, null));
+        sceneController.getHydra().setOnMouseClicked(e -> handleMove(3, 0, 0, null));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
         sceneController.getStartGameButton().setOnMouseClicked(e -> sceneController.switchFromMain());
         sceneController.getRedRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
