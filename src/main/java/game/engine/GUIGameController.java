@@ -3,6 +3,7 @@ package game.engine;
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.creatures.Dragon;
+import game.creatures.Hydra;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
@@ -10,6 +11,7 @@ import game.dice.RedDice;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.*;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -188,6 +190,24 @@ public class GUIGameController extends CLIGameController {
                 return 1;
         }
         return 0;
+    }
+
+    public Pair<Integer, Integer> getHydraData() {
+        int killedHeads = ((Hydra)(currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.BLUE))).getHeadsKilled();
+        int hydraNumber;
+        if (killedHeads < 5)
+            hydraNumber = 1;
+        else if (killedHeads < 11)
+            hydraNumber = 2;
+        else
+            hydraNumber = 0;
+        int requiredCount = killedHeads - 5 < 0 ? killedHeads : killedHeads-5;
+        if (hydraNumber == 1)
+            requiredCount = 5 - requiredCount;
+        else
+            requiredCount = 6 - requiredCount;
+        Pair<Integer, Integer> data = new Pair<>(hydraNumber, requiredCount);
+        return data;
     }
 
     public boolean handleTimeWarps(Player player) throws ExhaustedResourceException, PlayerActionException{
