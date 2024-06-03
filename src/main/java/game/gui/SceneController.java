@@ -144,6 +144,7 @@ public class SceneController {
     public ImageView getLion() {
         return yellowScene.getLion();
     }
+    public ImageView getHydra() {return blueScene.getHydra();}
 
     public void initGaiaGuardians(int count) {
         // images/GreenRealmImages/Terra's_Heartland_1.png
@@ -175,6 +176,15 @@ public class SceneController {
         else
             path = "/images/MagentaRealmImages/MajesticPhoenix.png";
         magentaScene.changeMagentaSceneView(path);
+    }
+
+    public void initHydra(int hydraNumber, int aliveHeadCount) {
+        String path;
+        if (hydraNumber == 0)
+            path = null;
+        else
+            path = "/images/BlueRealmImages/HydraSerpent" + hydraNumber + "/HydraSerpent" + aliveHeadCount + ".png";
+        blueScene.changeBlueSceneView(path);
     }
 
     public ImageView getPlayer1TimeWarpButton() {
