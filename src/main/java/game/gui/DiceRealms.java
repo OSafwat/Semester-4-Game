@@ -780,7 +780,7 @@ public class DiceRealms extends Application {
         switch (realmColor.toLowerCase()) {
             case "red": sceneController.changeDragons(guiGameController.getDragonPaths()); initDragonEventListeners(); scene = sceneController.redScene.getScene();break;
             case "green": sceneController.initGaiaGuardians(guiGameController.getGreenCount()); ;scene = sceneController.greenScene.getScene(); break;
-            case "blue": scene = sceneController.blueScene.getScene(); break;
+            case "blue": sceneController.initHydra(guiGameController.getHydraData().getKey(), guiGameController.getHydraData().getValue()); ; scene = sceneController.blueScene.getScene(); break;
             case "magenta": sceneController.initPhoenix(guiGameController.getMagentaCount()); ;scene = sceneController.magentaScene.getScene(); break;
             case "yellow": sceneController.initLions(guiGameController.getYellowCount()); ;scene = sceneController.yellowScene.getScene(); break;
 
