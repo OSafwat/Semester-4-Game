@@ -251,7 +251,7 @@ public class DiceRealms extends Application {
             sceneController.changeDragons(guiGameController.getDragonPaths());
             initDragonEventListeners();
             sceneController.initGaiaGuardians(guiGameController.getGreenCount());
-            //setupRealmScene("Blue");
+            sceneController.initHydra(guiGameController.getHydraData().getKey(), guiGameController.getHydraData().getValue());
             sceneController.initPhoenix(guiGameController.getMagentaCount());
             sceneController.initLions(guiGameController.getYellowCount());
         });
@@ -787,6 +787,9 @@ public class DiceRealms extends Application {
 
             default: scene = null;
         }
+
+        System.out.println(guiGameController.getHydraData());
+        System.out.println(sceneController.blueScene.getScene());
         primaryStage.setScene(scene);
     }
 

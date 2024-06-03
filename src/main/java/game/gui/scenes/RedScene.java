@@ -235,13 +235,15 @@ public class RedScene extends RealmScene {
             try {
                 currentDragon.setImage(new Image(getClass().getResourceAsStream(path)));
                 if (!root.getChildren().contains(currentDragon)) root.getChildren().add(currentDragon);
+                if (path.contains("face-wings-tail-heart"))
+                    deadDragons++;
             } catch (NullPointerException e) {
                 deadDragons += 1;
                 if (root.getChildren().contains(currentDragon)) root.getChildren().remove(currentDragon);
             }
         }
 
-        if (deadDragons == 4) backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's Heartland_Destroyed.webp")));
+        if (deadDragons == 4) backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/GreenRealmImages/Terra's Heartland_Destroyed.png")));
     }
 
     public ImageView getDragon1() {

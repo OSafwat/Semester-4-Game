@@ -49,7 +49,7 @@ public class BlueScene extends RealmScene {
             hydra.setImage(new Image(getClass().getResourceAsStream(path)));
             if (!root.getChildren().contains(hydra)) root.getChildren().add(hydra);
         } catch  (NullPointerException e) {
-            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/Tide_Abyss_Destroyed.webp")));
+            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/Tide_Abyss_Destroyed.png")));
             if (root.getChildren().contains(hydra)) root.getChildren().remove(hydra);
        }
     }

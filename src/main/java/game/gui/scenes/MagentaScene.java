@@ -49,7 +49,7 @@ public class MagentaScene extends RealmScene {
             phoenix.setImage(new Image(getClass().getResourceAsStream(path)));
             if (!root.getChildren().contains(phoenix)) root.getChildren().add(phoenix);
         } catch (NullPointerException e) {
-            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mystical_Sky_Destroyed.webp")));
+            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/MagentaRealmImages/Mystical_Sky_Destroyed.png")));
             if (root.getChildren().contains(phoenix)) root.getChildren().remove(phoenix);
         }
     }

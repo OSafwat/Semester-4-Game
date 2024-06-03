@@ -50,7 +50,7 @@ public class YellowScene extends RealmScene {
             lion.setImage(new Image(getClass().getResourceAsStream(path)));
             if (!root.getChildren().contains(lion)) root.getChildren().add(lion);
         } catch (NullPointerException e) {
-            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna_Destroyed.webp")));
+            backgroundView.setImage(new Image(getClass().getResourceAsStream("/images/YellowRealmImages/Radiant_Savanna_Destroyed.png")));
             if (root.getChildren().contains(lion)) root.getChildren().remove(lion);
         }
     }
