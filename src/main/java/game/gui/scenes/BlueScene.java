@@ -6,11 +6,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class BlueScene extends RealmScene {
+    private ImageView hydra, backgroundView;
     @Override
     public void createScene() {
         root = new AnchorPane();
 
-        ImageView backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/Tide_Abyss.png")));
+        backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/Tide_Abyss.png")));
+        hydra = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/HydraSerpent"));
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);
@@ -19,6 +21,10 @@ public class BlueScene extends RealmScene {
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
         super.createScene();
+    }
+
+    public ImageView getHydra() {
+        return this.hydra;
     }
 
 }
