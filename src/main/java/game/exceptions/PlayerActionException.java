@@ -10,8 +10,4 @@ public class PlayerActionException extends Exception{
     public PlayerActionException(String message) {
         this.message = message;
     }
-
-    public void displayMessage () {
-        System.out.println(message);
-    }
 }

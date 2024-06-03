@@ -177,6 +177,22 @@ public class SceneController {
         magentaScene.changeMagentaSceneView(path);
     }
 
+    public ImageView getPlayer1TimeWarpButton() {
+        return boardScene.getPlayer1TimeWarpButton();
+    }
+
+    public ImageView getPlayer1ArcaneBoostButton() {
+        return boardScene.getPlayer1ArcaneBoostButton();
+    }
+
+    public ImageView getPlayer2TimeWarpButton() {
+        return boardScene.getPlayer2TimeWarpButton();
+    }
+
+    public ImageView getPlayer2ArcaneBoostButton() {
+        return boardScene.getPlayer2ArcaneBoostButton();
+    }
+
     public void changeDragons(String[] paths) {
         redScene.changeRedSceneView(paths);
     }

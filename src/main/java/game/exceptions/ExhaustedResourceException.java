@@ -1,7 +1,8 @@
 package game.exceptions;
 
-public class ExhaustedResourceException extends PlayerActionException{
+public class ExhaustedResourceException extends Exception{
+    String message;
     public ExhaustedResourceException (String message) {
-        super (message);
+        this.message = message;
     }
 }

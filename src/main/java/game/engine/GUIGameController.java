@@ -1,14 +1,15 @@
 package game.engine;
 
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
 import game.creatures.Dragon;
 import game.creatures.greenclasses.Gaia;
 import game.dice.Dice;
 import game.dice.GreenDice;
 import game.dice.RedDice;
 import game.engine.enums.RealmColor;
+import game.engine.enums.RewardStates;
 import game.exceptions.*;
-import game.gui.DiceRealms;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,6 +22,8 @@ public class GUIGameController extends CLIGameController {
     int currentTurn;
     Exception exception;
     Player currentPlayer;
+    Player arcaneBoostPlayer;
+    boolean canUseArcaneBoost;
 
     public GUIGameController() {
         super();
@@ -29,6 +32,7 @@ public class GUIGameController extends CLIGameController {
         currentRound = 1;
         currentTurn = 1;
         currentPlayer = getPlayer1();
+        canUseArcaneBoost = false;
     }
     @Override
     public void startGame() {}
@@ -60,20 +64,6 @@ public class GUIGameController extends CLIGameController {
             return false;
         }
         return true;
-    }
-
-    public boolean makeBonusMove(Player player, Dice dice) {
-        Move[] allPossibleMoves = getAllPossibleMoves(getActivePlayer());
-        Move move = null;
-        for (int i = 0; i < allPossibleMoves.length; i++) {
-            if (allPossibleMoves[i].compareTo(dice) == 0) {
-                move = allPossibleMoves[i];
-            }
-        }
-        if (Objects.equals(move, null)) {
-            exception = new InvalidMoveException();
-        }
-        return makeMove(player, move);
     }
 
     public Player getPlayer1() {
@@ -132,6 +122,7 @@ public class GUIGameController extends CLIGameController {
 
     public void incrementTurnCount () {
         if (currentTurn == -1) {
+            canUseArcaneBoost = true;
             switchPlayer();
             currentPlayer = getActivePlayer();
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
@@ -139,6 +130,7 @@ public class GUIGameController extends CLIGameController {
             currentTurn = 1;
             return;
         }
+        canUseArcaneBoost = false;
         currentTurn++;
         if (currentTurn % (maxTurns+1) == 0) {
             currentTurn = -1;
@@ -196,6 +188,59 @@ public class GUIGameController extends CLIGameController {
                 return 1;
         }
         return 0;
+    }
+
+    public boolean handleTimeWarps(Player player) throws ExhaustedResourceException, PlayerActionException{
+        ArrayList<TimeWarp> timeWarps = player.getTimeWarps();
+        if (currentPlayer.getPlayerStatus().equals(PlayerStatus.PASSIVE))
+            throw new PlayerActionException();
+        for (TimeWarp timeWarp: timeWarps) {
+            if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
+                timeWarp.setStatus(RewardStates.USED);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException{
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        if (!canUseArcaneBoost)
+            throw new PlayerActionException();
+        try {
+            Move[] moves = getAllPossibleMovesForDiceSet(player, getArcaneBoostDice(player));
+            if (moves.length == 0)
+                throw new NoAvailableMovesException("");
+        } catch (NoAvailableMovesException e) {
+            //handle no moves exception
+            return false;
+        }
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
+                arcaneBoost.setStatus(RewardStates.USED);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void restoreArcaneBoost(Player player) {
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        for (int i =0 ; i < arcaneBoosts.size(); i++) {
+            if (arcaneBoosts.get(i).getStatus().equals(RewardStates.USED))
+            {
+                arcaneBoosts.get(i).setStatus(RewardStates.ACQUIRED);
+                return;
+            }
+        }
+    }
+
+    public void setArcaneBoostPlayer(Player player) {
+        arcaneBoostPlayer = player;
+    }
+
+    public Player getArcaneBoostPlayer() {
+        return arcaneBoostPlayer;
     }
 
     public int getMaxRounds() {

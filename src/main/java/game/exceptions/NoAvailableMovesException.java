@@ -1,9 +1,16 @@
 package game.exceptions;
 
-public class NoAvailableMovesException extends PlayerActionException{
+public class NoAvailableMovesException extends Exception{
 
-    public NoAvailableMovesException(String s) {
-        super(s);
+    private String message;
+
+    public NoAvailableMovesException() {
+        message = "";
     }
+
+    public NoAvailableMovesException(String message) {
+        this.message = message;
+    }
+
 
 }
