@@ -15,7 +15,7 @@ public class BlueScene extends RealmScene {
         root = new AnchorPane();
 
         backgroundView = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/Tide_Abyss.png")));
-        hydra = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/HydraSerpent1/HydraSerpent5")));
+        hydra = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueRealmImages/HydraSerpent1/HydraSerpent5.png")));
 
         // DropShadow effect
         DropShadow dropShadow = new DropShadow();
