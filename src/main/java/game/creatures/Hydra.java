@@ -235,4 +235,8 @@ public class Hydra extends Creature{
         }
         return moves;
     }
+
+    public int getHeadsKilled() {
+        return headsKilled;
+    }
 }
