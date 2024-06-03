@@ -85,12 +85,12 @@ public class DiceRealms extends Application {
         for (int i = 0; i < dice.length; i++) {
             String diceColor;
             switch (dice[i].getRealm()) {
-                case RED: diceColor = "RedDice"; break;
-                case GREEN: diceColor = "GreenDice"; break;
-                case BLUE: diceColor = "BlueDice"; break;
-                case MAGENTA: diceColor = "MagentaDice"; break;
-                case YELLOW: diceColor = "YellowDice"; break;
-                default: diceColor = "ArcanePrism";
+                case RED: diceColor = "redDice"; break;
+                case GREEN: diceColor = "greenDice"; break;
+                case BLUE: diceColor = "blueDice"; break;
+                case MAGENTA: diceColor = "magentaDice"; break;
+                case YELLOW: diceColor = "yellowDice"; break;
+                default: diceColor = "arcanePrism";
             }
             diceGIFs[i] = path + diceColor + "Animation.gif";
             System.out.println(diceGIFs[i]);
