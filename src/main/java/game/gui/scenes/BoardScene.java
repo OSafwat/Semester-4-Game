@@ -258,10 +258,10 @@ public class BoardScene{
         return leftGrimoire;
     }
 
-    public void addToAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
-        anchorPane.getChildren().addAll(bg, textarea, close);
+    public void addToAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
+        anchorPane.getChildren().addAll(bg, textarea, textarea2,close);
     }
-    public void removeFromAnchorPane(ImageView bg, TextArea textarea, ImageView close) {
-        anchorPane.getChildren().removeAll(bg, textarea, close);
+    public void removeFromAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
+        anchorPane.getChildren().removeAll(bg, textarea, textarea2,close);
     }
 }

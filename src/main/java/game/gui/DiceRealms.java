@@ -111,42 +111,64 @@ public class DiceRealms extends Application {
     }   
     public void openLeftGrimoire() {        
 
-        Player player = guiGameController.getActivePlayer();
-        String arr [] =getInformation(player); 
+        Player player1 = guiGameController.getPlayer1();
+        String arr [] =getInformation(player1); 
 
-        TextArea textArea = new TextArea();
+        TextArea textAreaPlayer1 = new TextArea();
         for (String text : arr) {        //uncomment when the string is being passed
-            textArea.appendText(text);
+            textAreaPlayer1.appendText(text);
         }
-        textArea.setWrapText(true); // Optional: Wrap text to fit width
-        textArea.setPrefWidth(720);
-        textArea.setPrefHeight(779);
-        textArea.setLayoutX(620);
-        textArea.setLayoutY(158);
-        textArea.setStyle("-fx-font-family: 'Monospaced';");
-        textArea.setWrapText(false);
+        textAreaPlayer1.setWrapText(true); // Optional: Wrap text to fit width
+        textAreaPlayer1.setPrefWidth(700);
+        textAreaPlayer1.setPrefHeight(780);
+        textAreaPlayer1.setLayoutX(253);
+        textAreaPlayer1.setLayoutY(117);
+        textAreaPlayer1.setStyle("-fx-font-family: 'Monospaced';");
+        textAreaPlayer1.setWrapText(false);
     
-        textArea.setEditable(false);// Disable editing in the TextArea
-        textArea.getStyleClass().add("grimoire");
+        textAreaPlayer1.setEditable(false);// Disable editing in the TextArea
+        textAreaPlayer1.getStyleClass().add("grimoire");
        // textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
-        textArea.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+        textAreaPlayer1.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
 
-        ImageView bg = new ImageView(new Image(getClass().getResource("/images/grimoire.png").toExternalForm()));
-        bg.setFitHeight(1280);
-        bg.setFitWidth(1200);
-        bg.setLayoutX(361);
-        bg.setLayoutY(-72); 
+
+        Player player2 = guiGameController.getPlayer2();
+        String arr2 [] =getInformation(player2); 
+
+        TextArea textAreaPlayer2 = new TextArea();
+        for (String text : arr2) {        //uncomment when the string is being passed
+            textAreaPlayer2.appendText(text);
+        }
+        textAreaPlayer2.setWrapText(true); // Optional: Wrap text to fit width
+        textAreaPlayer2.setPrefWidth(700);
+        textAreaPlayer2.setPrefHeight(780);
+        textAreaPlayer2.setLayoutX(1000);
+        textAreaPlayer2.setLayoutY(118);
+        textAreaPlayer2.setStyle("-fx-font-family: 'Monospaced';");
+        textAreaPlayer2.setWrapText(false);
+    
+        textAreaPlayer2.setEditable(false);// Disable editing in the TextArea
+        textAreaPlayer2.getStyleClass().add("grimoire");
+       // textArea.setStyle(" -fx-background-color: transparent; -fx-background: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; ");
+        textAreaPlayer2.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+
+                
+        ImageView bg = new ImageView(new Image(getClass().getResource("/images/open_book no bg.png").toExternalForm()));
+        bg.setFitWidth(2049);
+        bg.setFitHeight(1018);
+        bg.setLayoutX(-56);
+        bg.setLayoutY(18); 
         
         ImageView close = new ImageView(new Image(getClass().getResource("/images/close.png").toExternalForm()));
         close.setFitHeight(120);
         close.setFitWidth(120);
-        close.setLayoutX(1275);
-        close.setLayoutY(80);
+        close.setLayoutX(1575);
+        close.setLayoutY(50);
         
-        sceneController.boardScene.addToAnchorPane(bg, textArea, close);
+        sceneController.boardScene.addToAnchorPane(bg, textAreaPlayer1,textAreaPlayer2, close);
 
         close.setOnMouseClicked(e -> {
-            sceneController.boardScene.removeFromAnchorPane(bg, textArea, close);
+            sceneController.boardScene.removeFromAnchorPane(bg, textAreaPlayer1, textAreaPlayer2, close);
           //  sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(event -> openLeftGrimoire());  
         });
         
