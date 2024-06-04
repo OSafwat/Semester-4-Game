@@ -90,21 +90,28 @@ public class DiceRealms extends Application {
 
     public String[] getDiceGIFs() {
         Dice[] dice = guiGameController.getAllDice();
-        String[] diceGIFs = new String[dice.length];
+        String[] diceGIFs = new String[6];
         // /images/Dice/Dice Animations/ArcanePrismAnimation.gif
-        String path = "/images/Dice/Dice Animations/";
+        // /images/Dice/Blue/blue dice 1.png
+        String animationPath = "/images/Dice/Dice Animations/";
+        String pngPath = "/images/Dice";
         for (int i = 0; i < dice.length; i++) {
-            String diceColor;
-            switch (dice[i].getRealm()) {
-                case RED: diceColor = "redDice"; break;
-                case GREEN: diceColor = "greenDice"; break;
-                case BLUE: diceColor = "blueDice"; break;
-                case MAGENTA: diceColor = "magentaDice"; break;
-                case YELLOW: diceColor = "yellowDice"; break;
-                default: diceColor = "arcanePrism";
+            if (guiGameController.getGameBoard().getAvailableDice().contains(dice[i])) {
+                String diceColor;
+                switch (dice[i].getRealm()) {
+                    case RED: diceColor = "redDice"; break;
+                    case GREEN: diceColor = "greenDice"; break;
+                    case BLUE: diceColor = "blueDice"; break;
+                    case MAGENTA: diceColor = "magentaDice"; break;
+                    case YELLOW: diceColor = "yellowDice"; break;
+                    default: diceColor = "arcanePrism";
+                }
+                
+                diceGIFs[i] = animationPath + diceColor + "Animation.gif";
             }
-            diceGIFs[i] = path + diceColor + "Animation.gif";
-            System.out.println(diceGIFs[i]);
+            else {
+                diceGIFs[i] = getColorAsString(dice[i]) + " dice " + dice[i].getValue() + ".png123";
+            }
         }
         return diceGIFs;
     }
@@ -454,8 +461,10 @@ public class DiceRealms extends Application {
         Player player = guiGameController.getCurrentPlayer();
         if (isArcaneBoostPower)
             player = arcanePlayer;
+        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
+        loadDiceBoard();
         System.out.println(player.getScoreSheet().toString());
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
@@ -516,7 +525,7 @@ public class DiceRealms extends Application {
             bonusValue = -1;
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
-            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+            loadDiceBoard();
             return true;
         }
         if (indicator == 0) {
@@ -530,20 +539,22 @@ public class DiceRealms extends Application {
                 if (isForgotten) {
                     isForgotten = false;
                     guiGameController.getGameBoard().resetAllDice();
+                    canReroll = false;
                     guiGameController.rollDice();
                     guiGameController.incrementTurnCount();
                     sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
-                    primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+                    loadDiceBoard();
                     initDiceAndRerollButtonEventListeners();
                     handleReward(guiGameController.getCurrentRound());
                     return true;
                 }
-            }
+            loadDiceBoard();
+        }
         return true;
     }
 
     private void loadDiceBoard() {
-        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
+        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()));
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         initDiceAndRerollButtonEventListeners();
     }
@@ -564,6 +575,8 @@ public class DiceRealms extends Application {
                 handleBonus(RealmColor.YELLOW);
             else
                 handleBonus(RealmColor.WHITE);
+        } else {
+            guiGameController.handleRoundRewards(guiGameController.getCurrentPlayer(), currentReward);
         }
     }
 
@@ -571,8 +584,7 @@ public class DiceRealms extends Application {
         canReroll = false;
         guiGameController.moveAllIntoForgotten();
         //initiate forgotten realm turn
-        sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getForgottenRealmDice()));
-        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
+        loadDiceBoard();
         isForgotten = true;
         initDiceAndRerollButtonEventListeners();
     }
@@ -715,7 +727,7 @@ public class DiceRealms extends Application {
 
     public void startGame() {
         handlePlayerNameInputs();
-        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getActivePlayer().getName() ));
+        loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[0];
         System.out.println(currentReward);
@@ -947,6 +959,14 @@ public class DiceRealms extends Application {
             return;
         }
         canReroll = false;
+        try {
+            Move[] moves = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
+            if (moves.length == 0)
+                throw new NoAvailableMovesException();
+        }
+        catch (NoAvailableMovesException e) {
+            canReroll = true;
+        }
         sceneController.boardScene.makeboardScene(getDiceGIFs());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         new Thread(new Runnable() {
