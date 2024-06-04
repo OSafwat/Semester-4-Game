@@ -112,20 +112,26 @@ public class BoardScene{
             
         }
 
+        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourGlass frame.png")));
+        timeWarp.setLayoutX(1221);
+        timeWarp.setLayoutY(145);
+        timeWarp.setFitHeight(200);
+        timeWarp.setFitWidth(160);
+
         // Grimoire image (left)
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
-        leftGrimoire.setLayoutX(276);
-        leftGrimoire.setLayoutY(135);
+        leftGrimoire.setLayoutX(496);
+        leftGrimoire.setLayoutY(154);
 
-        // Grimoire image (right)
-         rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
-        rightGrimoire.setFitHeight(200);
-        rightGrimoire.setFitWidth(200);
-        rightGrimoire.setLayoutX(1438);
-        rightGrimoire.setLayoutY(135);
-        rightGrimoire.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+        // // Grimoire image (right)
+        //  rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
+        // rightGrimoire.setFitHeight(200);
+        // rightGrimoire.setFitWidth(200);
+        // rightGrimoire.setLayoutX(1438);
+        // rightGrimoire.setLayoutY(135);
+        // rightGrimoire.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
 
         // ImageView for Wizard Hat
         wizardHat = new ImageView(new Image(getClass().getResourceAsStream("/images/wizard hat.png")));
@@ -140,7 +146,7 @@ public class BoardScene{
         player2ArcaneBoostButton = new ImageView();
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard, rightGrimoire,leftGrimoire, wizardHat, infoLabel);
+        anchorPane.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp);
         for (ImageView diceImage : imagePaths) {
             anchorPane.getChildren().addAll(diceImage);
         }
