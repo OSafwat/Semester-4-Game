@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -19,6 +21,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -73,9 +76,13 @@ public class BoardScene{
         mainBoard.setLayoutX(-3);
 
         ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
-        ImageView temp ;
         for (String imageString : dicePNGs) {
-            temp= new ImageView(new Image(getClass().getResourceAsStream(imageString))); 
+            ImageView temp;
+            boolean strikeThrough = imageString.contains("123");
+            if (strikeThrough)
+                temp = new ImageView(new Image(getClass().getResourceAsStream(imageString.substring(0,imageString.length()-3))));
+            else
+                temp = new ImageView(new Image(getClass().getResourceAsStream(imageString))); 
             imagePaths.add(temp);
             temp.setFitHeight(150);
             temp.setFitWidth(150);
@@ -109,7 +116,19 @@ public class BoardScene{
                 arcaneDice.setLayoutX(884);
                 arcaneDice.setLayoutY(624);
             }
-            
+            if (!strikeThrough) {
+                DropShadow dropShadow = new DropShadow();
+                dropShadow.setRadius(10);
+                dropShadow.setOffsetX(5);
+                dropShadow.setOffsetY(5);
+                dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+
+                temp.setEffect(dropShadow);
+
+                Glow glow = new Glow(0.8);
+                temp.setOnMouseEntered(event -> temp.setEffect(glow));
+                temp.setOnMouseExited(event -> temp.setEffect(dropShadow));
+            }
         }
 
         ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourGlass frame.png")));

@@ -5,6 +5,7 @@ import game.engine.GUIGameController;
 import game.engine.Move;
 import game.engine.Player;
 import game.engine.enums.RealmColor;
+import game.engine.PlayerStatus;
 import game.exceptions.BonusException;
 import game.exceptions.ExhaustedResourceException;
 import game.exceptions.NoAvailableMovesException;
@@ -68,12 +69,19 @@ public class DiceRealms extends Application {
     }
 
     public String[] getDicePNGs(Dice[] dice) {
-        String[] dicePNGs = new String[dice.length];
-        for (int i = 0; i < dice.length; i++) {
-            dicePNGs[i] = getColorAsString(dice[i]) + " dice";
-        }
-        for (int i = 0; i < dice.length; i++) {
-            dicePNGs[i] += " " + dice[i].getValue() + ".png";
+        String[] dicePNGs = new String[6];
+        Dice[] allDice = guiGameController.getAllDice();
+        Arrays.sort(dice);
+        Arrays.sort(allDice);
+        int ptr = 0;
+        for (int i = 0; i < 6; i++) {
+            if (allDice[i].getRealm().equals(dice[ptr].getRealm())) {
+                dicePNGs[i] = getColorAsString(dice[ptr]) + " dice " + dice[ptr].getValue() + ".png";
+                ptr++;
+            }
+            else {
+                dicePNGs[i] = getColorAsString(allDice[i]) + " dice " + dice[ptr].getValue() + ".png123";
+            }
         }
         return dicePNGs;
     }
@@ -263,20 +271,31 @@ public class DiceRealms extends Application {
     }
 
     public void initDiceEventListeners() {
-        sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Red");});
-        sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Green");});
-        sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Blue");});
-        sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Magenta");});
-        sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
-        sceneController.getArcaneDice().setOnMouseClicked(e -> {
-            handleArcanePrism();
-            sceneController.changeDragons(guiGameController.getDragonPaths());
-            initDragonEventListeners();
-            sceneController.initGaiaGuardians(guiGameController.getGreenCount());
-            sceneController.initHydra(guiGameController.getHydraData().getKey(), guiGameController.getHydraData().getValue());
-            sceneController.initPhoenix(guiGameController.getMagentaCount());
-            sceneController.initLions(guiGameController.getYellowCount());
-        });
+        Dice[] currentDice = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice();
+        HashSet<RealmColor> realmColors = new HashSet<>();
+        for (Dice dice: currentDice) {
+            realmColors.add(dice.getRealm());
+        }
+        if (realmColors.contains(RealmColor.RED))
+            sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Red");});
+        if (realmColors.contains(RealmColor.GREEN))
+            sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Green");});
+        if (realmColors.contains(RealmColor.BLUE))
+            sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Blue");});
+        if (realmColors.contains(RealmColor.MAGENTA))
+            sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Magenta");});
+        if (realmColors.contains(RealmColor.YELLOW))
+            sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
+        if (realmColors.contains(RealmColor.WHITE))
+            sceneController.getArcaneDice().setOnMouseClicked(e -> {
+                handleArcanePrism();
+                sceneController.changeDragons(guiGameController.getDragonPaths());
+                initDragonEventListeners();
+                sceneController.initGaiaGuardians(guiGameController.getGreenCount());
+                sceneController.initHydra(guiGameController.getHydraData().getKey(), guiGameController.getHydraData().getValue());
+                sceneController.initPhoenix(guiGameController.getMagentaCount());
+                sceneController.initLions(guiGameController.getYellowCount());
+            });
     }
 
     public void handleArcanePrism() {

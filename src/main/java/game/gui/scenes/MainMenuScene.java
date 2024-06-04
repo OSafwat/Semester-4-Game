@@ -4,6 +4,7 @@ import game.gui.scenes.RedScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -71,6 +72,9 @@ public class MainMenuScene{
             goBackButton.setLayoutX(832);
             goBackButton.setLayoutY(650);
             //exitButton.getStyleClass().add("");
+
+        TextField roundNum = new TextField();
+        
 
 
 
