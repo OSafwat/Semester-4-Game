@@ -41,6 +41,7 @@ public class BoardScene{
     ImageView player1ArcaneBoostButton;
     ImageView player2TimeWarpButton;
     ImageView player2ArcaneBoostButton;
+    Button rollDice;
 
     Label infoLabel;
     public AnchorPane anchorPane;
@@ -130,6 +131,12 @@ public class BoardScene{
                 temp.setOnMouseExited(event -> temp.setEffect(dropShadow));
             }
         }
+        
+        rollDice = new Button();
+        rollDice.setText("Roll Dice");
+        rollDice.setLayoutX( (1148 + 884) /2);
+        rollDice.setLayoutY(439 - 187);
+
 
         ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourGlass frame.png")));
         timeWarp.setLayoutX(1221);
@@ -304,5 +311,9 @@ public class BoardScene{
     }
     public void removeFromAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
         anchorPane.getChildren().removeAll(bg, textarea, textarea2,close);
+    }
+
+    public Button getRollDiceButton() {
+        return rollDice;
     }
 }

@@ -206,4 +206,8 @@ public class SceneController {
     public void changeDragons(String[] paths) {
         redScene.changeRedSceneView(paths);
     }
+
+    public Button getRollDiceButton() {
+        return boardScene.getRollDiceButton();
+    }
 }
