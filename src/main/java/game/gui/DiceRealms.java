@@ -33,6 +33,7 @@ public class DiceRealms extends Application {
     int bonusValue;
     volatile boolean awaitingInput;
     boolean isArcaneBoostPower;
+    boolean canReroll;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -50,6 +51,7 @@ public class DiceRealms extends Application {
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
         isArcaneBoostPower = false;
+        canReroll = false;
         wasEssenceBonus = 0;
         bonusRealmColor = RealmColor.PARENT;
         awaitingInput = false;
@@ -75,12 +77,12 @@ public class DiceRealms extends Application {
         Arrays.sort(allDice);
         int ptr = 0;
         for (int i = 0; i < 6; i++) {
-            if (allDice[i].getRealm().equals(dice[ptr].getRealm())) {
+            if (ptr != dice.length && allDice[i].getRealm().equals(dice[ptr].getRealm())) {
                 dicePNGs[i] = getColorAsString(dice[ptr]) + " dice " + dice[ptr].getValue() + ".png";
                 ptr++;
             }
             else {
-                dicePNGs[i] = getColorAsString(allDice[i]) + " dice " + dice[ptr].getValue() + ".png123";
+                dicePNGs[i] = getColorAsString(allDice[i]) + " dice " + allDice[i].getValue() + ".png123";
             }
         }
         return dicePNGs;
@@ -210,7 +212,7 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
-        initDiceEventListeners();
+        initDiceAndRerollButtonEventListeners();
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0, null));
         sceneController.getHydra().setOnMouseClicked(e -> handleMove(3, 0, 0, null));
         sceneController.getGoBackButton().setOnMouseClicked(e -> sceneController.switchToMain());
@@ -226,13 +228,6 @@ public class DiceRealms extends Application {
         sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
         sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
         sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
-        sceneController.getRollDiceButton().setOnMouseClicked(e -> {
-            if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE))
-                illegalMoveAlert();
-            else {
-                handleDiceReroll();
-            }
-        });
         
         initDragonEventListeners();
         
@@ -279,7 +274,7 @@ public class DiceRealms extends Application {
         });
     }
 
-    public void initDiceEventListeners() {
+    public void initDiceAndRerollButtonEventListeners() {
         Dice[] currentDice = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice();
         HashSet<RealmColor> realmColors = new HashSet<>();
         for (Dice dice: currentDice) {
@@ -288,27 +283,27 @@ public class DiceRealms extends Application {
         if (realmColors.contains(RealmColor.RED))
             sceneController.getRedDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Red");});
         else
-            sceneController.getRedDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getRedDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         if (realmColors.contains(RealmColor.GREEN))
             sceneController.getGreenDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Green");});
         else
-            sceneController.getGreenDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getGreenDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         if (realmColors.contains(RealmColor.BLUE))
             sceneController.getBlueDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Blue");});
         else
-            sceneController.getBlueDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getBlueDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         if (realmColors.contains(RealmColor.MAGENTA))
             sceneController.getMagentaDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Magenta");});
         else
-            sceneController.getMagentaDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getMagentaDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         if (realmColors.contains(RealmColor.YELLOW))
             sceneController.getYellowDice().setOnMouseClicked(e -> {arcaneValue = -1; setupRealmScene("Yellow");});
         else
-            sceneController.getYellowDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getYellowDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         if (realmColors.contains(RealmColor.WHITE))
             sceneController.getArcaneDice().setOnMouseClicked(e -> {
@@ -321,7 +316,17 @@ public class DiceRealms extends Application {
                 sceneController.initLions(guiGameController.getYellowCount());
             });
         else
-            sceneController.getArcaneDice().setOnMouseClicked(e -> illegalMoveAlert());
+            sceneController.getArcaneDice().setOnMouseClicked(e -> unavailableDiceAlert());
+
+        sceneController.getRollDiceButton().setOnMouseClicked(e -> {
+            if (!canReroll)
+                needToMakeMoveAlert();
+            else if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE))
+                passivePlayerCannotRerollAlert();
+            else {
+                handleDiceReroll();
+            }
+        });
     }
 
     public void handleArcanePrism() {
@@ -332,7 +337,12 @@ public class DiceRealms extends Application {
         String [] tmp = getDicePNGs(dietmp);
         ArrayList<String> dicePaths = new ArrayList<>();
         for (String string: tmp) {
-            dicePaths.add(string);
+            if (string.toLowerCase().contains("white"))
+                continue;
+            if (string.contains("123"))
+                dicePaths.add(string.substring(0, string.length() - 3));
+            else
+                dicePaths.add(string);
         }
         Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(dicePaths);
         String result =(String) whiteDialog.showAndWait().get();
@@ -355,6 +365,11 @@ public class DiceRealms extends Application {
 
     public boolean handleMove(int num, int indicator, int dragonPart, Player arcanePlayer) {
         //change this later
+        if (canReroll) {
+            needToRerollDiceAlert();
+            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
+            return false;
+        }
         RealmColor realmColor;
         Dice currDice = null;
         Creature creature;
@@ -440,6 +455,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             player = arcanePlayer;
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
         System.out.println(player.getScoreSheet().toString());
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
@@ -450,8 +466,8 @@ public class DiceRealms extends Application {
             //either a bonus exception or an invalid move exception
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
-            primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
             if (exception instanceof BonusException) {
+                canReroll = true;
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
@@ -490,7 +506,6 @@ public class DiceRealms extends Application {
                 illegalMoveAlert();
                 //logic here
                 //and go back to the dice board
-                primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName() ));
                 if (bonusValue != -1) {
                     handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
                 }
@@ -505,6 +520,7 @@ public class DiceRealms extends Application {
             return true;
         }
         if (indicator == 0) {
+            canReroll = true;
             if (arcaneValue != -1){
                 arcaneValue = -1;
                 guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
@@ -518,7 +534,7 @@ public class DiceRealms extends Application {
                     guiGameController.incrementTurnCount();
                     sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
                     primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
-                    initDiceEventListeners();
+                    initDiceAndRerollButtonEventListeners();
                     handleReward(guiGameController.getCurrentRound());
                     return true;
                 }
@@ -529,7 +545,7 @@ public class DiceRealms extends Application {
     private void loadDiceBoard() {
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
-        initDiceEventListeners();
+        initDiceAndRerollButtonEventListeners();
     }
     private void handleReward(int newRoundCount) {
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
@@ -552,21 +568,63 @@ public class DiceRealms extends Application {
     }
 
     public void handleForgottenTurn() {
+        canReroll = false;
         guiGameController.moveAllIntoForgotten();
         //initiate forgotten realm turn
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getForgottenRealmDice()));
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         isForgotten = true;
-        initDiceEventListeners();
+        initDiceAndRerollButtonEventListeners();
     }
     public void illegalMoveAlert(){
-        Alert thisIsAnAlert = new Alert(AlertType.WARNING);
-        thisIsAnAlert.setTitle("Alert");
-        Label contentLabel = new Label("You have made an Illegal Move");
-        contentLabel.setStyle("-fx-font-size: 30px;");
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Alert");
+        Label label = new Label("You have made an Illegal Move");
+        label.setStyle("-fx-font-size: 30px;");
         // Set the Label as the content of the alert
-        thisIsAnAlert.getDialogPane().setContent(contentLabel);
-        thisIsAnAlert.showAndWait();
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void needToMakeMoveAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Alert");
+        Label label = new Label("You have not played a move yet!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void needToRerollDiceAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Alert");
+        Label label = new Label("You have already played a move, and you must reroll your dice!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void passivePlayerCannotRerollAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Alert");
+        Label label = new Label("You are the passive player, and so cannot reroll the dice!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void unavailableDiceAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Alert");
+
+        Label label = new Label("This dice is not available, because you have either played with it before, or it is currently in the forgotten realm!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
     }
 
     public void handleBonus(RealmColor realmColor) {
@@ -872,7 +930,7 @@ public class DiceRealms extends Application {
             Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(player);
             //display the scene with the arcaneBoostDice
             sceneController.boardScene.makeboardScene(getDicePNGs(arcaneBoostDice));
-            initDiceEventListeners();
+            initDiceAndRerollButtonEventListeners();
             primaryStage.setScene(sceneController.boardScene.getBoardScene(guiGameController.getCurrentRound(), guiGameController.getCurrentTurn(), player.getName()));
 
             //setup is done, leave the rest to the player
@@ -888,6 +946,7 @@ public class DiceRealms extends Application {
             handleForgottenTurn();
             return;
         }
+        canReroll = false;
         sceneController.boardScene.makeboardScene(getDiceGIFs());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         new Thread(new Runnable() {
