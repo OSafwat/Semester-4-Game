@@ -104,6 +104,7 @@ public class Player implements Cloneable {
     }
     public int getArcaneBoostsNum(){
         int counter=0;
+        if(this.arcaneBoosts==null) return 0;
         for (ArcaneBoost tmp : this.arcaneBoosts) {
             if (tmp.getStatus() == RewardStates.ACQUIRED  )
                 counter++;
@@ -119,7 +120,7 @@ public class Player implements Cloneable {
         return counter;
     }
 
-    //ai
+    //ai    TODO DOESNT WORK
     @Override
     public Player clone() {
         try {

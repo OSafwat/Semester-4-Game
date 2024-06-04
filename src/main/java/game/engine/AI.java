@@ -67,7 +67,7 @@ import game.engine.enums.RealmColor;
  */
 
 public class AI extends Player implements Cloneable {
-    
+    private String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
     private ScoreSheet scoreSheet;
@@ -76,9 +76,11 @@ public class AI extends Player implements Cloneable {
     private Move[] allPossibleMoves;
     private ArrayList<Dice> playedDice;
     private ArrayList<Dice> usedArcaneDice;
+    private int turnsPlayed;
 
     public AI(PlayerStatus status){
         super();
+        this.name= "AI";
         this.scoreSheet= new ScoreSheet();
         this.playerStatus= status;
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
@@ -87,8 +89,17 @@ public class AI extends Player implements Cloneable {
         allPossibleMoves = getAllPossibleMoves();
         gameScore = new GameScore();
         playedDice = new ArrayList<>();
+        turnsPlayed = 0;
     }
-    
+    public String getName(){
+        return this.name;
+    }
+    public int getTurnsPlayed(){
+        return this.turnsPlayed;
+    }
+    public int incrementTurnsPlayed(){
+        return this.turnsPlayed++;
+    }
     public Move[] getAllPossibleMoves(){
         ArrayList<Move> allMoves= new ArrayList<>();
         allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
