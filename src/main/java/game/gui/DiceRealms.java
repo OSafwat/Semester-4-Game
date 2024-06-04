@@ -319,10 +319,10 @@ public class DiceRealms extends Application {
             sceneController.getArcaneDice().setOnMouseClicked(e -> unavailableDiceAlert());
 
         sceneController.getRollDiceButton().setOnMouseClicked(e -> {
-            if (!canReroll)
-                needToMakeMoveAlert();
-            else if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE))
+            if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE))
                 passivePlayerCannotRerollAlert();
+            else if (!canReroll)
+                needToMakeMoveAlert();
             else {
                 handleDiceReroll();
             }
