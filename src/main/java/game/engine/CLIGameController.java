@@ -173,10 +173,10 @@ public class CLIGameController {
     }
 
     public void startGame(){
-        System.out.println("enter 1 if you wanna play against the human and 2 if you wanna play against the computer");
+        System.out.println("enter 1 if you wanna play against the human and 2 if you wanna play against the computer or 3 to see ai vs ai");
         String modeChoice = scanner.nextLine();
         //TODO CHECK FOR THE VALIDITY OF THE INPUT
-        while(!modeChoice.equals("1") && !modeChoice.equals("2")) {
+        while(!modeChoice.equals("1") && !modeChoice.equals("2")&&!modeChoice.equals("3")) {
             System.out.println("Invalid input. Please try again.");
             modeChoice = scanner.nextLine();
         }
@@ -432,7 +432,7 @@ public class CLIGameController {
             scanner.close();
         }
 
-        else{//ai shit
+        else if(modeChoice.equals("2")){//ai shit
             System.out.println("please input the name of player 1:");
             String player1Name = scanner.nextLine();
             if (player1Name.trim().isEmpty()) {
@@ -563,7 +563,7 @@ public class CLIGameController {
             System.out.println( player1.getGameScore().toString() + "\n");
             int player1Score= player1.getGameScore().getTotalScore();
 
-            System.out.println("The scoresheet of Player "+ aiPlayer.getName()+" is the following:");
+            System.out.println("The scoresheet of the Ai is the following:");
             aiPlayer.getScoreSheet().displayColoredScoreSheet();
             System.out.println( aiPlayer.getGameScore().toString() + "\n");
             int aiPlayerScore= aiPlayer.getGameScore().getTotalScore();
@@ -591,7 +591,69 @@ public class CLIGameController {
                 System.out.println("It is a draw!");
             }
             scanner.close();
+            
+        }
+        else{
 
+            int [] temp = getSettings();
+            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numebrOfTurnsPerRound=temp[1];
+
+
+            System.out.println("Welcome to the mystical lands of Eldoria! \nI will now simulate two different AIs playing");
+
+            //the following is taking in the round rewards from the properties file
+            String rewards [] = getRewards(numberOfRounds);
+
+             //the following is trying to start the game loop: and needs to be changed
+             // the scoresheet for the ai should be displayed once after the end of each round for better transparency and strategy for the human player
+             for (int round = 0; round < numberOfRounds; round++) {
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+" AI1 TURN");
+                playRoundAI(gameBoard.getAi1(), gameBoard.getAi2(), rewards[round], numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                gameBoard.resetAllDice();
+                switchPlayerAI();
+                System.out.println();
+                System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+"\n AI2 TURN ");
+                playRoundAI(gameBoard.getAi2(), gameBoard.getAi1(), rewards[round], numebrOfTurnsPerRound);
+                gameBoard.resetAllDice();
+                switchPlayerAI();
+            }
+            Player aiPlayer1= gameBoard.getAi1();
+            Player aiPlayer2= gameBoard.getAi2();
+            System.out.println("The scoresheet of Player "+ aiPlayer1.getName()+" is the following:");
+            aiPlayer1.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( aiPlayer1.getGameScore().toString() + "\n");
+            int aiPlayer1Score= aiPlayer1.getGameScore().getTotalScore();
+
+            System.out.println("The scoresheet of the Ai is the following:");
+            aiPlayer2.getScoreSheet().displayColoredScoreSheet();
+            System.out.println( aiPlayer2.getGameScore().toString() + "\n");
+            int aiPlayerScore2= aiPlayer2.getGameScore().getTotalScore();
+
+            if (aiPlayer1Score == aiPlayerScore2)
+            {
+                int[] player1Scores = aiPlayer1.getGameScore().getAllScores();
+                int[] player2Scores = aiPlayer2.getGameScore().getAllScores();
+                for (int i = 0; i < player2Scores.length; i++) {
+                    if (player1Scores[i] > player2Scores[i]) {
+                        aiPlayer1Score = 100;
+                        aiPlayerScore2 = 0;
+                    }
+                    else if (player1Scores[i] < player2Scores[i]) {
+                        aiPlayer1Score = 0;
+                        aiPlayerScore2 = 100;
+                    }
+                }
+            }
+            if (aiPlayer1Score > aiPlayerScore2)
+                System.out.println("Congratulations, AI1! You have emerged victorious in this wonderful battle!");
+            else if (aiPlayer1Score < aiPlayerScore2)
+                System.out.println("Congratulations, AI2! You have emerged victorious in this wonderful battle!");
+            else {
+                System.out.println("It is a draw!");
+            }
+            scanner.close();
 
         }
     }
@@ -1694,14 +1756,14 @@ public class CLIGameController {
         int value=dice.getValue();
         dice=new RedDice(dice.getValue());
         if(completeRowRed(player,dice)&&completeColumnRed(player,dice)) return 25;
-        if(completeColumnRed(player, dice)) return 20;
+        if(completeColumnRed(player, dice)) return 15;
         if(completeRowRed(player, dice)) return 10;
-        if(value==4) return 10;
-        if(value==5) return 8;
-        if(value==6) return 9;
-        if(value==3) return 7;
-        if(value==2) return 4;
-        if(value==1) return 4;
+        if(value==4) return 6;
+        if(value==5) return 5;
+        if(value==6) return 4;
+        if(value==3) return 4;
+        if(value==2) return 3;
+        if(value==1) return 3;
 
 
         return dice.getValue();
@@ -1807,11 +1869,11 @@ public class CLIGameController {
         if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 15;
         if(value==2) return 9;
         if(value==3) return 7;
-        if(value==4) return 6;
-        if(value==5) return 6;
-        if(value==6) return 5;
-        if(value==7) return 5;
-        if(value==8) return 5;
+        if(value==4) return 7;
+        if(value==5) return 7;
+        if(value==6) return 7;
+        if(value==7) return 7;
+        if(value==8) return 7;
         if(value==9) return 10;
         if(value==10) return 10;
         if(value==11) return 10;
@@ -1878,7 +1940,7 @@ public class CLIGameController {
         Move[] moves=getPossibleMovesForADie(player, dice);
         for(Move move:moves){
             if(move.getDice().getValue()==value){
-                return 10;
+                return 8;
             }
         }
         return 0;
@@ -1889,19 +1951,19 @@ public class CLIGameController {
         ScoreSheet scoreSheet=player.getScoreSheet();
         Phoenix phoenix=(Phoenix) scoreSheet.getCreatureByColor(RealmColor.MAGENTA);
         int lastHit=phoenix.getLastHit();
-        if(value==6) return 15;
-        if(lastHit==0) return 10+value;
-        if(value>lastHit) return 12+(lastHit-value);//trying to minimize the difference so we dont make a 1 then 5 for example
+        if(value==6) return 10;
+        if(lastHit==0) return 6+value;
+        if(value>lastHit) return 5+(lastHit-value);//trying to minimize the difference so we dont make a 1 then 5 for example
         return 0;
     }
 
     public int evaluateYellowDice(Player player, Dice dice){
-        return dice.getValue()+5;
+        return dice.getValue()+3;
     }
 
     public int evaluateWhiteDice(Player player, Dice dice){//problem with the green dice
         int highestScore=Math.max(evaluateRedDice(player,dice),Math.max(evaluateGreenDice(player,dice),Math.max(evaluateBlueDice(player,dice),
-        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))));
+        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))))-2;
         return highestScore;
     }
 
@@ -1952,6 +2014,8 @@ public class CLIGameController {
         }
     }
 
+
+
     public void playRoundAI(Player activePlayer, Player passivePlayer, String reward, int turnCount) {
         gameBoard.resetGreenPostColorBonus();
 
@@ -1971,19 +2035,67 @@ public class CLIGameController {
 
 
         //for the human player
-        playForgottenTurn(passivePlayer);
-        boolean usedArcaneBoost = true;
-        while (usedArcaneBoost) {
-            try {
-                usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
-            } catch (ExhaustedResourceException e) {
-                System.out.println(e.getMessage());
-                usedArcaneBoost = false;
-            }
-            if (usedArcaneBoost) {
-                handleArcaneBoostCall(passivePlayer);
+        if(!(passivePlayer instanceof AI)){
+            playForgottenTurn(passivePlayer);
+            boolean usedArcaneBoost = true;
+            while (usedArcaneBoost) {
+                try {
+                    usedArcaneBoost = handleArcaneBoost(getArcaneBoostPowers(passivePlayer), passivePlayer);
+                } catch (ExhaustedResourceException e) {
+                    System.out.println(e.getMessage());
+                    usedArcaneBoost = false;
+                }
+                if (usedArcaneBoost) {
+                    handleArcaneBoostCall(passivePlayer);
+                }
             }
         }
+        else{
+            Dice[] avDice = gameBoard.getForgottenRealmDice();
+            ScoreSheet scoreSheet = passivePlayer.getScoreSheet();
+            boolean flag=false;
+            ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
+            for(Dice someDice:avDice){
+                if (someDice instanceof RedDice) {
+                    RedDice finalDie = new RedDice(someDice.getValue());
+                    for (int i = 3; i >= 0; i--) {
+                        finalDie.selectsDragon(i);
+                        Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
+                        if (dragon.getDragons()[i].checkMove(finalDie)) {
+                            actuallyAvailableDice.add(finalDie);
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                else if(getPossibleMovesForADie(passivePlayer, someDice).length != 0){
+                    flag=true;
+                    actuallyAvailableDice.add(someDice);
+                }
+            }
+            AI ai=(AI) passivePlayer;
+            boolean redMoveDone=false;
+            if(flag){
+                Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
+                Move aiMove=findBestMove(avDiceArray, passivePlayer);
+    
+                if(aiMove.getDice().getRealm()==RealmColor.RED){
+                    RedDice redDice = new RedDice(aiMove.getDice().getValue());
+                    for (int i = 4; i>= 1; i--) {
+                        redDice.selectsDragon(i);
+                        Move[] redDiceDragonMoves=getPossibleMovesForADie(passivePlayer, redDice);
+                        if(redDiceDragonMoves.length!=0){
+                            aiMove = new Move(redDice, aiMove.getCreature());
+                            makeMoveAI(passivePlayer, aiMove);
+                            redMoveDone=true;
+                            break;
+                        }
+                    }
+    
+                if(!redMoveDone) makeMoveAI(passivePlayer, aiMove);
+            }            
+        }
+    }
     }
     
     public void handleRoundRewardsAI(Player player, String reward){
@@ -2169,11 +2281,25 @@ public class CLIGameController {
         rollDice();
 
         ArrayList<Dice> avDice = gameBoard.getAvailableDice();
-
+        int[] diceValues=new int[avDice.size()];
+        if(avDice.size()==6||avDice.size()==5){
+            for(int i=0;i<avDice.size();i++){
+                diceValues[i]=avDice.get(i).getValue();
+            }
+            Arrays.sort(diceValues);
+            for(int i=0;i<avDice.size();i++){
+                if(avDice.get(i).getValue()==diceValues[i]&&getPossibleMovesForADie(player, avDice.get(i)).length!=0){
+                    //HERE MAHMOUD
+                }
+            }
+        }
+        
         ScoreSheet scoreSheet = player.getScoreSheet();
         boolean flag=false;
         ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
+        ArrayList<Dice> availableWhiteDice=new ArrayList<Dice>();
         for(Dice someDice:avDice){
+
                 if (someDice instanceof RedDice) {
                     someDice = new RedDice(someDice.getValue());
                     RedDice finalDie = new RedDice(someDice.getValue());
@@ -2187,12 +2313,45 @@ public class CLIGameController {
                         }
                     }
                 }
+
+                else if(someDice instanceof ArcanePrism){
+                    RedDice whiteRedDice=new RedDice(someDice.getValue());
+                    BlueDice whiteBlueDice=new BlueDice(someDice.getValue());
+                    MagentaDice whiteMagentaDice=new MagentaDice(someDice.getValue());
+                    YellowDice whiteYellowDice=new YellowDice(someDice.getValue());
+
+                    for (int i = 3; i >= 0; i--) {
+                        whiteRedDice.selectsDragon(i);
+                        Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
+                        if (dragon.getDragons()[i].checkMove(whiteRedDice)) {
+                            availableWhiteDice.add(whiteRedDice);
+                            flag = true;
+                            break;
+                        }
+                    }
+
+                    if(getPossibleMovesForADie(player, whiteBlueDice).length!=0){
+                        flag=true;
+                        availableWhiteDice.add(whiteBlueDice);
+                    }
+                    if(getPossibleMovesForADie(player, whiteMagentaDice).length!=0){
+                        flag=true;
+                        availableWhiteDice.add(whiteMagentaDice);
+                    }
+                    if(getPossibleMovesForADie(player, whiteYellowDice).length!=0){
+                        flag=true;
+                        availableWhiteDice.add(whiteYellowDice);
+                    }   
+
+                }
+
                 else if(getPossibleMovesForADie(player, someDice).length != 0){
                     flag=true;
                     actuallyAvailableDice.add(someDice);
                 }
         }
         if(flag){
+            actuallyAvailableDice.addAll(availableWhiteDice);
             Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
             Move aiMove=findBestMove(avDiceArray, player);
             if(aiMove.getDice().getRealm()==RealmColor.RED){
@@ -2207,6 +2366,15 @@ public class CLIGameController {
                     }
                 }
             }
+            boolean whiteFlag=false;
+            for(int i=0;i<availableWhiteDice.size();i++){
+                if(availableWhiteDice.get(i).getValue()==aiMove.getDice().getValue()&&availableWhiteDice.get(i).getRealm()==aiMove.getDice().getRealm()){
+                    ArcanePrism finalWhiteDice=new ArcanePrism(aiMove.getDice().getValue());
+                    selectDice(finalWhiteDice, player);
+                    whiteFlag=true;
+                }
+            }
+            if(!whiteFlag) selectDice(aiMove.getDice(), player);
             makeMoveAI(player, aiMove);
         }        
         return true;
