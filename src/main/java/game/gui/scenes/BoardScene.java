@@ -172,7 +172,7 @@ public class BoardScene{
         player2ArcaneBoostButton = new ImageView();
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp);
+        anchorPane.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp, rollDice);
         for (ImageView diceImage : imagePaths) {
             anchorPane.getChildren().addAll(diceImage);
         }
