@@ -105,7 +105,7 @@ public class DiceRealms extends Application {
         int [] tmp = player.getScoreSheet().getScores();
         arr[2] = "Score in Red: "+tmp[0] + "\nScore in Green: "+ tmp[1]+"\nScore in Blue: "+ tmp[2]+"\nScore in Magenta: "+ tmp[3]+"\nScore in Yellow: "+ tmp[4]+"\n";
         arr[3]="The number of ArcaneBoosts acquired is:"+ player.getArcaneBoostsNum();
-        arr[4]="\nThe number of TimeWarps acquired is:"+ player.getArcaneBoostsNum();
+        arr[4]="\nThe number of TimeWarps acquired is:"+ player.getTimeWarpsNum();
         return arr;
     
     }   

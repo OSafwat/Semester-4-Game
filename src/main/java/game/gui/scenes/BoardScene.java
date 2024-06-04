@@ -192,6 +192,28 @@ public class BoardScene{
         
         return dialog;
     } 
+
+    public Dialog handleArcaneBoost(){
+        Dialog<Button> choice = new Dialog<>();
+        choice.setTitle("Would you like to use the ArcaneBoost?");
+        choice.setHeaderText("saba7o");
+        Button acceptButton = new Button();
+        acceptButton.setText("Accept");
+        
+        Button rejectButton = new Button();
+        rejectButton.setText("Reject");
+
+        HBox temp = new HBox();
+        temp.getChildren().addAll(acceptButton, rejectButton);
+        choice.getDialogPane().setContent(temp);
+        acceptButton.setOnAction(event -> choice.setResult(acceptButton));
+        rejectButton.setOnAction(event -> choice.setResult(rejectButton));
+        choice.setWidth(150);
+        choice.showAndWait();
+        //choice.setHeight();
+        return choice;
+        
+    }
     public Dialog handleBonus(String color){
         ArrayList<String> paths = new ArrayList<>();
         if (color == "white"){

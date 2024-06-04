@@ -1692,6 +1692,7 @@ public class CLIGameController {
     public int evaluateRedDice(Player player,Dice dice){
         //should check if this dice can end a column/row
         int value=dice.getValue();
+        dice=new RedDice(dice.getValue());
         if(completeRowRed(player,dice)&&completeColumnRed(player,dice)) return 25;
         if(completeColumnRed(player, dice)) return 20;
         if(completeRowRed(player, dice)) return 10;
@@ -2018,21 +2019,43 @@ public class CLIGameController {
         boolean flag=false;
         ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
         for(Dice someDice:avDice){
-            try {
-                if(scoreSheet.getCreatureByColor(someDice.getRealm()).checkMove(someDice)){
-                    flag=true;
-                    actuallyAvailableDice.add(someDice);
+            if (someDice instanceof RedDice) {
+                RedDice finalDie = new RedDice(someDice.getValue());
+                for (int i = 3; i >= 0; i--) {
+                    finalDie.selectsDragon(i);
+                    Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
+                    if (dragon.getDragons()[i].checkMove(finalDie)) {
+                        actuallyAvailableDice.add(finalDie);
+                        flag = true;
+                        break;
+                    }
                 }
-            } catch (InvalidMoveException e) {
-                System.out.println("problem with the playturnai method");
-                e.printStackTrace();
+            }
+            else if(getPossibleMovesForADie(passivePlayer, someDice).length != 0){
+                flag=true;
+                actuallyAvailableDice.add(someDice);
             }
         }
         AI ai=(AI) passivePlayer;
+        boolean redMoveDone=false;
         if(flag){
             Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
             Move aiMove=findBestMove(avDiceArray, passivePlayer);
-            makeMoveAI(passivePlayer, aiMove);
+
+            if(aiMove.getDice().getRealm()==RealmColor.RED){
+                RedDice redDice = new RedDice(aiMove.getDice().getValue());
+                for (int i = 4; i>= 1; i--) {
+                    redDice.selectsDragon(i);
+                    Move[] redDiceDragonMoves=getPossibleMovesForADie(passivePlayer, redDice);
+                    if(redDiceDragonMoves.length!=0){
+                        aiMove = new Move(redDice, aiMove.getCreature());
+                        makeMoveAI(passivePlayer, aiMove);
+                        redMoveDone=true;
+                        break;
+                    }
+                }
+
+            if(!redMoveDone) makeMoveAI(passivePlayer, aiMove);
         }
 
         boolean usedArcaneBoost = true;
@@ -2047,6 +2070,7 @@ public class CLIGameController {
                 handleArcaneBoostCall(activePlayer);
             }
         }
+    }
     }
 
     public Dice handleBonusAI (Player player,RealmColor realmColor){
@@ -2150,19 +2174,39 @@ public class CLIGameController {
         boolean flag=false;
         ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
         for(Dice someDice:avDice){
-            try {
-                if(scoreSheet.getCreatureByColor(someDice.getRealm()).checkMove(someDice)){
+                if (someDice instanceof RedDice) {
+                    someDice = new RedDice(someDice.getValue());
+                    RedDice finalDie = new RedDice(someDice.getValue());
+                    for (int i = 3; i >= 0; i--) {
+                        finalDie.selectsDragon(i);
+                        Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
+                        if (dragon.getDragons()[i].checkMove(finalDie)) {
+                            actuallyAvailableDice.add(finalDie);
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                else if(getPossibleMovesForADie(player, someDice).length != 0){
                     flag=true;
                     actuallyAvailableDice.add(someDice);
                 }
-            } catch (InvalidMoveException e) {
-                System.out.println("problem with the playturnai method");
-                e.printStackTrace();
-            }
         }
         if(flag){
             Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
             Move aiMove=findBestMove(avDiceArray, player);
+            if(aiMove.getDice().getRealm()==RealmColor.RED){
+                RedDice redDice = new RedDice(aiMove.getDice().getValue());
+                for (int i = 4; i>= 1; i--) {
+                    redDice.selectsDragon(i);
+                    Move[] redDiceDragonMoves=getPossibleMovesForADie(player, redDice);
+                    if(redDiceDragonMoves.length!=0){
+                        aiMove = new Move(redDice, aiMove.getCreature());
+                        makeMoveAI(player, aiMove);
+                        return true;
+                    }
+                }
+            }
             makeMoveAI(player, aiMove);
         }        
         return true;
