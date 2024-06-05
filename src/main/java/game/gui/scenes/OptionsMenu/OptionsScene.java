@@ -15,7 +15,7 @@ public class OptionsScene {
     Button returnFromOptionsButton, gameConfigButton;
     
     Scene configScene;
-    Stage stage;
+    // Stage stage;
 
     public Scene createOptionsScene() {
         StackPane root = new StackPane();
@@ -58,7 +58,7 @@ public class OptionsScene {
         return gameConfigButton;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+    // public void setStage(Stage stage) {
+    //     this.stage = stage;
+    // }
 }
