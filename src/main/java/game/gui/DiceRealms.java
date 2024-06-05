@@ -238,7 +238,7 @@ public class DiceRealms extends Application {
         sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
         sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
         sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
-        sceneController.getOptionsButton().setOnMouseClicked(e -> sceneController.loadOptionsScene());
+        //sceneController.getOptionsButton().setOnMouseClicked(e -> sceneController.loadOptionsScene());
         initDragonEventListeners();
         
 
