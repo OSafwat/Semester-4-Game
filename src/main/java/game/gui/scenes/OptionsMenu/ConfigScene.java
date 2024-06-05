@@ -11,7 +11,7 @@ public class ConfigScene {
     private Stage stage;
 
     public Scene createConfigScene() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameConfigurationMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfigMenu.fxml"));
         Parent root = loader.load();
         
         ConfigMenuFXMLController controller = loader.getController();
