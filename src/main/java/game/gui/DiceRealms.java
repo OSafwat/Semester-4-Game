@@ -233,12 +233,12 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
-        sceneController.getPlayer1TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
-        sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
-        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
-        sceneController.getOptionsButton().setOnMouseClicked(e -> sceneController.loadOptionsScene());
+        sceneController.getTimeWarpButton().setOnMouseExited(e -> timeWarpSequence(guiGameController.getCurrentPlayer()));
+        /*sceneController.getOptionsButton().setOnMouseClicked((e -> {
+            Button button = sceneController.loadOptionsScene();
+            button.setOnMouseClicked(e1 -> sceneController.switchToMain());
+        }));
+         */
         initDragonEventListeners();
         
 
