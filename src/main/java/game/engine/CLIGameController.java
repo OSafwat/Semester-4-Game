@@ -2647,5 +2647,175 @@ public class CLIGameController {
         }
         return true;
         }
-}
 
+
+
+
+
+
+
+
+
+
+        
+        
+    }
+    
+    
+    
+    //trying monte carlo please ignore this
+
+    /*class MCTS {
+        Node root;
+        
+        public MCTS() {
+            root = new Node();
+        }
+        
+        public Node UCT(Node node) {
+            Node bestNode = null;
+            double bestValue = Double.NEGATIVE_INFINITY;
+            for (Node child : node.children) {
+                double uctValue = child.wins / (double) child.visits +
+                    Math.sqrt(2 * Math.log(node.visits) / (double) child.visits);
+                if (uctValue > bestValue) {
+                    bestValue = uctValue;
+                    bestNode = child;
+                }
+            }
+            return bestNode;
+        }
+
+        public void expand(Node node) {
+            // Get all possible moves from the current state
+            List<Move> possibleMoves = node.getState().getPossibleMoves();
+
+            // For each possible move, create a new node and add it to the children of the current node
+            for (Move move : possibleMoves) {
+                GameBoard newState = node.getState().clone();
+                newState.makeMove(move);
+                Node child = new Node(newState);
+                child.setParent(node);
+                node.getChildren().add(child);
+            }
+        }
+
+        public double simulate(Node node) {
+        // Clone the current state
+            GameBoard simulatedState = node.getState().clone();
+
+            // Play out the game randomly until the end
+            while (!simulatedState.isGameOver()) {//switch the player here somewhere
+                List<Move> possibleMoves = simulatedState.getPossibleMoves();
+                Move randomMove = possibleMoves.get(new Random().nextInt(possibleMoves.size()));
+                simulatedState.makeMove(randomMove);
+        }
+
+        // Return the result of the game (1 for win, 0 for draw, -1 for loss)
+        return simulatedState.getResult();
+        }
+
+        public void backpropagate(Node node, double result) {
+            node.visits++;
+            node.wins += result;
+            if (node.parent != null) {
+                backpropagate(node.parent, result);
+            }
+        }
+
+        public void run() {
+            long endTime = System.currentTimeMillis() + 2000; // run for 2 seconds
+            while (System.currentTimeMillis() < endTime) {
+                Node node = UCT(root);
+                expand(node);
+                double result = simulate(node);
+                backpropagate(node, result);
+            }
+        }
+
+        public Move getBestMove() {
+            Node bestNode = null;
+            int bestVisits = -1;
+            for (Node child : root.children) {
+                if (child.visits > bestVisits) {
+                    bestVisits = child.visits;
+                    bestNode = child;
+                }
+            }
+            if (bestNode != null) {
+                return bestNode.getState().getMove();
+            }
+            return null;
+        }
+    }
+
+
+
+    class Node {
+        private GameBoard state;
+        Node parent;
+        List<Node> children;
+        int wins;
+        int visits;
+
+        public Node(){
+            this.state = new GameBoard();
+            this.children = new ArrayList<>();
+            this.wins = 0;
+            this.visits = 0;
+        }
+        public Node(GameBoard state) {
+            this.state = state;
+            this.children = new ArrayList<>();
+            this.wins = 0;
+            this.visits = 0;
+        }
+
+        public GameBoard getState() {
+            return state;
+        }
+
+        public void setState(GameBoard state) {
+            this.state = state;
+        }
+
+        public Node getParent() {
+            return parent;
+        }
+
+        public void setParent(Node parent) {
+            this.parent = parent;
+        }
+
+        public List<Node> getChildren() {
+            return children;
+        }
+
+        public void setChildren(List<Node> children) {
+            this.children = children;
+        }
+
+        public int getWins() {
+            return wins;
+        }
+
+        public void setWins(int wins) {
+            this.wins = wins;
+        }
+
+        public int getVisits() {
+            return visits;
+        }
+
+        public void setVisits(int visits) {
+            this.visits = visits;
+        }
+
+        public void incrementVisits() {
+            this.visits++;
+        }
+
+        public void addWin() {
+            this.wins++;
+        }
+    }*/
