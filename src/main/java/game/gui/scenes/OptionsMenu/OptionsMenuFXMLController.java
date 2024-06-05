@@ -34,7 +34,7 @@ public class OptionsMenuFXMLController {
 
         gameConfigurationButton.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameConfigurationMenu.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfigMenu.fxml"));
                 Parent root = loader.load();
 
                 ConfigMenuFXMLController configMenuFXMLController = loader.getController();
