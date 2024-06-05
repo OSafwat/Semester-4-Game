@@ -19,13 +19,14 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.engine.enums.RewardStates;
 import game.exceptions.InvalidMoveException;
+import javafx.scene.shape.Arc;
 
 public class Phoenix extends Creature{
     private Integer[] phoenixes;
     private int killedPhoenixes;
     private ArrayList<Move> allPossibleMoves;
     // A hash map that maps the rewards to their respective phoenix's death amounts
-    private static HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+    private HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
     // A String array that stores the mapping from the Hash Map rewardLocations for easier and faster accessing
     private String[] mappedRewardLocations = new String[11];
 
@@ -38,6 +39,47 @@ public class Phoenix extends Creature{
         initPossibleMoves();
         populateRewardLocationFromConfigFile();
         initRewards();
+    }
+
+    public Phoenix clone() {
+        Integer[] phoenixes = new Integer[this.phoenixes.length];
+        int killedPhoenixes = this.killedPhoenixes;
+        ArrayList<Move> allPossibleMoves = new ArrayList<>();
+        HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+        String[] mappedRewardLocations = new String[11];
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+
+        for (int i = 0; i < this.phoenixes.length; i++) {
+            phoenixes[i] = this.phoenixes[i];
+        }
+
+        for (int i = 0; i < 11; i++)
+            mappedRewardLocations[i] = this.mappedRewardLocations[i];
+
+        for (TimeWarp timeWarp: this.timeWarps)
+            timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+
+        for (ArcaneBoost arcaneBoost: this.arcaneBoosts)
+            arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+
+        Phoenix phoenix = new Phoenix(phoenixes, killedPhoenixes, allPossibleMoves, rewardLocations, mappedRewardLocations, timeWarps, arcaneBoosts);
+
+        for (Move move: this.allPossibleMoves) {
+            allPossibleMoves.add(new Move(new MagentaDice(move.getDice().getValue()), phoenix));
+        }
+
+        return phoenix;
+    }
+
+    public Phoenix(Integer[] phoenixes, int killedPhoenixes, ArrayList<Move> allPossibleMoves, HashMap<String, ArrayList<Integer>> rewardLocations, String[] mappedRewardLocations, ArrayList<TimeWarp> timeWarps, ArrayList<ArcaneBoost> arcaneBoosts) {
+        this.phoenixes = phoenixes;
+        this.killedPhoenixes = killedPhoenixes;
+        this.allPossibleMoves = allPossibleMoves;
+        this.rewardLocations = rewardLocations;
+        this.mappedRewardLocations = mappedRewardLocations;
+        this.timeWarps = timeWarps;
+        this.arcaneBoosts = arcaneBoosts;
     }
 
     private void initRewards() {

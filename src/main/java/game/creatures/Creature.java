@@ -22,4 +22,5 @@ public abstract class Creature {
     public abstract ArrayList<TimeWarp> getAllTimeWarps();
     public abstract ArrayList<ArcaneBoost> getAllArcaneBoosts();
     public abstract ArrayList<Move> getAllPossibleMoves();
+    public abstract Creature clone();
 }

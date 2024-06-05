@@ -1919,7 +1919,7 @@ public class CLIGameController {
     public boolean completeRowGreen(Player player,Dice dice){
         int value=dice.getValue();
         ScoreSheet scoreSheet=player.getScoreSheet();
-        Gaia gaia=(Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN);
+        Gaia gaia= ((Gaia) scoreSheet.getCreatureByColor(RealmColor.GREEN)).clone();
         Guardians[][] guardians=gaia.getGuardians();
         for(int i=0;i<3;i++){
             int counter=0;

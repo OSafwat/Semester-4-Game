@@ -1,10 +1,7 @@
 package game.creatures.greenclasses;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -43,6 +40,73 @@ public class Gaia extends Creature{
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
+
+    public Gaia clone() {
+        Guardians[][] gaiaGuardians = new Guardians[this.gaiaGuardians.length][this.gaiaGuardians[0].length];
+        int alliveGuardians = this.alliveGuardians;
+        int deadGuardians = this.deadGuardians;
+        int[] scores = {1,2,4,7,11,16,22,29,37,46,56};
+        boolean[] row = new boolean[3];
+        boolean[] col = new boolean[4];
+        String[] colreward = new String[this.colreward.length];
+        String[] rowreward = new String[this.rowreward.length];
+        String[] defaultcolreward = new String[this.defaultcolreward.length];
+        String[] defaultrowreward = new String[this.defaultrowreward.length];
+        int elementalCrestCount = this.elementalCrestCount;
+        int score = this.getScore();
+
+        for (int i = 0; i < this.gaiaGuardians.length; i++) {
+            for (int j = 0; j < this.gaiaGuardians[0].length; j++) {
+                gaiaGuardians[i][j] = this.gaiaGuardians[i][j].clone();
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+            row[i] = this.row[i];
+
+        for (int i = 0; i < 4; i++)
+            col[i] = this.col[i];
+
+        for (int i = 0; i < colreward.length; i++)
+            colreward[i] = this.colreward[i];
+
+        for (int j = 0; j < rowreward.length; j++)
+            rowreward[j] = this.rowreward[j];
+
+        for (int i = 0; i < this.defaultcolreward.length; i++)
+            defaultcolreward[i] = this.defaultcolreward[i];
+
+        for (int i = 0; i < this.defaultrowreward.length; i++)
+            defaultrowreward[i] = this.defaultrowreward[i];
+
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+
+        for (TimeWarp timeWarp: this.timeWarps)
+            timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+
+        for (ArcaneBoost arcaneBoost: this.arcaneBoosts)
+            arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+
+        return new Gaia(gaiaGuardians, alliveGuardians, deadGuardians, scores, row, col, colreward, rowreward, defaultcolreward, defaultrowreward, elementalCrestCount, timeWarps, arcaneBoosts, score);
+    }
+
+    public Gaia (Guardians[][] gaiaGuardians, int alliveGuardians, int deadGuardians, int[] scores, boolean[] row, boolean[] col, String[] colreward, String[] rowreward, String[] defaultcolreward, String[] defaultrowreward, int elementalCrestCount, ArrayList<TimeWarp> timeWarps, ArrayList<ArcaneBoost> arcaneBoosts, int score) {
+        this.gaiaGuardians = gaiaGuardians;
+        this.alliveGuardians = alliveGuardians;
+        this.deadGuardians = deadGuardians;
+        this.scores = scores;
+        this.row = row;
+        this.col = col;
+        this.colreward = colreward;
+        this.rowreward = rowreward;
+        this.defaultrowreward = defaultrowreward;
+        this.defaultcolreward = defaultcolreward;
+        this.elementalCrestCount = elementalCrestCount;
+        this.timeWarps = timeWarps;
+        this.arcaneBoosts = arcaneBoosts;
+        this.score = score;
+    }
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
@@ -181,7 +245,9 @@ public class Gaia extends Creature{
 
     }
     public int getScore(){
-        return this.score;
+        if (deadGuardians-1 < 0)
+            return 0;
+        return scores[deadGuardians-1];
     }
 
 

@@ -4,9 +4,25 @@ public class GameScore {
     private int allScores[];
     public int elementalCrestCounter;
 
+    public GameScore clone() {
+        int[] allScores = new int[this.allScores.length];
+        for (int i = 0; i < this.allScores.length; i++) {
+            allScores[i] = this.allScores[i];
+        }
+
+        int elementalCrestCounter = this.elementalCrestCounter;
+
+        return new GameScore(allScores, elementalCrestCounter);
+    }
+
     public GameScore(){
         allScores= new int[5];
         elementalCrestCounter =0;
+    }
+
+    public GameScore(int[] allScores, int elementalCrestCounter) {
+        this.allScores = allScores;
+        this.elementalCrestCounter = elementalCrestCounter;
     }
 
     void updateScores(int [] scores, int elementalCrests ){

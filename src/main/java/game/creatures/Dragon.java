@@ -10,6 +10,7 @@ import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.RewardException;
+import javafx.scene.shape.Arc;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -43,6 +44,39 @@ public class Dragon extends Creature {
         initialization();
     }
 
+    public Dragon clone() {
+        Dragon[] dragons = new Dragon[4];
+        dragons[0] = new Dragon(this.dragons[0]);
+        dragons[1] = new Dragon(this.dragons[1]);
+        dragons[2] = new Dragon(this.dragons[2]);
+        dragons[3] = new Dragon(this.dragons[3]);
+        int[] pointMap = new int[this.pointMap.length];
+        for (int i = 0; i < this.pointMap.length; i++) {
+            pointMap[i] = this.pointMap[i];
+        }
+        ArrayList<Move> allPossibleMoves = new ArrayList<>();
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+
+        for (TimeWarp timeWarp: this.timeWarps) {
+            timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+        }
+        for (ArcaneBoost arcaneBoost: this.arcaneBoosts) {
+            arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+        }
+        String[] rewards = new String[this.rewards.length];
+        for (int i = 0; i < rewards.length; i++) {
+            rewards[i] = this.rewards[i];
+        }
+        int elementalCrestCount = this.elementalCrestCount;
+        Dragon dragon = new Dragon(dragons, pointMap, allPossibleMoves, timeWarps, arcaneBoosts, rewards, elementalCrestCount);
+        for (Move move: this.allPossibleMoves) {
+            RedDice dice = new RedDice(move.getDice().getValue(), ((RedDice)move.getDice()).getDragonNumber());
+            allPossibleMoves.add(new Move(dice, dragon));
+        }
+        return dragon;
+    }
+
     //Constructor used inside the first one to initialize the actual dragons themselves
     public Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
@@ -50,6 +84,24 @@ public class Dragon extends Creature {
         this.tail = tail;
         this.heart = heart;
         this.dragonNumber = dragonNumber;
+    }
+
+    public Dragon (Dragon[] dragons, int[] pointMap, ArrayList<Move> allPossibleMoves, ArrayList<TimeWarp> timeWarps, ArrayList<ArcaneBoost> arcaneBoosts, String[] rewards, int elementalCrestCount) {
+        this.dragons = dragons;
+        this.pointMap = pointMap;
+        this.allPossibleMoves = allPossibleMoves;
+        this.timeWarps = timeWarps;
+        this.arcaneBoosts = arcaneBoosts;
+        this.rewards = rewards;
+        this.elementalCrestCount = elementalCrestCount;
+    }
+
+    public Dragon(Dragon dragon) {
+        this.face = dragon.face;
+        this.wings = dragon.wings;
+        this.tail = dragon.tail;
+        this.heart = dragon.heart;
+        this.dragonNumber = dragon.dragonNumber;
     }
 
     //Method that contains all initialization methods to reduce the amount of code written in the first constructor

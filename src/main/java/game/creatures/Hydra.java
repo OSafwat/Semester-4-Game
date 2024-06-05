@@ -92,6 +92,106 @@ public class Hydra extends Creature{
         }
     }
 
+    public Hydra clone() {
+        Stack<Integer> serpent;
+        Properties properties;
+        int headsKilled;
+        boolean regenerateFlag;
+        String[] diceUsed;
+        int[] scores;
+        int arcaneBoostsUsed;
+        int timeWarpsUsed;
+
+        Stack<Integer> temp = new Stack<>();
+        serpent = new Stack<>();
+
+        while (!this.serpent.isEmpty()) {
+            temp.add(this.serpent.pop());
+        }
+
+        while (!temp.isEmpty()) {
+            int value = temp.pop();
+            this.serpent.add(value);
+            serpent.add(value);
+        }
+
+        properties = new Properties();
+        try {
+            File config = new File("src/main/resources/config/TideAbyssRewards.properties");
+            FileReader configReader = new FileReader(config);
+            properties.load(configReader);
+        } catch (IOException e) {
+            System.out.println("Properties file reading failed.");
+            properties.setProperty("hit1Reward", "null");
+            properties.setProperty("hit2Reward", "null");
+            properties.setProperty("hit3Reward", "null");
+            properties.setProperty("hit4Reward", "ArcaneBoost");
+            properties.setProperty("hit5Reward", "null");
+            properties.setProperty("hit6Reward", "GreenBonus");
+            properties.setProperty("hit7Reward", "ElementalCrest");
+            properties.setProperty("hit8Reward", "null");
+            properties.setProperty("hit9Reward", "MagentaBonus");
+            properties.setProperty("hit10Reward", "TimeWarp");
+            properties.setProperty("hit11Reward", "null");
+        }
+
+        /*
+        int headsKilled;
+        boolean regenerateFlag;
+        String[] diceUsed;
+        int[] scores;
+        int arcaneBoostsUsed;
+        int timeWarpsUsed;
+         */
+
+        headsKilled = this.headsKilled;
+        regenerateFlag = this.regenerateFlag;
+        arcaneBoostsUsed = this.arcaneBoostsUsed;
+        timeWarpsUsed = this.timeWarpsUsed;
+
+        scores = new int[this.scores.length];
+        for (int i = 0; i < this.scores.length; i++) {
+            scores[i] = this.scores[i];
+        }
+
+        diceUsed = new String[this.diceUsed.length];
+        for (int i = 0; i < this.diceUsed.length; i++) {
+            diceUsed[i] = this.diceUsed[i];
+        }
+
+        return new Hydra(serpent, properties, headsKilled, regenerateFlag, diceUsed, scores, arcaneBoostsUsed, timeWarpsUsed);
+    }
+
+    public Hydra(Stack<Integer> serpent, Properties properties, int headsKilled, boolean regenerateFlag, String[] diceUsed, int[] scores, int arcaneBoostsUsed, int timeWarpsUsed) {
+        this.serpent = serpent;
+        this.properties = properties;
+        this.headsKilled = headsKilled;
+        this.regenerateFlag = regenerateFlag;
+        this.diceUsed = diceUsed;
+        this.scores = scores;
+        this.arcaneBoostsUsed = arcaneBoostsUsed;
+        this.timeWarpsUsed = timeWarpsUsed;
+        this.arcaneBoosts = new ArrayList<>();
+        this.timeWarps = new ArrayList<>();
+        for(int i = 1; i <= 11; i++) {
+            String[] defaultValues = {"null","null","null","ArcaneBoost","null","GreenBonus","ElementalCrest","null","MagentaBonus","TimeWarp","null"};
+            if(properties.getProperty("hit"+i+"Reward")==null) properties.setProperty("hit"+i+"Reward", defaultValues[i-1]);
+        }
+        for(int i = 0; i < 11; i++) {
+            this.diceUsed[i] = "---";
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("ArcaneBoost")){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                this.arcaneBoosts.add(ac);
+            }
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("TimeWarp")) {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                this.timeWarps.add(tw);
+            }
+        }
+    }
+
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
         String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
