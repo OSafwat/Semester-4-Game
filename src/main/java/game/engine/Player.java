@@ -1,12 +1,20 @@
 package game.engine;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
-import game.dice.Dice;
+import game.creatures.Dragon;
+import game.creatures.Hydra;
+import game.creatures.Lion;
+import game.creatures.Phoenix;
+import game.creatures.greenclasses.Gaia;
+import game.dice.*;
 import game.engine.enums.*;
+import javafx.scene.shape.Arc;
 
-public class Player implements Cloneable {
+public class Player {
     private String name;
     private PlayerStatus playerStatus;
     private GameScore gameScore;
@@ -17,6 +25,95 @@ public class Player implements Cloneable {
     private ArrayList<Dice> playedDice;
     private ArrayList<Dice> usedArcaneDice;
 
+    public Player clone() {
+        String name = this.name; //
+        PlayerStatus playerStatus = this.playerStatus; //
+        GameScore gameScore = getGameScore().clone();
+        ScoreSheet scoreSheet = getScoreSheet().clone();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        if (!Objects.equals(this.allPossibleMoves, null))
+            allPossibleMoves = new Move[this.allPossibleMoves.length];
+        else
+            allPossibleMoves = null;
+        ArrayList<Dice> playedDice = new ArrayList<>();
+        ArrayList<Dice> usedArcaneDice = new ArrayList<>();
+
+        if (!Objects.equals(this.arcaneBoosts, null))
+            for (ArcaneBoost arcaneBoost: this.arcaneBoosts)
+                arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+
+        if (!Objects.equals(this.timeWarps, null))
+            for (TimeWarp timeWarp: this.timeWarps)
+                timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+
+        if (!Objects.equals(allPossibleMoves, null)) {
+            for (int i = 0; i < allPossibleMoves.length; i++) {
+                if (Objects.equals(this.allPossibleMoves[i], null))
+                    continue;
+                Move move = this.allPossibleMoves[i];
+                if (move.getDice() instanceof RedDice) {
+                    allPossibleMoves[i] = new Move(new RedDice(move.getDice().getValue(), ((RedDice) move.getDice()).getDragonNumber()), ((Dragon) move.getCreature()).clone());
+                }
+                if (move.getDice() instanceof GreenDice) {
+                    allPossibleMoves[i] = new Move(new GreenDice(move.getDice().getValue()), ((Gaia) move.getCreature()).clone());
+                }
+                if (move.getDice() instanceof BlueDice) {
+                    allPossibleMoves[i] = new Move(new BlueDice(move.getDice().getValue()), ((Hydra) move.getCreature()).clone());
+                }
+                if (move.getDice() instanceof MagentaDice) {
+                    allPossibleMoves[i] = new Move(new MagentaDice(move.getDice().getValue()), ((Phoenix) move.getCreature()).clone());
+                }
+                if (move.getDice() instanceof YellowDice) {
+                    allPossibleMoves[i] = new Move(new YellowDice(move.getDice().getValue()), ((Lion) move.getCreature()).clone());
+                }
+            }
+        }
+
+        if (!Objects.equals(this.playedDice, null))
+            for (Dice dice: this.playedDice) {
+                if (dice instanceof RedDice)
+                    playedDice.add(new RedDice(dice.getValue(), ((RedDice) dice).getDragonNumber()));
+                if (dice instanceof GreenDice)
+                    playedDice.add(new GreenDice(dice.getValue()));
+                if (dice instanceof BlueDice)
+                    playedDice.add(new BlueDice(dice.getValue()));
+                if (dice instanceof MagentaDice)
+                    playedDice.add(new MagentaDice(dice.getValue()));
+                if (dice instanceof YellowDice)
+                    playedDice.add(new YellowDice(dice.getValue()));
+            }
+
+        if (!Objects.equals(this.usedArcaneDice, null))
+            for (Dice dice: this.usedArcaneDice) {
+                if (dice instanceof RedDice)
+                    usedArcaneDice.add(new RedDice(dice.getValue(), ((RedDice) dice).getDragonNumber()));
+                if (dice instanceof GreenDice)
+                    usedArcaneDice.add(new GreenDice(dice.getValue()));
+                if (dice instanceof BlueDice)
+                    usedArcaneDice.add(new BlueDice(dice.getValue()));
+                if (dice instanceof MagentaDice)
+                    usedArcaneDice.add(new MagentaDice(dice.getValue()));
+                if (dice instanceof YellowDice)
+                    usedArcaneDice.add(new YellowDice(dice.getValue()));
+            }
+
+
+        return new Player(name, playerStatus, gameScore, scoreSheet, arcaneBoosts, timeWarps, allPossibleMoves, playedDice, usedArcaneDice);
+
+    }
+
+    public Player(String name, PlayerStatus playerStatus, GameScore gameScore, ScoreSheet scoreSheet, ArrayList<ArcaneBoost> arcaneBoosts, ArrayList<TimeWarp> timeWarps, Move[] allPossibleMoves, ArrayList<Dice> playedDice, ArrayList<Dice> usedArcaneDice) {
+        this.name = name;
+        this.playerStatus = playerStatus;
+        this.gameScore = gameScore;
+        this.scoreSheet = scoreSheet;
+        this.arcaneBoosts = arcaneBoosts;
+        this.timeWarps = timeWarps;
+        this.allPossibleMoves = allPossibleMoves;
+        this.usedArcaneDice = usedArcaneDice;
+        this.playedDice = playedDice;
+    }
 
     public void setName(String name){
         this.name= name;
@@ -118,15 +215,5 @@ public class Player implements Cloneable {
                 counter++;
         }
         return counter;
-    }
-
-    //ai    TODO DOESNT WORK
-    @Override
-    public Player clone() {
-        try {
-            return (Player) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // cant happen
-        }
     }
 }
