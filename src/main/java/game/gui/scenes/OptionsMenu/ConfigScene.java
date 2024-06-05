@@ -24,7 +24,6 @@ public class ConfigScene {
 
     public Scene createConfigScene() {
         StackPane root = new StackPane();
-        
 
         root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
 
