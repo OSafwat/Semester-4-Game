@@ -31,6 +31,7 @@ public class OptionsScene {
             else controller.setMediaPlayer(new MediaPlayer(new Media(null)));
 
         } catch (IOException e) {
+            controller = new OptionsMenuFXMLController();
             root = new StackPane();
         }
         
