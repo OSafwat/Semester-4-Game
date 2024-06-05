@@ -34,6 +34,7 @@ public class DiceRealms extends Application {
     volatile boolean awaitingInput;
     boolean isArcaneBoostPower;
     boolean canReroll;
+    boolean isRoundRewardBonus;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -51,6 +52,7 @@ public class DiceRealms extends Application {
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
         isArcaneBoostPower = false;
+        isRoundRewardBonus = false;
         canReroll = false;
         wasEssenceBonus = 0;
         bonusRealmColor = RealmColor.PARENT;
@@ -465,19 +467,66 @@ public class DiceRealms extends Application {
         System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
         System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
-        loadDiceBoard();
         System.out.println(player.getScoreSheet().toString());
+
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
         }
+        
+        if (indicator == 0) {
+            canReroll = true;
+            if (arcaneValue != -1){
+                arcaneValue = -1;
+                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
+            }
+            else
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
+                if (isForgotten && moveDone) {
+                    isForgotten = false;
+                    guiGameController.getGameBoard().resetAllDice();
+                    canReroll = false;
+                    canReroll = false;
+                    int oldRoundCount = guiGameController.getCurrentRound();
+                    int oldTurnCount = guiGameController.getCurrentTurn();
+                    guiGameController.incrementTurnCount();
+                    int newRoundCount = guiGameController.getCurrentRound();
+                    if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
+                        loadDiceBoard();
+                        handleReward(oldRoundCount);
+                    }
+                    loadDiceBoard();
+                    return true;
+                }
+            loadDiceBoard();
+        } else
+            canReroll = true;
+
+        if (isForgotten && moveDone) {
+            isForgotten = false;
+            guiGameController.getGameBoard().resetAllDice();
+            canReroll = false;
+            canReroll = false;
+            int oldRoundCount = guiGameController.getCurrentRound();
+            int oldTurnCount = guiGameController.getCurrentTurn();
+            guiGameController.incrementTurnCount();
+            int newRoundCount = guiGameController.getCurrentRound();
+            if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
+                loadDiceBoard();
+                handleReward(oldRoundCount);
+            }
+            loadDiceBoard();
+            return true;
+        }
+
+        loadDiceBoard();
         if (!moveDone) {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
             if (exception instanceof BonusException) {
-                canReroll = true;
+                canReroll = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE);
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
@@ -504,7 +553,7 @@ public class DiceRealms extends Application {
                         }
                     }).start();
                 }
-
+                
                 return true;
             }
             else {
@@ -523,34 +572,21 @@ public class DiceRealms extends Application {
             }
         }
         if (bonusValue != -1) {
+            System.out.println("MEOWOWOWOWOOWOWOW");
+            System.out.println("                  " + isRoundRewardBonus);
             bonusValue = -1;
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
+            if (isRoundRewardBonus) {
+                isRoundRewardBonus = false;
+                canReroll = false;
+            }
+            else 
+                canReroll = true;
             loadDiceBoard();
             return true;
         }
-        if (indicator == 0) {
-            canReroll = true;
-            if (arcaneValue != -1){
-                arcaneValue = -1;
-                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
-            }
-            else
-                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
-                if (isForgotten) {
-                    isForgotten = false;
-                    guiGameController.getGameBoard().resetAllDice();
-                    canReroll = false;
-                    guiGameController.rollDice();
-                    guiGameController.incrementTurnCount();
-                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
-                    loadDiceBoard();
-                    initDiceAndRerollButtonEventListeners();
-                    handleReward(guiGameController.getCurrentRound());
-                    return true;
-                }
-            loadDiceBoard();
-        }
+            
         return true;
     }
 
@@ -560,10 +596,12 @@ public class DiceRealms extends Application {
         initDiceAndRerollButtonEventListeners();
     }
     private void handleReward(int newRoundCount) {
+        loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[newRoundCount-1];
         System.out.println(currentReward);
         if (currentReward.toLowerCase().contains("bonus")) {
+            isRoundRewardBonus = true; 
             if (currentReward.toLowerCase().contains("red"))
                 handleBonus(RealmColor.RED);
             else if (currentReward.toLowerCase().contains("green"))
@@ -646,6 +684,7 @@ public class DiceRealms extends Application {
     }
 
     public void handleBonus(RealmColor realmColor) {
+        canReroll = false;
         if (realmColor.equals(RealmColor.WHITE))
             wasEssenceBonus = 1;
         arcaneValue = -1;
@@ -739,6 +778,7 @@ public class DiceRealms extends Application {
         String currentReward = rewards[0];
         System.out.println(currentReward);
         if (currentReward.toLowerCase().contains("bonus")) {
+            isRoundRewardBonus = true;
             if (currentReward.toLowerCase().contains("red"))
                 handleBonus(RealmColor.RED);
             else if (currentReward.toLowerCase().contains("green"))
@@ -964,8 +1004,16 @@ public class DiceRealms extends Application {
 
     private void handleDiceReroll() {
         guiGameController.rollDice();
+        int oldRoundCount = guiGameController.getCurrentRound();
+        int oldTurnCount = guiGameController.getCurrentTurn();
         guiGameController.incrementTurnCount();
+        int newRoundCount = guiGameController.getCurrentRound();
+        if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
+            loadDiceBoard();
+            handleReward(oldRoundCount);
+        }
         if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
+            isForgotten = true;
             handleForgottenTurn();
             return;
         }

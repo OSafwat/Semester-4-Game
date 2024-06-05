@@ -132,7 +132,11 @@ public class GameBoard implements Cloneable{
         return getAllDice();
     }
     public Dice [] getForgottenRealmDice(){
-        return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
+        Dice[] dice = new Dice[forgottenRealmDice.size()];
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = forgottenRealmDice.get(i);
+        }
+        return dice;
     }
     void moveToForgottenrealm(Dice die){
         availableDice.remove(die);
