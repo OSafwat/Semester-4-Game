@@ -1,47 +1,63 @@
 package game.gui.scenes.OptionsMenu;
 
-import java.io.IOException;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.layout.VBox;
 // import javafx.stage.Stage;
+import javafx.stage.Stage;
 
 public class OptionsScene {
-    //private Stage stage;
-    OptionsMenuFXMLController controller;
+    Button returnFromOptionsButton, gameConfigButton;
+    
+    Scene configScene;
+    // Stage stage;
 
-    public OptionsScene() {
-        controller = new OptionsMenuFXMLController();
-    }
+    public Scene createOptionsScene() {
+        StackPane root = new StackPane();
+        configScene = (new ConfigScene()).createConfigScene();
 
-    public Scene createOptionsScene(MediaPlayer mediaPlayer) {
-        Parent root;
+        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+
+        root.setPrefSize(1920, 1080);
         
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionsMenu.fxml"));
-            root = loader.load();
+        ImageView background;
+        background = new ImageView(new Image(getClass().getResourceAsStream("/images/Options Menu.png")));
+        background.setFitWidth(1920);
+        background.setFitHeight(1080);
 
-            controller = loader.getController();
-            if (mediaPlayer != null) controller.setMediaPlayer(mediaPlayer);
-            else controller.setMediaPlayer(new MediaPlayer(new Media(null)));
+        VBox mainArea = new VBox();
+        mainArea.setPrefHeight(500);
+        mainArea.setPrefWidth(1000);
+        mainArea.getStyleClass().add("vbox");
 
-        } catch (IOException e) {
-            controller = new OptionsMenuFXMLController();
-            root = new StackPane();
-        }
-        
+        Label optionsLabel = new Label("Options"), volumeLabel = new Label("Volume");
+        Slider volumeSlider = new Slider(0, 100, 0);
+        volumeSlider.setPrefHeight(50);
+
+        Button gameConfigButton = new Button("Game Configuration");
+        // gameConfigButton.setOnMouseClicked(e -> {
+        //     stage.setScene(configScene);
+        // });
+        returnFromOptionsButton = new Button("Return");
+
+        mainArea.getChildren().addAll(optionsLabel, volumeLabel, volumeSlider, gameConfigButton, returnFromOptionsButton);
+
         return new Scene(root, 1920, 1080);
     }
 
     public Button getReturnFromOptionsButton() {
-        return controller.getReturnFromOptionsButton();
+        return returnFromOptionsButton;
     }
-    
+
+    public Button getGameConfigButton() {
+        return gameConfigButton;
+    }
+
     // public void setStage(Stage stage) {
     //     this.stage = stage;
     // }

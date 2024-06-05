@@ -1,26 +1,131 @@
 package game.gui.scenes.OptionsMenu;
 
-import java.io.IOException;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+// import javafx.stage.Stage;
 
 public class ConfigScene {
-    private Stage stage;
+    Button returnToOptionsButton;
+    Button redConfigButton, greenConfigButton, blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton;
 
-    public Scene createConfigScene() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ConfigMenu.fxml"));
-        Parent root = loader.load();
+    Scene optionsScene;
+    // Stage stage;
+
+    int numberOfRounds, numberOfTurnsPerRound;
+
+    public Scene createConfigScene() {
+        StackPane root = new StackPane();
+
+        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+
+        root.setPrefSize(1920, 1080);
         
-        ConfigMenuFXMLController controller = loader.getController();
-        controller.setStage(stage);  // Ensure the controller has access to the stage
+        ImageView background;
+        background = new ImageView(new Image(getClass().getResourceAsStream("/images/Options Menu.png")));
+        background.setFitWidth(1920);
+        background.setFitHeight(1080);
+
+        VBox mainArea = new VBox();
+        mainArea.setPrefWidth(1000);
+        mainArea.getStyleClass().add("vbox");
+
+        Label configLabel = new Label("Game Configuration"), rewardSettingsLabel = new Label("Reward Settings");
+        TextField numberOFRoundsField = new TextField("Enter number of rounds"), numberOfTurnsPerRoundField = new TextField("Enter number of turns");
+        numberOFRoundsField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
+                if (isPositiveInteger) numberOfRounds = Integer.parseInt(newValue);
+            }
+        });
+
+        numberOfTurnsPerRoundField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
+                if (isPositiveInteger) numberOfTurnsPerRound = Integer.parseInt(newValue);
+            }
+        });
+
+        HBox roundSettingsArea = new HBox(configLabel, numberOFRoundsField, numberOfTurnsPerRoundField);
+
+        redConfigButton = new Button("Red Realm Rewards Configuration");
+        // redConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        greenConfigButton = new Button("Green Realm Rewards Configuration");
+        // greenConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        blueConfigButton = new Button("Blue Realm Rewards Configuration");
+        // blueConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        magentaConfigButton = new Button("Magenta Realm Rewards Configuration");
+        // magentaConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        yellowConfigButton = new Button("Yellow Realm Rewards Configuration");
+        // yellowConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        yellowMultiplierConfigButton = new Button("Yellow Realm Multipliers Configuration");
+        // yellowMultiplierConfigButton.setOnMouseClicked(e -> {
+        //     scene.getChildren().clear();
+        // });
+
+        returnToOptionsButton = new Button("Return");
+
+        mainArea.getChildren().addAll(configLabel, rewardSettingsLabel, roundSettingsArea, roundSettingsArea, redConfigButton, greenConfigButton, 
+        blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton, returnToOptionsButton);
 
         return new Scene(root, 1920, 1080);
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    // public void setStage(Stage stage) {
+    //     this.stage = stage;
+    // }
+
+    public Button getRedConfigButton() {
+        return redConfigButton;
+    }
+
+    public Button getGreenConfigButton() {
+        return greenConfigButton;
+    }
+
+    public Button getBlueConfigButton() {
+        return blueConfigButton;
+    }
+
+    public Button getMagentaConfigButton() {
+        return magentaConfigButton;
+    }
+
+    public Button getYellowConfigButton() {
+        return yellowConfigButton;
+    }
+
+    public Button getYellowMultiplierConfigButton() {
+        return yellowMultiplierConfigButton;
+    }
+
+    public Button getReturnToOptionsButton() {
+        return returnToOptionsButton;
     }
 }
+
