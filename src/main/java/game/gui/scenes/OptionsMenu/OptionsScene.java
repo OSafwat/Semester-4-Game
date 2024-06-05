@@ -15,6 +15,10 @@ public class OptionsScene {
     //private Stage stage;
     OptionsMenuFXMLController controller;
 
+    public OptionsScene() {
+        controller = new OptionsMenuFXMLController();
+    }
+
     public Scene createOptionsScene(MediaPlayer mediaPlayer) {
         Parent root;
         

@@ -237,7 +237,8 @@ public class DiceRealms extends Application {
         sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
         sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
         sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
-        
+        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
+        sceneController.getOptionsButton().setOnMouseClicked(e -> sceneController.loadOptionsScene());
         initDragonEventListeners();
         
 
@@ -464,9 +465,7 @@ public class DiceRealms extends Application {
         Player player = guiGameController.getCurrentPlayer();
         if (isArcaneBoostPower)
             player = arcanePlayer;
-        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         System.out.println(player.getScoreSheet().toString());
 
         if (saveOldWhiteValue != -1) {
@@ -480,24 +479,26 @@ public class DiceRealms extends Application {
                 arcaneValue = -1;
                 guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
             }
-            else
+            else {
                 guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
                 if (isForgotten && moveDone) {
                     isForgotten = false;
                     guiGameController.getGameBoard().resetAllDice();
                     canReroll = false;
-                    canReroll = false;
                     int oldRoundCount = guiGameController.getCurrentRound();
                     int oldTurnCount = guiGameController.getCurrentTurn();
                     guiGameController.incrementTurnCount();
+                    loadDiceBoard();
                     int newRoundCount = guiGameController.getCurrentRound();
-                    if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
-                        loadDiceBoard();
+                    if (oldRoundCount != newRoundCount) {
+                        handleReward(newRoundCount);
+                    }
+                    else if (oldTurnCount == -1) {
                         handleReward(oldRoundCount);
                     }
-                    loadDiceBoard();
                     return true;
                 }
+            }
             loadDiceBoard();
         } else
             canReroll = true;
@@ -505,17 +506,21 @@ public class DiceRealms extends Application {
         if (isForgotten && moveDone) {
             isForgotten = false;
             guiGameController.getGameBoard().resetAllDice();
-            canReroll = false;
+            guiGameController.rollDice();
             canReroll = false;
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
             guiGameController.incrementTurnCount();
+            loadDiceBoard();
             int newRoundCount = guiGameController.getCurrentRound();
-            if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
-                loadDiceBoard();
+            if (oldRoundCount != newRoundCount) {
+                handleReward(newRoundCount);
+            }
+            else if (oldTurnCount == -1) {
                 handleReward(oldRoundCount);
             }
-            loadDiceBoard();
+            else
+                loadDiceBoard();
             return true;
         }
 
@@ -572,8 +577,6 @@ public class DiceRealms extends Application {
             }
         }
         if (bonusValue != -1) {
-            System.out.println("MEOWOWOWOWOOWOWOW");
-            System.out.println("                  " + isRoundRewardBonus);
             bonusValue = -1;
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
@@ -599,7 +602,9 @@ public class DiceRealms extends Application {
         loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[newRoundCount-1];
+        System.out.println(Arrays.toString(rewards));
         System.out.println(currentReward);
+        System.out.println(newRoundCount);
         if (currentReward.toLowerCase().contains("bonus")) {
             isRoundRewardBonus = true; 
             if (currentReward.toLowerCase().contains("red"))
@@ -776,7 +781,6 @@ public class DiceRealms extends Application {
         loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[0];
-        System.out.println(currentReward);
         if (currentReward.toLowerCase().contains("bonus")) {
             isRoundRewardBonus = true;
             if (currentReward.toLowerCase().contains("red"))
@@ -927,8 +931,6 @@ public class DiceRealms extends Application {
             default: scene = null;
         }
 
-        System.out.println(guiGameController.getHydraData());
-        System.out.println(sceneController.blueScene.getScene());
         primaryStage.setScene(scene);
     }
 
@@ -1007,9 +1009,12 @@ public class DiceRealms extends Application {
         int oldRoundCount = guiGameController.getCurrentRound();
         int oldTurnCount = guiGameController.getCurrentTurn();
         guiGameController.incrementTurnCount();
+        loadDiceBoard();
         int newRoundCount = guiGameController.getCurrentRound();
-        if (oldRoundCount != newRoundCount || oldTurnCount == -1) {
-            loadDiceBoard();
+        if (oldRoundCount != newRoundCount) {
+            handleReward(newRoundCount);
+        }
+        else if (oldTurnCount == -1) {
             handleReward(oldRoundCount);
         }
         if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {

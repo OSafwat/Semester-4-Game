@@ -42,7 +42,7 @@ public class BoardScene{
     ImageView player2TimeWarpButton;
     ImageView player2ArcaneBoostButton;
     Button rollDice;
-
+    ImageView timeWarp;
     Label infoLabel;
     public AnchorPane anchorPane;
 
@@ -80,7 +80,6 @@ public class BoardScene{
         for (String imageString : dicePNGs) {
             ImageView temp;
             boolean strikeThrough = imageString.contains(".png123");
-            System.out.println(imageString + "      " + strikeThrough);
             if (strikeThrough)
                 temp = new ImageView(new Image(getClass().getResourceAsStream(imageString.substring(0,imageString.length()-3))));
             else
@@ -139,11 +138,7 @@ public class BoardScene{
         rollDice.setLayoutY(439 - 187);
 
 
-        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
-        timeWarp.setLayoutX(1221);
-        timeWarp.setLayoutY(145);
-        timeWarp.setFitHeight(200);
-        timeWarp.setFitWidth(160);
+        onMouseEnterTimeWarp();
 
         // Grimoire image (left)
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
@@ -182,6 +177,28 @@ public class BoardScene{
         Scene scene = new Scene(anchorPane);
         scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
+    }
+
+    public void onMouseExitTimeWarp() {
+        timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
+        timeWarp.setLayoutX(1221);
+        timeWarp.setLayoutY(145);
+        timeWarp.setFitHeight(200);
+        timeWarp.setFitWidth(160);
+        timeWarp.setOnMouseExited(e -> onMouseEnterTimeWarp());
+    }
+
+    public void onMouseEnterTimeWarp() {
+        timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/TimeWarp Animation.gif")));
+        timeWarp.setLayoutX(1221);
+        timeWarp.setLayoutY(145);
+        timeWarp.setFitHeight(200);
+        timeWarp.setFitWidth(160);
+        timeWarp.setOnMouseEntered(e -> onMouseExitTimeWarp());
+    }
+
+    public ImageView getTimeWarp() {
+        return timeWarp;
     }
 
     /*the following method takes a string array which represent the choosable dice correspondong to the white dice chosen by the useer in the board scene and 
