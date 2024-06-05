@@ -352,6 +352,7 @@ public class DiceRealms extends Application {
                 dicePaths.add(string);
         }
         Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(dicePaths);
+        whiteDialog.setResizable(true);
         String result =(String) whiteDialog.showAndWait().get();
         if (result.equals("CLOSED"))
             return;
@@ -590,6 +591,7 @@ public class DiceRealms extends Application {
     }
     public void illegalMoveAlert(){
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have made an Illegal Move");
         label.setStyle("-fx-font-size: 30px;");
@@ -600,6 +602,7 @@ public class DiceRealms extends Application {
 
     public void needToMakeMoveAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have not played a move yet!");
         label.setStyle("-fx-font-size: 30px;");
@@ -610,6 +613,7 @@ public class DiceRealms extends Application {
 
     public void needToRerollDiceAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have already played a move, and you must reroll your dice!");
         label.setStyle("-fx-font-size: 30px;");
@@ -620,6 +624,7 @@ public class DiceRealms extends Application {
 
     public void passivePlayerCannotRerollAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You are the passive player, and so cannot reroll the dice!");
         label.setStyle("-fx-font-size: 30px;");
@@ -630,6 +635,7 @@ public class DiceRealms extends Application {
 
     public void unavailableDiceAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
 
         Label label = new Label("This dice is not available, because you have either played with it before, or it is currently in the forgotten realm!");
@@ -645,6 +651,7 @@ public class DiceRealms extends Application {
         arcaneValue = -1;
         awaitingInput = true;
         Dialog<String> bonusDialog = new Dialog<>();
+        bonusDialog.setResizable(true);
         FlowPane buttonBox = new FlowPane(20,20);
         buttonBox.setPrefWrapLength(1200);
         if (realmColor.equals(RealmColor.WHITE)) {
@@ -751,6 +758,7 @@ public class DiceRealms extends Application {
 
     public void handlePlayerNameInputs() {
         TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setResizable(true);
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 1's name");
@@ -764,6 +772,7 @@ public class DiceRealms extends Application {
             player1Name = handleNames("");
         }
         textInputDialog = new TextInputDialog();
+        textInputDialog.setResizable(true);
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 2's name");
@@ -887,6 +896,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
+        dialog.setResizable(true);
         Button accept = new Button();
         accept.setText("Yes");
         Button decline = new Button();
@@ -917,6 +927,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
+        dialog.setResizable(true);
         Button accept = new Button();
         accept.setText("Yes");
         Button decline = new Button();
