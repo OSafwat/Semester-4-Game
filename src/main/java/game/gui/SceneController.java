@@ -1,6 +1,7 @@
 package game.gui;
 
 import game.gui.scenes.*;
+import game.gui.scenes.OptionsMenu.ConfigScene;
 import game.gui.scenes.OptionsMenu.OptionsScene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,7 @@ public class SceneController {
     public BoardScene boardScene;
     public MainMenuScene mainMenuScene;
     public OptionsScene optionsScene;
+    public ConfigScene configScene;
 
     public SceneController () {
         redScene = new RedScene();
@@ -27,6 +29,7 @@ public class SceneController {
         boardScene = new BoardScene();
         mainMenuScene = new MainMenuScene();
         optionsScene = new OptionsScene();
+        configScene = new ConfigScene();
     }
 
     public ImageView getRedDice () {
@@ -221,7 +224,31 @@ public class SceneController {
         return optionsScene.getReturnFromOptionsButton();
     }
 
-    public void loadOptionsScene() {
-        optionsScene.createOptionsScene(null);
+    public Button getRedConfigButton() {
+        return configScene.getRedConfigButton();
+    }
+
+    public Button getGreenConfigButton() {
+        return configScene.getGreenConfigButton();
+    }
+
+    public Button getBlueConfigButton() {
+        return configScene.getBlueConfigButton();
+    }
+
+    public Button getMagentaConfigButton() {
+        return configScene.getMagentaConfigButton();
+    }
+
+    public Button getYellowConfigButton() {
+        return configScene.getYellowConfigButton();
+    }
+
+    public Button getYellowMultiplierConfigButton() {
+        return configScene.getYellowMultiplierConfigButton();
+    }
+
+    public Button getReturnToOptionsButton() {
+        return configScene.getReturnToOptionsButton();
     }
 }
