@@ -138,6 +138,7 @@ public class GUIGameController extends CLIGameController {
             currentTurn = -1;
             currentPlayer = getPassivePlayer();
         }
+        System.out.print(currentTurn + "   " + currentRound + "    " + currentPlayer.getName());
     }
 
     public void incrementRoundCount() {

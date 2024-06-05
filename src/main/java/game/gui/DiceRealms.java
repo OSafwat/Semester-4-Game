@@ -465,19 +465,52 @@ public class DiceRealms extends Application {
         System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
         System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
-        loadDiceBoard();
         System.out.println(player.getScoreSheet().toString());
+
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
         }
+
+        if (indicator == 0) {
+            canReroll = true;
+            if (arcaneValue != -1){
+                arcaneValue = -1;
+                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
+            }
+            else
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
+                if (isForgotten && moveDone) {
+                    isForgotten = false;
+                    guiGameController.getGameBoard().resetAllDice();
+                    canReroll = false;
+                    canReroll = false;
+                    guiGameController.incrementTurnCount();
+                    loadDiceBoard();
+                    return true;
+                }
+            loadDiceBoard();
+        } else
+            canReroll = true;
+
+        if (isForgotten && moveDone) {
+            isForgotten = false;
+            guiGameController.getGameBoard().resetAllDice();
+            canReroll = false;
+            canReroll = false;
+            guiGameController.incrementTurnCount();
+            loadDiceBoard();
+            return true;
+        }
+
+        loadDiceBoard();
         if (!moveDone) {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
             if (exception instanceof BonusException) {
-                canReroll = true;
+                canReroll = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE);
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
@@ -504,7 +537,7 @@ public class DiceRealms extends Application {
                         }
                     }).start();
                 }
-
+                
                 return true;
             }
             else {
@@ -526,31 +559,11 @@ public class DiceRealms extends Application {
             bonusValue = -1;
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
+            canReroll = true;
             loadDiceBoard();
             return true;
         }
-        if (indicator == 0) {
-            canReroll = true;
-            if (arcaneValue != -1){
-                arcaneValue = -1;
-                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
-            }
-            else
-                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
-                if (isForgotten) {
-                    isForgotten = false;
-                    guiGameController.getGameBoard().resetAllDice();
-                    canReroll = false;
-                    guiGameController.rollDice();
-                    guiGameController.incrementTurnCount();
-                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
-                    loadDiceBoard();
-                    initDiceAndRerollButtonEventListeners();
-                    handleReward(guiGameController.getCurrentRound());
-                    return true;
-                }
-            loadDiceBoard();
-        }
+            
         return true;
     }
 
@@ -646,6 +659,7 @@ public class DiceRealms extends Application {
     }
 
     public void handleBonus(RealmColor realmColor) {
+        canReroll = false;
         if (realmColor.equals(RealmColor.WHITE))
             wasEssenceBonus = 1;
         arcaneValue = -1;
@@ -966,6 +980,7 @@ public class DiceRealms extends Application {
         guiGameController.rollDice();
         guiGameController.incrementTurnCount();
         if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
+            isForgotten = true;
             handleForgottenTurn();
             return;
         }

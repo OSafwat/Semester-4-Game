@@ -79,7 +79,8 @@ public class BoardScene{
         ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
         for (String imageString : dicePNGs) {
             ImageView temp;
-            boolean strikeThrough = imageString.contains("123");
+            boolean strikeThrough = imageString.contains(".png123");
+            System.out.println(imageString + "      " + strikeThrough);
             if (strikeThrough)
                 temp = new ImageView(new Image(getClass().getResourceAsStream(imageString.substring(0,imageString.length()-3))));
             else
@@ -138,7 +139,7 @@ public class BoardScene{
         rollDice.setLayoutY(439 - 187);
 
 
-        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourGlass frame.png")));
+        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
         timeWarp.setLayoutX(1221);
         timeWarp.setLayoutY(145);
         timeWarp.setFitHeight(200);
