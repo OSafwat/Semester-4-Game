@@ -138,7 +138,7 @@ public class BoardScene{
         rollDice.setLayoutY(439 - 187);
 
 
-        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourGlass frame.png")));
+        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
         timeWarp.setLayoutX(1221);
         timeWarp.setLayoutY(145);
         timeWarp.setFitHeight(200);
