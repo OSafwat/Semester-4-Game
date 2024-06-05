@@ -58,30 +58,114 @@ public class ConfigMenuFXMLController {
 
         roundRewards.setOnAction(event -> {
             System.out.println("Round Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("RoundRewardsConfiguration.fxml"));
+                Parent root = loader.load();
+
+                RoundRewardsConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         redRealmRewards.setOnAction(event -> {
             System.out.println("Red Realm Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("RedRealmConfiguration.fxml"));
+                Parent root = loader.load();
+
+                RedRealmConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         greenRealmRewards.setOnAction(event -> {
             System.out.println("Green Realm Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GreenRealmConfiguration.fxml"));
+                Parent root = loader.load();
+
+                GreenRealmConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         blueRealmRewards.setOnAction(event -> {
             System.out.println("Blue Realm Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("BlueRealmConfiguration.fxml"));
+                Parent root = loader.load();
+
+                BlueRealmConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         magentaRealmRewards.setOnAction(event -> {
             System.out.println("Magenta Realm Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("MagentaRealmConfiguration.fxml"));
+                Parent root = loader.load();
+
+                MagentaRealmConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         yellowRealmRewards.setOnAction(event -> {
             System.out.println("Yellow Realm Rewards button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("YellowRealmConfiguration.fxml"));
+                Parent root = loader.load();
+
+                YellowRealmConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         yellowRealmMultiplier.setOnAction(event -> {
             System.out.println("Yellow Realm Multiplier button clicked");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("YellowRealmMultiplierConfiguration.fxml"));
+                Parent root = loader.load();
+
+                YellowRealmMultiplierConfigFXMLController controller = loader.getController();
+                controller.setStage(stage);
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         goBackToOptionsMenuButton.setOnAction(event -> {
@@ -89,8 +173,8 @@ public class ConfigMenuFXMLController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionsMenu.fxml"));
                 Parent root = loader.load();
 
-                OptionsMenuFXMLController optionsMenuFXMLController = loader.getController();
-                optionsMenuFXMLController.setStage(stage);
+                OptionsMenuFXMLController controller = loader.getController();
+                controller.setStage(stage);
 
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
