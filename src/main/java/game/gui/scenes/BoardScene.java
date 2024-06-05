@@ -74,7 +74,7 @@ public class BoardScene{
         ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board.png"))); 
         mainBoard.setFitHeight(1080);
         mainBoard.setFitWidth(1920);
-        mainBoard.setLayoutX(-3);
+        //mainBoard.setLayoutX(-3);
 
         ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
         for (String imageString : dicePNGs) {
@@ -89,33 +89,33 @@ public class BoardScene{
             temp.setFitWidth(150);
             if (imageString.toLowerCase().contains("red")){
                 redDice=temp;
-                temp.setLayoutX(408);
-                temp.setLayoutY(439);
+                temp.setLayoutX(713);
+                temp.setLayoutY(338);
             }
             else if (imageString.toLowerCase().contains("blue")){
                 blueDice= temp;
-                temp.setLayoutX(884);
-                temp.setLayoutY(439);
+                temp.setLayoutX(1129);
+                temp.setLayoutY(603);
             }
             else if (imageString.toLowerCase().contains("green")){
                 greenDice = temp;
-                temp.setLayoutX(661);
-                temp.setLayoutY(439);
+                temp.setLayoutX(898);
+                temp.setLayoutY(263);
             }
             else if (imageString.toLowerCase().contains("magenta")){
                 magentaDice = temp;
-                temp.setLayoutX(1148);
-                temp.setLayoutY(439);
+                temp.setLayoutX(1095);
+                temp.setLayoutY(338);
             }
             else if (imageString.toLowerCase().contains("yellow")){
                 yellowDice= temp;
-                temp.setLayoutX(1363);
-                temp.setLayoutY(439);
+                temp.setLayoutX(687);
+                temp.setLayoutY(603);
             }
             else if (imageString.toLowerCase().contains("white") || imageString.toLowerCase().contains("arcane")){
                 arcaneDice = temp;
-                arcaneDice.setLayoutX(884);
-                arcaneDice.setLayoutY(624);
+                arcaneDice.setLayoutX(902);
+                arcaneDice.setLayoutY(727);
             }
             if (!strikeThrough) {
                 DropShadow dropShadow = new DropShadow();
