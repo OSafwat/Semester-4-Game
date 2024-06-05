@@ -217,11 +217,12 @@ public class SceneController {
         return boardScene.getRollDiceButton();
     }
 
-    public Button getReturnFromOptionsButton() {
+    public Button loadOptionsScene() {
+        optionsScene.createOptionsScene(null);
         return optionsScene.getReturnFromOptionsButton();
     }
 
-    public void loadOptionsScene() {
-        optionsScene.createOptionsScene(null);
+    public ImageView getTimeWarpButton() {
+        return boardScene.getTimeWarp();
     }
 }
