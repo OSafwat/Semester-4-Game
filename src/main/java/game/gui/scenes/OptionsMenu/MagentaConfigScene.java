@@ -21,10 +21,17 @@ public class MagentaConfigScene {
     Properties magentaConfigProperties;
     Button saveButton, returnToConfigSceneButton;
 
-    public Scene createMagentaConfigScene() {
+    Scene magentaConfigScene;
+
+    public MagentaConfigScene() {
         StackPane root = new StackPane();
 
-        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        if (css != null) {
+            root.getStylesheets().add(css);
+        } else {
+            System.err.println("CSS file not found.");
+        }
 
         root.setPrefSize(1920, 1080);
         
@@ -63,12 +70,17 @@ public class MagentaConfigScene {
         saveButton = new Button("Save Configuration");
         saveButton.setOnAction(e -> saveProperties());
 
-        mainArea.getChildren().add(saveButton);
+        returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
 
-        return new Scene(root, 1920, 1080);
+        mainArea.getChildren().addAll(saveButton, returnToConfigSceneButton);
+
+        root.getChildren().addAll(background, mainArea);
+
+        magentaConfigScene = new Scene(root, 1920, 1080);
     }
 
     private void loadProperties() {
+        magentaConfigProperties = new Properties();
         try (FileInputStream in = new FileInputStream("src/main/resources/config/MysticalSkyRewards.properties")) {
             magentaConfigProperties.load(in);
         } catch (IOException e) {
@@ -86,5 +98,9 @@ public class MagentaConfigScene {
 
     public Button getReturnToConfigSceneButton() {
         return returnToConfigSceneButton;
+    }
+
+    public Scene getMagentaConfigScene() {
+        return magentaConfigScene;
     }
 }

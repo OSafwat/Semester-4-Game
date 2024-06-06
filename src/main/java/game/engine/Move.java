@@ -3,6 +3,9 @@ import game.creatures.*;
 import game.dice.*;
 import game.engine.enums.RealmColor;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class Move implements Comparable{
     Creature creature;
     Dice dice;

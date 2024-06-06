@@ -221,7 +221,7 @@ public class GUIGameController extends CLIGameController {
                 return true;
             }
         }
-        return false;
+        throw new ExhaustedResourceException("No available timewarps!");
     }
 
     public boolean handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException{
@@ -242,7 +242,7 @@ public class GUIGameController extends CLIGameController {
                 return true;
             }
         }
-        return false;
+        throw new ExhaustedResourceException("No available arcane boosts");
     }
 
     public void restoreArcaneBoost(Player player) {
@@ -276,5 +276,20 @@ public class GUIGameController extends CLIGameController {
                 indices.add(i+1);
         }
         return indices;
+    }
+
+    public int getDragonPartForThisDragonAndThisValue(int dragon, int diceValue) {
+        Dragon[] dragons = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
+        System.out.println("gui here, " + diceValue);
+        Dragon requiredDragon = dragons[dragon-1];
+        if (Objects.equals(requiredDragon.getFace(), diceValue))
+            return 0;
+        if (Objects.equals(requiredDragon.getWings(), diceValue))
+            return 1;
+        if (Objects.equals(requiredDragon.getTail(), diceValue))
+            return 2;
+        if (Objects.equals(requiredDragon.getHeart(), diceValue))
+            return 3;
+        return -1;
     }
 }
