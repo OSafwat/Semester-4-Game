@@ -244,7 +244,7 @@ public class DiceRealms extends Application {
         boolean [] flags = new boolean[5];
 
         for (Move move : moves) {
-            System.out.println(move.getDice().getRealm());
+            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
             switch(move.getDice().getRealm()){
                 case RED:
                     ArrayList<Integer> indices = guiGameController.getDragons(move.getDice().getValue());
@@ -285,6 +285,7 @@ public class DiceRealms extends Application {
                     flags[2] =true;
                     break;
                 case MAGENTA: 
+                    System.out.println("leeeeeeh");
                     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
                     sceneController.magentaScene.setCanMakeMove(true);
                     flags[3] =true;

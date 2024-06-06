@@ -32,6 +32,9 @@ public class BlueScene extends RealmScene {
 
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
+        if (canMakeMove){
+            hydra.setEffect(getGoldenDropShadow());
+        }
         hydra.setOnMouseEntered(event -> hydra.setEffect(glow));
         hydra.setOnMouseExited(event ->{ 
             //phoenix.setEffect(null);
