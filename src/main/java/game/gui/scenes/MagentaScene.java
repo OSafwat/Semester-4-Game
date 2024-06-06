@@ -32,6 +32,9 @@ public class MagentaScene extends RealmScene {
 
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
+        if (canMakeMove){
+            phoenix.setEffect(getGoldenDropShadow());
+        }
         phoenix.setOnMouseEntered(event -> phoenix.setEffect(glow));
         phoenix.setOnMouseExited(event ->{ 
                 //phoenix.setEffect(null);

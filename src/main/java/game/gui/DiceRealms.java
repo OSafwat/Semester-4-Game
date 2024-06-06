@@ -52,7 +52,8 @@ public class DiceRealms extends Application {
 
         sceneController = new SceneController();
         setupGame();
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
@@ -245,7 +246,7 @@ public class DiceRealms extends Application {
         boolean [] flags = new boolean[5];
 
         for (Move move : moves) {
-            System.out.println(move.getDice().getRealm());
+            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
             switch(move.getDice().getRealm()){
                 case RED:
                     ArrayList<Integer> indices = guiGameController.getDragons(move.getDice().getValue());
@@ -286,6 +287,7 @@ public class DiceRealms extends Application {
                     flags[2] =true;
                     break;
                 case MAGENTA: 
+                    System.out.println("leeeeeeh");
                     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
                     sceneController.magentaScene.setCanMakeMove(true);
                     flags[3] =true;
@@ -353,10 +355,12 @@ public class DiceRealms extends Application {
         sceneController.getOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
         sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
-        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
+        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.mainMenuScene.getMainMenuScene()));
+        sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
-        for (int i = 0; i < sceneController.getReturnToConfigSceneButtons().length; i++) {
-            sceneController.getReturnToConfigSceneButtons()[i].setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        Button[] returnToConfigSceneButtons = sceneController.getReturnToConfigSceneButtons();
+        for (int i = 0; i < returnToConfigSceneButtons.length; i++) {
+            returnToConfigSceneButtons[i].setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
         }
 
         sceneController.getRedConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.redConfigScene.getRedConfigScene()));

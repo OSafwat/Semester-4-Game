@@ -250,6 +250,10 @@ public class SceneController {
         return optionsScene.getGameConfigButton();
     }
 
+    public Button getReturnToOptionsButton() {
+        return configScene.getReturnToOptionsButton();
+    }
+
     public Button getRedConfigButton() {
         return configScene.getRedConfigButton();
     }
@@ -287,5 +291,4 @@ public class SceneController {
 
         return saveButtons;
     }
-
 }

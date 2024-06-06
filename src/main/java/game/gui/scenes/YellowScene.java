@@ -36,6 +36,10 @@ public class YellowScene extends RealmScene {
 
         // Add glow effect on hover
         Glow glow = new Glow(0.7);
+
+        if (canMakeMove){
+            lion.setEffect(getGoldenDropShadow());
+        }
         lion.setOnMouseEntered(event -> lion.setEffect(glow));
         lion.setOnMouseExited(event ->{ 
             //phoenix.setEffect(null);

@@ -1,12 +1,11 @@
 package game.engine;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
+import game.creatures.Lion;
+import game.creatures.Phoenix;
 import game.dice.ArcanePrism;
 import game.dice.BlueDice;
 import game.dice.Dice;
@@ -179,13 +178,27 @@ public class AI extends Player implements Cloneable {
 
 
     //rule-based
-    public Move pickBestMove(AI ai,Move[] moveSet,int round,int turn){
+    public Move pickBestMove(AI ai,Move[] moveSet,int round,int turn){//make the moveset only include the available moves
+        ai.sortMoves(moveSet);
         if(round == 1){
             if(turn == 1){
-                return pickLowestMove(ai, moveSet);
+                for(int i=1;i<moveSet.length-2;i++){
+                    if(moveSet[i].getDice().getRealm() == RealmColor.GREEN){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm() == RealmColor.BLUE){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm() == RealmColor.YELLOW){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm()== RealmColor.WHITE){
+                        Move[] whiteMoveSet = new Move[5];
+                    }
+                }
             }
             else if(turn ==2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -193,10 +206,10 @@ public class AI extends Player implements Cloneable {
         }
         else if(round == 2){
             if(turn == 1){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -204,10 +217,10 @@ public class AI extends Player implements Cloneable {
         }
         else if(round == 3){
             if (turn == 1){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -215,10 +228,10 @@ public class AI extends Player implements Cloneable {
         }
         else if(round == 4){
             if(turn == 1){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -226,10 +239,10 @@ public class AI extends Player implements Cloneable {
         }
         else if(round == 5){
             if(turn == 1){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -237,10 +250,10 @@ public class AI extends Player implements Cloneable {
         }
         else if(round ==6){
             if(turn == 1){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 2){
-                return pickLowestMove(ai, moveSet);
+
             }
             else if(turn == 3){
 
@@ -248,54 +261,17 @@ public class AI extends Player implements Cloneable {
         }
         return null;
     }
+
     public Move pickLowestMove(AI ai,Move[] moveSet){//make it return a dice array thats like everything but the max move and the one just behind it
-        Move aimove=null;
-        int min=Integer.MAX_VALUE;
-        boolean foundRed=true;
-        boolean foundMove=false;
-        for(Move move:moveSet){
-            if(foundMove) break;
-
-            Dice dice=move.getDice();
-            int diceValue=move.getDice().getValue();
-            if(diceValue<min){
-                min=diceValue;
-                //please fix this safwat PLEASE
-                if(dice instanceof RedDice){
-                    RedDice redDice = new RedDice(diceValue);
-                    Move redMove=new Move(redDice, move.getCreature());
-                    for (int i = 1; i<= 4; i++) {
-                        redDice.selectsDragon(i);
-
-                        try {
-                            if(move.getCreature().checkMove(redDice)){
-                                foundRed=true;
-                                break;
-                            }
-                        } catch (InvalidMoveException e) {
-                            System.out.println("im losing my fucking mind");
-                            e.printStackTrace();
-                        }                    
-                    }
-                    aimove=redMove;
-                }
-                else if(dice instanceof ArcanePrism){
-                    //for loop to iterate over all the diff dice
-                    //move=new Move(dice.)
-                    foundMove=true;
-                    break;
-                }
-                else if(dice instanceof GreenDice || dice instanceof BlueDice || dice instanceof MagentaDice || dice instanceof YellowDice){
-                    aimove=new Move(dice,move.getCreature());
-                    foundMove=true;
-                    break;
-                }
-            }
-        }
-        return aimove;
+        //make it enter available moves only
+        ai.sortMoves(moveSet);
+        return moveSet[0];
     }
 
     public void sortMoves(Move[] moves) {
         Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
+    }
+    public void sortDice(Dice[] dice){
+        Arrays.sort(dice, Comparator.comparingInt(Dice::getValue));
     }
 }

@@ -17,13 +17,14 @@ public class ScoreSheet {
     private Dragon dragon;
     private Gaia gaia;
     private GameScore gamescore;
+
     //red    green  blue    magenta    yellow
 //dragon gaia   hydra   phoenix  lion
-    public ScoreSheet(){
-        hydra= new Hydra();
+    public ScoreSheet() {
+        hydra = new Hydra();
         phoenix = new Phoenix();
         lion = new Lion();
-        dragon= new Dragon();
+        dragon = new Dragon();
         gaia = new Gaia();
         gamescore = new GameScore();
     }
@@ -41,96 +42,111 @@ public class ScoreSheet {
         return new ScoreSheet(this.gaia, this.hydra, this.phoenix, this.lion, this.dragon, this.gamescore);
     }
 
-    public int [] getScores(){
-        int [] Scores = new int [5];
-        Scores[0]= this.dragon.getScore();
-        Scores[1]= this.gaia.getScore();
-        Scores[2]= this.hydra.getScore();
-        Scores[3]= this.phoenix.getScore();
-        Scores[4]= this.lion.getScore();
+    public int[] getScores() {
+        int[] Scores = new int[5];
+        Scores[0] = this.dragon.getScore();
+        Scores[1] = this.gaia.getScore();
+        Scores[2] = this.hydra.getScore();
+        Scores[3] = this.phoenix.getScore();
+        Scores[4] = this.lion.getScore();
         return Scores;
     }
-    public int getElementalCrests(){
-        int total=0;
-        total+=dragon.getElementalCrest();
-        total+=gaia.getElementalCrest();
-        total+=hydra.getElementalCrest();
-        total+=phoenix.getElementalCrest();
-        total+=lion.getElementalCrest();
+
+    public int getElementalCrests() {
+        int total = 0;
+        total += dragon.getElementalCrest();
+        total += gaia.getElementalCrest();
+        total += hydra.getElementalCrest();
+        total += phoenix.getElementalCrest();
+        total += lion.getElementalCrest();
         return total;
     }
 
     public void displayColoredScoreSheet() {
-        String res ="\n\nScoreSheet\n\n";
+        String res = "\n\nScoreSheet\n\n";
         res += "\u001B[31m" + dragon.getScoreSheet() + "\u001B[0m";
-        res +="\n";
+        res += "\n";
         res += "\u001B[32m" + gaia.getScoreSheet() + "\u001B[0m";
-        res +="\n";
+        res += "\n";
         res += "\u001B[34m" + hydra.getScoreSheet() + "\u001B[0m";
-        res +="\n";
+        res += "\n";
         res += "\u001B[35m" + phoenix.getScoreSheet() + "\u001B[0m";
-        res +="\n";
+        res += "\n";
         res += "\u001B[33m" + lion.getScoreSheet() + "\u001B[0m";
         System.out.println(res + "\n");
     }
 
-    public void displayScoreSheet(){
+    public void displayScoreSheet() {
         System.out.print(this);
     }
-    public String toString(){
-        String res ="\n\nScoreSheet\n\n";
+
+    public String toString() {
+        String res = "\n\nScoreSheet\n\n";
         res += dragon.getScoreSheet();
-        res +="\n";
+        res += "\n";
         res += gaia.getScoreSheet();
-        res +="\n";
+        res += "\n";
         res += hydra.getScoreSheet();
-        res +="\n";
+        res += "\n";
         res += phoenix.getScoreSheet();
-        res +="\n";
+        res += "\n";
         res += lion.getScoreSheet();
         return res + "\n";
     }
 
     //red    green  blue    magenta    yellow
     //dragon gaia   hydra   phoenix  lion
-    public Creature getCreatureByRealm(Dice dice){
-        switch (dice.getRealm()){
-            case RED: return this.dragon;
-            case GREEN:  return this.gaia;
-            case BLUE:  return this.hydra;
-            case MAGENTA:  return this.phoenix;
-            case YELLOW: return this.lion;
-            default: return null;
+    public Creature getCreatureByRealm(Dice dice) {
+        switch (dice.getRealm()) {
+            case RED:
+                return this.dragon;
+            case GREEN:
+                return this.gaia;
+            case BLUE:
+                return this.hydra;
+            case MAGENTA:
+                return this.phoenix;
+            case YELLOW:
+                return this.lion;
+            default:
+                return null;
         }
 
     }
-    public Creature getCreatureByColor(RealmColor color){
-        switch (color){
-            case RED: return this.dragon;
-            case GREEN:  return this.gaia;
-            case BLUE:  return this.hydra;
-            case MAGENTA:  return this.phoenix;
-            case YELLOW: return this.lion;
-            default: return null;
+
+    public Creature getCreatureByColor(RealmColor color) {
+        switch (color) {
+            case RED:
+                return this.dragon;
+            case GREEN:
+                return this.gaia;
+            case BLUE:
+                return this.hydra;
+            case MAGENTA:
+                return this.phoenix;
+            case YELLOW:
+                return this.lion;
+            default:
+                return null;
         }
     }
 
-    public ArrayList<ArcaneBoost> getAllArcaneBoosts(){
-        ArrayList<ArcaneBoost> allArcaneboosts= dragon.getAllArcaneBoosts();
+    public ArrayList<ArcaneBoost> getAllArcaneBoosts() {
+        ArrayList<ArcaneBoost> allArcaneboosts = dragon.getAllArcaneBoosts();
         allArcaneboosts.addAll(gaia.getAllArcaneBoosts());
         allArcaneboosts.addAll(hydra.getAllArcaneBoosts());
         allArcaneboosts.addAll(phoenix.getAllArcaneBoosts());
         allArcaneboosts.addAll(lion.getAllArcaneBoosts());
         return allArcaneboosts;
     }
-    public ArrayList<TimeWarp> getAllTimeWarps(){
-        ArrayList<TimeWarp> allTimwarps= dragon.getAllTimeWarps();
+
+    public ArrayList<TimeWarp> getAllTimeWarps() {
+        ArrayList<TimeWarp> allTimwarps = dragon.getAllTimeWarps();
         allTimwarps.addAll(gaia.getAllTimeWarps());
         allTimwarps.addAll(hydra.getAllTimeWarps());
         allTimwarps.addAll(phoenix.getAllTimeWarps());
         allTimwarps.addAll(lion.getAllTimeWarps());
         return allTimwarps;
     }
-
 
 }

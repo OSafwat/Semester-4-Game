@@ -1,25 +1,13 @@
 /* Base Styles */
-.root {
-    /*-fx-background-image: url('path_to_your_image.png');*/
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center center;
-    -fx-background-size: cover;
-    -fx-font-family: 'Press Start 2P';
-    -fx-text-fill: white;
+.vbox {
     -fx-alignment: center;
-    -fx-padding: 0;
-    -fx-height: 100pt;
-    -fx-display: flex;
-    -fx-justify-content: center;
-    -fx-align-items: center;
 }
 
-/* Button Styles */
 .button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: black;
-    -fx-font-size: 32px;
+    -fx-font-size: 48px;
     -fx-padding: 10px 20px;
     -fx-margin: 10px 0;
     -fx-text-transform: uppercase;
@@ -40,13 +28,21 @@
     -fx-border-color: transparent;
     -fx-font-family: 'serif';
     -fx-font-weight: bold;
-    -fx-font-size: 48px;
-    -fx-padding: 10px 20px;
+    -fx-font-size: 30px;
+    -fx-padding: 3px 20px;
     -fx-margin: 10px 0;
     -fx-text-transform: uppercase;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
 }
 
-.slider {
-    -fx-margin: 10px;
+.title {
+    -fx-font-size: 60px;
+    -fx-margin: 100px 0;
+}
+
+.text-field {
+    -fx-font-family: 'serif';
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
 }
