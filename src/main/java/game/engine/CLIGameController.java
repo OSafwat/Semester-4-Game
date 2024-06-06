@@ -422,10 +422,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         player1Score = 100;
                         player2Score = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         player1Score = 0;
                         player2Score = 100;
+                        break;
                     }
                 }
             }
@@ -583,10 +585,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         player1Score = 100;
                         aiPlayerScore = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         player1Score = 0;
                         aiPlayerScore = 100;
+                        break;
                     }
                 }
             }
@@ -646,10 +650,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         aiPlayer1Score = 100;
                         aiPlayerScore2 = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         aiPlayer1Score = 0;
                         aiPlayerScore2 = 100;
+                        break;
                     }
                 }
             }
@@ -693,7 +699,7 @@ public class CLIGameController {
                 System.out.println(i);
             }
             System.out.println();
-
+            System.out.println("player 1 ab count" +aiPlayer1.getArcaneBoostsNum());
 
             /*System.out.println(aiPlayer1.getArcaneBoostsNum());
             for(ArcaneBoost arcaneBoost: aiPlayer1.getArcaneBoosts()){          //problem here
@@ -1942,8 +1948,8 @@ public class CLIGameController {
 
     public int evaluateGreenDice(Player player, Dice dice){ //problem with adding the white dice
         int value=dice.getValue();
-        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 200;
-        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 150;
+        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 600;
+        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 550;
         /*if(value==2) return 12;
         if(value==3) return 8;
         if(value==4) return 6;
@@ -1955,7 +1961,7 @@ public class CLIGameController {
         if(value==10) return 12;
         if(value==11) return 12;
         if(value==12) return 12;*/
-        return 100;
+        return 400;
     }
     public boolean completeRowGreen(Player player,Dice dice){
         int value=dice.getValue();
@@ -2014,13 +2020,7 @@ public class CLIGameController {
 
     public int evaluateBlueDice(Player player,Dice dice){
         int value=dice.getValue();
-        Move[] moves=getPossibleMovesForADie(player, dice);
-        for(Move move:moves){
-            if(move.getDice().getValue()==value){
-                return 80;
-            }
-        }
-        return 0;
+        return 200;
     }
 
     public int evaluateMagentaDice(Player player,Dice dice){
@@ -2036,7 +2036,7 @@ public class CLIGameController {
 
     public int evaluateYellowDice(Player player, Dice dice){
        // return dice.getValue()+2;
-        return 0;
+        return 500;
     }
 
     public int evaluateWhiteDice(Player player, Dice dice){//problem with the green dice
@@ -2169,7 +2169,6 @@ public class CLIGameController {
                         if(redDiceDragonMoves.length!=0){
                             aiMove = new Move(redDice, aiMove.getCreature());
                             makeMoveAI(passivePlayer, aiMove);
-                            //ai.incrementTurnsPlayed();
                             redMoveDone=true;
                             break;
                         }
@@ -2407,7 +2406,7 @@ public class CLIGameController {
         Move redAiMove=null;
         Move bestWhiteMove=null;
         Move aiMove1=null;
-        if(turnCount!=3){
+        if(turnCount!=6){//getsettings()[1] doesnt work properly here idky
             boolean outerFlag=false;
             //outer loop for finding the smallest value in the dice
             for(int i=1;!outerFlag&&i<=6;i++){//break when you find a move
@@ -2495,25 +2494,25 @@ public class CLIGameController {
                 selectDice(aiMove1.getDice(), player);
                 return true;
             }
+            if(canWhite){
+                testingWhite.add(turnCount);
+                ai.incrementTurnsPlayed();
+                makeMoveAI(player, bestWhiteMove);
+                selectDice(new ArcanePrism(bestWhiteMove.getDice().getValue()), player);
+                return true;
+            }
             if(canMagenta){
                 testingMagenta.add(turnCount);
                 ai.incrementTurnsPlayed();
                 makeMoveAI(player, aiMove1);
                 selectDice(aiMove1.getDice(), player);
                 return true;
-            }
+                }
             if(canRed){
                 testingRed.add(turnCount);
                 ai.incrementTurnsPlayed();
                 makeMoveAI(player, redAiMove);
                 selectDice(redDice1, player);
-                return true;
-            }
-            if(canWhite){
-                testingWhite.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, bestWhiteMove);
-                selectDice(new ArcanePrism(bestWhiteMove.getDice().getValue()), player);
                 return true;
             }
            // return false;//WHY DOES THIS GIVE A MF ERROR BRUH LIKE WHY DOES IT NOT PLAY ANY FURTHER MOVES
@@ -2646,7 +2645,7 @@ public class CLIGameController {
             return false;
         }
         return true;
-        }
+    }
 
 
 
