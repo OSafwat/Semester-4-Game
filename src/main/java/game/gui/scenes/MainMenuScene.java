@@ -26,6 +26,7 @@ public class MainMenuScene{
     Button goBackButton;
 
     AnchorPane root;
+    Scene scene;
 
     public Scene createMainScene() {
         
@@ -82,7 +83,7 @@ public class MainMenuScene{
         root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
 
         // Scene
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
 
         return scene;
@@ -122,5 +123,9 @@ public class MainMenuScene{
     }
     public Button getGoBackButton(){
         return goBackButton;
+    }
+
+    public Scene getMainMenuScene() {
+        return scene;
     }
 }
