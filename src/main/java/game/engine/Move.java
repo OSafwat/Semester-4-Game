@@ -3,6 +3,9 @@ import game.creatures.*;
 import game.dice.*;
 import game.engine.enums.RealmColor;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class Move implements Comparable{
     Creature creature;
     Dice dice;
@@ -58,5 +61,9 @@ public class Move implements Comparable{
     }
     public String toString(){
         return getDice().getRealm()+" "+getDice().getValue();
+    }
+
+    public void sortMoves(Move[] moves) {
+        Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
     }
 }
