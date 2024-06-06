@@ -17,8 +17,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+
 import java.util.*;
 
 
@@ -214,6 +218,43 @@ public class DiceRealms extends Application {
         if (bonusValue != -1) {
             handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
+    }
+    public void handleAvailabilityCue(Player player,Dice [] diceSet){
+
+        // Create a drop shadow effect with a golden color
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.GOLD);
+        dropShadow.setRadius(20);
+        dropShadow.setSpread(0.5);
+
+        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[1])) {
+        //     System.out.println(tmove);
+        // }
+        if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
+            sceneController.greenScene.getGuardian().setEffect(dropShadow); 
+            sceneController.greenScene.setCanMakeMove(true);
+        }
+        else sceneController.greenScene.setCanMakeMove(false);
+
+        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[2])) {
+        //     System.out.println(tmove);
+        // }
+        if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
+            sceneController.blueScene.getHydra().setEffect(dropShadow); 
+            sceneController.blueScene.setCanMakeMove(true);
+        }
+        else sceneController.blueScene.setCanMakeMove(false);
+        
+        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[3])) {
+        //     System.out.println(tmove);
+        // }
+        if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0 ) {
+            sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
+            sceneController.magentaScene.setCanMakeMove(true);
+        }
+        else sceneController.magentaScene.setCanMakeMove(false);
+
+
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
@@ -1059,6 +1100,8 @@ public class DiceRealms extends Application {
             }
         }
         sceneController.boardScene.makeboardScene(getDiceGIFs());
+        System.out.println("a7a");
+        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAllDice());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         new Thread(new Runnable() {
             @Override

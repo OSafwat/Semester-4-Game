@@ -10,6 +10,10 @@ import javafx.scene.paint.Color;
 
 public class MagentaScene extends RealmScene {
     private ImageView phoenix, backgroundView;
+     boolean canMakeMove;
+    public void setCanMakeMove(boolean canMakeMove){
+        this.canMakeMove = canMakeMove;
+    }
     @Override
     public void createScene() {
         root = new AnchorPane();
@@ -29,7 +33,14 @@ public class MagentaScene extends RealmScene {
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
         phoenix.setOnMouseEntered(event -> phoenix.setEffect(glow));
-        phoenix.setOnMouseExited(event -> phoenix.setEffect(dropShadow));
+        phoenix.setOnMouseExited(event ->{ 
+                //phoenix.setEffect(null);
+                phoenix.setEffect(dropShadow);
+                if (canMakeMove){
+                    phoenix.setEffect(getGoldenDropShadow());
+                }
+            }
+        );
 
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);

@@ -218,7 +218,7 @@ public class SceneController {
     }
 
     public Button loadOptionsScene() {
-        optionsScene.createOptionsScene(null);
+        //optionsScene.createOptionsScene(null);
         return optionsScene.getReturnFromOptionsButton();
     }
 
