@@ -65,7 +65,7 @@ public class BoardScene{
         anchorPane.setPrefSize(1920,1080 );
 
         // Main game board image
-        ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board.png"))); 
+        ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board Pixelated3.png"))); 
         mainBoard.setFitHeight(1080);
         mainBoard.setFitWidth(1920);
         //mainBoard.setLayoutX(-3);
