@@ -56,6 +56,9 @@ public class MagentaScene extends RealmScene {
         root.getChildren().add(getGoBackButton());
         super.createScene();
     }
+    public ImageView getMagentaGrimoire(){
+        return this.leftGrimoire;
+    }
 
     public void changeMagentaSceneView(String path) {
         try {

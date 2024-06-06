@@ -10,6 +10,8 @@ import game.exceptions.BonusException;
 import game.exceptions.ExhaustedResourceException;
 import game.exceptions.NoAvailableMovesException;
 import game.exceptions.PlayerActionException;
+import game.gui.scenes.BoardScene;
+import game.gui.scenes.MagentaScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -135,7 +137,7 @@ public class DiceRealms extends Application {
         return arr;
     
     }   
-    public void openLeftGrimoire() {        
+    public void openLeftGrimoire(Object unknownScene) {        
 
         Player player1 = guiGameController.getPlayer1();
         String arr [] =getInformation(player1); 
@@ -191,14 +193,21 @@ public class DiceRealms extends Application {
         close.setLayoutX(1575);
         close.setLayoutY(50);
         
-        sceneController.boardScene.addToAnchorPane(bg, textAreaPlayer1,textAreaPlayer2, close);
+        if (unknownScene instanceof MagentaScene){
+            sceneController.magentaScene.addToAnchorPane(bg, textAreaPlayer1,textAreaPlayer2, close);
 
-        close.setOnMouseClicked(e -> {
-            sceneController.boardScene.removeFromAnchorPane(bg, textAreaPlayer1, textAreaPlayer2, close);
-          //  sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(event -> openLeftGrimoire());  
-        });
+            close.setOnMouseClicked(e -> {
+                sceneController.magentaScene.removeFromAnchorPane(bg, textAreaPlayer1, textAreaPlayer2, close);
+            });
+        }else if (unknownScene instanceof BoardScene){
+            sceneController.boardScene.addToAnchorPane(bg, textAreaPlayer1,textAreaPlayer2, close);
+
+            close.setOnMouseClicked(e -> {
+                sceneController.boardScene.removeFromAnchorPane(bg, textAreaPlayer1, textAreaPlayer2, close);
+            });
+        }
+
         
-        //sceneController.boardScene.anchorPane.getChildren().addAll(close);
             
     }      
 
@@ -320,7 +329,7 @@ public class DiceRealms extends Application {
     public void initEventListeners() {
         handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire());  
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire(sceneController.boardScene));  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
@@ -336,6 +345,7 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
+        sceneController.magentaScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.magentaScene));
 
         /*sceneController.getOptionsButton().setOnMouseClicked((e -> {
             Button button = sceneController.loadOptionsScene();
