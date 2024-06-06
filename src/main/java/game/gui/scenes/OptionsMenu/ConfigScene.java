@@ -17,15 +17,20 @@ public class ConfigScene {
     Button returnToOptionsButton;
     Button redConfigButton, greenConfigButton, blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton;
 
-    Scene optionsScene;
+    Scene configScene;
     // Stage stage;
 
     int numberOfRounds, numberOfTurnsPerRound;
 
-    public Scene createConfigScene() {
+    public ConfigScene() {
         StackPane root = new StackPane();
 
-        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        if (css != null) {
+            root.getStylesheets().add(css);
+        } else {
+            System.err.println("CSS file not found.");
+        }
 
         root.setPrefSize(1920, 1080);
         
@@ -90,10 +95,12 @@ public class ConfigScene {
 
         returnToOptionsButton = new Button("Return");
 
-        mainArea.getChildren().addAll(configLabel, rewardSettingsLabel, roundSettingsArea, roundSettingsArea, redConfigButton, greenConfigButton, 
+        mainArea.getChildren().addAll(configLabel, rewardSettingsLabel, roundSettingsArea, redConfigButton, greenConfigButton, 
         blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton, returnToOptionsButton);
 
-        return new Scene(root, 1920, 1080);
+        root.getChildren().addAll(background, mainArea);
+        
+        configScene = new Scene(root, 1920, 1080);
     }
 
     // public void setStage(Stage stage) {
@@ -126,6 +133,10 @@ public class ConfigScene {
 
     public Button getReturnToOptionsButton() {
         return returnToOptionsButton;
+    }
+
+    public Scene getConfigScene() {
+        return configScene;
     }
 }
 

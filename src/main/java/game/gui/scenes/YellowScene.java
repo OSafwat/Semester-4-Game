@@ -52,6 +52,8 @@ public class YellowScene extends RealmScene {
         root.setPadding(javafx.geometry.Insets.EMPTY);
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
+        super.createGrimoire();
+        root.getChildren().add(getLeftGrimoire());
         super.createScene();
     }
 

@@ -9,23 +9,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
-// import javafx.stage.Stage;
-import javafx.stage.Stage;
 
 public class OptionsScene {
     Button returnFromOptionsButton, gameConfigButton;
     
-    Scene configScene;
+    Scene optionsScene;
     // Stage stage;
 
     Slider volumeSlider;
     MediaPlayer mediaPlayer;
 
-    public Scene createOptionsScene() {
+    public OptionsScene() {
         StackPane root = new StackPane();
-        configScene = (new ConfigScene()).createConfigScene();
 
-        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        if (css != null) {
+            root.getStylesheets().add(css);
+        } else {
+            System.err.println("CSS file not found.");
+        }
 
         root.setPrefSize(1920, 1080);
         
@@ -48,15 +50,14 @@ public class OptionsScene {
             mediaPlayer.setVolume(newValue.doubleValue() / 100.0);
         });
 
-        Button gameConfigButton = new Button("Game Configuration");
-        // gameConfigButton.setOnMouseClicked(e -> {
-        //     stage.setScene(configScene);
-        // });
+        gameConfigButton = new Button("Game Configuration");
+
         returnFromOptionsButton = new Button("Return");
 
         mainArea.getChildren().addAll(optionsLabel, volumeLabel, volumeSlider, gameConfigButton, returnFromOptionsButton);
 
-        return new Scene(root, 1920, 1080);
+        root.getChildren().addAll(background, mainArea);
+        optionsScene = new Scene(root, 1920, 1080);
     }
 
     public Button getReturnFromOptionsButton() {
@@ -67,9 +68,9 @@ public class OptionsScene {
         return gameConfigButton;
     }
 
-    // public void setStage(Stage stage) {
-    //     this.stage = stage;
-    // }
+    public Scene getOptionsScene() {
+        return optionsScene;
+    }
 
     public void setMediaPlayer(MediaPlayer mp) {
         this.mediaPlayer = mp;

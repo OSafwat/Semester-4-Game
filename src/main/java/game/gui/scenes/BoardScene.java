@@ -38,7 +38,7 @@ public class BoardScene{
     Button rollDice;
     ImageView timeWarp;
     Label infoLabel;
-    public AnchorPane anchorPane;
+    public AnchorPane root;
 
     public ImageView getPlayer1TimeWarpButton() {
         return player1TimeWarpButton;
@@ -61,8 +61,8 @@ public class BoardScene{
         infoLabel.getStyleClass().add("infoLabel");
 
         // Create the AnchorPane
-        anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(1920,1080 );
+        root = new AnchorPane();
+        root.setPrefSize(1920,1080 );
 
         // Main game board image
         ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board Pixelated3.png"))); 
@@ -143,8 +143,9 @@ public class BoardScene{
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
-        leftGrimoire.setLayoutX(496);
-        leftGrimoire.setLayoutY(154);
+        leftGrimoire.setLayoutX(182);
+        leftGrimoire.setLayoutY(143);
+        
 
         // // Grimoire image (right)
         //  rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
@@ -167,13 +168,13 @@ public class BoardScene{
         player2ArcaneBoostButton = new ImageView();
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp, rollDice);
+        root.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp, rollDice);
         for (ImageView diceImage : imagePaths) {
-            anchorPane.getChildren().addAll(diceImage);
+            root.getChildren().addAll(diceImage);
         }
 
         // Create the scene
-        Scene scene = new Scene(anchorPane);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
     }
@@ -308,10 +309,10 @@ public class BoardScene{
     }
 
     public void addToAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
-        anchorPane.getChildren().addAll(bg, textarea, textarea2,close);
+        root.getChildren().addAll(bg, textarea, textarea2,close);
     }
     public void removeFromAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
-        anchorPane.getChildren().removeAll(bg, textarea, textarea2,close);
+        root.getChildren().removeAll(bg, textarea, textarea2,close);
     }
 
     public Button getRollDiceButton() {
