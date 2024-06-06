@@ -20,11 +20,18 @@ import javafx.scene.layout.VBox;
 public class RedConfigScene {
     Properties redConfigProperties;
     Button saveButton, returnToConfigSceneButton;
+
+    Scene redConfigScene;
     
-    public Scene createRedConfigScene() {
+    public RedConfigScene() {
         StackPane root = new StackPane();
 
-        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        if (css != null) {
+            root.getStylesheets().add(css);
+        } else {
+            System.err.println("CSS file not found.");
+        }
 
         root.setPrefSize(1920, 1080);
         
@@ -73,12 +80,17 @@ public class RedConfigScene {
         saveButton = new Button("Save Configuration");
         saveButton.setOnAction(e -> saveProperties());
 
+        returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
+
         mainArea.getChildren().addAll(hbox, saveButton, returnToConfigSceneButton);
 
-        return new Scene(root, 1920, 1080);
+        root.getChildren().addAll(background, mainArea);
+
+        redConfigScene = new Scene(root, 1920, 1080);
     }
 
     private void loadProperties() {
+        redConfigProperties = new Properties();
         try (FileInputStream in = new FileInputStream("src/main/resources/config/EmberfallDominionRewards.properties")) {
             redConfigProperties.load(in);
         } catch (IOException e) {
@@ -96,5 +108,9 @@ public class RedConfigScene {
 
     public Button getReturnToConfigSceneButton() {
         return returnToConfigSceneButton;
+    }
+
+    public Scene getRedConfigScene() {
+        return redConfigScene;
     }
 }
