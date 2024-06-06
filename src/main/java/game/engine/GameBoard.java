@@ -157,7 +157,6 @@ public class GameBoard implements Cloneable{
             if (dice.compareTo(die) != 0)
                 newAvailableDice.add(dice);
         }
-        System.out.println("meow");
         availableDice = newAvailableDice;
     }
 

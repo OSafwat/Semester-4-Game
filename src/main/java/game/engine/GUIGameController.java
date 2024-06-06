@@ -2,6 +2,7 @@ package game.engine;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
+import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
 import game.creatures.greenclasses.Gaia;
@@ -291,5 +292,23 @@ public class GUIGameController extends CLIGameController {
         if (Objects.equals(requiredDragon.getHeart(), diceValue))
             return 3;
         return -1;
+    }
+
+//    public boolean makeArcaneMove(Player player, Move move) {
+//        makeMove(player, move);
+//    }
+
+    public Creature getCreature(Player player, RealmColor realmColor) {
+        return player.getScoreSheet().getCreatureByColor(realmColor);
+    }
+
+    public int getMaxTurns() {
+        return maxTurns;
+    }
+
+    public boolean makeSpecialMove(Dice dice, Player player) throws BonusException, InvalidMoveException {
+        Creature creature = player.getScoreSheet().getCreatureByRealm(dice);
+        creature.makeMove(dice);
+        return true;
     }
 }
