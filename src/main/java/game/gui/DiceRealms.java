@@ -10,6 +10,11 @@ import game.exceptions.BonusException;
 import game.exceptions.ExhaustedResourceException;
 import game.exceptions.NoAvailableMovesException;
 import game.exceptions.PlayerActionException;
+import game.gui.scenes.BoardScene;
+import game.gui.scenes.GreenScene;
+import game.gui.scenes.MagentaScene;
+import game.gui.scenes.RedScene;
+import game.gui.scenes.YellowScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -136,7 +141,7 @@ public class DiceRealms extends Application {
         return arr;
     
     }   
-    public void openLeftGrimoire() {        
+    public void openLeftGrimoire(AnchorPane root) {        
 
         Player player1 = guiGameController.getPlayer1();
         String arr [] =getInformation(player1); 
@@ -192,14 +197,12 @@ public class DiceRealms extends Application {
         close.setLayoutX(1575);
         close.setLayoutY(50);
         
-        sceneController.boardScene.addToAnchorPane(bg, textAreaPlayer1,textAreaPlayer2, close);
-
-        close.setOnMouseClicked(e -> {
-            sceneController.boardScene.removeFromAnchorPane(bg, textAreaPlayer1, textAreaPlayer2, close);
-          //  sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(event -> openLeftGrimoire());  
-        });
         
-        //sceneController.boardScene.anchorPane.getChildren().addAll(close);
+        root.getChildren().addAll(bg, textAreaPlayer1, textAreaPlayer2,close );
+
+        close.setOnMouseClicked(e ->{
+            root.getChildren().removeAll(bg, textAreaPlayer1, textAreaPlayer2, close);
+        });
             
     }      
 
@@ -321,7 +324,7 @@ public class DiceRealms extends Application {
     public void initEventListeners() {
         handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire());  
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire(sceneController.boardScene.root));  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
@@ -337,6 +340,14 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
+
+        sceneController.magentaScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.magentaScene.root));
+        sceneController.redScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.redScene.root));
+        sceneController.blueScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.blueScene.root));
+        sceneController.greenScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.greenScene.root));        
+        sceneController.yellowScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.yellowScene.root));
+
+
 
         sceneController.getOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
@@ -680,17 +691,17 @@ public class DiceRealms extends Application {
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
             if (exception instanceof BonusException) {
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
                 canReroll = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE);
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
+                System.out.println("gotbonus");
                 new Thread(() -> {
-                    while (awaitingInput) {
-                        try {
-                            Thread.sleep(100); // Avoid busy-waiting
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(100); // Avoid busy-waiting
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }).start();
 
