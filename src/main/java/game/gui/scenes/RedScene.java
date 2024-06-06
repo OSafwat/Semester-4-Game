@@ -73,6 +73,75 @@ public class RedScene extends RealmScene {
         super.createScene();
     }
 
+    public void glowDragonPart(int value) {
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(10);
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+
+        System.out.println(value + "MEOWOWOW");
+
+        // Add glow effect on hover
+        Glow glow = new Glow(0.7);
+
+        if (value == 0){
+            dragonFace.setEffect(getGoldenDropShadow());
+        }
+        else
+            dragonFace.setEffect(dropShadow);
+        dragonFace.setOnMouseEntered(event -> dragonFace.setEffect(glow));
+        dragonFace.setOnMouseExited(event -> {
+            //phoenix.setEffect(null);
+            dragonFace.setEffect(dropShadow);
+            if (value == 0){
+                dragonFace.setEffect(getGoldenDropShadow());
+            }
+        });
+
+        if (value == 1){
+            dragonWings.setEffect(getGoldenDropShadow());
+        }
+        else
+            dragonWings.setEffect(dropShadow);
+        dragonWings.setOnMouseEntered(event -> dragonWings.setEffect(glow));
+        dragonWings.setOnMouseExited(event -> {
+            //phoenix.setEffect(null);
+            dragonWings.setEffect(dropShadow);
+            if (value == 1){
+                dragonWings.setEffect(getGoldenDropShadow());
+            }
+        });
+
+        if (value == 2){
+            dragonTail.setEffect(getGoldenDropShadow());
+        }
+        else
+            dragonTail.setEffect(dropShadow);
+        dragonTail.setOnMouseEntered(event -> dragonTail.setEffect(glow));
+        dragonTail.setOnMouseExited(event -> {
+            //phoenix.setEffect(null);
+            dragonTail.setEffect(dropShadow);
+            if (value == 2){
+                dragonTail.setEffect(getGoldenDropShadow());
+            }
+        });
+
+        if (value == 3){
+            dragonHeart.setEffect(getGoldenDropShadow());
+        }
+        else
+            dragonHeart.setEffect(dropShadow);
+        dragonHeart.setOnMouseEntered(event -> dragonHeart.setEffect(glow));
+        dragonHeart.setOnMouseExited(event -> {
+            //phoenix.setEffect(null);
+            dragonHeart.setEffect(dropShadow);
+            if (value == 3){
+                dragonHeart.setEffect(getGoldenDropShadow());
+            }
+        });
+    }
+
     public void initializeDragons(String[] paths) {
         dragon1 = createDragon(paths[0], 197, 484);
         dragon2 = createDragon(paths[1], 697, 221);
@@ -92,8 +161,11 @@ public class RedScene extends RealmScene {
  
          // Add glow effect on hover
          Glow glow = new Glow(0.7);
-         
-         dragon1.setEffect(dropShadow);
+
+         if (canMakeMove1)
+             dragon1.setEffect(getGoldenDropShadow());
+         else
+            dragon1.setEffect(dropShadow);
          dragon1.setOnMouseEntered(event -> dragon1.setEffect(glow));
          dragon1.setOnMouseExited(event -> { 
             //phoenix.setEffect(null);
@@ -103,7 +175,10 @@ public class RedScene extends RealmScene {
             }
         });
 
-         dragon2.setEffect(dropShadow);
+        if (canMakeMove2)
+            dragon2.setEffect(getGoldenDropShadow());
+        else
+            dragon2.setEffect(dropShadow);
          dragon2.setOnMouseEntered(event -> dragon2.setEffect(glow));
          dragon2.setOnMouseExited(event -> { 
             //phoenix.setEffect(null);
@@ -111,8 +186,12 @@ public class RedScene extends RealmScene {
             if (canMakeMove2){
                 dragon2.setEffect(getGoldenDropShadow());
             }
-        });         
-         dragon3.setEffect(dropShadow);
+        });
+
+        if (canMakeMove3)
+            dragon3.setEffect(getGoldenDropShadow());
+        else
+            dragon3.setEffect(dropShadow);
          dragon3.setOnMouseEntered(event -> dragon3.setEffect(glow));
          dragon3.setOnMouseExited(event -> { 
             //phoenix.setEffect(null);
@@ -122,12 +201,16 @@ public class RedScene extends RealmScene {
             }
         });
 
+        if (canMakeMove4)
+            dragon4.setEffect(getGoldenDropShadow());
+        else
+            dragon4.setEffect(dropShadow);
          dragon4.setEffect(dropShadow);
          dragon4.setOnMouseEntered(event -> dragon4.setEffect(glow));
          dragon4.setOnMouseExited(event -> { 
             //phoenix.setEffect(null);
             dragon4.setEffect(dropShadow);
-            if (canMakeMove3){
+            if (canMakeMove4){
                 dragon4.setEffect(getGoldenDropShadow());
             }
         });
