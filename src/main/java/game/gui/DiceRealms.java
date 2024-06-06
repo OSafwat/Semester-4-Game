@@ -229,27 +229,73 @@ public class DiceRealms extends Application {
         dropShadow.setRadius(20);
         dropShadow.setSpread(0.5);
 
+        Move [] moves;
 
-        if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
-            sceneController.greenScene.getGuardian().setEffect(dropShadow); 
-            sceneController.greenScene.setCanMakeMove(true);
+        try{
+            moves = guiGameController.getAllPossibleMovesForDiceSet(player, diceSet);   
+        }catch(Exception e){
+            return;
         }
-        else sceneController.greenScene.setCanMakeMove(false);
+        System.out.println(moves.length+"<---heree");
+        boolean [] flags = new boolean[5];
 
-        
-        if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
-            sceneController.blueScene.getHydra().setEffect(dropShadow); 
-            sceneController.blueScene.setCanMakeMove(true);
+        for (Move move : moves) {
+            System.out.println(move.getDice().getRealm());
+            switch(move.getDice().getRealm()){
+                case RED:
+                    
+
+                case GREEN: 
+                    sceneController.greenScene.getGuardian().setEffect(dropShadow); 
+                    sceneController.greenScene.setCanMakeMove(true);
+                    flags[1] =true;
+                    System.out.println("el mafrood a print");
+                    break;
+                
+                case BLUE:
+                    sceneController.blueScene.getHydra().setEffect(dropShadow); 
+                    sceneController.blueScene.setCanMakeMove(true);
+                    flags[2] =true;
+                    break;
+                case MAGENTA: 
+                    sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
+                    sceneController.magentaScene.setCanMakeMove(true);
+                    flags[3] =true;
+                    break;
+                case YELLOW:
+                    sceneController.yellowScene.getLion().setEffect(dropShadow); 
+                    sceneController.yellowScene.setCanMakeMove(true);
+                    flags[4] =true;
+                    break;
+            }
+            
         }
-        else sceneController.blueScene.setCanMakeMove(false);
+        System.out.println(flags[1]);
+        System.out.println(flags[3]);
+        sceneController.magentaScene.setCanMakeMove(flags[3]);
+        sceneController.greenScene.setCanMakeMove(flags[1]);
+
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
+        //     sceneController.greenScene.getGuardian().setEffect(dropShadow); 
+        //     sceneController.greenScene.setCanMakeMove(true);
+        // }
+        // else sceneController.greenScene.setCanMakeMove(false);
+
+
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
+        //     sceneController.blueScene.getHydra().setEffect(dropShadow); 
+        //     sceneController.blueScene.setCanMakeMove(true);
+        // }
+        // else sceneController.blueScene.setCanMakeMove(false);
         
-        if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0) {
-            sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
-            sceneController.magentaScene.setCanMakeMove(true);
-        }
-        else sceneController.magentaScene.setCanMakeMove(false);
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0) {
+        //     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
+        //     sceneController.magentaScene.setCanMakeMove(true);
+        // }
+        // else sceneController.magentaScene.setCanMakeMove(false);
     }
     public void initEventListeners() {
+        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
         sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->  {System.out.println("LeftGrimoire clicked"); openLeftGrimoire();});  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
@@ -1120,8 +1166,7 @@ public class DiceRealms extends Application {
             }
         }
         sceneController.boardScene.makeboardScene(getDiceGIFs());
-        System.out.println("a7a");
-        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAllDice());
+        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         new Thread(new Runnable() {
             @Override
