@@ -131,8 +131,32 @@ public class BoardScene{
         
         rollDice = new Button();
         rollDice.setText("Roll Dice");
-        rollDice.setLayoutX( (1148 + 884) /2);
-        rollDice.setLayoutY(439 - 187);
+        rollDice.setPrefWidth(290);
+        rollDice.setLayoutX( 865);
+        rollDice.setLayoutY(509);
+        rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 10px; ");
+
+        // Create a shadow effect
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(5.0);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setColor(Color.GRAY);
+
+        // Apply the shadow effect to the button
+        rollDice.setEffect(shadow);
+
+        // Add glow effect on hover
+        rollDice.setOnMouseEntered(e -> {
+            rollDice.setEffect(new Glow(0.8));
+            rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 46px; -fx-font-weight: bold; -fx-border-color: darkblue; -fx-border-width: 2px;");
+        });
+
+        rollDice.setOnMouseExited(e -> {
+            rollDice.setEffect(shadow);
+            rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 26px; -fx-font-weight: bold;");
+        });
+
 
         timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
         timeWarp.setLayoutX(1221);
@@ -144,8 +168,8 @@ public class BoardScene{
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
-        leftGrimoire.setLayoutX(182);
-        leftGrimoire.setLayoutY(143);
+        leftGrimoire.setLayoutX(41);
+        leftGrimoire.setLayoutY(33);
            DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(10);
         dropShadow.setOffsetX(5);
