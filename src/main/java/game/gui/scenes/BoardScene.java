@@ -30,7 +30,7 @@ public class BoardScene{
     ImageView arcaneDice;
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
-    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); ;
+    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/blue grimoire.png"))); ;
     ImageView player1TimeWarpButton;
     ImageView player1ArcaneBoostButton;
     ImageView player2TimeWarpButton;

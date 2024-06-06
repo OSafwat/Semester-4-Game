@@ -320,7 +320,7 @@ public class DiceRealms extends Application {
     public void initEventListeners() {
         handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
-        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->  {System.out.println("LeftGrimoire clicked"); openLeftGrimoire();});  
+        sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire());  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
