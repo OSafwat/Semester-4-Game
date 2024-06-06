@@ -9,9 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
-public class EndScene extends RealmScene {
+public class EndScene {
     private AnchorPane root;
-    public void createEndScene() {
+    public void createEndScene(Player p1, Player p2) {
         root =new AnchorPane();
         ImageView imageView =  new ImageView(new Image(getClass().getResourceAsStream("/images/EndBg.jpg")));
         imageView.setFitWidth(607);
@@ -29,7 +29,7 @@ public class EndScene extends RealmScene {
         root.getChildren().add(exitButton);
 
         Label winnerLabel = new Label();
-       // String winner = String winnerPlayer( p1, p2);
+        String winner = String winnerPlayer( p1, p2);
         winnerLabel.setText(winner);
         winnerLabel.setLayoutX(192);
         winnerLabel.setLayoutY(194);
@@ -60,7 +60,7 @@ public class EndScene extends RealmScene {
         root.getChildren().add(scoreLabel);
 
         Label scoreValueLabel = new Label();
-        int score = winnerPlayerScore(Player p1, Player p2);
+        int score = winnerPlayerScore(p1, p2);
         String scoreStr =""+score;
         scoreValueLabel.setText(scoreStr);
         scoreValueLabel.setLayoutX(332);
@@ -72,8 +72,8 @@ public class EndScene extends RealmScene {
     }
 
     public static  String winnerPlayer(Player p1, Player p2){
-        //int s1=p1.getscoresheet().getgamescore().gettotalscore();
-        //int s2=p2.getscoresheet().getgamescore().gettotalscore();
+        int s1=p1.getScoreSheet().getGscore().gettotalscore();
+        int s2=p2.getscoresheet().getgamescore().gettotalscore();
         if (s1>s2)
             return p1.getName();
         return p2.getName();
@@ -81,8 +81,8 @@ public class EndScene extends RealmScene {
 
     }
     public static  int winnerPlayerScore(Player p1, Player p2){
-        //int s1=p1.getscoresheet().getgamescore().gettotalscore();
-        //int s2=p2.getscoresheet().getgamescore().gettotalscore();
+        int s1=p1.getscoresheet().getgamescore().gettotalscore();
+        int s2=p2.getscoresheet().getgamescore().gettotalscore();
         if (s1>s2)
             return s1;
         return s2;

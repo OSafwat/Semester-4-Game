@@ -1,8 +1,6 @@
 package game.engine;
 
-import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
-import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
 import game.creatures.greenclasses.Gaia;
@@ -37,19 +35,21 @@ public class GUIGameController extends CLIGameController {
         currentPlayer = getPlayer1();
         canUseArcaneBoost = false;
     }
+
     @Override
-    public void startGame() {}
+    public void startGame() {
+    }
 
     @Override
     public boolean makeMove(Player player, Move move) {
         try {
-            Dice diceToBeMovedWith= move.getDice();
+            Dice diceToBeMovedWith = move.getDice();
             if (move.getCreature() instanceof Gaia) {
                 GreenDice greenDice = (GreenDice) gameBoard.getGreen();
                 Dice arcanePrism = gameBoard.getWhite();
                 int greenVal = greenDice.getValue();
                 int whiteVal = arcanePrism.getValue();
-                diceToBeMovedWith = new GreenDice(greenVal+whiteVal);
+                diceToBeMovedWith = new GreenDice(greenVal + whiteVal);
             }
             boolean temp = player.getScoreSheet().getCreatureByColor(move.getDice().getRealm()).makeMove(diceToBeMovedWith);
             player.updateGameScore();
@@ -61,8 +61,7 @@ public class GUIGameController extends CLIGameController {
             player.updateAllPossibleMoves();
             exception = bException;
             return false;
-        }
-        catch (InvalidMoveException Im){
+        } catch (InvalidMoveException Im) {
             exception = Im;
             return false;
         }
@@ -95,35 +94,43 @@ public class GUIGameController extends CLIGameController {
     }
 
     public void setSelectedDragon(int dragon) {
-        ((RedDice)getAllDice()[0]).selectsDragon(dragon);
+        ((RedDice) getAllDice()[0]).selectsDragon(dragon);
     }
 
     public int getSelectedDragon() {
-        return ((RedDice)getAllDice()[0]).getDragonNumber()+1;
+        return ((RedDice) getAllDice()[0]).getDragonNumber() + 1;
     }
 
     public int getValue(String part) {
-        int dragonValue = ((RedDice)getAllDice()[0]).getDragonNumber();
-        Dragon dragon = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
+        int dragonValue = ((RedDice) getAllDice()[0]).getDragonNumber();
+        Dragon dragon = ((Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons()[dragonValue];
         int result = -1;
         switch (part) {
-            case "face": result = Objects.equals(dragon.getFace(), null) ? -1 : dragon.getFace(); break;
-            case "wings": result = Objects.equals(dragon.getWings(), null) ? -1 : dragon.getWings(); break;
-            case "tail": result = Objects.equals(dragon.getTail(), null) ? -1 : dragon.getTail(); break;
-            case "heart": result = Objects.equals(dragon.getHeart(), null) ? -1 : dragon.getHeart(); break;
-            default: ;
+            case "face":
+                result = Objects.equals(dragon.getFace(), null) ? -1 : dragon.getFace();
+                break;
+            case "wings":
+                result = Objects.equals(dragon.getWings(), null) ? -1 : dragon.getWings();
+                break;
+            case "tail":
+                result = Objects.equals(dragon.getTail(), null) ? -1 : dragon.getTail();
+                break;
+            case "heart":
+                result = Objects.equals(dragon.getHeart(), null) ? -1 : dragon.getHeart();
+                break;
+            default:
         }
         return result;
     }
 
     public Exception getException() {
         if (exception instanceof BonusException)
-            return new BonusException(((BonusException)exception).getRealmColor1(), ((BonusException)exception).getRealmColor2());
+            return new BonusException(((BonusException) exception).getRealmColor1(), ((BonusException) exception).getRealmColor2());
         else
             return new InvalidMoveException();
     }
 
-    public void incrementTurnCount () {
+    public void incrementTurnCount() {
         if (currentTurn == -1) {
             canUseArcaneBoost = true;
             switchPlayer();
@@ -135,7 +142,7 @@ public class GUIGameController extends CLIGameController {
         }
         canUseArcaneBoost = false;
         currentTurn++;
-        if (currentTurn % (maxTurns+1) == 0) {
+        if (currentTurn % (maxTurns + 1) == 0) {
             currentTurn = -1;
             currentPlayer = getPassivePlayer();
         }
@@ -159,9 +166,9 @@ public class GUIGameController extends CLIGameController {
                 y.append("wings-");
             if (Objects.equals(dragons[i].getTail(), null))
                 y.append("tail-");
-            if (Objects.equals(dragons[i].getHeart(),null))
+            if (Objects.equals(dragons[i].getHeart(), null))
                 y.append("heart-");
-            paths[i] = y.substring(0,y.length()-1) + ".png";
+            paths[i] = y.substring(0, y.length() - 1) + ".png";
         }
         return paths;
     }
@@ -169,8 +176,8 @@ public class GUIGameController extends CLIGameController {
     public int getGreenCount() {
         Move[] moves = currentPlayer.getAllPossibleMoves();
         int count = 0;
-        for (int i = 0; i < moves.length; i++) {
-            if (moves[i].getDice().getRealm().equals(RealmColor.GREEN))
+        for (Move move : moves) {
+            if (move.getDice().getRealm().equals(RealmColor.GREEN))
                 count++;
         }
         return count;
@@ -178,8 +185,8 @@ public class GUIGameController extends CLIGameController {
 
     public int getYellowCount() {
         Move[] moves = currentPlayer.getAllPossibleMoves();
-        for (int i = 0; i < moves.length; i++) {
-            if (moves[i].getDice().getRealm().equals(RealmColor.YELLOW))
+        for (Move move : moves) {
+            if (move.getDice().getRealm().equals(RealmColor.YELLOW))
                 return 1;
         }
         return 0;
@@ -187,15 +194,15 @@ public class GUIGameController extends CLIGameController {
 
     public int getMagentaCount() {
         Move[] moves = currentPlayer.getAllPossibleMoves();
-        for (int i = 0; i < moves.length; i++) {
-            if (moves[i].getDice().getRealm().equals(RealmColor.MAGENTA))
+        for (Move move : moves) {
+            if (move.getDice().getRealm().equals(RealmColor.MAGENTA))
                 return 1;
         }
         return 0;
     }
 
     public Pair<Integer, Integer> getHydraData() {
-        int killedHeads = ((Hydra)(currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.BLUE))).getHeadsKilled();
+        int killedHeads = ((Hydra) (currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.BLUE))).getHeadsKilled();
         int hydraNumber;
         if (killedHeads < 5)
             hydraNumber = 1;
@@ -203,63 +210,27 @@ public class GUIGameController extends CLIGameController {
             hydraNumber = 2;
         else
             hydraNumber = 0;
-        int requiredCount = killedHeads - 5 < 0 ? killedHeads : killedHeads-5;
+        int requiredCount = killedHeads - 5 < 0 ? killedHeads : killedHeads - 5;
         if (hydraNumber == 1)
             requiredCount = 5 - requiredCount;
         else
             requiredCount = 6 - requiredCount;
-        Pair<Integer, Integer> data = new Pair<>(hydraNumber, requiredCount);
-        return data;
+        return new Pair<>(hydraNumber, requiredCount);
     }
 
-    public boolean handleTimeWarps(Player player) throws ExhaustedResourceException, PlayerActionException{
+    public void handleTimeWarps(Player player) throws ExhaustedResourceException, PlayerActionException {
         ArrayList<TimeWarp> timeWarps = player.getTimeWarps();
         if (currentPlayer.getPlayerStatus().equals(PlayerStatus.PASSIVE))
             throw new PlayerActionException();
-        for (TimeWarp timeWarp: timeWarps) {
+        for (TimeWarp timeWarp : timeWarps) {
             if (timeWarp.getStatus() == RewardStates.ACQUIRED) {
                 timeWarp.setStatus(RewardStates.USED);
-                return true;
+                return;
             }
         }
         throw new ExhaustedResourceException("No available timewarps!");
     }
 
-    public boolean handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException{
-        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
-        if (!canUseArcaneBoost)
-            throw new PlayerActionException();
-        try {
-            Move[] moves = getAllPossibleMovesForDiceSet(player, getArcaneBoostDice(player));
-            if (moves.length == 0)
-                throw new NoAvailableMovesException("");
-        } catch (NoAvailableMovesException e) {
-            //handle no moves exception
-            return false;
-        }
-        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
-            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
-                arcaneBoost.setStatus(RewardStates.USED);
-                return true;
-            }
-        }
-        throw new ExhaustedResourceException("No available arcane boosts");
-    }
-
-    public void restoreArcaneBoost(Player player) {
-        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
-        for (int i =0 ; i < arcaneBoosts.size(); i++) {
-            if (arcaneBoosts.get(i).getStatus().equals(RewardStates.USED))
-            {
-                arcaneBoosts.get(i).setStatus(RewardStates.ACQUIRED);
-                return;
-            }
-        }
-    }
-
-    public void setArcaneBoostPlayer(Player player) {
-        arcaneBoostPlayer = player;
-    }
 
     public Player getArcaneBoostPlayer() {
         return arcaneBoostPlayer;
@@ -270,19 +241,19 @@ public class GUIGameController extends CLIGameController {
     }
 
     public ArrayList<Integer> getDragons(int value) {
-        Dragon[] dragons = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
+        Dragon[] dragons = ((Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
         ArrayList<Integer> indices = new ArrayList<>();
         for (int i = 0; i < dragons.length; i++) {
             if (Objects.equals(dragons[i].getFace(), value) || Objects.equals(dragons[i].getWings(), value) || Objects.equals(dragons[i].getTail(), value) || Objects.equals(dragons[i].getHeart(), value))
-                indices.add(i+1);
+                indices.add(i + 1);
         }
         return indices;
     }
 
     public int getDragonPartForThisDragonAndThisValue(int dragon, int diceValue) {
-        Dragon[] dragons = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
+        Dragon[] dragons = ((Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
         System.out.println("gui here, " + diceValue);
-        Dragon requiredDragon = dragons[dragon-1];
+        Dragon requiredDragon = dragons[dragon - 1];
         if (Objects.equals(requiredDragon.getFace(), diceValue))
             return 0;
         if (Objects.equals(requiredDragon.getWings(), diceValue))
@@ -293,22 +264,6 @@ public class GUIGameController extends CLIGameController {
             return 3;
         return -1;
     }
-
-//    public boolean makeArcaneMove(Player player, Move move) {
-//        makeMove(player, move);
-//    }
-
-    public Creature getCreature(Player player, RealmColor realmColor) {
-        return player.getScoreSheet().getCreatureByColor(realmColor);
-    }
-
-    public int getMaxTurns() {
-        return maxTurns;
-    }
-
-    public boolean makeSpecialMove(Dice dice, Player player) throws BonusException, InvalidMoveException {
-        Creature creature = player.getScoreSheet().getCreatureByRealm(dice);
-        creature.makeMove(dice);
-        return true;
-    }
 }
+
+
