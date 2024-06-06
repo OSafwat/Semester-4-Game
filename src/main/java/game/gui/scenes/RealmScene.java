@@ -5,6 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.InnerShadow;
@@ -107,5 +108,11 @@ public abstract class RealmScene {
     
     public ImageView getGoBackButton() {
         return goBackButton;
+    }
+    public void addToAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
+        root.getChildren().addAll(bg, textarea, textarea2,close);
+    }
+    public void removeFromAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
+        root.getChildren().removeAll(bg, textarea, textarea2,close);
     }
 }

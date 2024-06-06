@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -38,7 +39,7 @@ public class BoardScene{
     Button rollDice;
     ImageView timeWarp;
     Label infoLabel;
-    public AnchorPane anchorPane;
+    public AnchorPane root;
 
     public ImageView getPlayer1TimeWarpButton() {
         return player1TimeWarpButton;
@@ -61,8 +62,8 @@ public class BoardScene{
         infoLabel.getStyleClass().add("infoLabel");
 
         // Create the AnchorPane
-        anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(1920,1080 );
+        root = new AnchorPane();
+        root.setPrefSize(1920,1080 );
 
         // Main game board image
         ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board Pixelated3.png"))); 
@@ -130,8 +131,32 @@ public class BoardScene{
         
         rollDice = new Button();
         rollDice.setText("Roll Dice");
-        rollDice.setLayoutX( (1148 + 884) /2);
-        rollDice.setLayoutY(439 - 187);
+        rollDice.setPrefWidth(290);
+        rollDice.setLayoutX( 865);
+        rollDice.setLayoutY(509);
+        rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 10px; ");
+
+        // Create a shadow effect
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(5.0);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setColor(Color.GRAY);
+
+        // Apply the shadow effect to the button
+        rollDice.setEffect(shadow);
+
+        // Add glow effect on hover
+        rollDice.setOnMouseEntered(e -> {
+            rollDice.setEffect(new Glow(0.8));
+            rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 46px; -fx-font-weight: bold; -fx-border-color: darkblue; -fx-border-width: 2px;");
+        });
+
+        rollDice.setOnMouseExited(e -> {
+            rollDice.setEffect(shadow);
+            rollDice.setStyle("-fx-background-color: lightblue; -fx-text-fill: darkblue; -fx-font-size: 26px; -fx-font-weight: bold;");
+        });
+
 
         timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
         timeWarp.setLayoutX(1221);
@@ -143,8 +168,26 @@ public class BoardScene{
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
-        leftGrimoire.setLayoutX(496);
-        leftGrimoire.setLayoutY(154);
+        leftGrimoire.setLayoutX(41);
+        leftGrimoire.setLayoutY(33);
+           DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(10);
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setEffect(dropShadow);
+
+        // Add glow effect on hover
+        Glow glow = new Glow(0.7);
+        leftGrimoire.setOnMouseEntered(event -> leftGrimoire.setEffect(glow));
+        leftGrimoire.setOnMouseExited(event -> leftGrimoire.setEffect(dropShadow));
+
+        // Add a click effect (inner shadow)
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setRadius(40);
+        innerShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setOnMousePressed(event -> leftGrimoire.setEffect(innerShadow));
+        leftGrimoire.setOnMouseReleased(event -> leftGrimoire.setEffect(dropShadow));
 
         // // Grimoire image (right)
         //  rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
@@ -167,13 +210,13 @@ public class BoardScene{
         player2ArcaneBoostButton = new ImageView();
 
         // Add all ImageView nodes to the AnchorPane
-        anchorPane.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp, rollDice);
+        root.getChildren().addAll(mainBoard,leftGrimoire, wizardHat, infoLabel, timeWarp, rollDice);
         for (ImageView diceImage : imagePaths) {
-            anchorPane.getChildren().addAll(diceImage);
+            root.getChildren().addAll(diceImage);
         }
 
         // Create the scene
-        Scene scene = new Scene(anchorPane);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
     }
@@ -308,10 +351,10 @@ public class BoardScene{
     }
 
     public void addToAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
-        anchorPane.getChildren().addAll(bg, textarea, textarea2,close);
+        root.getChildren().addAll(bg, textarea, textarea2,close);
     }
     public void removeFromAnchorPane(ImageView bg, TextArea textarea,TextArea textarea2, ImageView close) {
-        anchorPane.getChildren().removeAll(bg, textarea, textarea2,close);
+        root.getChildren().removeAll(bg, textarea, textarea2,close);
     }
 
     public Button getRollDiceButton() {
