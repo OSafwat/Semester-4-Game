@@ -245,7 +245,7 @@ public class DiceRealms extends Application {
         boolean [] flags = new boolean[5];
 
         for (Move move : moves) {
-            System.out.println(move.getDice().getRealm());
+            System.out.println(move.getDice().getRealm()+" "+move.getDice().getValue());
             switch(move.getDice().getRealm()){
                 case RED:
                     ArrayList<Integer> indices = guiGameController.getDragons(move.getDice().getValue());
@@ -286,6 +286,7 @@ public class DiceRealms extends Application {
                     flags[2] =true;
                     break;
                 case MAGENTA: 
+                    System.out.println("leeeeeeh");
                     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
                     sceneController.magentaScene.setCanMakeMove(true);
                     flags[3] =true;
@@ -354,7 +355,7 @@ public class DiceRealms extends Application {
 
         sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
         sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.mainMenuScene.getMainMenuScene()));
-        sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
         Button[] returnToConfigSceneButtons = sceneController.getReturnToConfigSceneButtons();
         for (int i = 0; i < returnToConfigSceneButtons.length; i++) {

@@ -38,6 +38,9 @@ public class GreenScene extends RealmScene {
 
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
+        if (canMakeMove){
+            gaurdian.setEffect(getGoldenDropShadow());
+        }
         gaurdian.setOnMouseEntered(event -> gaurdian.setEffect(glow));
         gaurdian.setOnMouseExited(event ->{ 
             //phoenix.setEffect(null);

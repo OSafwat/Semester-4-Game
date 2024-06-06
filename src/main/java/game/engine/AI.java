@@ -271,4 +271,7 @@ public class AI extends Player implements Cloneable {
     public void sortMoves(Move[] moves) {
         Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
     }
+    public void sortDice(Dice[] dice){
+        Arrays.sort(dice, Comparator.comparingInt(Dice::getValue));
+    }
 }

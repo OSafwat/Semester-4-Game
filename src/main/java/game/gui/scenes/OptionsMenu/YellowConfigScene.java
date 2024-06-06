@@ -74,8 +74,6 @@ public class YellowConfigScene {
 
         mainArea.getChildren().addAll(saveButton, returnToConfigSceneButton);
 
-        returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
-
         root.getChildren().addAll(background, mainArea);
 
         yellowConfigScene = new Scene(root, 1920, 1080);
