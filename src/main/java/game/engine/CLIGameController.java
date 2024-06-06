@@ -422,10 +422,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         player1Score = 100;
                         player2Score = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         player1Score = 0;
                         player2Score = 100;
+                        break;
                     }
                 }
             }
@@ -583,10 +585,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         player1Score = 100;
                         aiPlayerScore = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         player1Score = 0;
                         aiPlayerScore = 100;
+                        break;
                     }
                 }
             }
@@ -646,10 +650,12 @@ public class CLIGameController {
                     if (player1Scores[i] > player2Scores[i]) {
                         aiPlayer1Score = 100;
                         aiPlayerScore2 = 0;
+                        break;
                     }
                     else if (player1Scores[i] < player2Scores[i]) {
                         aiPlayer1Score = 0;
                         aiPlayerScore2 = 100;
+                        break;
                     }
                 }
             }
@@ -693,7 +699,7 @@ public class CLIGameController {
                 System.out.println(i);
             }
             System.out.println();
-
+            System.out.println("player 1 ab count" +aiPlayer1.getArcaneBoostsNum());
 
             /*System.out.println(aiPlayer1.getArcaneBoostsNum());
             for(ArcaneBoost arcaneBoost: aiPlayer1.getArcaneBoosts()){          //problem here
@@ -1943,8 +1949,8 @@ public class CLIGameController {
 
     public int evaluateGreenDice(Player player, Dice dice){ //problem with adding the white dice
         int value=dice.getValue();
-        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 200;
-        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 150;
+        if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 600;
+        if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 550;
         /*if(value==2) return 12;
         if(value==3) return 8;
         if(value==4) return 6;
@@ -1956,7 +1962,7 @@ public class CLIGameController {
         if(value==10) return 12;
         if(value==11) return 12;
         if(value==12) return 12;*/
-        return 100;
+        return 400;
     }
     public boolean completeRowGreen(Player player,Dice dice){
         int value=dice.getValue();
@@ -2015,13 +2021,7 @@ public class CLIGameController {
 
     public int evaluateBlueDice(Player player,Dice dice){
         int value=dice.getValue();
-        Move[] moves=getPossibleMovesForADie(player, dice);
-        for(Move move:moves){
-            if(move.getDice().getValue()==value){
-                return 80;
-            }
-        }
-        return 0;
+        return 200;
     }
 
     public int evaluateMagentaDice(Player player,Dice dice){
@@ -2037,7 +2037,7 @@ public class CLIGameController {
 
     public int evaluateYellowDice(Player player, Dice dice){
        // return dice.getValue()+2;
-        return 0;
+        return 500;
     }
 
     public int evaluateWhiteDice(Player player, Dice dice){//problem with the green dice
@@ -2170,7 +2170,6 @@ public class CLIGameController {
                         if(redDiceDragonMoves.length!=0){
                             aiMove = new Move(redDice, aiMove.getCreature());
                             makeMoveAI(passivePlayer, aiMove);
-                            //ai.incrementTurnsPlayed();
                             redMoveDone=true;
                             break;
                         }
@@ -2408,7 +2407,7 @@ public class CLIGameController {
         Move redAiMove=null;
         Move bestWhiteMove=null;
         Move aiMove1=null;
-        if(turnCount!=3){
+        if(turnCount!=6){//getsettings()[1] doesnt work properly here idky
             boolean outerFlag=false;
             //outer loop for finding the smallest value in the dice
             for(int i=1;!outerFlag&&i<=6;i++){//break when you find a move
@@ -2496,25 +2495,25 @@ public class CLIGameController {
                 selectDice(aiMove1.getDice(), player);
                 return true;
             }
+            if(canWhite){
+                testingWhite.add(turnCount);
+                ai.incrementTurnsPlayed();
+                makeMoveAI(player, bestWhiteMove);
+                selectDice(new ArcanePrism(bestWhiteMove.getDice().getValue()), player);
+                return true;
+            }
             if(canMagenta){
                 testingMagenta.add(turnCount);
                 ai.incrementTurnsPlayed();
                 makeMoveAI(player, aiMove1);
                 selectDice(aiMove1.getDice(), player);
                 return true;
-            }
+                }
             if(canRed){
                 testingRed.add(turnCount);
                 ai.incrementTurnsPlayed();
                 makeMoveAI(player, redAiMove);
                 selectDice(redDice1, player);
-                return true;
-            }
-            if(canWhite){
-                testingWhite.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, bestWhiteMove);
-                selectDice(new ArcanePrism(bestWhiteMove.getDice().getValue()), player);
                 return true;
             }
            // return false;//WHY DOES THIS GIVE A MF ERROR BRUH LIKE WHY DOES IT NOT PLAY ANY FURTHER MOVES
@@ -2647,6 +2646,176 @@ public class CLIGameController {
             return false;
         }
         return true;
+    }
+
+
+
+
+
+
+
+
+
+
+        
+        
+    }
+    
+    
+    
+    //trying monte carlo please ignore this
+
+    /*class MCTS {
+        Node root;
+        
+        public MCTS() {
+            root = new Node();
+        }
+        
+        public Node UCT(Node node) {
+            Node bestNode = null;
+            double bestValue = Double.NEGATIVE_INFINITY;
+            for (Node child : node.children) {
+                double uctValue = child.wins / (double) child.visits +
+                    Math.sqrt(2 * Math.log(node.visits) / (double) child.visits);
+                if (uctValue > bestValue) {
+                    bestValue = uctValue;
+                    bestNode = child;
+                }
+            }
+            return bestNode;
+        }
+
+        public void expand(Node node) {
+            // Get all possible moves from the current state
+            List<Move> possibleMoves = node.getState().getPossibleMoves();
+
+            // For each possible move, create a new node and add it to the children of the current node
+            for (Move move : possibleMoves) {
+                GameBoard newState = node.getState().clone();
+                newState.makeMove(move);
+                Node child = new Node(newState);
+                child.setParent(node);
+                node.getChildren().add(child);
+            }
+        }
+
+        public double simulate(Node node) {
+        // Clone the current state
+            GameBoard simulatedState = node.getState().clone();
+
+            // Play out the game randomly until the end
+            while (!simulatedState.isGameOver()) {//switch the player here somewhere
+                List<Move> possibleMoves = simulatedState.getPossibleMoves();
+                Move randomMove = possibleMoves.get(new Random().nextInt(possibleMoves.size()));
+                simulatedState.makeMove(randomMove);
+        }
+
+        // Return the result of the game (1 for win, 0 for draw, -1 for loss)
+        return simulatedState.getResult();
+        }
+
+        public void backpropagate(Node node, double result) {
+            node.visits++;
+            node.wins += result;
+            if (node.parent != null) {
+                backpropagate(node.parent, result);
+            }
+        }
+
+        public void run() {
+            long endTime = System.currentTimeMillis() + 2000; // run for 2 seconds
+            while (System.currentTimeMillis() < endTime) {
+                Node node = UCT(root);
+                expand(node);
+                double result = simulate(node);
+                backpropagate(node, result);
+            }
+        }
+
+        public Move getBestMove() {
+            Node bestNode = null;
+            int bestVisits = -1;
+            for (Node child : root.children) {
+                if (child.visits > bestVisits) {
+                    bestVisits = child.visits;
+                    bestNode = child;
+                }
+            }
+            if (bestNode != null) {
+                return bestNode.getState().getMove();
+            }
+            return null;
         }
     }
 
+
+
+    class Node {
+        private GameBoard state;
+        Node parent;
+        List<Node> children;
+        int wins;
+        int visits;
+
+        public Node(){
+            this.state = new GameBoard();
+            this.children = new ArrayList<>();
+            this.wins = 0;
+            this.visits = 0;
+        }
+        public Node(GameBoard state) {
+            this.state = state;
+            this.children = new ArrayList<>();
+            this.wins = 0;
+            this.visits = 0;
+        }
+
+        public GameBoard getState() {
+            return state;
+        }
+
+        public void setState(GameBoard state) {
+            this.state = state;
+        }
+
+        public Node getParent() {
+            return parent;
+        }
+
+        public void setParent(Node parent) {
+            this.parent = parent;
+        }
+
+        public List<Node> getChildren() {
+            return children;
+        }
+
+        public void setChildren(List<Node> children) {
+            this.children = children;
+        }
+
+        public int getWins() {
+            return wins;
+        }
+
+        public void setWins(int wins) {
+            this.wins = wins;
+        }
+
+        public int getVisits() {
+            return visits;
+        }
+
+        public void setVisits(int visits) {
+            this.visits = visits;
+        }
+
+        public void incrementVisits() {
+            this.visits++;
+        }
+
+        public void addWin() {
+            this.wins++;
+        }
+    }*/
