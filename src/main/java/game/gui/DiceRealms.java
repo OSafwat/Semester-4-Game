@@ -337,11 +337,22 @@ public class DiceRealms extends Application {
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
 
-        /*sceneController.getOptionsButton().setOnMouseClicked((e -> {
-            Button button = sceneController.loadOptionsScene();
-            button.setOnMouseClicked(e1 -> sceneController.switchToMain());
-        }));
-         */
+        sceneController.getOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
+
+        sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
+
+        for (int i = 0; i < sceneController.getReturnToConfigSceneButtons().length; i++) {
+            sceneController.getReturnToConfigSceneButtons()[i].setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        }
+
+        sceneController.getRedConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.redConfigScene.getRedConfigScene()));
+        sceneController.getGreenConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.greenConfigScene.getGreenConfigScene()));
+        sceneController.getBlueConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.blueConfigScene.getBlueConfigScene()));
+        sceneController.getMagentaConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.magentaConfigScene.getMagentaConfigScene()));
+        sceneController.getYellowConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.yellowConfigScene.getYellowConfigScene()));
+        sceneController.getYellowMultiplierConfigButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.yellowMultipliersConfigScene.getYellowMultiplierConfigScene()));
+
         initDragonEventListeners();
         
 
