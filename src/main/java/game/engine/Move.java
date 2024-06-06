@@ -62,8 +62,4 @@ public class Move implements Comparable{
     public String toString(){
         return getDice().getRealm()+" "+getDice().getValue();
     }
-
-    public void sortMoves(Move[] moves) {
-        Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
-    }
 }

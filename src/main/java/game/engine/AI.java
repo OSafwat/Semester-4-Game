@@ -1,6 +1,8 @@
 package game.engine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import game.collectibles.ArcaneBoost;
@@ -291,5 +293,9 @@ public class AI extends Player implements Cloneable {
             }
         }
         return aimove;
+    }
+
+    public void sortMoves(Move[] moves) {
+        Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
     }
 }
