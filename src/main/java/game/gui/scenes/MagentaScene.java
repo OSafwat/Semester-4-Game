@@ -52,8 +52,8 @@ public class MagentaScene extends RealmScene {
         root.setPadding(javafx.geometry.Insets.EMPTY);
         super.createGoBackButton();
         super.createGrimoire();
-        root.getChildren().add(getGoBackButton());
         root.getChildren().add(getLeftGrimoire());
+        root.getChildren().add(getGoBackButton());
         super.createScene();
     }
 

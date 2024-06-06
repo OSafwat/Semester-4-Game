@@ -68,6 +68,8 @@ public class RedScene extends RealmScene {
 
         super.createGoBackButton();
         root.getChildren().add(getGoBackButton());
+        super.createGrimoire();
+        root.getChildren().add(getLeftGrimoire());
         initDragonPartSelectionMenu();
         // showDragonPartSelectionMenu();
         super.createScene();

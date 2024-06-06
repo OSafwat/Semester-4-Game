@@ -143,8 +143,8 @@ public class BoardScene{
         // leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png")));
         leftGrimoire.setFitHeight(200);
         leftGrimoire.setFitWidth(200);
-        leftGrimoire.setLayoutX(496);
-        leftGrimoire.setLayoutY(154);
+        leftGrimoire.setLayoutX(182);
+        leftGrimoire.setLayoutY(143);
 
         // // Grimoire image (right)
         //  rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
