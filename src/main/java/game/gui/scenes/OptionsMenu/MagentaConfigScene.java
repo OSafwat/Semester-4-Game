@@ -26,7 +26,7 @@ public class MagentaConfigScene {
     public MagentaConfigScene() {
         StackPane root = new StackPane();
 
-        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        String css = getClass().getResource("/ConfigMenu.css").toExternalForm();
         if (css != null) {
             root.getStylesheets().add(css);
         } else {

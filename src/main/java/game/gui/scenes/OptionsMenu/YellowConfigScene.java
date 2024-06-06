@@ -26,7 +26,7 @@ public class YellowConfigScene {
     public YellowConfigScene() {
         StackPane root = new StackPane();
 
-        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        String css = getClass().getResource("/ConfigMenu.css").toExternalForm();
         if (css != null) {
             root.getStylesheets().add(css);
         } else {
@@ -73,8 +73,6 @@ public class YellowConfigScene {
         returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
 
         mainArea.getChildren().addAll(saveButton, returnToConfigSceneButton);
-
-        returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
 
         root.getChildren().addAll(background, mainArea);
 
