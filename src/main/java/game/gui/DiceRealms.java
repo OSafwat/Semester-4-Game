@@ -243,7 +243,30 @@ public class DiceRealms extends Application {
             System.out.println(move.getDice().getRealm());
             switch(move.getDice().getRealm()){
                 case RED:
+                    ArrayList<Integer> indices = guiGameController.getDragons(move.getDice().getValue());
+                    if (indices.contains(1)){
+                        sceneController.getDragon1().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove1(true);
+                    }else sceneController.redScene.setCanMakeMove1(false);
+
+                    if (indices.contains(2)){
+                        sceneController.getDragon2().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove2(true);
+                    } else sceneController.redScene.setCanMakeMove2(true);
+
                     
+                    if (indices.contains(3)){
+                        sceneController.getDragon3().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove3(true);
+                    } else sceneController.redScene.setCanMakeMove3(true);
+
+                    
+                    if (indices.contains(4)){
+                        sceneController.getDragon4().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove4(true);
+                    } else sceneController.redScene.setCanMakeMove4(true);
+                    break;
+
 
                 case GREEN: 
                     sceneController.greenScene.getGuardian().setEffect(dropShadow); 

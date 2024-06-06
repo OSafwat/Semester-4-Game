@@ -267,4 +267,14 @@ public class GUIGameController extends CLIGameController {
     public int getMaxRounds() {
         return maxRounds;
     }
+
+    public ArrayList<Integer> getDragons(int value) {
+        Dragon[] dragons = ((Dragon)currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
+        ArrayList<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < dragons.length; i++) {
+            if (Objects.equals(dragons[i].getFace(), value) || Objects.equals(dragons[i].getWings(), value) || Objects.equals(dragons[i].getTail(), value) || Objects.equals(dragons[i].getHeart(), value))
+                indices.add(i+1);
+        }
+        return indices;
+    }
 }

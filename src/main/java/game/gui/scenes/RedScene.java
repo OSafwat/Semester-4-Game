@@ -37,6 +37,23 @@ public class RedScene extends RealmScene {
     public Button closeDragonPartSelectionMenuButton;
     Stage dragonPartSelectionMenuDialogueStage;
 
+    boolean canMakeMove1;
+    boolean canMakeMove2;
+    boolean canMakeMove3;
+    boolean canMakeMove4;
+    public void setCanMakeMove1(boolean canMakeMove){
+        this.canMakeMove1 = canMakeMove;
+    }
+    public void setCanMakeMove2(boolean canMakeMove){
+        this.canMakeMove2 = canMakeMove;
+    }
+    public void setCanMakeMove3(boolean canMakeMove){
+        this.canMakeMove3 = canMakeMove;
+    }
+    public void setCanMakeMove4(boolean canMakeMove){
+        this.canMakeMove4 = canMakeMove;
+    }
+
     @Override
     public void createScene() {
         root = new AnchorPane();
@@ -78,20 +95,42 @@ public class RedScene extends RealmScene {
          
          dragon1.setEffect(dropShadow);
          dragon1.setOnMouseEntered(event -> dragon1.setEffect(glow));
-         dragon1.setOnMouseExited(event -> dragon1.setEffect(dropShadow));
+         dragon1.setOnMouseExited(event -> { 
+            //phoenix.setEffect(null);
+            dragon1.setEffect(dropShadow);
+            if (canMakeMove1){
+                dragon1.setEffect(getGoldenDropShadow());
+            }
+        });
 
          dragon2.setEffect(dropShadow);
          dragon2.setOnMouseEntered(event -> dragon2.setEffect(glow));
-         dragon2.setOnMouseExited(event -> dragon2.setEffect(dropShadow));
-         
+         dragon2.setOnMouseExited(event -> { 
+            //phoenix.setEffect(null);
+            dragon2.setEffect(dropShadow);
+            if (canMakeMove2){
+                dragon2.setEffect(getGoldenDropShadow());
+            }
+        });         
          dragon3.setEffect(dropShadow);
          dragon3.setOnMouseEntered(event -> dragon3.setEffect(glow));
-         dragon3.setOnMouseExited(event -> dragon3.setEffect(dropShadow));
+         dragon3.setOnMouseExited(event -> { 
+            //phoenix.setEffect(null);
+            dragon3.setEffect(dropShadow);
+            if (canMakeMove3){
+                dragon3.setEffect(getGoldenDropShadow());
+            }
+        });
 
          dragon4.setEffect(dropShadow);
          dragon4.setOnMouseEntered(event -> dragon4.setEffect(glow));
-         dragon4.setOnMouseExited(event -> dragon4.setEffect(dropShadow));
-
+         dragon4.setOnMouseExited(event -> { 
+            //phoenix.setEffect(null);
+            dragon4.setEffect(dropShadow);
+            if (canMakeMove3){
+                dragon4.setEffect(getGoldenDropShadow());
+            }
+        });
         dragon1.setOnMouseClicked(event -> showDragonPartSelectionMenu());
         dragon2.setOnMouseClicked(event -> showDragonPartSelectionMenu());
         dragon3.setOnMouseClicked(event -> showDragonPartSelectionMenu());
