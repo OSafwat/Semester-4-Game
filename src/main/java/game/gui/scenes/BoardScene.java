@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -145,7 +146,24 @@ public class BoardScene{
         leftGrimoire.setFitWidth(200);
         leftGrimoire.setLayoutX(182);
         leftGrimoire.setLayoutY(143);
-        
+           DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(10);
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setEffect(dropShadow);
+
+        // Add glow effect on hover
+        Glow glow = new Glow(0.7);
+        leftGrimoire.setOnMouseEntered(event -> leftGrimoire.setEffect(glow));
+        leftGrimoire.setOnMouseExited(event -> leftGrimoire.setEffect(dropShadow));
+
+        // Add a click effect (inner shadow)
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setRadius(40);
+        innerShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setOnMousePressed(event -> leftGrimoire.setEffect(innerShadow));
+        leftGrimoire.setOnMouseReleased(event -> leftGrimoire.setEffect(dropShadow));
 
         // // Grimoire image (right)
         //  rightGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); 
