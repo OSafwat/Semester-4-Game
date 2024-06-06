@@ -689,17 +689,17 @@ public class DiceRealms extends Application {
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
             if (exception instanceof BonusException) {
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
                 canReroll = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE);
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
+                System.out.println("gotbonus");
                 new Thread(() -> {
-                    while (awaitingInput) {
-                        try {
-                            Thread.sleep(100); // Avoid busy-waiting
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(100); // Avoid busy-waiting
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }).start();
 
