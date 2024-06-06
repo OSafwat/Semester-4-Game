@@ -1,7 +1,14 @@
 package game.gui;
 
 import game.gui.scenes.*;
+import game.gui.scenes.OptionsMenu.BlueConfigScene;
+import game.gui.scenes.OptionsMenu.ConfigScene;
+import game.gui.scenes.OptionsMenu.GreenConfigScene;
+import game.gui.scenes.OptionsMenu.MagentaConfigScene;
 import game.gui.scenes.OptionsMenu.OptionsScene;
+import game.gui.scenes.OptionsMenu.RedConfigScene;
+import game.gui.scenes.OptionsMenu.YellowConfigScene;
+import game.gui.scenes.OptionsMenu.YellowMultipliersConfigScene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
@@ -17,6 +24,13 @@ public class SceneController {
     public BoardScene boardScene;
     public MainMenuScene mainMenuScene;
     public OptionsScene optionsScene;
+    public ConfigScene configScene;
+    public RedConfigScene redConfigScene;
+    public GreenConfigScene greenConfigScene;
+    public BlueConfigScene blueConfigScene;
+    public MagentaConfigScene magentaConfigScene;
+    public YellowConfigScene yellowConfigScene;
+    public YellowMultipliersConfigScene yellowMultipliersConfigScene;
 
     public SceneController () {
         redScene = new RedScene();
@@ -27,6 +41,13 @@ public class SceneController {
         boardScene = new BoardScene();
         mainMenuScene = new MainMenuScene();
         optionsScene = new OptionsScene();
+        configScene = new ConfigScene();
+        redConfigScene = new RedConfigScene();
+        greenConfigScene = new GreenConfigScene();
+        blueConfigScene = new BlueConfigScene();
+        magentaConfigScene = new MagentaConfigScene();
+        yellowConfigScene = new YellowConfigScene();
+        yellowMultipliersConfigScene = new YellowMultipliersConfigScene();
     }
 
     public ImageView getRedDice () {
@@ -217,12 +238,54 @@ public class SceneController {
         return boardScene.getRollDiceButton();
     }
 
-    public Button loadOptionsScene() {
-        //optionsScene.createOptionsScene(null);
-        return optionsScene.getReturnFromOptionsButton();
-    }
-
     public ImageView getTimeWarpButton() {
         return boardScene.getTimeWarp();
     }
+
+    public Button getReturnFromOptionsButton() {
+        return optionsScene.getReturnFromOptionsButton();
+    }
+
+    public Button getGameConfigurationButton() {
+        return optionsScene.getGameConfigButton();
+    }
+
+    public Button getRedConfigButton() {
+        return configScene.getRedConfigButton();
+    }
+
+    public Button getGreenConfigButton() {
+        return configScene.getGreenConfigButton();
+    }
+
+    public Button getBlueConfigButton() {
+        return configScene.getBlueConfigButton();
+    }
+
+    public Button getMagentaConfigButton() {
+        return configScene.getMagentaConfigButton();
+    }
+
+    public Button getYellowConfigButton() {
+        return configScene.getYellowConfigButton();
+    }
+
+    public Button getYellowMultiplierConfigButton() {
+        return configScene.getYellowMultiplierConfigButton();
+    }
+
+    // public Button[] getColorsConfigButton() {
+    //     Button[] configButtons = {configScene.getRedConfigButton(), configScene.getGreenConfigButton(), configScene.getBlueConfigButton(), configScene.getMagentaConfigButton(),
+    //         configScene.getYellowConfigButton(), configScene.getYellowMultiplierConfigButton()};
+
+    //     return configButtons;
+    // }
+
+    public Button[] getReturnToConfigSceneButtons() {
+        Button[] saveButtons = {redConfigScene.getReturnToConfigSceneButton(), greenConfigScene.getReturnToConfigSceneButton(), blueConfigScene.getReturnToConfigSceneButton(), magentaConfigScene.getReturnToConfigSceneButton(),
+            yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton()};
+
+        return saveButtons;
+    }
+
 }
