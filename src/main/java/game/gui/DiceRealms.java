@@ -353,7 +353,7 @@ public class DiceRealms extends Application {
 
         sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
         sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.mainMenuScene.getMainMenuScene()));
-        sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
         Button[] returnToConfigSceneButtons = sceneController.getReturnToConfigSceneButtons();
         for (int i = 0; i < returnToConfigSceneButtons.length; i++) {
