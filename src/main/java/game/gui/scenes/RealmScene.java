@@ -22,6 +22,20 @@ public abstract class RealmScene {
     public Scene getScene() {
         return mainScene;
     }
+    public DropShadow getGoldenDropShadow(){
+        Glow glow = new Glow(0.9);
+
+        // Create a drop shadow effect with a golden color
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.GOLD);
+        dropShadow.setRadius(20);
+        dropShadow.setSpread(0.5);
+
+                // Combine glow and drop shadow
+        // label.setEffect(glow);
+        glow.setInput(dropShadow);
+        return dropShadow;
+    }
 
     public void createGoBackButton() {
         goBackButton = new ImageView(new Image(getClass().getResourceAsStream("/images/BlueGoBackButton.png")));

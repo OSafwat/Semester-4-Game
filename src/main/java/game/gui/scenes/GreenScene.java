@@ -10,6 +10,10 @@ import javafx.scene.paint.Color;
 
 public class GreenScene extends RealmScene {
     ImageView gaurdian, backgroundView;
+    boolean canMakeMove;
+    public void setCanMakeMove(boolean canMakeMove){
+        this.canMakeMove = canMakeMove;
+    }
 
     @Override
     public void createScene() {
@@ -35,8 +39,14 @@ public class GreenScene extends RealmScene {
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
         gaurdian.setOnMouseEntered(event -> gaurdian.setEffect(glow));
-        gaurdian.setOnMouseExited(event -> gaurdian.setEffect(dropShadow));
-
+        gaurdian.setOnMouseExited(event ->{ 
+            //phoenix.setEffect(null);
+            gaurdian.setEffect(dropShadow);
+            if (canMakeMove){
+                gaurdian.setEffect(getGoldenDropShadow());
+            }
+        }
+    );
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);
