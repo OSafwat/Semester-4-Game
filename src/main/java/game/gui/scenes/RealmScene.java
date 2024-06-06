@@ -15,6 +15,7 @@ public abstract class RealmScene {
     public Scene mainScene;
     public AnchorPane root;
     public ImageView goBackButton;
+    public ImageView leftGrimoire;
     public void createScene() {
         mainScene = new Scene(root,1920,1080);
     };
@@ -22,6 +23,7 @@ public abstract class RealmScene {
     public Scene getScene() {
         return mainScene;
     }
+
     public DropShadow getGoldenDropShadow(){
         Glow glow = new Glow(0.9);
 
@@ -35,6 +37,36 @@ public abstract class RealmScene {
         // label.setEffect(glow);
         glow.setInput(dropShadow);
         return dropShadow;
+    }
+    
+    public ImageView getLeftGrimoire(){
+        return this.leftGrimoire;
+    }
+    public void createGrimoire(){
+        leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/blue grimoire.png"))); ;
+            leftGrimoire.setFitHeight(200);
+            leftGrimoire.setFitWidth(200);
+            leftGrimoire.setLayoutX(182);
+            leftGrimoire.setLayoutY(143);
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(10);
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setEffect(dropShadow);
+
+        // Add glow effect on hover
+        Glow glow = new Glow(0.7);
+        leftGrimoire.setOnMouseEntered(event -> leftGrimoire.setEffect(glow));
+        leftGrimoire.setOnMouseExited(event -> leftGrimoire.setEffect(dropShadow));
+
+        // Add a click effect (inner shadow)
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setRadius(40);
+        innerShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
+        leftGrimoire.setOnMousePressed(event -> leftGrimoire.setEffect(innerShadow));
+        leftGrimoire.setOnMouseReleased(event -> leftGrimoire.setEffect(dropShadow));
     }
 
     public void createGoBackButton() {
@@ -72,6 +104,7 @@ public abstract class RealmScene {
         goBackButton.setOnMouseReleased(event -> goBackButton.setEffect(dropShadow));
     }
 
+    
     public ImageView getGoBackButton() {
         return goBackButton;
     }

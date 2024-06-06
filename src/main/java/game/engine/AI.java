@@ -1,12 +1,21 @@
 package game.engine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
+import game.dice.ArcanePrism;
+import game.dice.BlueDice;
 import game.dice.Dice;
+import game.dice.GreenDice;
+import game.dice.MagentaDice;
+import game.dice.RedDice;
+import game.dice.YellowDice;
 import game.engine.enums.RealmColor;
+import game.exceptions.InvalidMoveException;
 
 /*IDEAS:-
  *  - EVALUATION:-
@@ -168,27 +177,125 @@ public class AI extends Player implements Cloneable {
 
     //actual ai stuff
 
-    public Move decideNextMove(Move[] moves) {//2nd lowest move
 
-        Move bestMove = null;
-        int bestScore = Integer.MIN_VALUE;
-        for (Move move : moves) {
-            int score = evaluateMove(move);
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
+    //rule-based
+    public Move pickBestMove(AI ai,Move[] moveSet,int round,int turn){
+        if(round == 1){
+            if(turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn ==2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
             }
         }
-        return bestMove;
+        else if(round == 2){
+            if(turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 3){
+            if (turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 4){
+            if(turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 5){
+            if(turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round ==6){
+            if(turn == 1){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 2){
+                return pickLowestMove(ai, moveSet);
+            }
+            else if(turn == 3){
+
+            }
+        }
+        return null;
+    }
+    public Move pickLowestMove(AI ai,Move[] moveSet){//make it return a dice array thats like everything but the max move and the one just behind it
+        Move aimove=null;
+        int min=Integer.MAX_VALUE;
+        boolean foundRed=true;
+        boolean foundMove=false;
+        for(Move move:moveSet){
+            if(foundMove) break;
+
+            Dice dice=move.getDice();
+            int diceValue=move.getDice().getValue();
+            if(diceValue<min){
+                min=diceValue;
+                //please fix this safwat PLEASE
+                if(dice instanceof RedDice){
+                    RedDice redDice = new RedDice(diceValue);
+                    Move redMove=new Move(redDice, move.getCreature());
+                    for (int i = 1; i<= 4; i++) {
+                        redDice.selectsDragon(i);
+
+                        try {
+                            if(move.getCreature().checkMove(redDice)){
+                                foundRed=true;
+                                break;
+                            }
+                        } catch (InvalidMoveException e) {
+                            System.out.println("im losing my fucking mind");
+                            e.printStackTrace();
+                        }                    
+                    }
+                    aimove=redMove;
+                }
+                else if(dice instanceof ArcanePrism){
+                    //for loop to iterate over all the diff dice
+                    //move=new Move(dice.)
+                    foundMove=true;
+                    break;
+                }
+                else if(dice instanceof GreenDice || dice instanceof BlueDice || dice instanceof MagentaDice || dice instanceof YellowDice){
+                    aimove=new Move(dice,move.getCreature());
+                    foundMove=true;
+                    break;
+                }
+            }
+        }
+        return aimove;
     }
 
-    int evaluateMove(Move move) {
-        int score=this.getGameScore().getTotalScore();
-
-
-
-
-
-        return score;
+    public void sortMoves(Move[] moves) {
+        Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
     }
 }

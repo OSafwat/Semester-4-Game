@@ -30,7 +30,7 @@ public class BoardScene{
     ImageView arcaneDice;
     ImageView wizardHat;    // will be used to switch to information menu or to display information popup
     ImageView rightGrimoire;    //will be used to diplay the scoresheets
-    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/purple grimoire.png"))); ;
+    ImageView leftGrimoire = new ImageView(new Image(getClass().getResourceAsStream("/images/blue grimoire.png"))); ;
     ImageView player1TimeWarpButton;
     ImageView player1ArcaneBoostButton;
     ImageView player2TimeWarpButton;
@@ -289,11 +289,13 @@ public class BoardScene{
     }
 
     public Scene getBoardScene(int currentRound, int currentTurn, String playerName) {
-        if (currentTurn != -1)
-            infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
-        else 
+        if (currentTurn == -1)
             infoLabel.setText("The current round is: Forgotten Round"+"       The current Passive player is: "+playerName);
-            
+        else if (currentTurn == -2)
+            infoLabel.setText("The current round is: Arcane Boost"+"       The current Arcane Player is: " +playerName);
+        else
+            infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
+        System.out.println(currentTurn);
         return boardScene;
     }
 
