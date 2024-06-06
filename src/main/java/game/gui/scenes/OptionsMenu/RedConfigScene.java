@@ -73,7 +73,7 @@ public class RedConfigScene {
         saveButton = new Button("Save Configuration");
         saveButton.setOnAction(e -> saveProperties());
 
-        mainArea.getChildren().addAll(hbox, saveButton);
+        mainArea.getChildren().addAll(hbox, saveButton, returnToConfigSceneButton);
 
         return new Scene(root, 1920, 1080);
     }

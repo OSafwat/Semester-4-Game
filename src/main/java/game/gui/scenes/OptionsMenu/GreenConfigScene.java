@@ -79,7 +79,7 @@ public class GreenConfigScene {
         saveButton = new Button("Save Configuration");
         saveButton.setOnAction(e -> saveProperties());
 
-        mainArea.getChildren().add(saveButton);
+        mainArea.getChildren().addAll(saveButton, returnToConfigSceneButton);
 
         return new Scene(root, 1920, 1080);
     }
