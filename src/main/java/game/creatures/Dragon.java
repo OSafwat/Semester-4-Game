@@ -515,7 +515,7 @@ public class Dragon extends Creature {
     }
 
     public Integer getBestDragon(int value) {
-        for (int i = 3; i >= 0; i++) {
+        for (int i = 3; i >= 0; i--) {
             Dragon dragon = dragons[i];
             if (Objects.equals(dragon.face, value) || Objects.equals(dragon.tail, value) || Objects.equals(dragon.wings, value) || Objects.equals(dragon.heart, value))
                 return i;
