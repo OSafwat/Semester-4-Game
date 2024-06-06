@@ -27,10 +27,100 @@ public class Lion extends Creature {
     private int score;
     private String scoresheet;
     private int elementalCrest;
-    private static final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
-    private static final String[] mappedRewardLocations = new String[11];
+    private final HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+    private final String[] mappedRewardLocations = new String[11];
     private final Properties properties;
     private final Properties multipliers;
+
+    public Lion clone() {
+        int[] lions = new int [this.lions.length];
+        int deadLions = this.deadLions;
+        int score = this.score;
+        String scoresheet = this.scoresheet;
+        int elementalCrest = this.elementalCrest;
+        HashMap<String, ArrayList<Integer>> rewardLocations = new HashMap<>();
+        String[] mappedRewardLocations = new String[11];
+
+        for (int i = 0; i < lions.length; i++)
+            lions[i] = this.lions[i];
+
+        for (String key: this.rewardLocations.keySet()) {
+            ArrayList<Integer> newArrayList;
+            if (!Objects.equals(rewardLocations.get(key), null))
+                newArrayList = new ArrayList<>(rewardLocations.get(key));
+            else
+                newArrayList = null;
+            rewardLocations.put(key, newArrayList);
+        }
+
+        for (int i = 0; i < 11; i++)
+            mappedRewardLocations[i] = this.mappedRewardLocations[i];
+
+        return new Lion(lions, deadLions, score, scoresheet, elementalCrest);
+    }
+
+    public Lion(int[] lions, int deadLions, int score, String scoresheet, int elementalCrest) {
+
+        this.lions = lions;
+        this.deadLions = deadLions;
+        this.score = score;
+        this.scoresheet = scoresheet;
+        this.elementalCrest = elementalCrest;
+        this.timeWarps = new ArrayList<>();
+        this.arcaneBoosts = new ArrayList<>();
+
+        properties = new Properties();
+        try {
+            File config = new File("src/main/resources/config/RadiantSvannaRewards.properties");
+            FileReader configReader = new FileReader(config);
+            properties.load(configReader);
+        } catch (IOException e) {
+            //smth wrong in the file crodie :3
+            properties.setProperty("hit1Reward", "null");
+            properties.setProperty("hit2Reward", "null");
+            properties.setProperty("hit3Reward", "TimeWarp");
+            properties.setProperty("hit4Reward", "null");
+            properties.setProperty("hit5Reward", "RedBonus");
+            properties.setProperty("hit6Reward", "ArcaneBoost");
+            properties.setProperty("hit7Reward", "null");
+            properties.setProperty("hit8Reward", "ElementalCrest");
+            properties.setProperty("hit9Reward", "null");
+            properties.setProperty("hit10Reward", "MagentaBonus");
+            properties.setProperty("hit11Reward", "null");
+        }
+        for(int i = 1; i <= 11; i++) {
+            if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "ArcaneBoost")){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                this.arcaneBoosts.add(ac);
+            }
+            if(Objects.equals(properties.getProperty("hit" + i + "Reward"), "TimeWarp")) {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                this.timeWarps.add(tw);
+            }
+        }
+
+        multipliers = new Properties();
+        try {
+            File config = new File("src/main/resources/config/RadiantSvannaMultipliers.properties");
+            FileReader configReader = new FileReader(config);
+            multipliers.load(configReader);
+        } catch (IOException e) {
+            //smth wrong in the multipliers file brodie :3
+            properties.setProperty("hit1Value", "1");
+            properties.setProperty("hit2Value", "1");
+            properties.setProperty("hit3Value", "1");
+            properties.setProperty("hit4Value", "2");
+            properties.setProperty("hit5Value", "1");
+            properties.setProperty("hit6Value", "1");
+            properties.setProperty("hit7Value", "2");
+            properties.setProperty("hit8Value", "1");
+            properties.setProperty("hit9Value", "2");
+            properties.setProperty("hit10Value", "1");
+            properties.setProperty("hit11Value", "3");
+        }
+
+        initScoreSheet();
+    }
 
     public Lion(){
         arcaneBoosts= new ArrayList<>();

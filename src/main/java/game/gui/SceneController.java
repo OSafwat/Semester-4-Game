@@ -1,8 +1,12 @@
 package game.gui;
 
 import game.gui.scenes.*;
+import game.gui.scenes.OptionsMenu.OptionsScene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.IOException;
 
 public class SceneController {
     public RedScene redScene;
@@ -12,6 +16,7 @@ public class SceneController {
     public YellowScene yellowScene;
     public BoardScene boardScene;
     public MainMenuScene mainMenuScene;
+    public OptionsScene optionsScene;
 
     public SceneController () {
         redScene = new RedScene();
@@ -21,6 +26,7 @@ public class SceneController {
         yellowScene = new YellowScene();
         boardScene = new BoardScene();
         mainMenuScene = new MainMenuScene();
+        optionsScene = new OptionsScene();
     }
 
     public ImageView getRedDice () {
@@ -209,5 +215,14 @@ public class SceneController {
 
     public Button getRollDiceButton() {
         return boardScene.getRollDiceButton();
+    }
+
+    public Button loadOptionsScene() {
+        optionsScene.createOptionsScene(null);
+        return optionsScene.getReturnFromOptionsButton();
+    }
+
+    public ImageView getTimeWarpButton() {
+        return boardScene.getTimeWarp();
     }
 }

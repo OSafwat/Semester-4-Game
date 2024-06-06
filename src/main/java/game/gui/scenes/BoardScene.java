@@ -1,10 +1,7 @@
 package game.gui.scenes;
 
 import java.util.ArrayList;
-import game.dice.Dice;
-import game.engine.enums.RealmColor;
-import game.gui.scenes.RedScene;
-import javafx.application.Application;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
@@ -19,11 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
+
 
 public class BoardScene{
 
@@ -42,7 +36,7 @@ public class BoardScene{
     ImageView player2TimeWarpButton;
     ImageView player2ArcaneBoostButton;
     Button rollDice;
-
+    ImageView timeWarp;
     Label infoLabel;
     public AnchorPane anchorPane;
 
@@ -71,7 +65,7 @@ public class BoardScene{
         anchorPane.setPrefSize(1920,1080 );
 
         // Main game board image
-        ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board.png"))); 
+        ImageView mainBoard = new ImageView(new Image(getClass().getResourceAsStream("/images/Game Board Pixelated3.png"))); 
         mainBoard.setFitHeight(1080);
         mainBoard.setFitWidth(1920);
         //mainBoard.setLayoutX(-3);
@@ -79,7 +73,9 @@ public class BoardScene{
         ArrayList<ImageView> imagePaths = new ArrayList<ImageView>();
         for (String imageString : dicePNGs) {
             ImageView temp;
-            boolean strikeThrough = imageString.contains("123");
+            boolean strikeThrough = imageString.contains(".png123");
+            if (imageString.contains(".gif"))
+                System.out.println(imageString);
             if (strikeThrough)
                 temp = new ImageView(new Image(getClass().getResourceAsStream(imageString.substring(0,imageString.length()-3))));
             else
@@ -137,8 +133,7 @@ public class BoardScene{
         rollDice.setLayoutX( (1148 + 884) /2);
         rollDice.setLayoutY(439 - 187);
 
-
-        ImageView timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
+        timeWarp = new ImageView(new Image(getClass().getResourceAsStream("/images/hourglass frame.png")));
         timeWarp.setLayoutX(1221);
         timeWarp.setLayoutY(145);
         timeWarp.setFitHeight(200);
@@ -181,6 +176,10 @@ public class BoardScene{
         Scene scene = new Scene(anchorPane);
         scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
         boardScene = scene;
+    }
+
+    public ImageView getTimeWarp() {
+        return timeWarp;
     }
 
     /*the following method takes a string array which represent the choosable dice correspondong to the white dice chosen by the useer in the board scene and 

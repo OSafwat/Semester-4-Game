@@ -50,3 +50,7 @@
 .slider {
     -fx-margin: 10px;
 }
+
+.vbox {
+    -fx-alignment: center;
+}

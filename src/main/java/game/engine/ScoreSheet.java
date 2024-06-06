@@ -27,6 +27,20 @@ public class ScoreSheet {
         gaia = new Gaia();
         gamescore = new GameScore();
     }
+
+    public ScoreSheet(Gaia gaia, Hydra hydra, Phoenix phoenix, Lion lion, Dragon dragon, GameScore gameScore) {
+        this.hydra = hydra.clone();
+        this.phoenix = phoenix.clone();
+        this.lion = lion.clone();
+        this.gaia = gaia.clone();
+        this.dragon = dragon.clone();
+        this.gamescore = gameScore.clone();
+    }
+
+    public ScoreSheet clone() {
+        return new ScoreSheet(this.gaia, this.hydra, this.phoenix, this.lion, this.dragon, this.gamescore);
+    }
+
     public int [] getScores(){
         int [] Scores = new int [5];
         Scores[0]= this.dragon.getScore();

@@ -34,6 +34,7 @@ public class DiceRealms extends Application {
     volatile boolean awaitingInput;
     boolean isArcaneBoostPower;
     boolean canReroll;
+    boolean isRoundRewardBonus;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -51,6 +52,7 @@ public class DiceRealms extends Application {
     public void setupGame() {
         primaryStage.setTitle("Dice Realms Game");
         isArcaneBoostPower = false;
+        isRoundRewardBonus = false;
         canReroll = false;
         wasEssenceBonus = 0;
         bonusRealmColor = RealmColor.PARENT;
@@ -231,11 +233,12 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
-        sceneController.getPlayer1TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
-        sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
-        
+
+        /*sceneController.getOptionsButton().setOnMouseClicked((e -> {
+            Button button = sceneController.loadOptionsScene();
+            button.setOnMouseClicked(e1 -> sceneController.switchToMain());
+        }));
+         */
         initDragonEventListeners();
         
 
@@ -331,9 +334,10 @@ public class DiceRealms extends Application {
             else if (!canReroll)
                 needToMakeMoveAlert();
             else {
-                handleDiceReroll();
+                handleDiceReroll(0);
             }
         });
+        sceneController.getTimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getCurrentPlayer()));
     }
 
     public void handleArcanePrism() {
@@ -352,6 +356,7 @@ public class DiceRealms extends Application {
                 dicePaths.add(string);
         }
         Dialog whiteDialog = sceneController.boardScene.handleWhiteDice(dicePaths);
+        whiteDialog.setResizable(true);
         String result =(String) whiteDialog.showAndWait().get();
         if (result.equals("CLOSED"))
             return;
@@ -461,22 +466,73 @@ public class DiceRealms extends Application {
         Player player = guiGameController.getCurrentPlayer();
         if (isArcaneBoostPower)
             player = arcanePlayer;
-        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
-        System.out.println(Arrays.toString(guiGameController.getAvailableDice()));
-        loadDiceBoard();
         System.out.println(player.getScoreSheet().toString());
+
         if (saveOldWhiteValue != -1) {
             guiGameController.getAllDice()[5].setValue(saveOldWhiteValue);
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
         }
+        
+        if (indicator == 0) {
+            canReroll = true;
+            if (arcaneValue != -1){
+                arcaneValue = -1;
+                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
+            }
+            else {
+                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
+                if (isForgotten && moveDone) {
+                    isForgotten = false;
+                    guiGameController.getGameBoard().resetAllDice();
+                    canReroll = false;
+                    int oldRoundCount = guiGameController.getCurrentRound();
+                    int oldTurnCount = guiGameController.getCurrentTurn();
+                    guiGameController.incrementTurnCount();
+                    loadDiceBoard();
+                    int newRoundCount = guiGameController.getCurrentRound();
+                    if (oldRoundCount != newRoundCount) {
+                        handleReward(newRoundCount);
+                    }
+                    else if (oldTurnCount == -1) {
+                        handleReward(oldRoundCount);
+                    }
+                    return true;
+                }
+            }
+            loadDiceBoard();
+        } else
+            canReroll = true;
+
+        if (isForgotten && moveDone) {
+            isForgotten = false;
+            guiGameController.getGameBoard().resetAllDice();
+            guiGameController.rollDice();
+            canReroll = false;
+            int oldRoundCount = guiGameController.getCurrentRound();
+            int oldTurnCount = guiGameController.getCurrentTurn();
+            guiGameController.incrementTurnCount();
+            loadDiceBoard();
+            int newRoundCount = guiGameController.getCurrentRound();
+            if (oldRoundCount != newRoundCount) {
+                handleReward(newRoundCount);
+            }
+            else if (oldTurnCount == -1) {
+                handleReward(oldRoundCount);
+            }
+            else
+                loadDiceBoard();
+            return true;
+        }
+
+        loadDiceBoard();
         if (!moveDone) {
             //if we enter here, that means that some sort of exception has been caught
             //either a bonus exception or an invalid move exception
             Exception exception = guiGameController.getException();
             arcaneValue = -1;
             if (exception instanceof BonusException) {
-                canReroll = true;
+                canReroll = guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE);
                 isArcaneBoostPower = false;
                 //put in the bonus make move logic
                 handleBonus(((BonusException)exception).getRealmColor1());
@@ -503,7 +559,7 @@ public class DiceRealms extends Application {
                         }
                     }).start();
                 }
-
+                
                 return true;
             }
             else {
@@ -525,31 +581,16 @@ public class DiceRealms extends Application {
             bonusValue = -1;
             wasEssenceBonus = 0;
             bonusRealmColor = RealmColor.PARENT;
+            if (isRoundRewardBonus) {
+                isRoundRewardBonus = false;
+                canReroll = false;
+            }
+            else 
+                canReroll = true;
             loadDiceBoard();
             return true;
         }
-        if (indicator == 0) {
-            canReroll = true;
-            if (arcaneValue != -1){
-                arcaneValue = -1;
-                guiGameController.selectDice(guiGameController.getAllDice()[5], guiGameController.getCurrentPlayer());
-            }
-            else
-                guiGameController.selectDice(currDice, guiGameController.getCurrentPlayer());
-                if (isForgotten) {
-                    isForgotten = false;
-                    guiGameController.getGameBoard().resetAllDice();
-                    canReroll = false;
-                    guiGameController.rollDice();
-                    guiGameController.incrementTurnCount();
-                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
-                    loadDiceBoard();
-                    initDiceAndRerollButtonEventListeners();
-                    handleReward(guiGameController.getCurrentRound());
-                    return true;
-                }
-            loadDiceBoard();
-        }
+            
         return true;
     }
 
@@ -559,10 +600,14 @@ public class DiceRealms extends Application {
         initDiceAndRerollButtonEventListeners();
     }
     private void handleReward(int newRoundCount) {
+        loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[newRoundCount-1];
+        System.out.println(Arrays.toString(rewards));
         System.out.println(currentReward);
+        System.out.println(newRoundCount);
         if (currentReward.toLowerCase().contains("bonus")) {
+            isRoundRewardBonus = true; 
             if (currentReward.toLowerCase().contains("red"))
                 handleBonus(RealmColor.RED);
             else if (currentReward.toLowerCase().contains("green"))
@@ -590,6 +635,7 @@ public class DiceRealms extends Application {
     }
     public void illegalMoveAlert(){
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have made an Illegal Move");
         label.setStyle("-fx-font-size: 30px;");
@@ -600,6 +646,7 @@ public class DiceRealms extends Application {
 
     public void needToMakeMoveAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have not played a move yet!");
         label.setStyle("-fx-font-size: 30px;");
@@ -610,6 +657,7 @@ public class DiceRealms extends Application {
 
     public void needToRerollDiceAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You have already played a move, and you must reroll your dice!");
         label.setStyle("-fx-font-size: 30px;");
@@ -620,6 +668,7 @@ public class DiceRealms extends Application {
 
     public void passivePlayerCannotRerollAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
         Label label = new Label("You are the passive player, and so cannot reroll the dice!");
         label.setStyle("-fx-font-size: 30px;");
@@ -630,6 +679,7 @@ public class DiceRealms extends Application {
 
     public void unavailableDiceAlert() {
         Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
         alert.setTitle("Alert");
 
         Label label = new Label("This dice is not available, because you have either played with it before, or it is currently in the forgotten realm!");
@@ -639,12 +689,38 @@ public class DiceRealms extends Application {
         alert.showAndWait();
     }
 
+    public void noAvailableTimeWarpsAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
+        alert.setTitle("Alert");
+
+        Label label = new Label("You cannot use a Time Warp right now because you do not have any acquired Time Warps!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void passivePlayerUsingTimeWarpAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
+        alert.setTitle("Alert");
+
+        Label label = new Label("You cannot use a Time Warp right now because you are the passive player!");
+        label.setStyle("-fx-font-size: 15px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
     public void handleBonus(RealmColor realmColor) {
+        canReroll = false;
         if (realmColor.equals(RealmColor.WHITE))
             wasEssenceBonus = 1;
         arcaneValue = -1;
         awaitingInput = true;
         Dialog<String> bonusDialog = new Dialog<>();
+        bonusDialog.setResizable(true);
         FlowPane buttonBox = new FlowPane(20,20);
         buttonBox.setPrefWrapLength(1200);
         if (realmColor.equals(RealmColor.WHITE)) {
@@ -730,8 +806,8 @@ public class DiceRealms extends Application {
         loadDiceBoard();
         String[] rewards = guiGameController.getRewards(guiGameController.getMaxRounds());
         String currentReward = rewards[0];
-        System.out.println(currentReward);
         if (currentReward.toLowerCase().contains("bonus")) {
+            isRoundRewardBonus = true;
             if (currentReward.toLowerCase().contains("red"))
                 handleBonus(RealmColor.RED);
             else if (currentReward.toLowerCase().contains("green"))
@@ -751,6 +827,7 @@ public class DiceRealms extends Application {
 
     public void handlePlayerNameInputs() {
         TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setResizable(true);
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 1's name");
@@ -764,6 +841,7 @@ public class DiceRealms extends Application {
             player1Name = handleNames("");
         }
         textInputDialog = new TextInputDialog();
+        textInputDialog.setResizable(true);
 
         textInputDialog.setTitle("Player Name Input");
         textInputDialog.setHeaderText("Please enter Player 2's name");
@@ -878,38 +956,39 @@ public class DiceRealms extends Application {
             default: scene = null;
         }
 
-        System.out.println(guiGameController.getHydraData());
-        System.out.println(sceneController.blueScene.getScene());
         primaryStage.setScene(scene);
     }
 
     public void timeWarpSequence(Player player) {
+        System.out.println("meow");
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
+        dialog.setResizable(true);
         Button accept = new Button();
         accept.setText("Yes");
         Button decline = new Button();
         decline.setText("No");
         accept.setOnMouseClicked(e -> dialog.setResult("YES"));
         decline.setOnMouseClicked(e -> dialog.setResult("NO"));
-        dialog.setContentText("Would you like to use one of your time warps?");
+        dialog.setTitle("Would you like to use one of your time warps?");
         FlowPane buttons = new FlowPane();
         buttons.getChildren().add(accept);
         buttons.getChildren().add(decline);
         dialog.getDialogPane().setContent(buttons);
-        boolean proceed = dialog.getResult().equals("Yes");
+        dialog.showAndWait();
+        boolean proceed = dialog.getResult().equals("YES");
         if (proceed) {
             try {
                 guiGameController.handleTimeWarps(player);
             } catch (ExhaustedResourceException e) {
-                //display error
+                noAvailableTimeWarpsAlert();
                 return;
             } catch (PlayerActionException e) {
-                //display error
+                passivePlayerUsingTimeWarpAlert();
                 return;
             }
-            handleDiceReroll();
+            handleDiceReroll(-1);
         }
     }
 
@@ -917,6 +996,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
+        dialog.setResizable(true);
         Button accept = new Button();
         accept.setText("Yes");
         Button decline = new Button();
@@ -951,21 +1031,32 @@ public class DiceRealms extends Application {
         }
     }
 
-    private void handleDiceReroll() {
+    private void handleDiceReroll(int indicator) {
         guiGameController.rollDice();
-        guiGameController.incrementTurnCount();
-        if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
-            handleForgottenTurn();
-            return;
-        }
-        canReroll = false;
-        try {
-            Move[] moves = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
-            if (moves.length == 0)
-                throw new NoAvailableMovesException();
-        }
-        catch (NoAvailableMovesException e) {
-            canReroll = true;
+        if (indicator != -1) {
+            int oldRoundCount = guiGameController.getCurrentRound();
+            int oldTurnCount = guiGameController.getCurrentTurn();
+            guiGameController.incrementTurnCount();
+            loadDiceBoard();
+            int newRoundCount = guiGameController.getCurrentRound();
+            if (oldRoundCount != newRoundCount) {
+                handleReward(newRoundCount);
+            } else if (oldTurnCount == -1) {
+                handleReward(oldRoundCount);
+            }
+            if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
+                isForgotten = true;
+                handleForgottenTurn();
+                return;
+            }
+            canReroll = false;
+            try {
+                Move[] moves = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
+                if (moves.length == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
         }
         sceneController.boardScene.makeboardScene(getDiceGIFs());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
