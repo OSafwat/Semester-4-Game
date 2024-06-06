@@ -39,6 +39,7 @@ public class DiceRealms extends Application {
     boolean isArcaneBoostPower;
     boolean canReroll;
     boolean isRoundRewardBonus;
+    boolean canTimeWarp;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -54,6 +55,7 @@ public class DiceRealms extends Application {
     }
 
     public void setupGame() {
+        canTimeWarp = true;
         primaryStage.setTitle("Dice Realms Game");
         isArcaneBoostPower = false;
         isRoundRewardBonus = false;
@@ -227,34 +229,25 @@ public class DiceRealms extends Application {
         dropShadow.setRadius(20);
         dropShadow.setSpread(0.5);
 
-        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[1])) {
-        //     System.out.println(tmove);
-        // }
+
         if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
             sceneController.greenScene.getGuardian().setEffect(dropShadow); 
             sceneController.greenScene.setCanMakeMove(true);
         }
         else sceneController.greenScene.setCanMakeMove(false);
 
-        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[2])) {
-        //     System.out.println(tmove);
-        // }
+        
         if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
             sceneController.blueScene.getHydra().setEffect(dropShadow); 
             sceneController.blueScene.setCanMakeMove(true);
         }
         else sceneController.blueScene.setCanMakeMove(false);
         
-        // for (Move tmove : guiGameController.getPossibleMovesForADie(player, diceSet[3])) {
-        //     System.out.println(tmove);
-        // }
-        if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0 ) {
+        if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0) {
             sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
             sceneController.magentaScene.setCanMakeMove(true);
         }
         else sceneController.magentaScene.setCanMakeMove(false);
-
-
     }
     public void initEventListeners() {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
@@ -508,6 +501,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             player = arcanePlayer;
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        canTimeWarp = !moveDone;
         System.out.println(player.getScoreSheet().toString());
 
         if (saveOldWhiteValue != -1) {
@@ -515,7 +509,7 @@ public class DiceRealms extends Application {
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
         }
         
-        if (indicator == 0) {
+        if (indicator == 0 && moveDone) {
             canReroll = true;
             if (arcaneValue != -1){
                 arcaneValue = -1;
@@ -530,6 +524,13 @@ public class DiceRealms extends Application {
                     int oldRoundCount = guiGameController.getCurrentRound();
                     int oldTurnCount = guiGameController.getCurrentTurn();
                     guiGameController.incrementTurnCount();
+                    try {
+                        int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                        if (value == 0)
+                            throw new NoAvailableMovesException();
+                    } catch (NoAvailableMovesException e) {
+                        canReroll = true;
+                    }
                     loadDiceBoard();
                     int newRoundCount = guiGameController.getCurrentRound();
                     if (oldRoundCount != newRoundCount) {
@@ -553,6 +554,13 @@ public class DiceRealms extends Application {
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
             guiGameController.incrementTurnCount();
+            try {
+                int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                if (value == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
             loadDiceBoard();
             int newRoundCount = guiGameController.getCurrentRound();
             if (oldRoundCount != newRoundCount) {
@@ -608,6 +616,7 @@ public class DiceRealms extends Application {
                     guiGameController.restoreArcaneBoost(arcanePlayer);
                 }
                 isArcaneBoostPower = false;
+                canReroll = false;
                 //put in a popup that tells the user that he has done an illegal move
                 illegalMoveAlert();
                 //logic here
@@ -1002,6 +1011,10 @@ public class DiceRealms extends Application {
 
     public void timeWarpSequence(Player player) {
         System.out.println("meow");
+        if (!canTimeWarp) {
+            noAvailableTimeWarpsAlert();
+            return;
+        }
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
@@ -1078,6 +1091,13 @@ public class DiceRealms extends Application {
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
             guiGameController.incrementTurnCount();
+            try {
+                int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                if (value == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
             loadDiceBoard();
             int newRoundCount = guiGameController.getCurrentRound();
             if (oldRoundCount != newRoundCount) {
