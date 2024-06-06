@@ -10,6 +10,10 @@ import javafx.scene.paint.Color;
 
 public class YellowScene extends RealmScene {
     ImageView lion, backgroundView;
+    boolean canMakeMove;
+    public void setCanMakeMove(boolean canMakeMove){
+        this.canMakeMove = canMakeMove;
+    }
     @Override
     public void createScene() {
         root = new AnchorPane();
@@ -33,8 +37,14 @@ public class YellowScene extends RealmScene {
         // Add glow effect on hover
         Glow glow = new Glow(0.7);
         lion.setOnMouseEntered(event -> lion.setEffect(glow));
-        lion.setOnMouseExited(event -> lion.setEffect(dropShadow));
-
+        lion.setOnMouseExited(event ->{ 
+            //phoenix.setEffect(null);
+            lion.setEffect(dropShadow);
+            if (canMakeMove){
+                lion.setEffect(getGoldenDropShadow());
+            }
+        }
+    );
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);
         backgroundView.setPreserveRatio(false);

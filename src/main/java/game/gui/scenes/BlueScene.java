@@ -9,6 +9,10 @@ import javafx.scene.paint.Color;
 
 public class BlueScene extends RealmScene {
     private ImageView hydra, backgroundView;
+    boolean canMakeMove;
+    public void setCanMakeMove(boolean canMakeMove){
+        this.canMakeMove = canMakeMove;
+    }
 
     @Override
     public void createScene() {
@@ -29,8 +33,14 @@ public class BlueScene extends RealmScene {
         // Add glow effect on hover
         Glow glow = new Glow(0.8);
         hydra.setOnMouseEntered(event -> hydra.setEffect(glow));
-        hydra.setOnMouseExited(event -> hydra.setEffect(dropShadow));
-
+        hydra.setOnMouseExited(event ->{ 
+            //phoenix.setEffect(null);
+            hydra.setEffect(dropShadow);
+            if (canMakeMove){
+                hydra.setEffect(getGoldenDropShadow());
+            }
+        }
+    );
 
         backgroundView.setFitWidth(1920);
         backgroundView.setFitHeight(1080);

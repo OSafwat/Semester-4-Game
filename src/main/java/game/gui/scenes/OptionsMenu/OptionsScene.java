@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 // import javafx.stage.Stage;
 import javafx.stage.Stage;
 
@@ -16,6 +17,9 @@ public class OptionsScene {
     
     Scene configScene;
     // Stage stage;
+
+    Slider volumeSlider;
+    MediaPlayer mediaPlayer;
 
     public Scene createOptionsScene() {
         StackPane root = new StackPane();
@@ -36,8 +40,13 @@ public class OptionsScene {
         mainArea.getStyleClass().add("vbox");
 
         Label optionsLabel = new Label("Options"), volumeLabel = new Label("Volume");
-        Slider volumeSlider = new Slider(0, 100, 0);
+        volumeSlider = new Slider(0, 100, 0);
         volumeSlider.setPrefHeight(50);
+
+        // Add a listener to the slider's value property to update the media player's volume
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            mediaPlayer.setVolume(newValue.doubleValue() / 100.0);
+        });
 
         Button gameConfigButton = new Button("Game Configuration");
         // gameConfigButton.setOnMouseClicked(e -> {
@@ -61,4 +70,11 @@ public class OptionsScene {
     // public void setStage(Stage stage) {
     //     this.stage = stage;
     // }
+
+    public void setMediaPlayer(MediaPlayer mp) {
+        this.mediaPlayer = mp;
+
+        // Set the media player's initial volume based on the slider's initial value
+        mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+    }
 }

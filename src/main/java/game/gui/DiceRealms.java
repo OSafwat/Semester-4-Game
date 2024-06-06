@@ -17,8 +17,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+
 import java.util.*;
 
 
@@ -35,6 +39,7 @@ public class DiceRealms extends Application {
     boolean isArcaneBoostPower;
     boolean canReroll;
     boolean isRoundRewardBonus;
+    boolean canTimeWarp;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -50,6 +55,7 @@ public class DiceRealms extends Application {
     }
 
     public void setupGame() {
+        canTimeWarp = true;
         primaryStage.setTitle("Dice Realms Game");
         isArcaneBoostPower = false;
         isRoundRewardBonus = false;
@@ -215,7 +221,104 @@ public class DiceRealms extends Application {
             handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
     }
+    public void handleAvailabilityCue(Player player,Dice [] diceSet){
+
+        // Create a drop shadow effect with a golden color
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.GOLD);
+        dropShadow.setRadius(20);
+        dropShadow.setSpread(0.5);
+
+        Move [] moves;
+
+        try{
+            moves = guiGameController.getAllPossibleMovesForDiceSet(player, diceSet);   
+        }catch(Exception e){
+            return;
+        }
+        System.out.println(moves.length+"<---heree");
+        boolean [] flags = new boolean[5];
+
+        for (Move move : moves) {
+            System.out.println(move.getDice().getRealm());
+            switch(move.getDice().getRealm()){
+                case RED:
+                    ArrayList<Integer> indices = guiGameController.getDragons(move.getDice().getValue());
+                    if (indices.contains(1)){
+                        sceneController.getDragon1().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove1(true);
+                    }else sceneController.redScene.setCanMakeMove1(false);
+
+                    if (indices.contains(2)){
+                        sceneController.getDragon2().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove2(true);
+                    } else sceneController.redScene.setCanMakeMove2(true);
+
+                    
+                    if (indices.contains(3)){
+                        sceneController.getDragon3().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove3(true);
+                    } else sceneController.redScene.setCanMakeMove3(true);
+
+                    
+                    if (indices.contains(4)){
+                        sceneController.getDragon4().setEffect(dropShadow);
+                        sceneController.redScene.setCanMakeMove4(true);
+                    } else sceneController.redScene.setCanMakeMove4(true);
+                    break;
+
+
+                case GREEN: 
+                    sceneController.greenScene.getGuardian().setEffect(dropShadow); 
+                    sceneController.greenScene.setCanMakeMove(true);
+                    flags[1] =true;
+                    System.out.println("el mafrood a print");
+                    break;
+                
+                case BLUE:
+                    sceneController.blueScene.getHydra().setEffect(dropShadow); 
+                    sceneController.blueScene.setCanMakeMove(true);
+                    flags[2] =true;
+                    break;
+                case MAGENTA: 
+                    sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
+                    sceneController.magentaScene.setCanMakeMove(true);
+                    flags[3] =true;
+                    break;
+                case YELLOW:
+                    sceneController.yellowScene.getLion().setEffect(dropShadow); 
+                    sceneController.yellowScene.setCanMakeMove(true);
+                    flags[4] =true;
+                    break;
+            }
+            
+        }
+        System.out.println(flags[1]);
+        System.out.println(flags[3]);
+        sceneController.magentaScene.setCanMakeMove(flags[3]);
+        sceneController.greenScene.setCanMakeMove(flags[1]);
+
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
+        //     sceneController.greenScene.getGuardian().setEffect(dropShadow); 
+        //     sceneController.greenScene.setCanMakeMove(true);
+        // }
+        // else sceneController.greenScene.setCanMakeMove(false);
+
+
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
+        //     sceneController.blueScene.getHydra().setEffect(dropShadow); 
+        //     sceneController.blueScene.setCanMakeMove(true);
+        // }
+        // else sceneController.blueScene.setCanMakeMove(false);
+        
+        // if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0) {
+        //     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
+        //     sceneController.magentaScene.setCanMakeMove(true);
+        // }
+        // else sceneController.magentaScene.setCanMakeMove(false);
+    }
     public void initEventListeners() {
+        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
         sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->  {System.out.println("LeftGrimoire clicked"); openLeftGrimoire();});  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
@@ -233,12 +336,12 @@ public class DiceRealms extends Application {
         sceneController.getYellowRealmGoBackButton().setOnMouseClicked(e -> goBackEvent());
         sceneController.getLion().setOnMouseClicked(e -> handleMove(5, 0, 0, null));
         sceneController.getGaiaGuardian().setOnMouseClicked(e -> handleMove(2, 0, 0, null));
-        sceneController.getPlayer1TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer1ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer1()));
-        sceneController.getPlayer2TimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getPlayer2()));
-        sceneController.getPlayer2ArcaneBoostButton().setOnMouseClicked(e -> arcaneBoostSequence(guiGameController.getPlayer2()));
-        sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> sceneController.switchToMain());
-        //sceneController.getOptionsButton().setOnMouseClicked(e -> sceneController.loadOptionsScene());
+
+        /*sceneController.getOptionsButton().setOnMouseClicked((e -> {
+            Button button = sceneController.loadOptionsScene();
+            button.setOnMouseClicked(e1 -> sceneController.switchToMain());
+        }));
+         */
         initDragonEventListeners();
         
 
@@ -334,9 +437,10 @@ public class DiceRealms extends Application {
             else if (!canReroll)
                 needToMakeMoveAlert();
             else {
-                handleDiceReroll();
+                handleDiceReroll(0);
             }
         });
+        sceneController.getTimeWarpButton().setOnMouseClicked(e -> timeWarpSequence(guiGameController.getCurrentPlayer()));
     }
 
     public void handleArcanePrism() {
@@ -466,6 +570,7 @@ public class DiceRealms extends Application {
         if (isArcaneBoostPower)
             player = arcanePlayer;
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        canTimeWarp = !moveDone;
         System.out.println(player.getScoreSheet().toString());
 
         if (saveOldWhiteValue != -1) {
@@ -473,7 +578,7 @@ public class DiceRealms extends Application {
             guiGameController.getAllDice()[1].setValue(saveOldGreenValue);
         }
         
-        if (indicator == 0) {
+        if (indicator == 0 && moveDone) {
             canReroll = true;
             if (arcaneValue != -1){
                 arcaneValue = -1;
@@ -488,6 +593,13 @@ public class DiceRealms extends Application {
                     int oldRoundCount = guiGameController.getCurrentRound();
                     int oldTurnCount = guiGameController.getCurrentTurn();
                     guiGameController.incrementTurnCount();
+                    try {
+                        int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                        if (value == 0)
+                            throw new NoAvailableMovesException();
+                    } catch (NoAvailableMovesException e) {
+                        canReroll = true;
+                    }
                     loadDiceBoard();
                     int newRoundCount = guiGameController.getCurrentRound();
                     if (oldRoundCount != newRoundCount) {
@@ -511,6 +623,13 @@ public class DiceRealms extends Application {
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
             guiGameController.incrementTurnCount();
+            try {
+                int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                if (value == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
             loadDiceBoard();
             int newRoundCount = guiGameController.getCurrentRound();
             if (oldRoundCount != newRoundCount) {
@@ -566,6 +685,7 @@ public class DiceRealms extends Application {
                     guiGameController.restoreArcaneBoost(arcanePlayer);
                 }
                 isArcaneBoostPower = false;
+                canReroll = false;
                 //put in a popup that tells the user that he has done an illegal move
                 illegalMoveAlert();
                 //logic here
@@ -683,6 +803,30 @@ public class DiceRealms extends Application {
 
         Label label = new Label("This dice is not available, because you have either played with it before, or it is currently in the forgotten realm!");
         label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void noAvailableTimeWarpsAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
+        alert.setTitle("Alert");
+
+        Label label = new Label("You cannot use a Time Warp right now because you do not have any acquired Time Warps!");
+        label.setStyle("-fx-font-size: 30px;");
+
+        alert.getDialogPane().setContent(label);
+        alert.showAndWait();
+    }
+
+    public void passivePlayerUsingTimeWarpAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setResizable(true);
+        alert.setTitle("Alert");
+
+        Label label = new Label("You cannot use a Time Warp right now because you are the passive player!");
+        label.setStyle("-fx-font-size: 15px;");
 
         alert.getDialogPane().setContent(label);
         alert.showAndWait();
@@ -935,6 +1079,11 @@ public class DiceRealms extends Application {
     }
 
     public void timeWarpSequence(Player player) {
+        System.out.println("meow");
+        if (!canTimeWarp) {
+            noAvailableTimeWarpsAlert();
+            return;
+        }
         if (isArcaneBoostPower)
             return;
         Dialog<String> dialog = new Dialog<>();
@@ -945,23 +1094,24 @@ public class DiceRealms extends Application {
         decline.setText("No");
         accept.setOnMouseClicked(e -> dialog.setResult("YES"));
         decline.setOnMouseClicked(e -> dialog.setResult("NO"));
-        dialog.setContentText("Would you like to use one of your time warps?");
+        dialog.setTitle("Would you like to use one of your time warps?");
         FlowPane buttons = new FlowPane();
         buttons.getChildren().add(accept);
         buttons.getChildren().add(decline);
         dialog.getDialogPane().setContent(buttons);
-        boolean proceed = dialog.getResult().equals("Yes");
+        dialog.showAndWait();
+        boolean proceed = dialog.getResult().equals("YES");
         if (proceed) {
             try {
                 guiGameController.handleTimeWarps(player);
             } catch (ExhaustedResourceException e) {
-                //display error
+                noAvailableTimeWarpsAlert();
                 return;
             } catch (PlayerActionException e) {
-                //display error
+                passivePlayerUsingTimeWarpAlert();
                 return;
             }
-            handleDiceReroll();
+            handleDiceReroll(-1);
         }
     }
 
@@ -1004,34 +1154,42 @@ public class DiceRealms extends Application {
         }
     }
 
-    private void handleDiceReroll() {
+    private void handleDiceReroll(int indicator) {
         guiGameController.rollDice();
-        int oldRoundCount = guiGameController.getCurrentRound();
-        int oldTurnCount = guiGameController.getCurrentTurn();
-        guiGameController.incrementTurnCount();
-        loadDiceBoard();
-        int newRoundCount = guiGameController.getCurrentRound();
-        if (oldRoundCount != newRoundCount) {
-            handleReward(newRoundCount);
-        }
-        else if (oldTurnCount == -1) {
-            handleReward(oldRoundCount);
-        }
-        if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
-            isForgotten = true;
-            handleForgottenTurn();
-            return;
-        }
-        canReroll = false;
-        try {
-            Move[] moves = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
-            if (moves.length == 0)
-                throw new NoAvailableMovesException();
-        }
-        catch (NoAvailableMovesException e) {
-            canReroll = true;
+        if (indicator != -1) {
+            int oldRoundCount = guiGameController.getCurrentRound();
+            int oldTurnCount = guiGameController.getCurrentTurn();
+            guiGameController.incrementTurnCount();
+            try {
+                int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
+                if (value == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
+            loadDiceBoard();
+            int newRoundCount = guiGameController.getCurrentRound();
+            if (oldRoundCount != newRoundCount) {
+                handleReward(newRoundCount);
+            } else if (oldTurnCount == -1) {
+                handleReward(oldRoundCount);
+            }
+            if (guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.PASSIVE)) {
+                isForgotten = true;
+                handleForgottenTurn();
+                return;
+            }
+            canReroll = false;
+            try {
+                Move[] moves = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getAvailableDice());
+                if (moves.length == 0)
+                    throw new NoAvailableMovesException();
+            } catch (NoAvailableMovesException e) {
+                canReroll = true;
+            }
         }
         sceneController.boardScene.makeboardScene(getDiceGIFs());
+        handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
         primaryStage.setScene(sceneController.boardScene.getBoardScene(this.guiGameController.getCurrentRound(), this.guiGameController.getCurrentTurn(), this.guiGameController.getCurrentPlayer().getName()));
         new Thread(new Runnable() {
             @Override
