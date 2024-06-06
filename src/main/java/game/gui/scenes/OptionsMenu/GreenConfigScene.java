@@ -21,10 +21,17 @@ public class GreenConfigScene {
     Properties greenConfigProperties;
     Button saveButton, returnToConfigSceneButton;
 
-    public Scene createGreenConfigScene() {
+    Scene greenConfigScene;
+
+    public GreenConfigScene() {
         StackPane root = new StackPane();
 
-        root.getStylesheets().add(getClass().getResource("OptionsMenu.css").toExternalForm());
+        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        if (css != null) {
+            root.getStylesheets().add(css);
+        } else {
+            System.err.println("CSS file not found.");
+        }
 
         root.setPrefSize(1920, 1080);
         
@@ -79,12 +86,17 @@ public class GreenConfigScene {
         saveButton = new Button("Save Configuration");
         saveButton.setOnAction(e -> saveProperties());
 
+        returnToConfigSceneButton = new Button("Return to Game Configuration Menu");
+
         mainArea.getChildren().addAll(saveButton, returnToConfigSceneButton);
 
-        return new Scene(root, 1920, 1080);
+        root.getChildren().addAll(background, mainArea);
+
+        greenConfigScene = new Scene(root, 1920, 1080);
     }
 
     private void loadProperties() {
+        greenConfigProperties = new Properties();
         try (FileInputStream in = new FileInputStream("src/main/resources/config/TerrasHeartlandRewards.properties")) {
             greenConfigProperties.load(in);
         } catch (IOException e) {
@@ -102,5 +114,9 @@ public class GreenConfigScene {
 
     public Button getReturnToConfigSceneButton() {
         return returnToConfigSceneButton;
+    }
+
+    public Scene getGreenConfigScene() {
+        return greenConfigScene;
     }
 }
