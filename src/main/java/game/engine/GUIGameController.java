@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
@@ -10,9 +11,11 @@ import game.dice.RedDice;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.*;
+import javafx.scene.shape.Arc;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class GUIGameController extends CLIGameController {
@@ -138,6 +141,8 @@ public class GUIGameController extends CLIGameController {
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
                 incrementRoundCount();
             currentTurn = 1;
+            gameBoard.resetAllDice();
+            rollDice();
             return;
         }
         canUseArcaneBoost = false;
@@ -263,6 +268,34 @@ public class GUIGameController extends CLIGameController {
         if (Objects.equals(requiredDragon.getHeart(), diceValue))
             return 3;
         return -1;
+    }
+
+    public void handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException {
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        if (currentPlayer.getPlayerStatus().equals(PlayerStatus.PASSIVE))
+            throw new PlayerActionException();
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
+                arcaneBoost.setStatus(RewardStates.USED);
+                return;
+            }
+        }
+        throw new ExhaustedResourceException("No available Arcane Boosts!");
+    }
+
+    public int getMaxTurns() {
+        return maxTurns;
+    }
+
+    public void restoreArcaneBoost(Player player) {
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus().equals(RewardStates.USED))
+            {
+                arcaneBoost.setStatus(RewardStates.ACQUIRED);
+                return;
+            }
+        }
     }
 }
 

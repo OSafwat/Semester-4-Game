@@ -36,7 +36,7 @@ public class DiceRealms extends Application {
     int wasEssenceBonus;
     int bonusValue;
     volatile boolean awaitingInput;
-    volatile boolean isArcaneBoostPower;
+    boolean isArcaneBoostPower;
     boolean canReroll;
     boolean isRoundRewardBonus;
     boolean canTimeWarp;
@@ -530,27 +530,7 @@ public class DiceRealms extends Application {
         Dice currDice = null;
         Creature creature;
         if (isArcaneBoostPower) {
-//            indicator = -1;
-//            //1 red, 2 green, 3 blue, 4 magenta, 5 yellow
-//            //Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(arcanePlayer);
-//            for (int i = 0; i < arcaneBoostDice.length; i++) {
-//                if (num == 1 && arcaneBoostDice[i].getRealm().equals(RealmColor.RED))
-//                {
-//                    currDice = new RedDice(arcaneBoostDice[i].getValue(), guiGameController.getSelectedDragon());
-//                }
-//                else if (num == 2 && arcaneBoostDice[i].getRealm().equals(RealmColor.GREEN)) {
-//                    currDice = new GreenDice(arcaneBoostDice[i].getValue());
-//                }
-//                else if (num == 3 && arcaneBoostDice[i].getRealm().equals(RealmColor.BLUE)) {
-//                    currDice = new BlueDice(arcaneBoostDice[i].getValue());
-//                }
-//                else if (num == 4 && arcaneBoostDice[i].getRealm().equals(RealmColor.MAGENTA)) {
-//                    currDice = new MagentaDice(arcaneBoostDice[i].getValue());
-//                }
-//                else if (num == 5 && arcaneBoostDice[i].getRealm().equals(RealmColor.YELLOW)) {
-//                    currDice = new YellowDice(arcaneBoostDice[i].getValue());
-//                }
-//            }
+            indicator = -1;
         }
         else {
             switch (num) {
@@ -589,17 +569,6 @@ public class DiceRealms extends Application {
                 default: return;
             }
         }
-        else {
-            if (isArcaneBoostPower) {
-                assert currDice != null;
-                if (currDice.getRealm().equals(RealmColor.GREEN)) {
-                    saveOldWhiteValue = guiGameController.getAllDice()[5].getValue();
-                    saveOldGreenValue = guiGameController.getAllDice()[1].getValue();
-                    guiGameController.getAllDice()[5].setValue(0);
-                    guiGameController.getAllDice()[1].setValue(saveOldWhiteValue + saveOldGreenValue);
-                }
-            }
-        }
         assert currDice != null;
         realmColor = currDice.getRealm();
         creature = guiGameController.getCurrentPlayer().getScoreSheet().getCreatureByColor(realmColor);
@@ -615,6 +584,8 @@ public class DiceRealms extends Application {
         }
         Player player = guiGameController.getCurrentPlayer();
         boolean moveDone = guiGameController.makeMove(player, new Move(currDice, creature));
+        if (moveDone)
+            bonusValue = -1;
         canTimeWarp = !moveDone;
         System.out.println(player.getScoreSheet().toString());
 
@@ -671,7 +642,9 @@ public class DiceRealms extends Application {
                 if (value == 0)
                     throw new NoAvailableMovesException();
             } catch (NoAvailableMovesException e) {
-                canReroll = true;
+                guiGameController.incrementTurnCount();
+                loadDiceBoard();
+                return;
             }
             loadDiceBoard();
             int newRoundCount = guiGameController.getCurrentRound();
@@ -681,8 +654,6 @@ public class DiceRealms extends Application {
             else if (oldTurnCount == -1) {
                 handleReward(oldRoundCount);
             }
-            else
-                loadDiceBoard();
             return;
         }
 
@@ -720,7 +691,7 @@ public class DiceRealms extends Application {
                         }
                     }).start();
                 }
-
+                return;
             }
             else {
                 isArcaneBoostPower = false;
@@ -746,6 +717,10 @@ public class DiceRealms extends Application {
             else 
                 canReroll = true;
             loadDiceBoard();
+
+            if (guiGameController.getCurrentTurn() == guiGameController.getMaxTurns())
+                arcaneBoostSequence(guiGameController.getCurrentPlayer());
+
         }
 
     }
@@ -1115,50 +1090,232 @@ public class DiceRealms extends Application {
         }
     }
 
-//    public void arcaneBoostSequence(Player player) {
-//        if (isArcaneBoostPower)
-//            return;
-//        Dialog<String> dialog = new Dialog<>();
-//        dialog.setResizable(true);
-//        Button accept = new Button();
-//        accept.setText("Yes");
-//        Button decline = new Button();
-//        decline.setText("No");
-//        accept.setOnMouseClicked(e -> dialog.setResult("YES"));
-//        decline.setOnMouseClicked(e -> dialog.setResult("NO"));
-//        dialog.setTitle("Hey, " + player.getName() + "! Would you like to use one of your arcane boosts?");
-//        FlowPane buttons = new FlowPane();
-//        buttons.getChildren().add(accept);
-//        buttons.getChildren().add(decline);
-//        dialog.getDialogPane().setContent(buttons);
-//        dialog.showAndWait();
-//        boolean proceed = dialog.getResult().equals("YES");
-//        if (proceed) {
-//            try {
-//                System.out.println("arcane boost success11");
-//                guiGameController.handleArcaneBoosts(player);
-//            } catch (ExhaustedResourceException e) {
-//                //display error
-//                return;
-//            } catch (PlayerActionException e) {
-//                //display error
-//                return;
-//            }
-//            System.out.println("arcane boost success");
-//            Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(player);
-//            //display the scene with the arcaneBoostDice
-//            sceneController.boardScene.makeboardScene(getDicePNGs(arcaneBoostDice));
-//            initDiceAndRerollButtonEventListeners();
-//            primaryStage.setScene(sceneController.boardScene.getBoardScene(guiGameController.getCurrentRound(), -2, player.getName()));
-//
-//            //setup is done, leave the rest to the player
-//            isArcaneBoostPower = true;
-//            canReroll = false;
-//            guiGameController.setArcaneBoostPlayer(player);
-//        }
-//    }
+    public void arcaneBoostSequence(Player player) {
+        boolean idk = true;
+        while (idk) {
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setResizable(true);
+            Button accept = new Button();
+            accept.setText("Yes");
+            Button decline = new Button();
+            decline.setText("No");
+            accept.setOnMouseClicked(e -> dialog.setResult("YES"));
+            decline.setOnMouseClicked(e -> dialog.setResult("NO"));
+            dialog.setTitle("Hey, " + player.getName() + "! Would you like to use one of your arcane boosts?");
+            FlowPane buttons = new FlowPane();
+            buttons.getChildren().add(accept);
+            buttons.getChildren().add(decline);
+            dialog.getDialogPane().setContent(buttons);
+            dialog.showAndWait();
+            boolean proceed = dialog.getResult().equals("YES");
+            if (proceed) {
+                try {
+                    System.out.println("arcane boost success11");
+                    guiGameController.handleArcaneBoosts(player);
+                } catch (ExhaustedResourceException e) {
+                    isArcaneBoostPower = false;
+                    canReroll = false;
+                    guiGameController.incrementTurnCount();
+                    guiGameController.moveAllIntoForgotten();
+                    isForgotten = true;
+                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()));
+                    System.out.println("MEOWWWOWW");
+                    System.out.println(Arrays.toString(getDicePNGs(guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice())));
+                    loadDiceBoard();
+                    return;
+                } catch (PlayerActionException e) {
+                    isArcaneBoostPower = false;
+                    canReroll = false;
+                    guiGameController.incrementTurnCount();
+                    guiGameController.moveAllIntoForgotten();
+                    isForgotten = true;
+                    sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()));
+                    loadDiceBoard();
+                    return;
+                }
+                isArcaneBoostPower = true;
+                canReroll = false;
+                Dice[] arcaneBoostDice = guiGameController.getArcaneBoostDice(player);
+                Dialog<String> dialog1 = fillArcaneBoostDice(arcaneBoostDice);
+                dialog1.showAndWait();
+                String result1 = dialog1.getResult();
+                String oldRes = result1;
+                if (result1.contains("white")) {
+                    dialog1 = fillArcaneWhite((ArcanePrism) arcaneBoostDice[arcaneBoostDice.length-1]);
+                    dialog1.showAndWait();
+                    result1 = dialog1.getResult();
+                }
+                int dragonNum;
+                Dice dice = null;
+                int value = Integer.parseInt(result1.substring(result1.length()-1));
+                if (result1.contains("red")) {
+                    dialog1 = fillDragonOptions();
+                    dialog1.showAndWait();
+                    dragonNum = Integer.parseInt(dialog1.getResult());
+                    dialog1 = fillDragonPart();
+                    dialog1.showAndWait();
+                    int obtainedValue = translate(dialog1.getResult());
+                    int trueResult = guiGameController.getDragonPartForThisDragonAndThisValue(dragonNum, value);
+                    System.out.println(dragonNum);
+                    System.out.println(value);
+                    System.out.println(obtainedValue);
+                    System.out.println(trueResult);
+                    if (trueResult != obtainedValue) {
+                        idk = true;
+                        illegalMoveAlert();
+                        guiGameController.restoreArcaneBoost(player);
+                        continue;
+                    }
+                    dice = new RedDice(value, obtainedValue+1);
+                }
+                else {
+                    if (result1.contains("green"))
+                        dice = new GreenDice(guiGameController.getGameBoard().getWhite().getValue() + value);
+                    if (result1.contains("blue"))
+                        dice = new BlueDice(value);
+                    if (result1.contains("magenta"))
+                        dice = new MagentaDice(value);
+                    if (result1.contains("yellow"))
+                        dice = new YellowDice(value);
+                }
+                if (oldRes.contains("red")) {
+                    player.selectDice(guiGameController.getAllDice()[0]);
+                }
+                else if (oldRes.contains("green")) {
+                    player.selectDice(guiGameController.getAllDice()[1]);
+                }
+                else if (oldRes.contains("blue")) {
+                    player.selectDice(guiGameController.getAllDice()[2]);
+                }
+                else if (oldRes.contains("magenta")) {
+                    player.selectDice(guiGameController.getAllDice()[3]);
+                }
+                else if (oldRes.contains("yellow")) {
+                    player.selectDice(guiGameController.getAllDice()[4]);
+                }
+                else {
+                    player.selectDice(guiGameController.getAllDice()[5]);
+                }
+
+                Creature creature = player.getScoreSheet().getCreatureByRealm(dice);
+                try {
+                    creature.makeMove(dice);
+                } catch (BonusException e) {
+                    handleBonus(e.getRealmColor1());
+                    idk = false;
+                } catch (InvalidMoveException e1) {
+                    guiGameController.restoreArcaneBoost(player);
+                    illegalMoveAlert();
+                }
+                //display the scene with the arcaneBoostDice
+            } else {
+                isArcaneBoostPower = false;
+                canReroll = false;
+                guiGameController.incrementTurnCount();
+                guiGameController.moveAllIntoForgotten();
+                isForgotten = true;
+                sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()));
+                idk = false;
+                loadDiceBoard();
+            }
+        }
+    }
+
+    private int translate(String part) {
+        if (part.equals("face"))
+            return 0;
+        if (part.equals("wings"))
+            return 1;
+        if (part.equals("tail"))
+            return 2;
+        return 3;
+    }
+    private Dialog<String> fillArcaneBoostDice (Dice[] arcaneBoostDice) {
+        Dialog<String> dialog = new Dialog<>();
+        FlowPane buttons = new FlowPane();
+        for (int i = 0; i < arcaneBoostDice.length; i++) {
+            Button button = new Button();
+            String path = getColorAsString(arcaneBoostDice[i]) + " dice " + arcaneBoostDice[i].getValue() + ".png";
+            System.out.println(path);
+            button.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)))));
+            int finalI = i;
+            button.setOnMouseClicked(e -> dialog.setResult(getColorString(arcaneBoostDice[finalI]) + " " + arcaneBoostDice[finalI].getValue()));
+            buttons.getChildren().add(button);
+        }
+        dialog.getDialogPane().setContent(buttons);
+        return dialog;
+    }
+
+    private Dialog<String> fillArcaneWhite (ArcanePrism dice) {
+        Dice[] dice1 = {new RedDice(dice.getValue()), new GreenDice(guiGameController.getGameBoard().getGreen().getValue()), new BlueDice(dice.getValue()), new MagentaDice(dice.getValue()), new YellowDice(dice.getValue())};
+        return fillArcaneBoostDice(dice1);
+    }
+
+    private Dialog<String> fillDragonOptions() {
+        Dialog<String> dialog = new Dialog<>();
+        FlowPane flowPane = new FlowPane();
+        Button dragon1 = new Button();
+        dragon1.setText("Dragon 1");
+        Button dragon2 = new Button();
+        dragon2.setText("Dragon 2");
+        Button dragon3 = new Button();
+        dragon3.setText("Dragon 3");
+        Button dragon4 = new Button();
+        dragon4.setText("Dragon 4");
+        dragon1.setOnMouseClicked(e -> dialog.setResult("1"));
+        dragon2.setOnMouseClicked(e -> dialog.setResult("2"));
+        dragon3.setOnMouseClicked(e -> dialog.setResult("3"));
+        dragon4.setOnMouseClicked(e -> dialog.setResult("4"));
+        flowPane.getChildren().add(dragon1);
+        flowPane.getChildren().add(dragon2);
+        flowPane.getChildren().add(dragon3);
+        flowPane.getChildren().add(dragon4);
+        dialog.getDialogPane().setContent(flowPane);
+        return dialog;
+    }
+
+    private Dialog<String> fillDragonPart() {
+        Dialog<String> dialog = new Dialog<>();
+        FlowPane flowPane = new FlowPane();
+        Button dragonFace = new Button();
+        dragonFace.setText("face");
+        Button dragonWings = new Button();
+        dragonWings.setText("wings");
+        Button dragonTail = new Button();
+        dragonTail.setText("tail");
+        Button dragonHeart = new Button();
+        dragonHeart.setText("heart");
+        dragonFace.setOnMouseClicked(e -> dialog.setResult("0"));
+        dragonWings.setOnMouseClicked(e -> dialog.setResult("1"));
+        dragonTail.setOnMouseClicked(e -> dialog.setResult("2"));
+        dragonHeart.setOnMouseClicked(e -> dialog.setResult("3"));
+        flowPane.getChildren().add(dragonFace);
+        flowPane.getChildren().add(dragonWings);
+        flowPane.getChildren().add(dragonTail);
+        flowPane.getChildren().add(dragonHeart);
+        dialog.getDialogPane().setContent(flowPane);
+        return dialog;
+    }
+
+    private String getColorString(Dice dice) {
+        String string = "";
+        switch (dice.getRealm()) {
+            case RED: string = "red"; break;
+            case GREEN: string = "green"; break;
+            case BLUE: string = "blue"; break;
+            case MAGENTA: string = "magenta"; break;
+            case YELLOW: string = "yellow"; break;
+            default: string = "white"; break;
+        }
+        return string;
+    }
 
     private void handleDiceReroll(int indicator) {
+        if (guiGameController.getCurrentTurn() == guiGameController.getMaxTurns())
+        {
+            arcaneBoostSequence(guiGameController.getCurrentPlayer());
+            return;
+        }
         guiGameController.rollDice();
         if (indicator != -1) {
             int oldRoundCount = guiGameController.getCurrentRound();
