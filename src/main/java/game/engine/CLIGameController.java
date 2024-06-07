@@ -1556,7 +1556,10 @@ public class CLIGameController {
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
         AI ai=new AI(PlayerStatus.ACTIVE);
-        cli.findBestMove(ai, board, 3);
+        cli.handleBonusAI(ai, RealmColor.WHITE);
+        
+        ScoreSheet scoreSheet = cli.getScoreSheet(ai);
+        scoreSheet.displayColoredScoreSheet();
     }
 
 
