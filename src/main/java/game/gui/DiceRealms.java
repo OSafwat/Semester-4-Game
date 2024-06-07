@@ -51,7 +51,7 @@ public class DiceRealms extends Application {
 
         setupGame();
         primaryStage.setResizable(true);
-        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(false);
         primaryStage.show();
     }
 
