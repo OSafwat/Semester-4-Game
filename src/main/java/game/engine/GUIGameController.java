@@ -150,7 +150,6 @@ public class GUIGameController extends CLIGameController {
             currentTurn = -1;
             currentPlayer = getPassivePlayer();
         }
-        System.out.print(currentTurn + "   " + currentRound + "    " + currentPlayer.getName());
         return true;
     }
 
@@ -261,7 +260,6 @@ public class GUIGameController extends CLIGameController {
 
     public int getDragonPartForThisDragonAndThisValue(int dragon, int diceValue) {
         Dragon[] dragons = ((Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
-        System.out.println("gui here, " + diceValue);
         Dragon requiredDragon = dragons[dragon - 1];
         if (Objects.equals(requiredDragon.getFace(), diceValue))
             return 0;
@@ -274,10 +272,8 @@ public class GUIGameController extends CLIGameController {
         return -1;
     }
 
-    public void handleArcaneBoosts(Player player) throws ExhaustedResourceException, PlayerActionException {
+    public void handleArcaneBoosts(Player player) throws ExhaustedResourceException{
         ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
-        if (currentPlayer.getPlayerStatus().equals(PlayerStatus.PASSIVE))
-            throw new PlayerActionException();
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
                 arcaneBoost.setStatus(RewardStates.USED);

@@ -75,8 +75,6 @@ public class BoardScene{
         for (String imageString : dicePNGs) {
             ImageView temp;
             boolean strikeThrough = imageString.contains(".png123");
-            if (imageString.contains(".gif"))
-                System.out.println(imageString);
             if (strikeThrough)
                 temp = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageString.substring(0, imageString.length() - 3)))));
             else
@@ -287,7 +285,6 @@ public class BoardScene{
             infoLabel.setText("The current round is: Arcane Boost"+"       The current Arcane Player is: " +playerName);
         else
             infoLabel.setText("The current round is: "+currentRound+"       The current Active player is: "+playerName+"        The current turn number is: "+currentTurn);
-        System.out.println(currentTurn);
         return boardScene;
     }
 

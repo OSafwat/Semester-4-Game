@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -125,10 +123,8 @@ public class ConfigScene {
 
     public void updateRoundSettingsConfigFile() {
         roundSettingsProperties = new Properties();
-        int rounds = 0;
         try (FileInputStream in = new FileInputStream("src/main/resources/config/RoundsSettings.properties")) {
             roundSettingsProperties.load(in);
-            rounds = Integer.parseInt(roundSettingsProperties.getProperty("numberOfRounds"));
         } catch (IOException e) {
             e.printStackTrace();
         }
