@@ -4,7 +4,6 @@ import game.collectibles.*;
 import game.exceptions.*;
 import game.dice.*;
 import game.creatures.Dragon;
-import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
 import game.creatures.greenclasses.Guardians;
 import game.engine.enums.*;
@@ -179,7 +178,6 @@ public class CLIGameController {
     public void startGame(){
         System.out.println("enter 1 if you wanna play against the human and 2 if you wanna play against the computer or 3 to see ai vs ai");
         String modeChoice = scanner.nextLine();
-        //TODO CHECK FOR THE VALIDITY OF THE INPUT
         while(!modeChoice.equals("1") && !modeChoice.equals("2")&&!modeChoice.equals("3")) {
             System.out.println("Invalid input. Please try again.");
             modeChoice = scanner.nextLine();
@@ -367,7 +365,7 @@ public class CLIGameController {
             getPassivePlayer().setName(player2Name);
 
             int [] temp = getSettings();
-            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numberOfRounds= temp[0];   
             int numebrOfTurnsPerRound=temp[1];
 
 
@@ -529,7 +527,7 @@ public class CLIGameController {
             getActivePlayer().setName(player1Name);
             String AI="AI";
             int [] temp = getSettings();
-            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numberOfRounds= temp[0];    
             int numebrOfTurnsPerRound=temp[1];
 
 
@@ -553,7 +551,7 @@ public class CLIGameController {
              for (int round = 0; round < numberOfRounds; round++) {
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1));
-                playRoundHuman(gameBoard.getPlayer1(), gameBoard.getAi(), rewards[round],round+1, numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                playRoundHuman(gameBoard.getPlayer1(), gameBoard.getAi(), rewards[round],round+1, numebrOfTurnsPerRound);   
                 gameBoard.resetAllDice();
                 switchPlayerAI();
                 System.out.println();
@@ -604,7 +602,7 @@ public class CLIGameController {
         else{
 
             int [] temp = getSettings();
-            int numberOfRounds= temp[0];    //TODO make a default in case the config is empty
+            int numberOfRounds= temp[0];   
             int numebrOfTurnsPerRound=temp[1];
 
 
@@ -618,7 +616,7 @@ public class CLIGameController {
              for (int round = 0; round < numberOfRounds; round++) {
                 System.out.println();
                 System.out.println("IT IS CURRENTLY ROUND: " + (round+1)+" AI1 TURN");
-                playRoundAI(gameBoard.getAi1(), gameBoard.getAi2(), rewards[round],round+1, numebrOfTurnsPerRound);    //TODO NEEDS TO BE CHANGED
+                playRoundAI(gameBoard.getAi1(), gameBoard.getAi2(), rewards[round],round+1, numebrOfTurnsPerRound); 
                 gameBoard.resetAllDice();
                 switchPlayerAI();
                 System.out.println();
@@ -859,6 +857,7 @@ public class CLIGameController {
         return true;
     }
 
+    @SuppressWarnings("unused")
     public Dice[] getArcaneBoostDice(Player player) {
         Dice[] possibleDice = getAllDice();
         ArrayList<Dice> diceExcludingPreviouslySelectedByArcaneBoosts = new ArrayList<>();
@@ -1049,6 +1048,8 @@ public class CLIGameController {
             case MAGENTA: System.out.print("\u001B[35m" + dice.getRealm() + "  " + dice.getValue() + "\u001B[0m"); break;
             case YELLOW: System.out.print("\u001B[33m" + dice.getRealm() + "   " + dice.getValue() + "\u001B[0m"); break;
             case WHITE: System.out.print("\u001B[37m" + dice.getRealm() + "    " + dice.getValue() + "\u001B[32m  (" + (dice.getValue() + gameBoard.getGreen().getValue()) + ")\u001B[0m"); break;
+            default:
+                break;
         }
     }
     public boolean handleArcaneBoost(ArcaneBoost[] arcaneBoosts, Player player) throws ExhaustedResourceException{
@@ -1419,6 +1420,8 @@ public class CLIGameController {
                 case BLUE: finalDie= new BlueDice(value); break;
                 case MAGENTA: finalDie = new MagentaDice(value); break;
                 case YELLOW: finalDie = new YellowDice(value);
+                default:
+                    break;
             };
         }
         return finalDie;
@@ -1552,7 +1555,6 @@ public class CLIGameController {
 
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
-        GameBoard board=new GameBoard();
         AI ai=new AI(PlayerStatus.ACTIVE);
         cli.handleBonusAI(ai, RealmColor.WHITE);
         
@@ -1564,7 +1566,6 @@ public class CLIGameController {
     //AI PART
 
     // RULE-BASED
-    // TODO special conditions for the last turn
 
     /*public Dice findSecondLowest(Player player){
 
@@ -1597,7 +1598,6 @@ public class CLIGameController {
                     return dice;
                 }
                 else{
-                    //TODO PRIORITY HERE
                 }
 
             }
@@ -1661,7 +1661,7 @@ public class CLIGameController {
                 //red got an error so i added the first condition
                 if(move.getDice().getRealm()!=RealmColor.RED&&move.getCreature().checkMove(move.getDice())){
                     makeMoveAI(player, move);     //check the invalidmove shit
-                    int boardValue = maxmax(player,board, depth - 1);
+                    int boardValue = maxmax(player, depth - 1);
 
                     player = playerBeforeMove;
                     board = boardBeforeMove;
@@ -1682,9 +1682,8 @@ public class CLIGameController {
         return bestMove;
     }
 
+    @SuppressWarnings("null")
     public int maxmax(Player player, int depth) {
-        Player pclone=player.clone();
-
         Dice[] avdice = getAvailableDice();
         List<Dice> availablefr=null;
         for(Dice dice:avdice){
@@ -1754,9 +1753,7 @@ public class CLIGameController {
                 moveSet[0]=bestMove3;
                 white=true;
             }
-            else{
-                Move bestMove3=moveSet[0];
-            }
+            
 
             //now we have the best move for the dice
                 makeMoveAI(player, moveSet[0]);
@@ -1862,8 +1859,6 @@ public class CLIGameController {
         }
     }
     public int evaluateRedDice(Player player,Dice dice){
-        //should check if this dice can end a column/row
-        int value=dice.getValue();
         dice=new RedDice(dice.getValue());
         if(completeRowRed(player,dice)&&completeColumnRed(player,dice)) return 25;
         if(completeColumnRed(player, dice)) return 18;
@@ -1974,7 +1969,6 @@ public class CLIGameController {
     }
 
     public int evaluateGreenDice(Player player, Dice dice){ //problem with adding the white dice
-        int value=dice.getValue()+gameBoard.getWhite().getValue();
         if(completeRowGreen(player, dice)&&completeColumnGreen(player, dice)) return 24;
         if(completeRowGreen(player,dice) || completeColumnGreen(player, dice)) return 16;
         /*if(value==2) return 12;
@@ -2046,15 +2040,10 @@ public class CLIGameController {
     }
 
     public int evaluateBlueDice(Player player,Dice dice){
-        int value=dice.getValue();
         return 6;
     }
 
     public int evaluateMagentaDice(Player player,Dice dice){
-        int value=dice.getValue();
-        ScoreSheet scoreSheet=player.getScoreSheet();
-        Phoenix phoenix=(Phoenix) scoreSheet.getCreatureByColor(RealmColor.MAGENTA);
-        int lastHit=phoenix.getLastHit();
         /*if(value==6) return 6;
         if(lastHit==0) return 2+value;
         if(value>lastHit) return 3+(lastHit-value);//trying to minimize the difference so we dont make a 1 then 5 for example*/
@@ -2464,6 +2453,8 @@ public class CLIGameController {
                 return new BlueDice(6);
             }
             break;
+            default:
+                break;
         }
         return null;
     }
@@ -2539,8 +2530,6 @@ public class CLIGameController {
 
      //rule-based
      public Move pickBestMove(AI ai,Dice[] diceSet,int round,int turn){
-        //takes care of multiple moves for red/white
-        Move bestMove=null;
         Dice bestDice=pickBestDice(ai, diceSet, round, turn);
         if(bestDice==null){
             return null;
@@ -2554,7 +2543,6 @@ public class CLIGameController {
             if(dragonNumber!=-1){//in case there are no dragons (which might happen here)
                 RedDice redDice=new RedDice(bestDice.getValue());
                 redDice.selectsDragon(dragonNumber+1);
-                bestMove=new Move(redDice, ai.getScoreSheet().getCreatureByColor(RealmColor.RED));
             }
 
         }
@@ -3151,18 +3139,8 @@ public class CLIGameController {
 
     public void sortMoves(Move[] moves) {
         Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
-    }
-
-
-
-
-
-
-
-
-        
-        
-    }
+    }   
+}
     
     
     

@@ -36,6 +36,7 @@ public class SceneController {
     public ConfigScene configScene;
     @SuppressWarnings("exports")
     public RoundRewardsConfigScene roundRewardsConfigScene;
+    @SuppressWarnings("exports")
     public RedConfigScene redConfigScene;
     @SuppressWarnings("exports")
     public GreenConfigScene greenConfigScene;
@@ -47,9 +48,10 @@ public class SceneController {
     public YellowConfigScene yellowConfigScene;
     @SuppressWarnings("exports")
     public YellowMultipliersConfigScene yellowMultipliersConfigScene;
+    @SuppressWarnings("exports")
     public EndScene endScene;
 
-    public SceneController (Player p1, Player p2) {
+    public SceneController (@SuppressWarnings("exports") Player p1, @SuppressWarnings("exports") Player p2) {
         redScene = new RedScene();
         greenScene = new GreenScene();
         blueScene = new BlueScene();
@@ -278,22 +280,27 @@ public class SceneController {
         return optionsScene.getGameConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getRoundRewardsConfigButton() {
         return configScene.getRoundRewardsConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public TextField getNumberOFRoundsField() {
         return configScene.getNumberOFRoundsField();
     }
 
+    @SuppressWarnings("exports")
     public TextField getNumberOfTurnsPerRoundField() {
         return configScene.getNumberOfTurnsPerRoundField();
     }
 
+    @SuppressWarnings("exports")
     public Button getSaveRoundSettingsConfig() {
         return configScene.getSaveRoundSettingsConfig();
     }
 
+    @SuppressWarnings("exports")
     public Button getReturnToOptionsButton() {
         return configScene.getReturnToOptionsButton();
     }
@@ -343,6 +350,7 @@ public class SceneController {
         return saveButtons;
     }
 
+    @SuppressWarnings("exports")
     public Button getExitButtonInEndScene() {
         return endScene.getExitButton();
     }
