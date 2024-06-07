@@ -71,8 +71,8 @@ public class EndScene {
         s2 += player2Min * p2.getScoreSheet().getElementalCrests();
 
 
-        System.out.println(Arrays.toString(player1Scores));
-        System.out.println(Arrays.toString(player2Scores));
+        // System.out.println(Arrays.toString(player1Scores));
+        // System.out.println(Arrays.toString(player2Scores));
 
 
         if (s1 > s2) {
