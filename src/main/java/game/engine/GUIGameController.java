@@ -142,7 +142,7 @@ public class GUIGameController extends CLIGameController {
             currentTurn = 1;
             gameBoard.resetAllDice();
             rollDice();
-            return;
+            return val;
         }
         canUseArcaneBoost = false;
         currentTurn++;
