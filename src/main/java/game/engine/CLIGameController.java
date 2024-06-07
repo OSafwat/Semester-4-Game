@@ -1086,7 +1086,7 @@ public class CLIGameController {
                 arcaneBoostCount++;
         }
         if (arcaneBoostCount == 0)
-            throw new ExhaustedResourceException("You have no available Time Warps to use.");
+            throw new ExhaustedResourceException("You have no available Arcane Boosts to use.");
         for (ArcaneBoost arcaneBoost: arcaneBoosts) {
             if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
                 System.out.println("Hey, " + player.getName() + "!");
@@ -1576,11 +1576,11 @@ public class CLIGameController {
     public static void main (String[] args) {
         CLIGameController cli = new CLIGameController();
         GameBoard board=new GameBoard();
-        Player player=new Player(PlayerStatus.ACTIVE);
-        for(Dice die: board.getAllDice()){
-            if(!(die instanceof ArcanePrism))
-            System.out.println(die.getRealm()+" the value is "+ die.getValue()+" and the eval is " +cli.evaluateDice(player,die));
-        }
+        AI ai=new AI(PlayerStatus.ACTIVE);
+        cli.handleBonusAI(ai, RealmColor.RED);
+        
+        ScoreSheet scoreSheet = cli.getScoreSheet(ai);
+        scoreSheet.displayColoredScoreSheet();
     }
 
 
@@ -1962,7 +1962,7 @@ public class CLIGameController {
         if(value==10) return 12;
         if(value==11) return 12;
         if(value==12) return 12;*/
-        return 400;
+        return 520;
     }
     public boolean completeRowGreen(Player player,Dice dice){
         int value=dice.getValue();
@@ -2021,7 +2021,7 @@ public class CLIGameController {
 
     public int evaluateBlueDice(Player player,Dice dice){
         int value=dice.getValue();
-        return 200;
+        return 510;
     }
 
     public int evaluateMagentaDice(Player player,Dice dice){
@@ -2136,9 +2136,10 @@ public class CLIGameController {
                 System.out.println("no moves for the ai");
             }
             else{
+                AI ai=(AI) passivePlayer;
                 makeMoveAI(passivePlayer, bestMove);
+                ai.incrementTurnsPlayed();
             }
-            AI ai=(AI) passivePlayer;
             
 
 
@@ -2284,7 +2285,7 @@ public class CLIGameController {
     public Dice chooseBonusAI(Player player,RealmColor realmColor){
         switch(realmColor){
         case RED:
-            for(int i=6;i<=1;i--){
+            for(int i=6;i>=1;i--){
                 int dragonNumber=((Dragon) player.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(i);
                 RedDice redDice=new RedDice(i);
                 redDice.selectsDragon(dragonNumber+1);
@@ -2308,9 +2309,13 @@ public class CLIGameController {
                 Dice dice7 = new GreenDice(7);
                 Dice[] dice=new Dice[]{dice12,dice11,dice10,dice9,dice2,dice3,dice4,dice8,dice5,dice6,dice7};
                 for(Dice die:dice){
+                    int originalWhite = getAllDice()[5].getValue();
+                    getAllDice()[5].setValue(0);
                     if(getPossibleMovesForADie(player, die).length!=0){
+                        getAllDice()[5].setValue(originalWhite);
                         return die;
                     }
+                    getAllDice()[5].setValue(originalWhite);
                 }
                 break; 
 
@@ -2333,27 +2338,32 @@ public class CLIGameController {
             break;   
 
         case WHITE:
-            if(getPossibleMovesForADie(player, new MagentaDice(6)).length!=0){
-                return new MagentaDice(6);
-            }
-            if(getPossibleMovesForADie(player, new BlueDice(6)).length!=0){
-                return new BlueDice(6);
-            }
-            if(getPossibleMovesForADie(player, new YellowDice(6)).length!=0){
-                return new YellowDice(6);
-            }
-            for(int i=12;i<=2;i--){
-                if(getPossibleMovesForADie(player, new GreenDice(i)).length!=0){
-                    return new GreenDice(i);
+            for(int i=12;i>=2;i--){
+                int originalWhite = getAllDice()[5].getValue();
+                getAllDice()[5].setValue(0);
+                GreenDice greenDice=new GreenDice(i);
+                if(getPossibleMovesForADie(player, greenDice).length!=0){
+                    getAllDice()[5].setValue(originalWhite);
+                    return greenDice;
                 }
+                getAllDice()[5].setValue(originalWhite);
             }
-            for(int i=6;i<=1;i--){
+            for(int i=6;i>=1;i--){
                 int dragonNumber=((Dragon) player.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(i);
                 RedDice redDice=new RedDice(i);
                 redDice.selectsDragon(dragonNumber+1);
                 if(getPossibleMovesForADie(player, redDice).length!=0){
                     return redDice;
                 }
+            }
+            if(getPossibleMovesForADie(player, new YellowDice(6)).length!=0){
+                return new YellowDice(6);
+            }
+            if(getPossibleMovesForADie(player, new MagentaDice(6)).length!=0){
+                return new MagentaDice(6);
+            }
+            if(getPossibleMovesForADie(player, new BlueDice(6)).length!=0){
+                return new BlueDice(6);
             }
             break;
         }
@@ -2386,246 +2396,8 @@ public class CLIGameController {
             return false;
         }
         makeMoveAI(player, move);
+        ai.incrementTurnsPlayed();
         return true;
-
-        /*boolean canRed=false;
-        boolean canGreen=false;
-        boolean canBlue=false;
-        boolean canMagenta=false;
-        boolean canYellow=false;
-        boolean canWhite=false;
-        
-        RedDice redDice1=new RedDice();
-        Move redAiMove=null;
-        Move bestWhiteMove=null;
-        Move aiMove1=null;
-        if(turnCount!=6){//getsettings()[1] doesnt work properly here idky
-            boolean outerFlag=false;
-            //outer loop for finding the smallest value in the dice
-            for(int i=1;!outerFlag&&i<=6;i++){//break when you find a move
-
-                for(int j=0;j<avDice.size();j++){//to iterate over the dice (dont break if you find a move bc what if another dice has the same value)
-                    Dice currDice=avDice.get(j);//theres a problem with always playing the red first
-                    if(currDice.getValue()==i&& getPossibleMovesForADie(player, currDice).length!=0){
-                        outerFlag=true;
-
-                        /*if(currDice.getRealm()==RealmColor.RED){
-                            redDice1 = new RedDice(currDice.getValue());
-                            for (int k = 4; k>= 1; k--) {//to iterate over the red dice only
-                                redDice1.selectsDragon(k);
-                                Move[] redDiceDragonMoves=getPossibleMovesForADie(player, redDice1);
-                                if(redDiceDragonMoves.length!=0){
-                                    redAiMove = new Move(redDice1, redDiceDragonMoves[0].getCreature());
-                                    canRed=true;
-                                    break;
-                                }
-                            }
-                        }
-                        commenting this out until i figure out whats wrong with the red dice mahmoud
-                        else if(currDice instanceof ArcanePrism){
-                            ArrayList<Dice> whiteDie=new ArrayList<Dice>();
-                            if(getPossibleMovesForADie(player, new GreenDice(currDice.getValue())).length!=0){//PROBLEM HERE WITH ADDING THE WHITE DICE
-                                whiteDie.add(new GreenDice(currDice.getValue()));
-                            }
-                            if(getPossibleMovesForADie(player, new BlueDice(currDice.getValue())).length!=0){
-                                whiteDie.add(new BlueDice(currDice.getValue()));
-                            }
-                            if(getPossibleMovesForADie(player, new MagentaDice(currDice.getValue())).length!=0){
-                                whiteDie.add(new MagentaDice(currDice.getValue()));
-                            }
-                            if(getPossibleMovesForADie(player, new YellowDice(currDice.getValue())).length!=0){
-                                whiteDie.add(new YellowDice(currDice.getValue()));
-                            }
-
-                            Dice[] whiteDices=whiteDie.toArray(new Dice[whiteDie.size()]);
-                            bestWhiteMove=findBestMove(whiteDices, player);
-                            canWhite=true;
-                        }
-                        if(currDice instanceof GreenDice || currDice instanceof BlueDice || currDice instanceof MagentaDice || currDice instanceof YellowDice){
-                            RealmColor realm=currDice.getRealm();
-                            switch (realm) {//MAHMOUD IT NEVER PLAYS GREEN BC IT ALWAYS HAS A HIGH VALUE
-                                case GREEN:
-                                    canGreen=true;
-                                    break;
-                                case BLUE:
-                                    canBlue=true;
-                                    break;
-                                case MAGENTA:
-                                    canMagenta=true;
-                                    break;
-                                case YELLOW:
-                                    canYellow=true;
-                                    break;    
-                            }
-
-                            aiMove1=new Move(currDice, getPossibleMovesForADie(player, currDice)[0].getCreature());
-
-                        }
-                        break;
-                    }
-                }
-            }
-
-            if(canGreen){
-                testingGreen.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, aiMove1);
-                selectDice(aiMove1.getDice(), player);
-                return true;
-            }
-            if(canBlue){
-                testingBlue.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, aiMove1);
-                selectDice(aiMove1.getDice(), player);
-                return true;
-            }
-            if(canYellow){
-                testingYellow.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, aiMove1);
-                selectDice(aiMove1.getDice(), player);
-                return true;
-            }
-            if(canWhite){
-                testingWhite.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, bestWhiteMove);
-                selectDice(new ArcanePrism(bestWhiteMove.getDice().getValue()), player);
-                return true;
-            }
-            if(canMagenta){
-                testingMagenta.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, aiMove1);
-                selectDice(aiMove1.getDice(), player);
-                return true;
-                }
-            if(canRed){
-                testingRed.add(turnCount);
-                ai.incrementTurnsPlayed();
-                makeMoveAI(player, redAiMove);
-                selectDice(redDice1, player);
-                return true;
-            }
-           // return false;//WHY DOES THIS GIVE A MF ERROR BRUH LIKE WHY DOES IT NOT PLAY ANY FURTHER MOVES
-        }
-
-
-        //if it's the last turn
-        
-        ScoreSheet scoreSheet = player.getScoreSheet();
-        boolean flag=false;
-        ArrayList<Dice> actuallyAvailableDice = new ArrayList<Dice>();
-        ArrayList<Dice> availableWhiteDice=new ArrayList<Dice>();
-        //find the possible moves
-        for(Dice someDice:avDice){
-
-                if (someDice instanceof RedDice) {
-                    someDice = new RedDice(someDice.getValue());
-                    RedDice finalDie = new RedDice(someDice.getValue());
-                    for (int i = 4; i >= 1; i--) {
-                        finalDie.selectsDragon(i);
-                        Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
-                        if (dragon.getDragons()[i-1].checkMove(finalDie)) {
-                            actuallyAvailableDice.add(finalDie);
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-
-                else if(someDice instanceof ArcanePrism){
-                    RedDice whiteRedDice=new RedDice(someDice.getValue());
-                    BlueDice whiteBlueDice=new BlueDice(someDice.getValue());
-                    MagentaDice whiteMagentaDice=new MagentaDice(someDice.getValue());
-                    YellowDice whiteYellowDice=new YellowDice(someDice.getValue());
-
-                    for (int i = 4; i >= 1; i--) {
-                        whiteRedDice.selectsDragon(i);
-                        Dragon dragon = (Dragon)scoreSheet.getCreatureByColor(RealmColor.RED);
-                        if (dragon.getDragons()[i-1].checkMove(whiteRedDice)) {
-                            availableWhiteDice.add(whiteRedDice);
-                            flag = true;
-                            break;
-                        }
-                    }
-
-                    if(getPossibleMovesForADie(player, whiteBlueDice).length!=0){
-                        flag=true;
-                        availableWhiteDice.add(whiteBlueDice);
-                    }
-                    if(getPossibleMovesForADie(player, whiteMagentaDice).length!=0){
-                        flag=true;
-                        availableWhiteDice.add(whiteMagentaDice);
-                    }
-                    if(getPossibleMovesForADie(player, whiteYellowDice).length!=0){
-                        flag=true;
-                        availableWhiteDice.add(whiteYellowDice);
-                    }   
-
-                }
-
-                else if(getPossibleMovesForADie(player, someDice).length != 0){
-                    flag=true;
-                    actuallyAvailableDice.add(someDice);
-                }
-        }
-        if(flag){//problems here mahmoud
-            actuallyAvailableDice.addAll(availableWhiteDice);
-            Dice[] avDiceArray = actuallyAvailableDice.toArray(new Dice[actuallyAvailableDice.size()]);
-            Move aiMove=findBestMove(avDiceArray, player);
-            if(aiMove.getDice().getRealm()==RealmColor.RED){
-                RedDice redDice = new RedDice(aiMove.getDice().getValue());
-                for (int i = 4; i>= 1; i--) {
-                    redDice.selectsDragon(i);
-                    Move[] redDiceDragonMoves=getPossibleMovesForADie(player, redDice);
-                    if(redDiceDragonMoves.length!=0){
-                        aiMove = new Move(redDice, aiMove.getCreature());
-                        testingRed.add(turnCount);
-                        ai.incrementTurnsPlayed();
-                        makeMoveAI(player, aiMove);
-                        selectDice(redDice, player);
-                        return true;
-                    }
-                }
-            }
-            boolean whiteFlag=false;
-            ArcanePrism finalWhiteDice=null;
-            for(int i=0;i<availableWhiteDice.size();i++){
-                if(availableWhiteDice.get(i).getValue()==aiMove.getDice().getValue()&&availableWhiteDice.get(i).getRealm()==aiMove.getDice().getRealm()){
-                    finalWhiteDice=new ArcanePrism(aiMove.getDice().getValue());
-                    selectDice(finalWhiteDice, player);
-                    whiteFlag=true;
-                    break;
-                }
-            }
-            ai.incrementTurnsPlayed();
-            makeMoveAI(player, aiMove);
-            if(!whiteFlag){
-                 selectDice(aiMove.getDice(), player);
-                 RealmColor c=aiMove.getDice().getRealm();
-                 switch(c){
-                        case GREEN:
-                            testingGreen.add(turnCount);
-                            break;
-                        case BLUE:
-                            testingBlue.add(turnCount);
-                            break;
-                        case MAGENTA:
-                            testingMagenta.add(turnCount);
-                            break;
-                        case YELLOW:
-                            testingYellow.add(turnCount);
-                            break;
-                 }
-            }
-
-            else {
-                selectDice(finalWhiteDice, player);
-                testingWhite.add(turnCount);
-            }
-        }*/
     }
 
 
@@ -2770,73 +2542,71 @@ public class CLIGameController {
             else if(turn == 3){
 
             }
-        }*/
-    }
-
-    public Dice pickNthOrLessLowestDice(AI ai,Dice[] diceSet,int n){//make it return a dice array thats like everything but the max move and the one just behind it
-        //make it enter available moves only
-        ai.sortDice(diceSet);
-        Dice[] allDice=getAllDice();
-
-        for(int i=n-1;i>=0;i--){//try these promising moves first
-            if(diceSet[i].getRealm() == RealmColor.GREEN&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue())).length!=0){
-                //make a new dice with the value of both the green and white
-                return new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue());
+            }*/
             }
-            else if(diceSet[i].getRealm() == RealmColor.BLUE&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
-                return diceSet[i];
-            }
-            else if(diceSet[i].getRealm() == RealmColor.YELLOW&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
-                return diceSet[i];
-            }
-            else if(diceSet[i].getRealm() == RealmColor.MAGENTA&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
-                return diceSet[i];
-            }
-            else if(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
-                //this should return the best move that could be made with the white dice (based on the realms priority)
-                //add the green and white values in the new green dice
-                //checking if there are possible moves bc we dont know which morphing is possible
-                if(getPossibleMovesForADie(ai,new GreenDice(diceSet[i].getValue())).length!=0){
-                    return new GreenDice(diceSet[i].getValue()+allDice[1].getValue());
+            
+            public Dice pickNthOrLessLowestDice(AI ai,Dice[] diceSet,int n){//make it return a dice array thats like everything but the max move and the one just behind it
+                //make it enter available moves only
+                ai.sortDice(diceSet);
+                Dice[] allDice=getAllDice();
+                for(int i=0;i<=n-1;i++){
+            
+                    if(diceSet[i].getRealm() == RealmColor.RED){
+                        int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
+                        if(dragonNumber!=-1){// in case there are no dragons (which shouldnt happen bc i put the valid moves only in this method)
+                            RedDice redDice=new RedDice(diceSet[i].getValue());
+                            redDice.selectsDragon(dragonNumber+1);
+                            return redDice;
+                        }
+                    }
+                    if(diceSet[i].getRealm() == RealmColor.WHITE){
+                        //this should return the best move that could be made with the white dice (based on the realms priority)
+                        //add the green and white values in the new green dice
+                        //checking if there are possible moves bc we dont know which morphing is possible
+                        int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
+                        if(dragonNumber!=-1){//in case there are no dragons (which might happen here)
+                            RedDice redDice=new RedDice(diceSet[i].getValue());
+                            redDice.selectsDragon(dragonNumber+1);
+                            return redDice;
+                        }
+                        if(diceSet[i].getRealm() == RealmColor.GREEN&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue())).length!=0){
+                            //make a new dice with the value of both the green and white
+                            return new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue());
+                        }
+                        if(diceSet[i].getRealm() == RealmColor.YELLOW&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
+                            return diceSet[i];
+                        }
+            
+                    }
+                }
                 
-                }
-                if(getPossibleMovesForADie(ai,new BlueDice(diceSet[i].getValue())).length!=0){
-                    return new BlueDice(diceSet[i].getValue());
-                    
-                }
-                if(getPossibleMovesForADie(ai,new YellowDice(diceSet[i].getValue())).length!=0){
-                    return new YellowDice(diceSet[i].getValue());
-                    
-                }
-                if(getPossibleMovesForADie(ai,new MagentaDice(diceSet[i].getValue())).length!=0){
-                    return new MagentaDice(diceSet[i].getValue());
-                    
-                }
-            }
-        }
-        for(int i=n-1;i>=0;i--){
-            if(diceSet[i].getRealm() == RealmColor.WHITE){
-                //this should return the best move that could be made with the white dice (based on the realms priority)
-                //add the green and white values in the new green dice
-                //checking if there are possible moves bc we dont know which morphing is possible
-                int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
-                if(dragonNumber!=-1){//in case there are no dragons (which might happen here)
-                    RedDice redDice=new RedDice(diceSet[i].getValue());
-                    redDice.selectsDragon(dragonNumber+1);
-                    return redDice;
-                }
-
-                //okay so this shit just returns the number of the highest dragon that could be attacked with this value
-                //if it's unavailable it'll return -1
-            }
-
-            if(diceSet[i].getRealm() == RealmColor.RED){
-                int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
-                if(dragonNumber!=-1){// in case there are no dragons (which shouldnt happen bc i put the valid moves only in this method)
-                    RedDice redDice=new RedDice(diceSet[i].getValue());
-                    redDice.selectsDragon(dragonNumber+1);
-                    return redDice;
-                }
+                for(int i=n-1;i>=0;i--){//try these promising moves first
+                    if(diceSet[i].getRealm() == RealmColor.BLUE&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
+                        return diceSet[i];
+                    }
+                    if(diceSet[i].getRealm() == RealmColor.MAGENTA&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
+                        return diceSet[i];
+                    }
+                    if(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, diceSet[i]).length!=0){
+                        //this should return the best move that could be made with the white dice (based on the realms priority)
+                        //add the green and white values in the new green dice
+                        //checking if there are possible moves bc we dont know which morphing is possible
+                        if(getPossibleMovesForADie(ai,new GreenDice(diceSet[i].getValue())).length!=0){
+                            return new GreenDice(diceSet[i].getValue()+allDice[1].getValue());
+                        
+                        }
+                        if(getPossibleMovesForADie(ai,new BlueDice(diceSet[i].getValue())).length!=0){
+                            return new BlueDice(diceSet[i].getValue());
+                            
+                        }
+                        if(getPossibleMovesForADie(ai,new YellowDice(diceSet[i].getValue())).length!=0){
+                            return new YellowDice(diceSet[i].getValue());
+                            
+                        }
+                        if(getPossibleMovesForADie(ai,new MagentaDice(diceSet[i].getValue())).length!=0){
+                            return new MagentaDice(diceSet[i].getValue());
+                            
+                        }
             }
         }
 
