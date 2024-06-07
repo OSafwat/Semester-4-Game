@@ -43,6 +43,26 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
 }
 
+.endText{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 70px;
+    -fx-padding: 10px 20px;
+    -fx-margin: 10px 0;
+    -fx-text-transform: uppercase;
+    -fx-cursor: hand;
+    -fx-font-family: 'serif';
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
+}
+.sparkling-text {
+    -fx-font-size: 24px;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff00ff, #00ffff);
+    -fx-background-clip: text;
+    -fx-text-fill: black;
+    -fx-animation: sparkle 2s infinite;
+}
 /* Button Styles */
 .button {
     -fx-background-color: transparent;

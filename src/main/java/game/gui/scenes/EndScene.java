@@ -5,8 +5,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.PopupWindow.AnchorLocation;
 
 import java.util.Arrays;
 
@@ -14,33 +16,39 @@ public class EndScene {
     private Scene scene;
     private int winnerPlayerScore;
     private String winnerPlayerName;
-    private Button exitButton;
+    private Label exitButton;
     Player p1, p2;
 
     public EndScene(Player p1, Player p2) {
         setPlayers(p1, p2);
-        StackPane root = new StackPane();
+        AnchorPane root = new AnchorPane();
+        root.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+        
         ImageView backgroundImageView =  new ImageView(new Image(getClass().getResourceAsStream("/images/EndBg.jpg")));
         backgroundImageView.setFitWidth(1920);
         backgroundImageView.setFitHeight(1080);
         root.getChildren().add(backgroundImageView);
 
-        VBox vbox = new VBox();
 
         setWinnerPlayerStats();
 
         Label label = new Label(winnerPlayerName + " Wins! Score: " + winnerPlayerScore);
         label.setStyle("-fx-alignment: center;");
-        label.setTextFill(javafx.scene.paint.Color.WHITE);
-        label.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        vbox.getChildren().add(label);
+        // label.setTextFill(javafx.scene.paint.Color.WHITE);
+        // label.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        label.getStyleClass().add("endText");
+        label.setLayoutX(400);
+        label.setLayoutY(200);
+        root.getChildren().add(label);
 
-        exitButton = new Button("Exit");
-        exitButton.setPrefSize(150, 70);
-        exitButton.setTextFill(javafx.scene.paint.Color.WHITE);
-        vbox.getChildren().add(exitButton);
 
-        root.getChildren().add(vbox);
+        exitButton = new Label("Exit");
+        exitButton.getStyleClass().add("endText");
+
+        exitButton.setLayoutX(400);
+        exitButton.setLayoutY(500);        
+        root.getChildren().add(exitButton);
+
 
         scene = new Scene(root, 1920, 1080);
     }
@@ -85,7 +93,7 @@ public class EndScene {
         return scene;
     }
 
-    public Button getExitButton() {
+    public Label getExitButton() {
         return exitButton;
     }
 }

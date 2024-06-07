@@ -389,6 +389,8 @@ public class DiceRealms extends Application {
             handleMove(1,0, guiGameController.getValue("heart"));
             sceneController.closeDragonPartSelectionMenu();
         });
+
+        sceneController.endScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());
     }
 
     public void initDragonEventListeners() {
@@ -615,6 +617,7 @@ public class DiceRealms extends Application {
                     if (!end) {
                         sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                         primaryStage.setScene(sceneController.endScene.getExitScene());
+                        sceneController.endScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());
                         return;
                     }
                     try {
@@ -649,6 +652,7 @@ public class DiceRealms extends Application {
             if (!end) {
                 sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                 primaryStage.setScene(sceneController.endScene.getExitScene());
+                sceneController.endScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());
                 return;
             }
             try {
@@ -1334,6 +1338,7 @@ public class DiceRealms extends Application {
             if (!end) {
                 sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                 primaryStage.setScene(sceneController.endScene.getExitScene());
+                sceneController.endScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());
                 return;
             }
             try {

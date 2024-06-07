@@ -12,6 +12,7 @@ import game.gui.scenes.OptionsMenu.RoundRewardsConfigScene;
 import game.gui.scenes.OptionsMenu.YellowConfigScene;
 import game.gui.scenes.OptionsMenu.YellowMultipliersConfigScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
@@ -355,7 +356,7 @@ public class SceneController {
     }
 
     @SuppressWarnings("exports")
-    public Button getExitButtonInEndScene() {
+    public Label getExitButtonInEndScene() {
         return endScene.getExitButton();
     }
 }
