@@ -352,8 +352,17 @@ public class DiceRealms extends Application {
 
 
         sceneController.getOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
+        sceneController.getSaveRoundSettingsConfig().setOnMouseClicked(e -> sceneController.configScene.updateRoundSettingsConfigFile());
 
         sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));
+        sceneController.getRoundRewardsConfigButton().setOnMouseClicked(e -> {
+            primaryStage.setScene(sceneController.roundRewardsConfigScene.getRoundRewardsConfigScene());
+            try {
+                sceneController.roundRewardsConfigScene.updateNumberOfRounds();
+            } catch (NumberFormatException ex) {
+                // Do nothing
+            }
+        });
         sceneController.getReturnFromOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.mainMenuScene.getMainMenuScene()));
         sceneController.getReturnToOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
 
