@@ -1,5 +1,4 @@
-// package game.gui.scenes;
-
+package game.gui.scenes;
 import game.engine.Player;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
