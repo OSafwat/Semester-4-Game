@@ -49,7 +49,7 @@ public class DiceRealms extends Application {
         primaryStage.setX(0);
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/wizard hat.png"))));
 
-        sceneController = new SceneController();
+        sceneController = new SceneController(guiGameController.getPlayer1(), guiGameController.getPlayer2());
         setupGame();
         primaryStage.setResizable(true);
         primaryStage.setFullScreen(true);
@@ -424,6 +424,8 @@ public class DiceRealms extends Application {
             sceneController.redScene.showDragonPartSelectionMenu();
             //handle dragon part
         });
+
+        sceneController.getExitButtonInEndScene().setOnMouseClicked(e -> primaryStage.close());
     }
 
     public void initDiceAndRerollButtonEventListeners() {
@@ -646,7 +648,11 @@ public class DiceRealms extends Application {
                     canReroll = false;
                     int oldRoundCount = guiGameController.getCurrentRound();
                     int oldTurnCount = guiGameController.getCurrentTurn();
-                    guiGameController.incrementTurnCount();
+                    boolean end = guiGameController.incrementTurnCount();
+                    if (!end) {
+                        primaryStage.setScene(sceneController.endScene.getExitScene());
+                        return;
+                    }
                     try {
                         int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
                         if (value == 0)
@@ -674,7 +680,11 @@ public class DiceRealms extends Application {
             canReroll = false;
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
-            guiGameController.incrementTurnCount();
+            boolean end = guiGameController.incrementTurnCount();
+            if (!end) {
+                primaryStage.setScene(sceneController.endScene.getExitScene());
+                return;
+            }
             try {
                 int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
                 if (value == 0)
@@ -1172,7 +1182,11 @@ public class DiceRealms extends Application {
         if (indicator != -1) {
             int oldRoundCount = guiGameController.getCurrentRound();
             int oldTurnCount = guiGameController.getCurrentTurn();
-            guiGameController.incrementTurnCount();
+            boolean end = guiGameController.incrementTurnCount();
+            if (!end) {
+                primaryStage.setScene(sceneController.endScene.getExitScene());
+                return;
+            }
             try {
                 int value = guiGameController.getAllPossibleMovesForDiceSet(guiGameController.getCurrentPlayer(), guiGameController.getCurrentPlayer().getPlayerStatus().equals(PlayerStatus.ACTIVE) ? guiGameController.getAvailableDice() : guiGameController.getForgottenRealmDice()).length;
                 if (value == 0)
