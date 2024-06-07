@@ -85,6 +85,7 @@ public class AI extends Player implements Cloneable {
     private ArrayList<Dice> playedDice;
     private ArrayList<Dice> usedArcaneDice;
     private int turnsPlayed;
+    public int arcanesUsed;
 
     public AI(PlayerStatus status){
         super();
@@ -104,6 +105,9 @@ public class AI extends Player implements Cloneable {
     }
     public int getTurnsPlayed(){
         return this.turnsPlayed;
+    }
+    public void incrementArcaneBoosts(){
+        arcanesUsed++;
     }
     public int incrementTurnsPlayed(){
         return this.turnsPlayed++;

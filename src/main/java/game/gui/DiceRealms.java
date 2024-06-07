@@ -30,7 +30,6 @@ import javafx.scene.effect.Glow;
 
 import java.util.*;
 
-
 public class DiceRealms extends Application {
     GUIGameController guiGameController;
     SceneController sceneController;
@@ -225,6 +224,7 @@ public class DiceRealms extends Application {
             handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
     }
+
     public void handleAvailabilityCue(Player player,Dice [] diceSet){
 
         // Create a drop shadow effect with a golden color
