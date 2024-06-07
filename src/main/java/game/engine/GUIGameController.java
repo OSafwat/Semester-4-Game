@@ -150,7 +150,6 @@ public class GUIGameController extends CLIGameController {
             currentTurn = -1;
             currentPlayer = getPassivePlayer();
         }
-        System.out.print(currentTurn + "   " + currentRound + "    " + currentPlayer.getName());
         return true;
     }
 
@@ -261,7 +260,6 @@ public class GUIGameController extends CLIGameController {
 
     public int getDragonPartForThisDragonAndThisValue(int dragon, int diceValue) {
         Dragon[] dragons = ((Dragon) currentPlayer.getScoreSheet().getCreatureByColor(RealmColor.RED)).getDragons();
-        System.out.println("gui here, " + diceValue);
         Dragon requiredDragon = dragons[dragon - 1];
         if (Objects.equals(requiredDragon.getFace(), diceValue))
             return 0;

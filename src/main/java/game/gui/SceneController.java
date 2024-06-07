@@ -51,7 +51,7 @@ public class SceneController {
     @SuppressWarnings("exports")
     public EndScene endScene;
 
-    public SceneController (@SuppressWarnings("exports") Player p1, @SuppressWarnings("exports") Player p2) {
+    public SceneController () {
         redScene = new RedScene();
         greenScene = new GreenScene();
         blueScene = new BlueScene();
@@ -68,6 +68,9 @@ public class SceneController {
         magentaConfigScene = new MagentaConfigScene();
         yellowConfigScene = new YellowConfigScene();
         yellowMultipliersConfigScene = new YellowMultipliersConfigScene();
+    }
+
+    public void createEndScene (Player p1, Player p2) {
         endScene = new EndScene(p1, p2);
     }
 
@@ -206,7 +209,6 @@ public class SceneController {
         if (count == 0) {
             path = null;
         }
-        System.out.println(path);
         greenScene.changeGreenSceneView(path);
     }
 

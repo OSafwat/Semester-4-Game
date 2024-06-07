@@ -48,7 +48,6 @@ public class DiceRealms extends Application {
         primaryStage.setX(0);
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/wizard hat.png"))));
 
-        sceneController = new SceneController(guiGameController.getPlayer1(), guiGameController.getPlayer2());
         setupGame();
         primaryStage.setResizable(true);
         primaryStage.setFullScreen(true);
@@ -72,6 +71,8 @@ public class DiceRealms extends Application {
         awaitingInput = false;
         bonusValue = -1;
         arcaneValue = -1;
+        sceneController = new SceneController();
+        sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
         primaryStage.setScene(sceneController.mainMenuScene.createMainScene());
         sceneController.boardScene.makeboardScene(getDicePNGs(guiGameController.getAvailableDice()));
         sceneController.redScene.createScene();
@@ -305,7 +306,14 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getStartGameButton().setOnMouseClicked(e -> startGame());
         sceneController.boardScene.getLeftGrimoire().setOnMouseClicked(e ->   openLeftGrimoire(sceneController.boardScene.root));  
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
-        sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> startGame());
+        sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> {
+            startGame();
+            try {
+                mediaPlayer = new MediaPlayer(new Media(Objects.requireNonNull(getClass().getResource("/audio/MaybeGameTheme3.mp3")).toURI().toString()));
+            } catch (URISyntaxException ex) {
+                //
+            }
+        });
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         initDiceAndRerollButtonEventListeners();
         sceneController.getPhoenix().setOnMouseClicked(e -> handleMove(4, 0, 0));
@@ -958,6 +966,7 @@ public class DiceRealms extends Application {
         }
         else
             guiGameController.handleRoundRewards(guiGameController.getCurrentPlayer(), currentReward);
+        sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
     }
 
     public void handlePlayerNameInputs() {
