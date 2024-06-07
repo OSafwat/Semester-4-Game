@@ -2,14 +2,16 @@ package game.exceptions;
 
 public class InvalidMoveException extends Exception{
 
-    private String message;
-
+    String message;
     public InvalidMoveException() {
-        message = "";
     }
 
     public InvalidMoveException(String message) {
         this.message = message;
     }
 
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

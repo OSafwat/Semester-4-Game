@@ -12,6 +12,7 @@ import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -231,13 +232,12 @@ public class Hydra extends Creature{
                 isRewardOnSecondHead = (i>5);
             }
         }
-
-        /*if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
+        if(this.serpent.isEmpty())
+            return 1;
+        else if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
             return 1;
         else   
-            return 0;*/
-        //temp bc error
-        return 0;
+            return 0;
     }
 
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.
@@ -271,11 +271,11 @@ public class Hydra extends Creature{
 
     // Method that attacks the top hydra head of possible, and updates the variables of class to match that.
     @Override
-    public boolean makeMove(Dice dice) throws BonusException{
+    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         int diceValue = dice.getValue();
 
         if(this.serpent.isEmpty() || !checkMove(dice)) {
-            return false;
+            throw new InvalidMoveException();
         }
 
         this.serpent.pop();

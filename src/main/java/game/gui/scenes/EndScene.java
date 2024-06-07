@@ -1,95 +1,84 @@
 // package game.gui.scenes;
 
-// import game.engine.GUIGameController;
-// import game.engine.Player;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.Label;
-// import javafx.scene.image.Image;
-// import javafx.scene.image.ImageView;
-// import javafx.scene.layout.AnchorPane;
-// import javafx.scene.text.Font;
+import game.engine.Player;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
-// public class EndScene {
-//     private AnchorPane root;
-//     public void createEndScene(Player p1, Player p2) {
-//         root =new AnchorPane();
-//         ImageView imageView =  new ImageView(new Image(getClass().getResourceAsStream("/images/EndBg.jpg")));
-//         imageView.setFitWidth(607);
-//         imageView.setFitHeight(428);
-//         imageView.setLayoutX(-1);
-//         root.getChildren().add(imageView);
+public class EndScene {
+    private Scene scene;
+    private int winnerPlayerScore;
+    private String winnerPlayerName;
+    private Button exitButton;
+    Player p1, p2;
 
-//         Button exitButton = new Button("Exit");
-//         exitButton.setLayoutX(239);
-//         exitButton.setLayoutY(347);
-//         exitButton.setPrefSize(152, 69);
-//         exitButton.setStyle("-fx-border-radius: 100px; -fx-background-color: #18C25E; -fx-background-radius: 20px;");
-//         exitButton.setTextFill(javafx.scene.paint.Color.WHITE);
-//         exitButton.setFont(Font.font("Cooper Black", 33));
-//         root.getChildren().add(exitButton);
+    public EndScene(Player p1, Player p2) {
+        setPlayers(p1, p2);
+        StackPane root = new StackPane();
+        ImageView backgroundImageView =  new ImageView(new Image(getClass().getResourceAsStream("/images/EndBg.jpg")));
+        backgroundImageView.setFitWidth(1920);
+        backgroundImageView.setFitHeight(1080);
+        root.getChildren().add(backgroundImageView);
 
-//         Label winnerLabel = new Label();
-//         String winner = String winnerPlayer( p1, p2);
-//         winnerLabel.setText(winner);
-//         winnerLabel.setLayoutX(192);
-//         winnerLabel.setLayoutY(194);
-//         winnerLabel.setPrefSize(221, 41);
-//         winnerLabel.setStyle("-fx-alignment: center;");
-//         winnerLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-//         winnerLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-//         winnerLabel.setFont(Font.font("Cooper Black", 36));
-//         root.getChildren().add(winnerLabel);
+        VBox vbox = new VBox();
 
-//         Label winsLabel = new Label("Wins!");
-//         winsLabel.setLayoutX(227);
-//         winsLabel.setLayoutY(244);
-//         winsLabel.setPrefSize(152, 41);
-//         winsLabel.setStyle("-fx-alignment: center;");
-//         winsLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-//         winsLabel.setFont(Font.font("Cooper Black", 36));
-//         root.getChildren().add(winsLabel);
+        setWinnerPlayerStats();
 
-//         Label scoreLabel = new Label("Score:");
+        Label label = new Label(winnerPlayerName + " Wins! Score: " + winnerPlayerScore);
+        label.setStyle("-fx-alignment: center;");
+        label.setTextFill(javafx.scene.paint.Color.WHITE);
+        label.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        vbox.getChildren().add(label);
 
+        exitButton = new Button("Exit");
+        exitButton.setPrefSize(150, 70);
+        exitButton.setTextFill(javafx.scene.paint.Color.WHITE);
+        vbox.getChildren().add(exitButton);
 
-//         scoreLabel.setLayoutX(192);
-//         scoreLabel.setLayoutY(292);
-//         scoreLabel.setPrefSize(126, 41);
-//         scoreLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-//         scoreLabel.setFont(Font.font("Cooper Black", 36));
-//         root.getChildren().add(scoreLabel);
+        root.getChildren().add(vbox);
 
-//         Label scoreValueLabel = new Label();
-//         int score = winnerPlayerScore(p1, p2);
-//         String scoreStr =""+score;
-//         scoreValueLabel.setText(scoreStr);
-//         scoreValueLabel.setLayoutX(332);
-//         scoreValueLabel.setLayoutY(292);
-//         scoreValueLabel.setPrefSize(95, 41);
-//         scoreValueLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-//         scoreValueLabel.setFont(Font.font("Cooper Black", 36));
-//         root.getChildren().add(scoreValueLabel);
-//     }
+        scene = new Scene(root, 1920, 1080);
+    }
 
-//     public static  String winnerPlayer(Player p1, Player p2){
-//         int s1=p1.getScoreSheet().getGscore().gettotalscore();
-//         int s2=p2.getscoresheet().getgamescore().gettotalscore();
-//         if (s1>s2)
-//             return p1.getName();
-//         return p2.getName();
+    public void setWinnerPlayerStats() {
+        int s1 = 0, s2 = 0;
+        int player1Min = Integer.MAX_VALUE, player2Min = Integer.MAX_VALUE;
+        int[] player1Scores = p1.getScoreSheet().getScores(), player2Scores  = p2.getScoreSheet().getScores();
 
+        for (int i = 0; i < player1Scores.length; i++) {
+            s1 += player1Scores[i];
+            s2 += player2Scores[i];
 
-//     }
-//     public static  int winnerPlayerScore(Player p1, Player p2){
-//         int s1=p1.getscoresheet().getgamescore().gettotalscore();
-//         int s2=p2.getscoresheet().getgamescore().gettotalscore();
-//         if (s1>s2)
-//             return s1;
-//         return s2;
+            player1Min = Math.min(player1Min, player1Scores[i]);
+            player2Min = Math.min(player2Min, player2Scores[i]);
+        }
+        
+        s1 += player1Min * p1.getScoreSheet().getElementalCrests();
+        s2 += player2Min * p2.getScoreSheet().getElementalCrests();
 
+        if (s1 > s2) {
+            winnerPlayerName = p1.getName();
+            winnerPlayerScore = s1;
+        } else {
+            winnerPlayerName = p2.getName();
+            winnerPlayerScore = s2;
+        }
+    }
 
-//     }
+    public void setPlayers(Player p1, Player p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
 
+    public Scene getExitScene() {
+        return scene;
+    }
 
-
-// }
+    public Button getExitButton() {
+        return exitButton;
+    }
+}

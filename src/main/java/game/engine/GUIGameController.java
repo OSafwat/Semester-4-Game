@@ -1,5 +1,6 @@
 package game.engine;
 
+import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
 import game.creatures.Dragon;
 import game.creatures.Hydra;
@@ -130,15 +131,18 @@ public class GUIGameController extends CLIGameController {
             return new InvalidMoveException();
     }
 
-    public void incrementTurnCount() {
+    public boolean incrementTurnCount() {
         if (currentTurn == -1) {
             canUseArcaneBoost = true;
             switchPlayer();
             currentPlayer = getActivePlayer();
+            boolean val = true;
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
-                incrementRoundCount();
+                val = incrementRoundCount();
             currentTurn = 1;
-            return;
+            gameBoard.resetAllDice();
+            rollDice();
+            return val;
         }
         canUseArcaneBoost = false;
         currentTurn++;
@@ -147,10 +151,15 @@ public class GUIGameController extends CLIGameController {
             currentPlayer = getPassivePlayer();
         }
         System.out.print(currentTurn + "   " + currentRound + "    " + currentPlayer.getName());
+        return true;
     }
 
-    public void incrementRoundCount() {
+    public boolean incrementRoundCount() {
         currentRound++;
+        if (currentRound == (maxRounds + 1)) {
+            return false;
+        }
+        return true;
     }
 
     public String[] getDragonPaths() {
@@ -263,6 +272,32 @@ public class GUIGameController extends CLIGameController {
         if (Objects.equals(requiredDragon.getHeart(), diceValue))
             return 3;
         return -1;
+    }
+
+    public void handleArcaneBoosts(Player player) throws ExhaustedResourceException{
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus() == RewardStates.ACQUIRED) {
+                arcaneBoost.setStatus(RewardStates.USED);
+                return;
+            }
+        }
+        throw new ExhaustedResourceException("No available Arcane Boosts!");
+    }
+
+    public int getMaxTurns() {
+        return maxTurns;
+    }
+
+    public void restoreArcaneBoost(Player player) {
+        ArrayList<ArcaneBoost> arcaneBoosts = player.getArcaneBoosts();
+        for (ArcaneBoost arcaneBoost: arcaneBoosts) {
+            if (arcaneBoost.getStatus().equals(RewardStates.USED))
+            {
+                arcaneBoost.setStatus(RewardStates.ACQUIRED);
+                return;
+            }
+        }
     }
 }
 

@@ -2,6 +2,7 @@ package game.dice;
 
 import game.engine.enums.RealmColor;
 
+@SuppressWarnings("rawtypes")
 public class Dice implements Comparable{
     private int num;
     public void rollDice(){

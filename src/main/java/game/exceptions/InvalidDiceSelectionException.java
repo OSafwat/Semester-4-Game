@@ -2,14 +2,16 @@ package game.exceptions;
 
 public class InvalidDiceSelectionException extends Exception {
 
-    private String message;
-
+    String message;
     public InvalidDiceSelectionException() {
-        message = "";
     }
 
     public InvalidDiceSelectionException(String message) {
         this.message = message;
     }
 
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

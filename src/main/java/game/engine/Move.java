@@ -1,11 +1,8 @@
 package game.engine;
 import game.creatures.*;
 import game.dice.*;
-import game.engine.enums.RealmColor;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
+@SuppressWarnings("rawtypes")
 public class Move implements Comparable{
     Creature creature;
     Dice dice;

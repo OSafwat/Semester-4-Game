@@ -2,15 +2,16 @@ package game.exceptions;
 
 public class NoAvailableMovesException extends Exception{
 
-    private String message;
-
+    String message;
     public NoAvailableMovesException() {
-        message = "";
     }
 
     public NoAvailableMovesException(String message) {
         this.message = message;
     }
 
-
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

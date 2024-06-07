@@ -1,13 +1,16 @@
 package game.exceptions;
 
 public class PlayerActionException extends Exception{
-    private String message;
-
+    String message;
     public PlayerActionException() {
-        message = "";
     }
 
     public PlayerActionException(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 }

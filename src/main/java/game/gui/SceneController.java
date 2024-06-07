@@ -1,5 +1,6 @@
 package game.gui;
 
+import game.engine.Player;
 import game.gui.scenes.*;
 import game.gui.scenes.OptionsMenu.BlueConfigScene;
 import game.gui.scenes.OptionsMenu.ConfigScene;
@@ -7,32 +8,48 @@ import game.gui.scenes.OptionsMenu.GreenConfigScene;
 import game.gui.scenes.OptionsMenu.MagentaConfigScene;
 import game.gui.scenes.OptionsMenu.OptionsScene;
 import game.gui.scenes.OptionsMenu.RedConfigScene;
+import game.gui.scenes.OptionsMenu.RoundRewardsConfigScene;
 import game.gui.scenes.OptionsMenu.YellowConfigScene;
 import game.gui.scenes.OptionsMenu.YellowMultipliersConfigScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.MediaPlayer;
-
-import java.io.IOException;
 
 public class SceneController {
+    @SuppressWarnings("exports")
     public RedScene redScene;
+    @SuppressWarnings("exports")
     public GreenScene greenScene;
+    @SuppressWarnings("exports")
     public BlueScene blueScene;
+    @SuppressWarnings("exports")
     public MagentaScene magentaScene;
+    @SuppressWarnings("exports")
     public YellowScene yellowScene;
+    @SuppressWarnings("exports")
     public BoardScene boardScene;
+    @SuppressWarnings("exports")
     public MainMenuScene mainMenuScene;
+    @SuppressWarnings("exports")
     public OptionsScene optionsScene;
+    @SuppressWarnings("exports")
     public ConfigScene configScene;
+    @SuppressWarnings("exports")
+    public RoundRewardsConfigScene roundRewardsConfigScene;
     public RedConfigScene redConfigScene;
+    @SuppressWarnings("exports")
     public GreenConfigScene greenConfigScene;
+    @SuppressWarnings("exports")
     public BlueConfigScene blueConfigScene;
+    @SuppressWarnings("exports")
     public MagentaConfigScene magentaConfigScene;
+    @SuppressWarnings("exports")
     public YellowConfigScene yellowConfigScene;
+    @SuppressWarnings("exports")
     public YellowMultipliersConfigScene yellowMultipliersConfigScene;
+    public EndScene endScene;
 
-    public SceneController () {
+    public SceneController (Player p1, Player p2) {
         redScene = new RedScene();
         greenScene = new GreenScene();
         blueScene = new BlueScene();
@@ -42,12 +59,14 @@ public class SceneController {
         mainMenuScene = new MainMenuScene();
         optionsScene = new OptionsScene();
         configScene = new ConfigScene();
+        roundRewardsConfigScene = new RoundRewardsConfigScene();
         redConfigScene = new RedConfigScene();
         greenConfigScene = new GreenConfigScene();
         blueConfigScene = new BlueConfigScene();
         magentaConfigScene = new MagentaConfigScene();
         yellowConfigScene = new YellowConfigScene();
         yellowMultipliersConfigScene = new YellowMultipliersConfigScene();
+        endScene = new EndScene(p1, p2);
     }
 
     public ImageView getRedDice () {
@@ -78,26 +97,32 @@ public class SceneController {
         return magentaScene.getPhoenix();
     }
 
+    @SuppressWarnings("exports")
     public Button getOptionsButton() {
         return mainMenuScene.getOptionsButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getStartGameButton() {
         return mainMenuScene.getStartGameButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getPvAIButton() {
         return mainMenuScene.getPvAIButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getPvPButton() {
         return mainMenuScene.getPvPButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getGoBackButton() {
         return mainMenuScene.getGoBackButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getExitButton() {
         return mainMenuScene.getExitButton();
     }
@@ -234,6 +259,7 @@ public class SceneController {
         redScene.changeRedSceneView(paths);
     }
 
+    @SuppressWarnings("exports")
     public Button getRollDiceButton() {
         return boardScene.getRollDiceButton();
     }
@@ -242,38 +268,62 @@ public class SceneController {
         return boardScene.getTimeWarp();
     }
 
+    @SuppressWarnings("exports")
     public Button getReturnFromOptionsButton() {
         return optionsScene.getReturnFromOptionsButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getGameConfigurationButton() {
         return optionsScene.getGameConfigButton();
+    }
+
+    public Button getRoundRewardsConfigButton() {
+        return configScene.getRoundRewardsConfigButton();
+    }
+
+    public TextField getNumberOFRoundsField() {
+        return configScene.getNumberOFRoundsField();
+    }
+
+    public TextField getNumberOfTurnsPerRoundField() {
+        return configScene.getNumberOfTurnsPerRoundField();
+    }
+
+    public Button getSaveRoundSettingsConfig() {
+        return configScene.getSaveRoundSettingsConfig();
     }
 
     public Button getReturnToOptionsButton() {
         return configScene.getReturnToOptionsButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getRedConfigButton() {
         return configScene.getRedConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getGreenConfigButton() {
         return configScene.getGreenConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getBlueConfigButton() {
         return configScene.getBlueConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getMagentaConfigButton() {
         return configScene.getMagentaConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getYellowConfigButton() {
         return configScene.getYellowConfigButton();
     }
 
+    @SuppressWarnings("exports")
     public Button getYellowMultiplierConfigButton() {
         return configScene.getYellowMultiplierConfigButton();
     }
@@ -285,10 +335,15 @@ public class SceneController {
     //     return configButtons;
     // }
 
+    @SuppressWarnings("exports")
     public Button[] getReturnToConfigSceneButtons() {
         Button[] saveButtons = {redConfigScene.getReturnToConfigSceneButton(), greenConfigScene.getReturnToConfigSceneButton(), blueConfigScene.getReturnToConfigSceneButton(), magentaConfigScene.getReturnToConfigSceneButton(),
-            yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton()};
+            yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton(), roundRewardsConfigScene.getReturnToConfigSceneButton()};
 
         return saveButtons;
+    }
+
+    public Button getExitButtonInEndScene() {
+        return endScene.getExitButton();
     }
 }
