@@ -7,9 +7,11 @@ import game.gui.scenes.OptionsMenu.GreenConfigScene;
 import game.gui.scenes.OptionsMenu.MagentaConfigScene;
 import game.gui.scenes.OptionsMenu.OptionsScene;
 import game.gui.scenes.OptionsMenu.RedConfigScene;
+import game.gui.scenes.OptionsMenu.RoundRewardsConfigScene;
 import game.gui.scenes.OptionsMenu.YellowConfigScene;
 import game.gui.scenes.OptionsMenu.YellowMultipliersConfigScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
 
@@ -25,6 +27,7 @@ public class SceneController {
     public MainMenuScene mainMenuScene;
     public OptionsScene optionsScene;
     public ConfigScene configScene;
+    public RoundRewardsConfigScene roundRewardsConfigScene;
     public RedConfigScene redConfigScene;
     public GreenConfigScene greenConfigScene;
     public BlueConfigScene blueConfigScene;
@@ -42,6 +45,7 @@ public class SceneController {
         mainMenuScene = new MainMenuScene();
         optionsScene = new OptionsScene();
         configScene = new ConfigScene();
+        roundRewardsConfigScene = new RoundRewardsConfigScene();
         redConfigScene = new RedConfigScene();
         greenConfigScene = new GreenConfigScene();
         blueConfigScene = new BlueConfigScene();
@@ -250,6 +254,22 @@ public class SceneController {
         return optionsScene.getGameConfigButton();
     }
 
+    public Button getRoundRewardsConfigButton() {
+        return configScene.getRoundRewardsConfigButton();
+    }
+
+    public TextField getNumberOFRoundsField() {
+        return configScene.getNumberOFRoundsField();
+    }
+
+    public TextField getNumberOfTurnsPerRoundField() {
+        return configScene.getNumberOfTurnsPerRoundField();
+    }
+
+    public Button getSaveRoundSettingsConfig() {
+        return configScene.getSaveRoundSettingsConfig();
+    }
+
     public Button getReturnToOptionsButton() {
         return configScene.getReturnToOptionsButton();
     }
@@ -287,7 +307,7 @@ public class SceneController {
 
     public Button[] getReturnToConfigSceneButtons() {
         Button[] saveButtons = {redConfigScene.getReturnToConfigSceneButton(), greenConfigScene.getReturnToConfigSceneButton(), blueConfigScene.getReturnToConfigSceneButton(), magentaConfigScene.getReturnToConfigSceneButton(),
-            yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton()};
+            yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton(), roundRewardsConfigScene.getReturnToConfigSceneButton()};
 
         return saveButtons;
     }
