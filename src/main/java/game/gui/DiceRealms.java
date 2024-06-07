@@ -40,6 +40,7 @@ public class DiceRealms extends Application {
     boolean isRoundRewardBonus;
     boolean canTimeWarp;
     int chosenRedValue;
+    boolean infoFirstTime;
     @Override
     public void start(Stage primaryStage) {
         guiGameController = new GUIGameController();
@@ -80,6 +81,7 @@ public class DiceRealms extends Application {
         sceneController.blueScene.createScene();
         sceneController.magentaScene.createScene();
         sceneController.yellowScene.createScene();
+        sceneController.howToPlayScene.createHelpScreen();
         initEventListeners();
         primaryStage.show();
         isForgotten = false;
@@ -351,9 +353,12 @@ public class DiceRealms extends Application {
         sceneController.greenScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.greenScene.root));        
         sceneController.yellowScene.getLeftGrimoire().setOnMousePressed(e -> openLeftGrimoire(sceneController.yellowScene.root));
 
+        sceneController.howToPlayScene.getGoBackButton().setOnMouseClicked(e -> loadDiceBoard());
 
-
-        sceneController.getOptionsButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.optionsScene.getOptionsScene()));
+        sceneController.boardScene.getInfoButton().setOnMouseClicked(e -> {primaryStage.setScene(sceneController.howToPlayScene.createHelpScreen());
+            sceneController.howToPlayScene.getGoBackButton().setOnMouseClicked(e1 -> loadDiceBoard());
+            });
+        sceneController.getOptionsButton().setOnMouseClicked(e ->primaryStage.setScene(sceneController.optionsScene.getOptionsScene()) );
         sceneController.getSaveRoundSettingsConfig().setOnMouseClicked(e -> sceneController.configScene.updateRoundSettingsConfigFile());
 
         sceneController.getGameConfigurationButton().setOnMouseClicked(e -> primaryStage.setScene(sceneController.configScene.getConfigScene()));

@@ -26,7 +26,8 @@ public class BoardScene{
     ImageView magentaDice;
     ImageView yellowDice;
     ImageView arcaneDice;
-    ImageView wizardHat;    // will be used to switch to information menu or to display information popup
+    ImageView wizardHat = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/wizard hat.png"))));
+        // will be used to switch to information menu or to display information popup
     ImageView leftGrimoire = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/blue grimoire.png"))));
     ImageView player1TimeWarpButton;
     ImageView player1ArcaneBoostButton;
@@ -51,6 +52,9 @@ public class BoardScene{
 
     public ImageView getPlayer2ArcaneBoostButton() {
         return player2ArcaneBoostButton;
+    }
+    public ImageView getInfoButton(){
+        return wizardHat;
     }
 
     public void makeboardScene(String[] dicePNGs) {
@@ -194,7 +198,6 @@ public class BoardScene{
         // rightGrimoire.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
 
         // ImageView for Wizard Hat
-        wizardHat = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/wizard hat.png"))));
         wizardHat.setFitHeight(200);
         wizardHat.setFitWidth(200);
         wizardHat.setLayoutX(834);

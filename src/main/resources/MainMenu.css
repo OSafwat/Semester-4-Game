@@ -33,6 +33,16 @@
     -fx-display: inline-block;
 }
 
+.helpText{
+    -fx-background-color: transparent; 
+    -fx-background: transparent; 
+    -fx-control-inner-background: transparent; 
+    -fx-text-fill: black;
+    -fx-font-size: 35;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
+}
+
 /* Button Styles */
 .button {
     -fx-background-color: transparent;

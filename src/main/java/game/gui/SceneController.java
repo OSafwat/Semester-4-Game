@@ -48,6 +48,7 @@ public class SceneController {
     @SuppressWarnings("exports")
     public YellowMultipliersConfigScene yellowMultipliersConfigScene;
     public EndScene endScene;
+    public HowToPlayScene howToPlayScene;
 
     public SceneController (Player p1, Player p2) {
         redScene = new RedScene();
@@ -67,6 +68,7 @@ public class SceneController {
         yellowConfigScene = new YellowConfigScene();
         yellowMultipliersConfigScene = new YellowMultipliersConfigScene();
         endScene = new EndScene(p1, p2);
+        howToPlayScene = new HowToPlayScene();
     }
 
     public ImageView getRedDice () {
