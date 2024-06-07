@@ -24,7 +24,6 @@ import javafx.scene.effect.DropShadow;
 import java.net.URISyntaxException;
 import java.util.*;
 
-
 public class DiceRealms extends Application {
     GUIGameController guiGameController;
     MediaPlayer mediaPlayer;
@@ -226,6 +225,7 @@ public class DiceRealms extends Application {
             handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
     }
+
     public void handleAvailabilityCue(@SuppressWarnings("exports") Player player,@SuppressWarnings("exports") Dice [] diceSet){
 
         // Create a drop shadow effect with a golden color
