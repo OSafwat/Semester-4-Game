@@ -1554,10 +1554,7 @@ public class CLIGameController {
         CLIGameController cli = new CLIGameController();
         GameBoard board=new GameBoard();
         AI ai=new AI(PlayerStatus.ACTIVE);
-        cli.handleBonusAI(ai, RealmColor.WHITE);
-        
-        ScoreSheet scoreSheet = cli.getScoreSheet(ai);
-        scoreSheet.displayColoredScoreSheet();
+        cli.findBestMove(ai, board, 3);
     }
 
 
@@ -1661,7 +1658,7 @@ public class CLIGameController {
                 //red got an error so i added the first condition
                 if(move.getDice().getRealm()!=RealmColor.RED&&move.getCreature().checkMove(move.getDice())){
                     makeMoveAI(player, move);     //check the invalidmove shit
-                    int boardValue = maxmax(player,board, depth - 1);
+                    int boardValue = maxmax(player, depth - 1);
 
                     player = playerBeforeMove;
                     board = boardBeforeMove;
@@ -1683,8 +1680,6 @@ public class CLIGameController {
     }
 
     public int maxmax(Player player, int depth) {
-        Player pclone=player.clone();
-
         Dice[] avdice = getAvailableDice();
         List<Dice> availablefr=null;
         for(Dice dice:avdice){
