@@ -130,15 +130,16 @@ public class GUIGameController extends CLIGameController {
             return new InvalidMoveException();
     }
 
-    public void incrementTurnCount() {
+    public boolean incrementTurnCount() {
         if (currentTurn == -1) {
             canUseArcaneBoost = true;
             switchPlayer();
             currentPlayer = getActivePlayer();
+            boolean val = true;
             if (currentPlayer.getPlayerStatus() == getPlayer1().getPlayerStatus())
-                incrementRoundCount();
+                val = incrementRoundCount();
             currentTurn = 1;
-            return;
+            return val;
         }
         canUseArcaneBoost = false;
         currentTurn++;
@@ -147,10 +148,15 @@ public class GUIGameController extends CLIGameController {
             currentPlayer = getPassivePlayer();
         }
         System.out.print(currentTurn + "   " + currentRound + "    " + currentPlayer.getName());
+        return true;
     }
 
-    public void incrementRoundCount() {
+    public boolean incrementRoundCount() {
         currentRound++;
+        if (currentRound == (maxRounds + 1)) {
+            return false;
+        }
+        return true;
     }
 
     public String[] getDragonPaths() {
