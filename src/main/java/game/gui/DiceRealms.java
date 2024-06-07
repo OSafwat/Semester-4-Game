@@ -313,6 +313,7 @@ public class DiceRealms extends Application {
             } catch (URISyntaxException ex) {
                 //
             }
+            mediaPlayer.play();
         });
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         initDiceAndRerollButtonEventListeners();
