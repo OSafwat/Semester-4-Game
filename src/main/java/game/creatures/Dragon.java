@@ -10,7 +10,6 @@ import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.RewardException;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,38 +17,89 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Dragon extends Creature {
-    public Integer face;
-    public Integer wings;
-    public Integer tail;
-    public Integer heart;
-    public DragonNumber dragonNumber;
-    public Dragon[] Dragons;
-    public int[] pointMap;
-    public ArrayList<Move> allPossibleMoves;
-    public ArrayList<TimeWarp> timeWarps;
-    public ArrayList<ArcaneBoost> arcaneBoosts;
-    public String[] rewards;
-    public int elementalCrestCount;
+    private Integer face;
+    private Integer wings;
+    private Integer tail;
+    private Integer heart;
+    private DragonNumber dragonNumber;
+    private Dragon[] dragons;
+    private int[] pointMap;
+    private ArrayList<Move> allPossibleMoves;
+    private ArrayList<TimeWarp> timeWarps;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private String[] rewards;
+    private int elementalCrestCount;
 
 
     //Constructor to be used in the CLIcontroller to initialize the Dragon array
     public Dragon() {
-        Dragons = new Dragon[4];
-        Dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
-        Dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
-        Dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
-        Dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
+        dragons = new Dragon[4];
+        dragons[0] = new Dragon(3, 2, 1, null, DragonNumber.Dragon1);
+        dragons[1] = new Dragon(6, 1, null, 3, DragonNumber.Dragon2);
+        dragons[2] = new Dragon(5, null, 2, 4, DragonNumber.Dragon3);
+        dragons[3] = new Dragon(null, 5, 4, 6, DragonNumber.Dragon4);
         elementalCrestCount = 0;
         initialization();
     }
 
-    //Constructor used inside the first one to initialize the actual Dragons themselves
+    public Dragon clone() {
+        Dragon[] dragons = new Dragon[4];
+        dragons[0] = new Dragon(this.dragons[0]);
+        dragons[1] = new Dragon(this.dragons[1]);
+        dragons[2] = new Dragon(this.dragons[2]);
+        dragons[3] = new Dragon(this.dragons[3]);
+        int[] pointMap = new int[this.pointMap.length];
+        for (int i = 0; i < this.pointMap.length; i++) {
+            pointMap[i] = this.pointMap[i];
+        }
+        ArrayList<Move> allPossibleMoves = new ArrayList<>();
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+
+        for (TimeWarp timeWarp: this.timeWarps) {
+            timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+        }
+        for (ArcaneBoost arcaneBoost: this.arcaneBoosts) {
+            arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+        }
+        String[] rewards = new String[this.rewards.length];
+        for (int i = 0; i < rewards.length; i++) {
+            rewards[i] = this.rewards[i];
+        }
+        int elementalCrestCount = this.elementalCrestCount;
+        Dragon dragon = new Dragon(dragons, pointMap, allPossibleMoves, timeWarps, arcaneBoosts, rewards, elementalCrestCount);
+        for (Move move: this.allPossibleMoves) {
+            RedDice dice = new RedDice(move.getDice().getValue(), ((RedDice)move.getDice()).getDragonNumber());
+            allPossibleMoves.add(new Move(dice, dragon));
+        }
+        return dragon;
+    }
+
+    //Constructor used inside the first one to initialize the actual dragons themselves
     public Dragon(Integer face, Integer wings, Integer tail, Integer heart, DragonNumber dragonNumber) {
         this.face = face;
         this.wings = wings;
         this.tail = tail;
         this.heart = heart;
         this.dragonNumber = dragonNumber;
+    }
+
+    public Dragon (Dragon[] dragons, int[] pointMap, ArrayList<Move> allPossibleMoves, ArrayList<TimeWarp> timeWarps, ArrayList<ArcaneBoost> arcaneBoosts, String[] rewards, int elementalCrestCount) {
+        this.dragons = dragons;
+        this.pointMap = pointMap;
+        this.allPossibleMoves = allPossibleMoves;
+        this.timeWarps = timeWarps;
+        this.arcaneBoosts = arcaneBoosts;
+        this.rewards = rewards;
+        this.elementalCrestCount = elementalCrestCount;
+    }
+
+    public Dragon(Dragon dragon) {
+        this.face = dragon.face;
+        this.wings = dragon.wings;
+        this.tail = dragon.tail;
+        this.heart = dragon.heart;
+        this.dragonNumber = dragon.dragonNumber;
     }
 
     //Method that contains all initialization methods to reduce the amount of code written in the first constructor
@@ -90,16 +140,16 @@ public class Dragon extends Creature {
         }
     }
 
-    public boolean checkValidityOfReward(String reward) {
+    private boolean checkValidityOfReward(String reward) {
         switch (reward) {
-            case "ArcaneBoost":break;
-            case "GreenBonus":break;
-            case "YellowBonus":break;
-            case "BlueBonus":break;
-            case "ElementalCrest":break;
-            case "MagentaBonus":break;
-            case "RedBonus":break;
-            case "TimeWarp":break;
+            case "ArcaneBoost":
+            case "GreenBonus":
+            case "YellowBonus":
+            case "BlueBonus":
+            case "ElementalCrest":
+            case "MagentaBonus":
+            case "RedBonus":
+            case "TimeWarp":
             case "EssenceBonus":break;
             default: return false;
         }
@@ -107,12 +157,12 @@ public class Dragon extends Creature {
     }
 
     //A method to initialize the pointMap instance variable, which is used in score calculation
-    public void initPointMap() {
+    private void initPointMap() {
         pointMap = new int[]{10, 14, 16, 20};
     }
 
     //Method that uses the suppliers array and the methods inside them to initialize some number of ArcaneBoosts and TimeWarps
-    public void initTimeWarpsAndArcaneBoosts () {
+    private void initTimeWarpsAndArcaneBoosts () {
         arcaneBoosts = new ArrayList<>();
         timeWarps = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -127,21 +177,21 @@ public class Dragon extends Creature {
     }
 
     //Method that goes over all the dragons and fills up an arraylist with all the possible moves that can be done against these dragons
-    public void initPossibleMoves() {
+    private void initPossibleMoves() {
         allPossibleMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++)
         {
-            if (!Objects.equals(Dragons[i].face, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].face, i), this));
+            if (!Objects.equals(dragons[i].face, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].face, i+1), this));
             }
-            if (!Objects.equals(Dragons[i].wings, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].wings, i), this));
+            if (!Objects.equals(dragons[i].wings, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].wings, i+1), this));
             }
-            if (!Objects.equals(Dragons[i].tail, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].tail, i), this));
+            if (!Objects.equals(dragons[i].tail, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].tail, i+1), this));
             }
-            if (!Objects.equals(Dragons[i].heart, null)) {
-                allPossibleMoves.add(new Move(new RedDice(Dragons[i].heart, i), this));
+            if (!Objects.equals(dragons[i].heart, null)) {
+                allPossibleMoves.add(new Move(new RedDice(dragons[i].heart, i+1), this));
             }
         }
     }
@@ -151,7 +201,7 @@ public class Dragon extends Creature {
     public int getScore() {
         int score = 0;
         for (int i = 0; i < 4; i++) {
-            score += Dragons[i].isDead() ? pointMap[i] : 0;
+            score += dragons[i].isDead() ? pointMap[i] : 0;
         }
         return score;
     }
@@ -178,18 +228,8 @@ public class Dragon extends Creature {
         return arcaneBoosts;
     }
 
-    //A method to get the dragon number attribute
-    public DragonNumber getDragonNumber() {
-        return this.dragonNumber;
-    }
-
-    //A method that selects the dragon
-    public Dragon selectsDragon(int number) {
-        return Dragons[number-1];
-    }
-
     //A method used to know whether a Dragon is dead or not
-    public boolean isDead() {
+    private boolean isDead() {
         return face == null && wings == null && heart == null && tail == null;
     }
 
@@ -215,7 +255,7 @@ public class Dragon extends Creature {
     public boolean makeMove(Dice inputDice) throws BonusException {
         RedDice dice = (RedDice)inputDice;
         int dragonIndex = dice.getDragonNumber();
-        Dragon targetDragon = Dragons[dragonIndex];
+        Dragon targetDragon = dragons[dragonIndex];
         boolean valid = targetDragon.checkMove(dice);
         if (!valid)
             return false;
@@ -275,26 +315,29 @@ public class Dragon extends Creature {
     }
 
     public boolean equals(Object obj) {
-        Dragon dragon = (Dragon) obj;
-        return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
+        if (obj instanceof Dragon) {
+            Dragon dragon = (Dragon) obj;
+            return Objects.equals(dragon.heart, heart) && Objects.equals(dragon.face, face) && Objects.equals(dragon.wings, wings) && Objects.equals(dragon.tail, tail);
+        }
+        return false;
     }
 
     //Method that updates TimeWarps
-    public void initNextTimeWarp() {
+    private void initNextTimeWarp() {
         TimeWarp currentTimewarp = timeWarps.get(0);
         currentTimewarp.setStatus(RewardStates.ACQUIRED);
         timeWarps.remove(currentTimewarp);
     }
 
     //Method that updates ArcaneBoosts
-    public void initNextArcaneBoost() {
+    private void initNextArcaneBoost() {
         ArcaneBoost currentArcaneBoost = arcaneBoosts.get(0);
         currentArcaneBoost.setStatus(RewardStates.ACQUIRED);
         arcaneBoosts.remove(currentArcaneBoost);
     }
 
     //Method that, using a character, can identify what realm a boost belongs to
-    public RealmColor decodeLetterToRealmColor (char c) {
+    private RealmColor decodeLetterToRealmColor (char c) {
         RealmColor result;
         switch (c) {
             case 'G': result =  RealmColor.GREEN; break;
@@ -315,7 +358,7 @@ public class Dragon extends Creature {
     }
 
     //Method to reduce code redundancy
-    public boolean moveHelper(int targetValue, boolean doMove) {
+    private boolean moveHelper(int targetValue, boolean doMove) {
         boolean valid = false;
         if (dragonNumber.equals(DragonNumber.Dragon1)) {
             if (targetValue == 3 && face != null) {
@@ -397,22 +440,22 @@ public class Dragon extends Creature {
         scoreSheet.append("+-----------------------------------+\n");
         scoreSheet.append("|  F  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].face)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].face)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(0)).append("   |\n");
         scoreSheet.append("|  W  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].wings)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].wings)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(1)).append("   |\n");
         scoreSheet.append("|  T  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].tail)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].tail)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(2)).append("   |\n");
         scoreSheet.append("|  H  |");
         for (int i = 0; i < 4; i++) {
-            scoreSheet.append(changeToString(Dragons[i].heart)).append("    |");
+            scoreSheet.append(changeToString(dragons[i].heart)).append("    |");
         }
         scoreSheet.append(getRewardStringDependingOnIndex(3)).append("   |\n");
         scoreSheet.append("+-----------------------------------+\n").append("|  S  |");
@@ -425,32 +468,76 @@ public class Dragon extends Creature {
     }
 
     //This and the methods below it assist in the scoresheet and other methods
-    public String changeToString(Integer integer) {
+    private String changeToString(Integer integer) {
         return  Objects.equals(null, integer) ? "X" : "" + integer;
     }
 
-    public String getFirstRowRewardString() {
-        return Dragons[0].face == null && Dragons[1].face == null && Dragons[2].face == null ? "X " : encode(rewards[0]);
+    private String getFirstRowRewardString() {
+        return dragons[0].face == null && dragons[1].face == null && dragons[2].face == null ? "X " : encode(rewards[0]);
     }
 
-    public String getSecondRowRewardString() {
-        return Dragons[0].wings == null && Dragons[1].wings == null && Dragons[3].wings == null ? "X " : encode(rewards[1]);
+    private String getSecondRowRewardString() {
+        return dragons[0].wings == null && dragons[1].wings == null && dragons[3].wings == null ? "X " : encode(rewards[1]);
     }
 
-    public String getThirdRowRewardString() {
-        return Dragons[0].tail == null && Dragons[2].tail == null && Dragons[3].tail == null ? "X " : encode(rewards[2]);
+    private String getThirdRowRewardString() {
+        return dragons[0].tail == null && dragons[2].tail == null && dragons[3].tail == null ? "X " : encode(rewards[2]);
     }
 
-    public String getFourthRowRewardString() {
-        return Dragons[1].heart == null && Dragons[2].heart == null && Dragons[3].heart == null ? "X " : encode(rewards[3]);
+    private String getFourthRowRewardString() {
+        return dragons[1].heart == null && dragons[2].heart == null && dragons[3].heart == null ? "X " : encode(rewards[3]);
     }
 
-    public String getCornerRewardString() {
-        return Dragons[0].face == null && Dragons[1].wings == null && Dragons[2].tail == null && Dragons[3].heart == null ? "X " : encode(rewards[4]);
+    private String getCornerRewardString() {
+        return dragons[0].face == null && dragons[1].wings == null && dragons[2].tail == null && dragons[3].heart == null ? "X " : encode(rewards[4]);
     }
 
     //Method that changes the name of the row and corner rewards to their abbreviation
-    public String encode (String reward) {
+    private String encode (String reward) {
         return reward.replaceAll("[^A-Z]", "");
+    }
+
+    public String getImage(int dragonIndex) {
+        StringBuilder string = new StringBuilder("/images/RedRealmImages/");
+        Dragon dragon = dragons[dragonIndex];
+    //new Image(getClass().getResourceAsStream("/images/Main Screen.png"))
+        if (Objects.equals(dragon.face, null))
+            string.append("face-");
+        if (Objects.equals(dragon.wings, null))
+            string.append("wings-");
+        if (Objects.equals(dragon.tail, null))
+            string.append("tail-");
+        if (Objects.equals(dragon.heart, null))
+            string.append("heart-");
+        return string.deleteCharAt(string.length() - 1).append(".png").toString();
+    }
+
+    public Integer getBestDragon(int value) {
+        for (int i = 3; i >= 0; i--) {
+            Dragon dragon = dragons[i];
+            if (Objects.equals(dragon.face, value) || Objects.equals(dragon.tail, value) || Objects.equals(dragon.wings, value) || Objects.equals(dragon.heart, value))
+                return i;
+        }
+        return -1;
+    }
+
+    public Integer getFace() {
+        return face;
+    }
+
+    public Integer getWings() {
+        return wings;
+    }
+
+    public Integer getTail() {
+        return tail;
+    }
+
+    public Integer getHeart() {
+        return heart;
+    }
+
+    public Dragon[] getDragons() {
+        return dragons;
     }
 }

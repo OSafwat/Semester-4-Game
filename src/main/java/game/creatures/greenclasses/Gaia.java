@@ -1,9 +1,7 @@
 package game.creatures.greenclasses;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Properties;
+import java.util.*;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
@@ -38,10 +36,77 @@ public class Gaia extends Creature{
     private String [] colreward;
     private String [] rowreward;
     private String [] defaultcolreward ={"TimeWarp","BlueBonus","MagentaBonus","ArcaneBoost","GreenBonus"};
-    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest"};
+    private String [] defaultrowreward={"YellowBonus","RedBonus","ElementalCrest","EssenceBonus","null"};
     //private ArrayList<TimeWarp> timeWarps ;
     //private ArrayList<ArcaneBoost> arcaneBoosts;
     private int elementalCrestCount;
+
+    public Gaia clone() {
+        Guardians[][] gaiaGuardians = new Guardians[this.gaiaGuardians.length][this.gaiaGuardians[0].length];
+        int alliveGuardians = this.alliveGuardians;
+        int deadGuardians = this.deadGuardians;
+        int[] scores = {1,2,4,7,11,16,22,29,37,46,56};
+        boolean[] row = new boolean[3];
+        boolean[] col = new boolean[4];
+        String[] colreward = new String[this.colreward.length];
+        String[] rowreward = new String[this.rowreward.length];
+        String[] defaultcolreward = new String[this.defaultcolreward.length];
+        String[] defaultrowreward = new String[this.defaultrowreward.length];
+        int elementalCrestCount = this.elementalCrestCount;
+        int score = this.getScore();
+
+        for (int i = 0; i < this.gaiaGuardians.length; i++) {
+            for (int j = 0; j < this.gaiaGuardians[0].length; j++) {
+                gaiaGuardians[i][j] = this.gaiaGuardians[i][j].clone();
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+            row[i] = this.row[i];
+
+        for (int i = 0; i < 4; i++)
+            col[i] = this.col[i];
+
+        for (int i = 0; i < colreward.length; i++)
+            colreward[i] = this.colreward[i];
+
+        for (int j = 0; j < rowreward.length; j++)
+            rowreward[j] = this.rowreward[j];
+
+        for (int i = 0; i < this.defaultcolreward.length; i++)
+            defaultcolreward[i] = this.defaultcolreward[i];
+
+        for (int i = 0; i < this.defaultrowreward.length; i++)
+            defaultrowreward[i] = this.defaultrowreward[i];
+
+        ArrayList<TimeWarp> timeWarps = new ArrayList<>();
+        ArrayList<ArcaneBoost> arcaneBoosts = new ArrayList<>();
+
+        for (TimeWarp timeWarp: this.timeWarps)
+            timeWarps.add(new TimeWarp(timeWarp.getStatus()));
+
+        for (ArcaneBoost arcaneBoost: this.arcaneBoosts)
+            arcaneBoosts.add(new ArcaneBoost(arcaneBoost.getStatus()));
+
+        return new Gaia(gaiaGuardians, alliveGuardians, deadGuardians, scores, row, col, colreward, rowreward, defaultcolreward, defaultrowreward, elementalCrestCount, timeWarps, arcaneBoosts, score);
+    }
+
+    public Gaia (Guardians[][] gaiaGuardians, int alliveGuardians, int deadGuardians, int[] scores, boolean[] row, boolean[] col, String[] colreward, String[] rowreward, String[] defaultcolreward, String[] defaultrowreward, int elementalCrestCount, ArrayList<TimeWarp> timeWarps, ArrayList<ArcaneBoost> arcaneBoosts, int score) {
+        this.gaiaGuardians = gaiaGuardians;
+        this.alliveGuardians = alliveGuardians;
+        this.deadGuardians = deadGuardians;
+        this.scores = scores;
+        this.row = row;
+        this.col = col;
+        this.colreward = colreward;
+        this.rowreward = rowreward;
+        this.defaultrowreward = defaultrowreward;
+        this.defaultcolreward = defaultcolreward;
+        this.elementalCrestCount = elementalCrestCount;
+        this.timeWarps = timeWarps;
+        this.arcaneBoosts = arcaneBoosts;
+        this.score = score;
+    }
 
     public Gaia(){
         gaiaGuardians = new Guardians[3][4];
@@ -180,20 +245,13 @@ public class Gaia extends Creature{
 
     }
     public int getScore(){
-        return this.score;
+        if (deadGuardians-1 < 0)
+            return 0;
+        return scores[deadGuardians-1];
     }
 
 
  
-
-    // EXP method to update the score of the realm
-    private void updateScore(){
-        int dead = this.getDeadGuardians()-1;
-        score= scores[dead];
-
-    }
-
-
 
     // EXP checks if a given move is possible
     public boolean checkMove(Dice dice)throws InvalidMoveException{
@@ -226,7 +284,7 @@ public class Gaia extends Creature{
 
 
 // EXP gets a specific guardian in the Gaia
-    private Guardians getGuardians(int c){
+private Guardians getGuardians(int c){
         if(c<2 || c>12)
         return null;
         //int index =1;
@@ -289,18 +347,10 @@ private void killGaiaGuardian(Guardians g){
     }
 }
 
-//EXP  gets the number of  still allive guradians
-private int getAlliveGuardians(){
-    return alliveGuardians;
-}
+
+
  
-private int getDeadGuardians(){
-    return deadGuardians;
-}
-
-
-
-    // EXP checks if all guardians in a given col are dead if yes then true
+// EXP checks if all guardians in a given col are dead if yes then true
 private boolean checkCol(int c){
     return col[c];
 
@@ -355,7 +405,8 @@ private  void updateRow(int r){
 
 
 // EXP executing a given move
-     public boolean makeMove(Dice dice) throws BonusException,InvalidMoveException   {
+
+     public boolean makeMove(Dice dice) throws BonusException,InvalidMoveException {
         if(!(dice instanceof GreenDice))
         throw new InvalidMoveException();
        else  if(!checkMove1(dice))
@@ -384,6 +435,7 @@ private  void updateRow(int r){
                
                 if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
+                
                     throw new BonusException(realm);
                 }
 
@@ -397,6 +449,7 @@ private  void updateRow(int r){
                 // I will only need to change  in the whichCollectableCol(colToCheck);
                 if(!this.applyNotBonusCollectable(act)) {
                     RealmColor  realm= this.getCorrectRealm(act);
+                    
                     throw new BonusException(realm);
                 }
                 return true;
@@ -407,31 +460,32 @@ private  void updateRow(int r){
                 String act2 = whichCollectableRow(rowToCheck);
                 int act1Prtority = this.getPriorityValue(act1);
                 int act2Prtority=this.getPriorityValue(act2);
-                if(act1Prtority==1 && act2Prtority==1){
+                if(act1Prtority==0 && act2Prtority==0){
                     this.applyNotBonusCollectable(act1);
                     this.applyNotBonusCollectable(act2);
                 }
-                else if(act1Prtority>1 && act2Prtority==1){
+                else if(act1Prtority>0 && act2Prtority==0){
                     this.applyNotBonusCollectable(act2);
                     RealmColor  realm= this.getCorrectRealm(act1);
-                    throw new BonusException(realm);
+                     throw new BonusException(realm);
 
                 }
-                else if(act1Prtority==1 && act2Prtority>1){
+                else if(act1Prtority==0 && act2Prtority>0){
                     this.applyNotBonusCollectable(act1);
                     RealmColor  realm= this.getCorrectRealm(act2);
-                    throw new BonusException(realm);
+                   throw new BonusException(realm);
 
                 }
                 else if(act1Prtority>act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act1);
                     RealmColor realm2 = this.getCorrectRealm(act2);
-                    throw new BonusException(realm1, realm2);
+                 throw new BonusException(realm1, realm2);
                 }
                 else if(act1Prtority<act2Prtority){
                     RealmColor realm1= this.getCorrectRealm(act2);
                     RealmColor realm2 = this.getCorrectRealm(act1);
-                    throw new BonusException(realm1, realm2);
+                  
+                     throw new BonusException(realm1, realm2);
                 }     
                 return true;
             }
@@ -487,7 +541,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|4    ";
-    if(checkRow(0))
+    if(checkRow(0) && !whichCollectableRow(0).equals("null"))
     returnValue = returnValue +"|X    |\n"+"|  2  ";
     else{
         String s = this.whichCollectableRow(0);
@@ -514,7 +568,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|8    ";
-    if(checkRow(1))
+    if(checkRow(1)&& !whichCollectableRow(1).equals("null"))
     returnValue = returnValue +"|X    |\n"+"|  3  ";
     else{
         String s = this.whichCollectableRow(1);
@@ -542,7 +596,7 @@ public String getScoreSheet(){
     returnValue = returnValue +"|X    ";
     else
     returnValue = returnValue +"|12   ";
-    if(checkRow(2))
+    if(checkRow(2)&& !whichCollectableRow(2).equals("null"))
     returnValue = returnValue +"|X    |\n";
     else{
         String s = this.whichCollectableRow(2);
@@ -550,28 +604,28 @@ public String getScoreSheet(){
     returnValue = returnValue +"|"+f+"   |\n";
     }
     returnValue=returnValue+"+-----------------------------------+\n"+"|  R  ";
-    if(checkCol(0))
+    if(checkCol(0)&& !whichCollectableCol(0).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(0);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(1))
+    if(checkCol(1)&& !whichCollectableCol(1).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(1);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(2))
+    if(checkCol(2)&& !whichCollectableCol(2).equals("null"))
     returnValue = returnValue +"|X    ";
     else{
         String s = this.whichCollectableCol(2);
         String f = this.getCorrectBonusInScore(s);
     returnValue = returnValue +"|"+f+"   ";
     }
-    if(checkCol(3))
+    if(checkCol(3)&& !whichCollectableCol(3).equals("null"))
     returnValue = returnValue +"|X    " +"|     |\n";
     else{
         String s = this.whichCollectableCol(3);
@@ -585,7 +639,7 @@ public String getScoreSheet(){
 
 }
 
-  //return number of elemental crests for each realm will be 0 or 1 
+  //return number of elemental crests for each realm 
   public  int getElementalCrest(){
    return elementalCrestCount;
   }
@@ -607,6 +661,7 @@ private RealmColor getCorrectRealm(String s){
         case "BlueBonus": return RealmColor.BLUE;
         case "MagentaBonus": return RealmColor.MAGENTA;
         case "YellowBonus":return RealmColor.YELLOW;
+        case "EssenceBonus": return RealmColor.WHITE;
         default :return null;
     }
 }
@@ -619,7 +674,8 @@ private int getPriorityValue(String s){
         case "BlueBonus": return 4;
         case "MagentaBonus": return 3;
         case "YellowBonus":return 2;
-        default: return 1;
+        case "EssenceBonus":return 1;
+        default: return 0;
             
     }
 
@@ -637,6 +693,8 @@ private String getCorrectBonusInScore(String s){
         case "TimeWarp" : return"TW";
         case "ArcaneBoost" : return"AB";
         case "ElementalCrest": return"EC";
+        case "EssenceBonus" : return "EB";
+        case "null": return "  ";
         default: return "";
             
     }
@@ -646,6 +704,7 @@ private String getCorrectBonusInScore(String s){
 //EXP apply powers 
 private boolean applyNotBonusCollectable(String s){
     if(s.equals("TimeWarp")){
+        @SuppressWarnings("rawtypes")
         Iterator it = timeWarps.iterator();
         while(it.hasNext()){
             TimeWarp t = (TimeWarp)(it.next());
@@ -658,6 +717,7 @@ private boolean applyNotBonusCollectable(String s){
         return true;
     }
     else if(s.equals("ArcaneBoost")){
+        @SuppressWarnings("rawtypes")
         Iterator it = arcaneBoosts.iterator();
         while(it.hasNext()){
             ArcaneBoost a = (ArcaneBoost)(it.next());
@@ -675,15 +735,13 @@ private boolean applyNotBonusCollectable(String s){
         return true ;
 
     }
+    else if (s.equals("null"))
+    return true;
+    else
     return false;
 
-}
-
-public static void main(String[] args) {
-    Gaia gaia = new Gaia();
-    System.out.println(gaia.getScoreSheet());
-   
-  
-}
-
+    }
+    public Guardians[][] getGuardians(){
+        return this.gaiaGuardians;
+    }
 }

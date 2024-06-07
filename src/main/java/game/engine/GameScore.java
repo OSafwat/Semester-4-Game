@@ -1,40 +1,62 @@
 package game.engine;
 
 public class GameScore {
-    int allScores[];
-    int elementalCrestCounter;
+    private int allScores[];
+    public int elementalCrestCounter;
+
+    public GameScore clone() {
+        int[] allScores = new int[this.allScores.length];
+        for (int i = 0; i < this.allScores.length; i++) {
+            allScores[i] = this.allScores[i];
+        }
+
+        int elementalCrestCounter = this.elementalCrestCounter;
+
+        return new GameScore(allScores, elementalCrestCounter);
+    }
 
     public GameScore(){
         allScores= new int[5];
         elementalCrestCounter =0;
     }
 
-    public void updateScores(int [] scores, int elementalCrests ){
+    public GameScore(int[] allScores, int elementalCrestCounter) {
+        this.allScores = allScores;
+        this.elementalCrestCounter = elementalCrestCounter;
+    }
+
+    void updateScores(int [] scores, int elementalCrests ){
         this.allScores = scores;
         this.elementalCrestCounter=elementalCrests;
     }
+    int getElementalCrestCounter() {
+        return elementalCrestCounter;
+    }
+    public int [] getScores(){
+        return allScores;
+    }
 
-    public int getRedRealmScore() {
+    int getRedRealmScore() {
         return allScores[0];
     }
 
-    public int getGreenRealmScore() {
+    int getGreenRealmScore() {
         return allScores[1];
     }
 
-    public int getBlueRealmScore() {
+    int getBlueRealmScore() {
         return allScores[2];
     }
 
-    public int getMagentaRealmScore() {
+    int getMagentaRealmScore() {
         return allScores[3];
     }
 
-    public int getYellowRealmScore() {
+    int getYellowRealmScore() {
         return allScores[4];
     }
 
-    public int getTotalScore(){
+    int getTotalScore(){
         int total=0;
         int min= Integer.MAX_VALUE;
         for (int i=0; i< this.allScores.length; i++){
@@ -62,7 +84,7 @@ public class GameScore {
         return res;
     }
 
-    protected int[] getAllScores() {
+    int[] getAllScores() {
         return allScores;
     }
 }

@@ -12,6 +12,7 @@ import game.engine.Move;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
+import game.exceptions.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -92,6 +93,106 @@ public class Hydra extends Creature{
         }
     }
 
+    public Hydra clone() {
+        Stack<Integer> serpent;
+        Properties properties;
+        int headsKilled;
+        boolean regenerateFlag;
+        String[] diceUsed;
+        int[] scores;
+        int arcaneBoostsUsed;
+        int timeWarpsUsed;
+
+        Stack<Integer> temp = new Stack<>();
+        serpent = new Stack<>();
+
+        while (!this.serpent.isEmpty()) {
+            temp.add(this.serpent.pop());
+        }
+
+        while (!temp.isEmpty()) {
+            int value = temp.pop();
+            this.serpent.add(value);
+            serpent.add(value);
+        }
+
+        properties = new Properties();
+        try {
+            File config = new File("src/main/resources/config/TideAbyssRewards.properties");
+            FileReader configReader = new FileReader(config);
+            properties.load(configReader);
+        } catch (IOException e) {
+            System.out.println("Properties file reading failed.");
+            properties.setProperty("hit1Reward", "null");
+            properties.setProperty("hit2Reward", "null");
+            properties.setProperty("hit3Reward", "null");
+            properties.setProperty("hit4Reward", "ArcaneBoost");
+            properties.setProperty("hit5Reward", "null");
+            properties.setProperty("hit6Reward", "GreenBonus");
+            properties.setProperty("hit7Reward", "ElementalCrest");
+            properties.setProperty("hit8Reward", "null");
+            properties.setProperty("hit9Reward", "MagentaBonus");
+            properties.setProperty("hit10Reward", "TimeWarp");
+            properties.setProperty("hit11Reward", "null");
+        }
+
+        /*
+        int headsKilled;
+        boolean regenerateFlag;
+        String[] diceUsed;
+        int[] scores;
+        int arcaneBoostsUsed;
+        int timeWarpsUsed;
+         */
+
+        headsKilled = this.headsKilled;
+        regenerateFlag = this.regenerateFlag;
+        arcaneBoostsUsed = this.arcaneBoostsUsed;
+        timeWarpsUsed = this.timeWarpsUsed;
+
+        scores = new int[this.scores.length];
+        for (int i = 0; i < this.scores.length; i++) {
+            scores[i] = this.scores[i];
+        }
+
+        diceUsed = new String[this.diceUsed.length];
+        for (int i = 0; i < this.diceUsed.length; i++) {
+            diceUsed[i] = this.diceUsed[i];
+        }
+
+        return new Hydra(serpent, properties, headsKilled, regenerateFlag, diceUsed, scores, arcaneBoostsUsed, timeWarpsUsed);
+    }
+
+    public Hydra(Stack<Integer> serpent, Properties properties, int headsKilled, boolean regenerateFlag, String[] diceUsed, int[] scores, int arcaneBoostsUsed, int timeWarpsUsed) {
+        this.serpent = serpent;
+        this.properties = properties;
+        this.headsKilled = headsKilled;
+        this.regenerateFlag = regenerateFlag;
+        this.diceUsed = diceUsed;
+        this.scores = scores;
+        this.arcaneBoostsUsed = arcaneBoostsUsed;
+        this.timeWarpsUsed = timeWarpsUsed;
+        this.arcaneBoosts = new ArrayList<>();
+        this.timeWarps = new ArrayList<>();
+        for(int i = 1; i <= 11; i++) {
+            String[] defaultValues = {"null","null","null","ArcaneBoost","null","GreenBonus","ElementalCrest","null","MagentaBonus","TimeWarp","null"};
+            if(properties.getProperty("hit"+i+"Reward")==null) properties.setProperty("hit"+i+"Reward", defaultValues[i-1]);
+        }
+        for(int i = 0; i < 11; i++) {
+            this.diceUsed[i] = "---";
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("ArcaneBoost")){
+                ArcaneBoost ac = new ArcaneBoost(RewardStates.UNACQUIRED);
+                this.arcaneBoosts.add(ac);
+            }
+
+            if(properties.getProperty("hit"+(i+1)+"Reward").equals("TimeWarp")) {
+                TimeWarp tw = new TimeWarp(RewardStates.UNACQUIRED);
+                this.timeWarps.add(tw);
+            }
+        }
+    }
+
     // Method that returns the value of the bonus that should be printed in the scoresheet.
     private String getBonus(int value) {
         String[] defaultValues = {"  ", "  ", "  ", "AB", "  ", "GB", "EC", "  ", "MB", "TW", "  "};
@@ -116,7 +217,7 @@ public class Hydra extends Creature{
     }
 
     // Setter for the "score" variable.
-    public void updateScore() {
+    private void updateScore() {
         this.score = this.scores[this.headsKilled];
     }
 
@@ -131,8 +232,9 @@ public class Hydra extends Creature{
                 isRewardOnSecondHead = (i>5);
             }
         }
-
-        if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
+        if(this.serpent.isEmpty())
+            return 1;
+        else if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
             return 1;
         else   
             return 0;
@@ -163,16 +265,17 @@ public class Hydra extends Creature{
     // Method that checks if the move is possible.
     @Override
     public boolean checkMove(Dice dice) {
+        if(this.serpent==null||this.serpent.size()==0) return false;
         return dice.getValue() >= this.serpent.peek();
     }
 
     // Method that attacks the top hydra head of possible, and updates the variables of class to match that.
     @Override
-    public boolean makeMove(Dice dice) throws BonusException{
+    public boolean makeMove(Dice dice) throws BonusException, InvalidMoveException {
         int diceValue = dice.getValue();
 
         if(this.serpent.isEmpty() || !checkMove(dice)) {
-            return false;
+            throw new InvalidMoveException();
         }
 
         this.serpent.pop();
@@ -185,7 +288,7 @@ public class Hydra extends Creature{
 
         switch(properties.getProperty("hit"+headsKilled+"Reward")){
             case "ArcaneBoost": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
-            case "TimeWarp": this.arcaneBoosts.get(arcaneBoostsUsed++).setStatus(RewardStates.ACQUIRED); break;
+            case "TimeWarp": this.timeWarps.get(timeWarpsUsed++).setStatus(RewardStates.ACQUIRED); break;
             case "GreenBonus": throw new BonusException(RealmColor.GREEN);
             case "RedBonus": throw new BonusException(RealmColor.RED);
             case "BlueBonus": throw new BonusException(RealmColor.BLUE);
@@ -232,22 +335,8 @@ public class Hydra extends Creature{
         }
         return moves;
     }
-    public static void main(String[] args) {
-        Hydra hydra = new Hydra();
-        BlueDice dice = new BlueDice(6);
-        ArrayList<ArcaneBoost> acs = hydra.getAllArcaneBoosts();
-        for(int i = 0; i < 4; i++) {
-            try{
-                System.out.println(hydra.makeMove(dice));
-            }
-            catch(BonusException e) {
-                System.out.println();
-            }
-        }
-        for(int i = 0; i < acs.size(); i++) {
-            ArcaneBoost ac = acs.get(i);
-            System.out.println(ac.getStatus());
-        }
-        System.out.println(hydra.getScore());
+
+    public int getHeadsKilled() {
+        return headsKilled;
     }
 }

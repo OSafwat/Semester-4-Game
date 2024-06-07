@@ -1,0 +1,16 @@
+/* Button Styles */
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    /* -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 5, 0.5, 1, 1);
+    -fx-background-image: url("/images/GreenRealmImages/GaiaGuardian.png");
+    -fx-background-size: cover; /* Adjust to fit the button */
+    /* -fx-background-position: center;
+    -fx-padding: 10px 20px;
+    -fx-margin: 10px 0;
+    -fx-text-transform: uppercase;
+    -fx-cursor: hand;
+    -fx-font-family: 'serif';
+    -fx-font-weight: bold; */
+    
+}

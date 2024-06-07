@@ -1,5 +1,12 @@
 package game.engine;
 
+import java.util.*;
+
+import game.collectibles.ArcaneBoost;
+import game.collectibles.TimeWarp;
+import game.dice.Dice;
+import game.engine.enums.RealmColor;
+
 /*IDEAS:-
  *  - EVALUATION:-
  *      - make calculated guesses for all the parameters then fuck around with them to optimize them
@@ -58,6 +65,205 @@ package game.engine;
  * 
  */
 
-public class AI {
-    
+public class AI extends Player implements Cloneable {
+    private String name;
+    private PlayerStatus playerStatus;
+    private GameScore gameScore;
+    private ScoreSheet scoreSheet;
+    private ArrayList<ArcaneBoost> arcaneBoosts;
+    private ArrayList<TimeWarp> timeWarps;
+    private ArrayList<Dice> playedDice;
+    private ArrayList<Dice> usedArcaneDice;
+    private int turnsPlayed;
+    public int arcanesUsed;
+
+    public AI(PlayerStatus status){
+        super();
+        this.name= "AI";
+        this.scoreSheet= new ScoreSheet();
+        this.playerStatus= status;
+        this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
+        this.timeWarps=scoreSheet.getAllTimeWarps();
+        this.usedArcaneDice = new ArrayList<>();
+        getAllPossibleMoves();
+        gameScore = new GameScore();
+        playedDice = new ArrayList<>();
+        turnsPlayed = 0;
+    }
+    public String getName(){
+        return this.name;
+    }
+    public int getTurnsPlayed(){
+        return this.turnsPlayed;
+    }
+    public void incrementArcaneBoosts(){
+        arcanesUsed++;
+    }
+    public int incrementTurnsPlayed(){
+        return this.turnsPlayed++;
+    }
+    public Move[] getAllPossibleMoves(){
+        ArrayList<Move> allMoves= new ArrayList<>();
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.RED).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.GREEN).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.BLUE).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.MAGENTA).getAllPossibleMoves());
+        allMoves.addAll(this.scoreSheet.getCreatureByColor(RealmColor.YELLOW).getAllPossibleMoves());
+        Move[] res = new Move[allMoves.size()];
+        for (int i = 0; i < allMoves.size(); i++) {
+            res[i] = allMoves.get(i);
+        }
+        return res;
+    }
+
+    public void selectDice (Dice dice) {
+        playedDice.add(dice);
+    }
+
+    public ArrayList<Dice> getPlayedDice () {
+        ArrayList<Dice> playedDice = new ArrayList<>(this.playedDice);
+        this.playedDice.clear();
+        return playedDice;
+    }
+
+    public PlayerStatus getPlayerStatus(){
+        return this.playerStatus;
+    }
+    public ScoreSheet getScoreSheet(){
+        return this.scoreSheet;
+    }
+    public void switchStatus(){
+        if (this.playerStatus == PlayerStatus.ACTIVE)
+            this.playerStatus = PlayerStatus.PASSIVE;
+        else
+            this.playerStatus = PlayerStatus.ACTIVE;
+    }
+    public void updateGameScore(){
+        gameScore.updateScores(this.scoreSheet.getScores(),this.scoreSheet.getElementalCrests());
+    }
+    public GameScore getGameScore(){
+        return this.gameScore;
+    }
+    public ArrayList<TimeWarp> getTimeWarps(){
+        return this.timeWarps;
+    }
+    public ArrayList<ArcaneBoost> getArcaneBoosts(){
+        return this.arcaneBoosts;
+    }
+    public void updateAllPossibleMoves(){
+        getAllPossibleMoves();
+    }
+
+    public ArrayList<Dice> getUsedArcaneDice() {
+        return usedArcaneDice;
+    }
+    public void resetUsedArcaneDice() {
+        usedArcaneDice.clear();
+    }
+    public void addToUsedArcaneDice(Dice die) {
+        usedArcaneDice.add(die);
+    }
+
+
+
+
+    //actual ai stuff
+
+
+    //rule-based
+    public Move pickBestMove(AI ai,Move[] moveSet,int round,int turn){//make the moveset only include the available moves
+        ai.sortMoves(moveSet);
+        if(round == 1){
+            if(turn == 1){
+                for(int i=1;i<moveSet.length-2;i++){
+                    if(moveSet[i].getDice().getRealm() == RealmColor.GREEN){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm() == RealmColor.BLUE){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm() == RealmColor.YELLOW){
+                        return moveSet[i];
+                    }
+                    if(moveSet[i].getDice().getRealm()== RealmColor.WHITE){
+                    }
+                }
+            }
+            else if(turn ==2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 2){
+            if(turn == 1){
+
+            }
+            else if(turn == 2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 3){
+            if (turn == 1){
+
+            }
+            else if(turn == 2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 4){
+            if(turn == 1){
+
+            }
+            else if(turn == 2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round == 5){
+            if(turn == 1){
+
+            }
+            else if(turn == 2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        else if(round ==6){
+            if(turn == 1){
+
+            }
+            else if(turn == 2){
+
+            }
+            else if(turn == 3){
+
+            }
+        }
+        return null;
+    }
+
+    public Move pickLowestMove(AI ai,Move[] moveSet){//make it return a dice array thats like everything but the max move and the one just behind it
+        //make it enter available moves only
+        ai.sortMoves(moveSet);
+        return moveSet[0];
+    }
+
+    public void sortMoves(Move[] moves) {
+        Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
+    }
+    public void sortDice(Dice[] dice){
+        Arrays.sort(dice, Comparator.comparingInt(Dice::getValue));
+    }
 }

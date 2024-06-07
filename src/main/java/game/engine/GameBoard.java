@@ -2,23 +2,22 @@ package game.engine;
 import game.dice.*;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
-import game.engine.enums.PlayerStatus;
+
 import game.engine.enums.RealmColor;
 
-public class GameBoard {
-    GameStatus gameStatus;
-    Player player1;
-    Player player2;
-    Dice [] allDice;
-    ArrayList<Dice> availableDice;
-    ArrayList<Dice> activeArcaneDice ;
-    ArrayList<Dice> forgottenRealmDice;
-    ArrayList<Dice> passiveArcaneDice;
-    ArrayList<Dice> arcaneDice;
-    int whiteValue;
-    int greenValue;
+public class GameBoard implements Cloneable{
+    private GameStatus gameStatus;
+    private Player player1;
+    private Player player2;
+    private AI ai;
+    private AI ai1;
+    private AI ai2;
+    private Dice [] allDice;
+    private ArrayList<Dice> availableDice;
+    private ArrayList<Dice> forgottenRealmDice;
+    private int whiteValue;
+    private int greenValue;
     public Dice getWhite(){
         for (Dice die: allDice) {
             if (die.getRealm().equals(RealmColor.WHITE))
@@ -34,7 +33,7 @@ public class GameBoard {
         return null;
     }
 
-    public void setGreenForColorBonus(int greenValue) {
+    void setGreenForColorBonus(int greenValue) {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
                 this.greenValue = allDice[index].getValue();
@@ -47,7 +46,7 @@ public class GameBoard {
         }
     }
 
-    public void resetGreenPostColorBonus() {
+    void resetGreenPostColorBonus() {
         for (int index = 0; index < 6; index++) {
             if (allDice[index].getRealm().equals(RealmColor.GREEN)) {
                 allDice[index].setValue(greenValue == -1 ? allDice[index].getValue() : greenValue);
@@ -78,39 +77,40 @@ public class GameBoard {
         this.availableDice.add(this.allDice[5]);
 
         this.forgottenRealmDice = new ArrayList<>();
-        this.activeArcaneDice = new ArrayList<>();
-        this.passiveArcaneDice= new ArrayList<>();
-        this.arcaneDice = new ArrayList<>();
 
         player1 = new Player(PlayerStatus.ACTIVE);
         player2 = new Player(PlayerStatus.PASSIVE);
-
+        ai = new AI(PlayerStatus.PASSIVE);
+        ai1=new AI(PlayerStatus.ACTIVE);
+        ai2=new AI(PlayerStatus.PASSIVE);
         this.whiteValue = -1;
         this.greenValue = -1;
         //this.gameStatus= <gamestatus>;
 
     }
     //player methods:
-    public Player getPlayer1() {
+    Player getPlayer1() {
         return player1;
     }
 
-    public Player getPlayer2() {
+    Player getPlayer2() {
         return player2;
     }
-
+    AI getAi(){
+        return ai;
+    }
+    AI getAi1(){
+        return ai1;
+    }
+    AI getAi2(){
+        return ai2;
+    }
     //game status getter
-    public GameStatus getGameStatus(){
+    GameStatus getGameStatus(){
         return this.gameStatus;
     }
 
-    //dice related methods
-    public void rollDice(){
-        for (Dice die : allDice) {
-            die.rollDice();
-        }
-    }
-    public void rollAvailableDice(){
+    void rollAvailableDice(){
         for (Dice die : availableDice) {
             die.rollDice();
         }
@@ -121,40 +121,43 @@ public class GameBoard {
     public ArrayList<Dice> getAvailableDice(){
         return this.availableDice;
     }
-    public ArrayList<Dice> getActiveArcaneDice(){
-        return this.activeArcaneDice;
-    }
-    public ArrayList<Dice> getArcaneDice() {
-        return arcaneDice;
-    }
-    public ArrayList<Dice> getPassiveArcaneDice(){
-        return this.passiveArcaneDice;
-    }
     public Dice [] getDice(){
         return getAllDice();
     }
     public Dice [] getForgottenRealmDice(){
-        return this.forgottenRealmDice.toArray(new Dice[this.availableDice.size()]);
+        Dice[] dice = new Dice[forgottenRealmDice.size()];
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = forgottenRealmDice.get(i);
+        }
+        return dice;
     }
-    public void moveToForgottenrealm(Dice die){
+    void moveToForgottenrealm(Dice die){
         availableDice.remove(die);
         forgottenRealmDice.add(die);
-    }
-    public void moveToArcaneDice(Dice chosenDice){
-        arcaneDice.add(chosenDice);
     }
     public void resetAllDice(){
         forgottenRealmDice.clear();
         availableDice.clear();
-        activeArcaneDice.clear();;
-        arcaneDice.clear();
-        passiveArcaneDice.clear();
-        getPlayer1().getPlayedDice().clear();
-        getPlayer2().getPlayedDice().clear();
+        player1.resetUsedArcaneDice();
+        player2.resetUsedArcaneDice();
         availableDice.addAll(Arrays.asList(allDice));
     }
-    public void removeFromAvailable(Dice die){
-        availableDice.remove(die);
+    void removeFromAvailable(Dice die){
+        ArrayList<Dice> newAvailableDice = new ArrayList<>();
+        for (Dice dice: availableDice) {
+            if (dice.compareTo(die) != 0)
+                newAvailableDice.add(dice);
+        }
+        availableDice = newAvailableDice;
+    }
+
+    @Override
+    public GameBoard clone() {
+        try {
+            return (GameBoard) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // cant happen
+        }
     }
 
 }

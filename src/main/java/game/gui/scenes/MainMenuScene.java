@@ -1,0 +1,120 @@
+package game.gui.scenes;
+
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+
+public class MainMenuScene{
+    ImageView background;
+
+    Button startGameButton;
+    Button optionsButton;
+    Button exitButton;
+
+    Button PvPButton;
+    Button PvAIButton;
+    Button goBackButton;
+
+    AnchorPane root;
+    Scene scene;
+
+    public Scene createMainScene() {
+        
+
+        // AnchorPane
+        root = new AnchorPane();
+        root.setPrefSize(1920, 1080);
+        background = new ImageView(new Image(getClass().getResourceAsStream("/images/Main menu.png")));
+            background.setFitWidth(1920);
+            background.setFitHeight(1080);
+            background.getStyleClass().add("root");
+            AnchorPane.setTopAnchor(background, -6.0);
+            //background.setImage());
+
+
+        // Create the buttons
+        startGameButton = new Button("Start Game");
+            startGameButton.setLayoutX(765);
+            startGameButton.setLayoutY(355);
+            startGameButton.getStyleClass().add("start-game");
+            startGameButton.getStyleClass().add("rainbow");
+
+        optionsButton = new Button("Options");
+            optionsButton.setLayoutX(820);
+            optionsButton.setLayoutY(496);
+            optionsButton.getStyleClass().add("options");
+
+        exitButton = new Button("Exit");
+            exitButton.setLayoutX(877);
+            exitButton.setLayoutY(650);
+            exitButton.getStyleClass().add("exit");
+
+        PvPButton = new Button("Player VS Player");
+            PvPButton.setLayoutX(692);
+            PvPButton.setLayoutY(355);
+            PvPButton.getStyleClass().add("options");
+    
+        PvAIButton = new Button("Player VS AI (WIP)");
+            PvAIButton.setLayoutX(652);
+            PvAIButton.setLayoutY(496);
+            PvAIButton.getStyleClass().add("options");
+
+        goBackButton = new Button("Return");
+            goBackButton.setLayoutX(832);
+            goBackButton.setLayoutY(650);
+            //exitButton.getStyleClass().add("");
+
+        // Add children to AnchorPane
+        root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
+
+        // Scene
+        scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/MainMenu.css").toExternalForm());
+
+        return scene;
+    }
+    
+    public void switchFromMain(){
+        root.getChildren().clear();
+        root.getChildren().addAll(background,PvPButton, PvAIButton, goBackButton);
+    }
+    public void switchToMain(){
+        root.getChildren().clear();
+        root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
+    }
+    
+    public void displayAlert(){
+        Alert thisIsAnAlert = new Alert(AlertType.INFORMATION);
+        thisIsAnAlert.setTitle("ScoreSheet");
+        thisIsAnAlert.setContentText("hellloooo!");
+        thisIsAnAlert.showAndWait();
+    }
+
+    public Button getStartGameButton() {
+        return startGameButton;
+    }
+
+    public Button getOptionsButton() {
+        return optionsButton;
+    }
+    public Button getExitButton(){
+        return exitButton;
+    }
+    public Button getPvPButton(){
+        return PvPButton;
+    }
+    public Button getPvAIButton(){
+        return PvAIButton;
+    }
+    public Button getGoBackButton(){
+        return goBackButton;
+    }
+
+    public Scene getMainMenuScene() {
+        return scene;
+    }
+}
