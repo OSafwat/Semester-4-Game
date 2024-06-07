@@ -1,5 +1,6 @@
 package game.gui;
 
+import game.engine.Player;
 import game.gui.scenes.*;
 import game.gui.scenes.OptionsMenu.BlueConfigScene;
 import game.gui.scenes.OptionsMenu.ConfigScene;
@@ -34,8 +35,9 @@ public class SceneController {
     public MagentaConfigScene magentaConfigScene;
     public YellowConfigScene yellowConfigScene;
     public YellowMultipliersConfigScene yellowMultipliersConfigScene;
+    public EndScene endScene;
 
-    public SceneController () {
+    public SceneController (Player p1, Player p2) {
         redScene = new RedScene();
         greenScene = new GreenScene();
         blueScene = new BlueScene();
@@ -52,6 +54,7 @@ public class SceneController {
         magentaConfigScene = new MagentaConfigScene();
         yellowConfigScene = new YellowConfigScene();
         yellowMultipliersConfigScene = new YellowMultipliersConfigScene();
+        endScene = new EndScene(p1, p2);
     }
 
     public ImageView getRedDice () {
@@ -310,5 +313,9 @@ public class SceneController {
             yellowConfigScene.getReturnToConfigSceneButton(), yellowMultipliersConfigScene.getReturnToConfigSceneButton(), roundRewardsConfigScene.getReturnToConfigSceneButton()};
 
         return saveButtons;
+    }
+
+    public Button getExitButtonInEndScene() {
+        return endScene.getExitButton();
     }
 }
