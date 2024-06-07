@@ -5,4 +5,8 @@ public class ExhaustedResourceException extends Exception{
     public ExhaustedResourceException (String message) {
         this.message = message;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

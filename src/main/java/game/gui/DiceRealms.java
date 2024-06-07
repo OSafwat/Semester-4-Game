@@ -305,25 +305,6 @@ public class DiceRealms extends Application {
         System.out.println(flags[3]);
         sceneController.magentaScene.setCanMakeMove(flags[3]);
         sceneController.greenScene.setCanMakeMove(flags[1]);
-
-        // if (guiGameController.getPossibleMovesForADie(player, diceSet[1]).length != 0) {
-        //     sceneController.greenScene.getGuardian().setEffect(dropShadow); 
-        //     sceneController.greenScene.setCanMakeMove(true);
-        // }
-        // else sceneController.greenScene.setCanMakeMove(false);
-
-
-        // if (guiGameController.getPossibleMovesForADie(player, diceSet[2]).length != 0) {
-        //     sceneController.blueScene.getHydra().setEffect(dropShadow); 
-        //     sceneController.blueScene.setCanMakeMove(true);
-        // }
-        // else sceneController.blueScene.setCanMakeMove(false);
-        
-        // if (guiGameController.getPossibleMovesForADie(player, diceSet[3]).length != 0) {
-        //     sceneController.magentaScene.getPhoenix().setEffect(dropShadow); 
-        //     sceneController.magentaScene.setCanMakeMove(true);
-        // }
-        // else sceneController.magentaScene.setCanMakeMove(false);
     }
     public void initEventListeners() {
         handleAvailabilityCue(guiGameController.getActivePlayer(), guiGameController.getAvailableDice());
@@ -707,7 +688,7 @@ public class DiceRealms extends Application {
                             try {
                                 Thread.sleep(100); // Avoid busy-waiting
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                //
                             }
                         }
                     }).start();
@@ -947,11 +928,6 @@ public class DiceRealms extends Application {
             buttons.add(tmp);
         }
         return buttons;
-    }
-
-    public boolean checkRealmValidity(String realm) {
-        realm = realm.toLowerCase();
-        return realm.equals("red") || realm.equals("blue") || realm.equals("green") || realm.equals("yellow") || realm.equals("magenta");
     }
 
     public void startGame() {
@@ -1219,6 +1195,7 @@ public class DiceRealms extends Application {
                     player.selectDice(guiGameController.getAllDice()[5]);
                 }
 
+                assert dice != null;
                 Creature creature = player.getScoreSheet().getCreatureByRealm(dice);
                 try {
                     creature.makeMove(dice);
@@ -1320,7 +1297,7 @@ public class DiceRealms extends Application {
     }
 
     private String getColorString(Dice dice) {
-        String string = "";
+        String string;
         switch (dice.getRealm()) {
             case RED: string = "red"; break;
             case GREEN: string = "green"; break;
