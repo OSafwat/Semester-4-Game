@@ -111,12 +111,6 @@ public class GameBoard implements Cloneable{
         return this.gameStatus;
     }
 
-    //dice related methods
-    void rollDice(){
-        for (Dice die : allDice) {
-            die.rollDice();
-        }
-    }
     void rollAvailableDice(){
         for (Dice die : availableDice) {
             die.rollDice();
@@ -147,8 +141,6 @@ public class GameBoard implements Cloneable{
         availableDice.clear();
         player1.resetUsedArcaneDice();
         player2.resetUsedArcaneDice();
-        getPlayer1().getPlayedDice().clear();
-        getPlayer2().getPlayedDice().clear();
         availableDice.addAll(Arrays.asList(allDice));
     }
     void removeFromAvailable(Dice die){
@@ -157,7 +149,6 @@ public class GameBoard implements Cloneable{
             if (dice.compareTo(die) != 0)
                 newAvailableDice.add(dice);
         }
-        System.out.println("meow");
         availableDice = newAvailableDice;
     }
 

@@ -154,7 +154,6 @@ public class Player {
 
     public ArrayList<Dice> getPlayedDice () {
         ArrayList<Dice> playedDice = new ArrayList<>(this.playedDice);
-        this.playedDice.clear();
         return playedDice;
     }
 
