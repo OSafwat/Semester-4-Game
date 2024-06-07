@@ -2,9 +2,7 @@ package game.engine;
 
 import game.collectibles.*;
 import game.exceptions.*;
-import javafx.scene.paint.Color;
 import game.dice.*;
-import game.creatures.Creature;
 import game.creatures.Dragon;
 import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
