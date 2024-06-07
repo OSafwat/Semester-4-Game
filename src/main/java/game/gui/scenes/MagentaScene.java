@@ -1,6 +1,5 @@
 package game.gui.scenes;
 
-import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;

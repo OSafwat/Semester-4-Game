@@ -11,25 +11,37 @@ import game.gui.scenes.OptionsMenu.YellowConfigScene;
 import game.gui.scenes.OptionsMenu.YellowMultipliersConfigScene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.MediaPlayer;
-
-import java.io.IOException;
 
 public class SceneController {
+    @SuppressWarnings("exports")
     public RedScene redScene;
+    @SuppressWarnings("exports")
     public GreenScene greenScene;
+    @SuppressWarnings("exports")
     public BlueScene blueScene;
+    @SuppressWarnings("exports")
     public MagentaScene magentaScene;
+    @SuppressWarnings("exports")
     public YellowScene yellowScene;
+    @SuppressWarnings("exports")
     public BoardScene boardScene;
+    @SuppressWarnings("exports")
     public MainMenuScene mainMenuScene;
+    @SuppressWarnings("exports")
     public OptionsScene optionsScene;
+    @SuppressWarnings("exports")
     public ConfigScene configScene;
+    @SuppressWarnings("exports")
     public RedConfigScene redConfigScene;
+    @SuppressWarnings("exports")
     public GreenConfigScene greenConfigScene;
+    @SuppressWarnings("exports")
     public BlueConfigScene blueConfigScene;
+    @SuppressWarnings("exports")
     public MagentaConfigScene magentaConfigScene;
+    @SuppressWarnings("exports")
     public YellowConfigScene yellowConfigScene;
+    @SuppressWarnings("exports")
     public YellowMultipliersConfigScene yellowMultipliersConfigScene;
 
     public SceneController () {

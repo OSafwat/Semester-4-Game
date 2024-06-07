@@ -86,7 +86,7 @@ public class DiceRealms extends Application {
         isForgotten = false;
     }
 
-    public String[] getDicePNGs(Dice[] dice) {
+    public String[] getDicePNGs(@SuppressWarnings("exports") Dice[] dice) {
         String[] dicePNGs = new String[6];
         Dice[] allDice = guiGameController.getAllDice();
         Arrays.sort(dice);
@@ -131,7 +131,7 @@ public class DiceRealms extends Application {
         return diceGIFs;
     }
 
-    public String [] getInformation(Player player){
+    public String [] getInformation(@SuppressWarnings("exports") Player player){
         String[] arr= new String[5];
         arr[0]= "Player Name is: "+player.getName();
         arr[1]= player.getScoreSheet().toString();
@@ -207,7 +207,7 @@ public class DiceRealms extends Application {
             
     }
 
-    public String getColorAsString(Dice dice) {
+    public String getColorAsString(@SuppressWarnings("exports") Dice dice) {
         StringBuilder colorString = new StringBuilder("/images/Dice/");
         switch (dice.getRealm()) {
             case RED: colorString.append("Red/red"); break;
@@ -226,7 +226,7 @@ public class DiceRealms extends Application {
             handleBonus(wasEssenceBonus == 1 ? RealmColor.WHITE : bonusRealmColor);
         }
     }
-    public void handleAvailabilityCue(Player player,Dice [] diceSet){
+    public void handleAvailabilityCue(@SuppressWarnings("exports") Player player,@SuppressWarnings("exports") Dice [] diceSet){
 
         // Create a drop shadow effect with a golden color
         DropShadow dropShadow = new DropShadow();
@@ -295,6 +295,8 @@ public class DiceRealms extends Application {
                     sceneController.yellowScene.getLion().setEffect(dropShadow); 
                     sceneController.yellowScene.setCanMakeMove(true);
                     flags[4] =true;
+                    break;
+                default:
                     break;
             }
             
@@ -844,7 +846,7 @@ public class DiceRealms extends Application {
         alert.showAndWait();
     }
 
-    public void handleBonus(RealmColor realmColor) {
+    public void handleBonus(@SuppressWarnings("exports") RealmColor realmColor) {
         canReroll = false;
         if (realmColor.equals(RealmColor.WHITE))
             wasEssenceBonus = 1;
@@ -896,6 +898,7 @@ public class DiceRealms extends Application {
 
     }
 
+    @SuppressWarnings("exports")
     public ArrayList<Button> bonusDialogFill(RealmColor realmColor, Dialog<String> bonusDialog) {
         //fix green later
         String color;
@@ -1053,7 +1056,7 @@ public class DiceRealms extends Application {
         primaryStage.setScene(scene);
     }
 
-    public void timeWarpSequence(Player player) {
+    public void timeWarpSequence(@SuppressWarnings("exports") Player player) {
         System.out.println("meow");
         if (!canTimeWarp) {
             noAvailableTimeWarpsAlert();
@@ -1090,7 +1093,7 @@ public class DiceRealms extends Application {
         }
     }
 
-    public void arcaneBoostSequence(Player player) {
+    public void arcaneBoostSequence(@SuppressWarnings("exports") Player player) {
         boolean idk = true;
         while (idk) {
             Dialog<String> dialog = new Dialog<>();

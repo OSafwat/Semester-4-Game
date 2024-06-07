@@ -11,11 +11,9 @@ import game.dice.RedDice;
 import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.*;
-import javafx.scene.shape.Arc;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class GUIGameController extends CLIGameController {
