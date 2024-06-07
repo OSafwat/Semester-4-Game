@@ -76,7 +76,6 @@ public class RedScene extends RealmScene {
         dropShadow.setOffsetY(5);
         dropShadow.setColor(Color.color(0.0, 0.0, 0.0, 0.5));
 
-        System.out.println(value + "MEOWOWOW");
 
         // Add glow effect on hover
         Glow glow = new Glow(0.7);

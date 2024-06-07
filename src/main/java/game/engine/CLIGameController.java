@@ -664,7 +664,6 @@ public class CLIGameController {
             int max=Math.max(aiPlayer1Score, aiPlayerScore2);
             if(max>=150){
                 System.out.println(max);
-                System.out.println("RAAAAAAAA");
             }
             System.out.println();
             System.out.println(aiPlayer1.getTurnsPlayed());
@@ -672,7 +671,6 @@ public class CLIGameController {
             System.out.println();
         
             System.out.println();
-            System.out.println("player 1 ab count" +aiPlayer1.getArcaneBoostsNum());
             System.out.println(aiPlayer1.arcanesUsed);
             System.out.println(aiPlayer2.arcanesUsed);
 

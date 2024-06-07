@@ -608,6 +608,7 @@ public class DiceRealms extends Application {
                     boolean end = guiGameController.incrementTurnCount();
                     canTimeWarp = true;
                     if (!end) {
+                        sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                         primaryStage.setScene(sceneController.endScene.getExitScene());
                         return;
                     }
@@ -641,6 +642,7 @@ public class DiceRealms extends Application {
             boolean end = guiGameController.incrementTurnCount();
             canTimeWarp = true;
             if (!end) {
+                sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                 primaryStage.setScene(sceneController.endScene.getExitScene());
                 return;
             }
@@ -1325,6 +1327,7 @@ public class DiceRealms extends Application {
             boolean end = guiGameController.incrementTurnCount();
             canTimeWarp = true;
             if (!end) {
+                sceneController.createEndScene(guiGameController.getPlayer1(), guiGameController.getPlayer2());
                 primaryStage.setScene(sceneController.endScene.getExitScene());
                 return;
             }

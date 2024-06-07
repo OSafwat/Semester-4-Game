@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
+
 public class EndScene {
     private Scene scene;
     private int winnerPlayerScore;
@@ -48,6 +50,7 @@ public class EndScene {
         int player1Min = Integer.MAX_VALUE, player2Min = Integer.MAX_VALUE;
         int[] player1Scores = p1.getScoreSheet().getScores(), player2Scores  = p2.getScoreSheet().getScores();
 
+
         for (int i = 0; i < player1Scores.length; i++) {
             s1 += player1Scores[i];
             s2 += player2Scores[i];
@@ -58,6 +61,11 @@ public class EndScene {
         
         s1 += player1Min * p1.getScoreSheet().getElementalCrests();
         s2 += player2Min * p2.getScoreSheet().getElementalCrests();
+
+
+        System.out.println(Arrays.toString(player1Scores));
+        System.out.println(Arrays.toString(player2Scores));
+
 
         if (s1 > s2) {
             winnerPlayerName = p1.getName();
