@@ -308,6 +308,7 @@ public class DiceRealms extends Application {
         sceneController.mainMenuScene.getExitButton().setOnMouseClicked(e -> primaryStage.close());  //this should close the game when clicked
         sceneController.mainMenuScene.getPvPButton().setOnMouseClicked(e -> {
             startGame();
+            mediaPlayer.stop();
             try {
                 mediaPlayer = new MediaPlayer(new Media(Objects.requireNonNull(getClass().getResource("/audio/MaybeGameTheme3.mp3")).toURI().toString()));
             } catch (URISyntaxException ex) {
