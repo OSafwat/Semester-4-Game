@@ -1,5 +1,9 @@
 package game.gui.scenes.OptionsMenu;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -15,17 +19,21 @@ import javafx.scene.layout.VBox;
 
 public class ConfigScene {
     Button returnToOptionsButton;
-    Button redConfigButton, greenConfigButton, blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton;
+    Button roundRewardsConfigButton, saveRoundSettingsConfig, redConfigButton, greenConfigButton, blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton;
 
     Scene configScene;
-    // Stage stage;
+    
+    Properties roundSettingsProperties;
+
+    TextField numberOFRoundsField, numberOfTurnsPerRoundField;
+
 
     int numberOfRounds, numberOfTurnsPerRound;
 
     public ConfigScene() {
         StackPane root = new StackPane();
 
-        String css = getClass().getResource("/OptionsMenu.css").toExternalForm();
+        String css = getClass().getResource("/ConfigMenu.css").toExternalForm();
         if (css != null) {
             root.getStylesheets().add(css);
         } else {
@@ -44,24 +52,36 @@ public class ConfigScene {
         mainArea.getStyleClass().add("vbox");
 
         Label configLabel = new Label("Game Configuration"), rewardSettingsLabel = new Label("Reward Settings");
-        TextField numberOFRoundsField = new TextField("Enter number of rounds"), numberOfTurnsPerRoundField = new TextField("Enter number of turns");
-        numberOFRoundsField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
-                if (isPositiveInteger) numberOfRounds = Integer.parseInt(newValue);
-            }
-        });
+        numberOFRoundsField = new TextField("Enter number of rounds");
+        numberOfTurnsPerRoundField = new TextField("Enter number of turns");
 
-        numberOfTurnsPerRoundField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
-                if (isPositiveInteger) numberOfTurnsPerRound = Integer.parseInt(newValue);
-            }
-        });
+        saveRoundSettingsConfig = new Button("Save");
+
+        // numberOFRoundsField.textProperty().addListener(new ChangeListener<String>() {
+        //     @Override
+        //     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        //         boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
+        //         if (isPositiveInteger) {
+        //             numberOfRounds = Integer.parseInt(newValue);
+        //             updateConfigFile();
+        //         }
+        //     }
+        // });
+
+        // numberOfTurnsPerRoundField.textProperty().addListener(new ChangeListener<String>() {
+        //     @Override
+        //     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        //         boolean isPositiveInteger = newValue.matches("\\d+") && !newValue.equals("0");
+        //         if (isPositiveInteger) {
+        //             numberOfTurnsPerRound = Integer.parseInt(newValue);
+        //             updateConfigFile();
+        //         }
+        //     }
+        // });
 
         HBox roundSettingsArea = new HBox(configLabel, numberOFRoundsField, numberOfTurnsPerRoundField);
+
+        roundRewardsConfigButton = new Button("Round Rewards Configuration");
 
         redConfigButton = new Button("Red Realm Rewards Configuration");
         // redConfigButton.setOnMouseClicked(e -> {
@@ -95,7 +115,7 @@ public class ConfigScene {
 
         returnToOptionsButton = new Button("Return");
 
-        mainArea.getChildren().addAll(configLabel, rewardSettingsLabel, roundSettingsArea, redConfigButton, greenConfigButton, 
+        mainArea.getChildren().addAll(configLabel, rewardSettingsLabel, roundSettingsArea, saveRoundSettingsConfig, roundRewardsConfigButton, redConfigButton, greenConfigButton, 
         blueConfigButton, magentaConfigButton, yellowConfigButton, yellowMultiplierConfigButton, returnToOptionsButton);
 
         root.getChildren().addAll(background, mainArea);
@@ -103,9 +123,24 @@ public class ConfigScene {
         configScene = new Scene(root, 1920, 1080);
     }
 
-    // public void setStage(Stage stage) {
-    //     this.stage = stage;
-    // }
+    public void updateRoundSettingsConfigFile() {
+        roundSettingsProperties = new Properties();
+        int rounds = 0;
+        try (FileInputStream in = new FileInputStream("src/main/resources/config/RoundsSettings.properties")) {
+            roundSettingsProperties.load(in);
+            rounds = Integer.parseInt(roundSettingsProperties.getProperty("numberOfRounds"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (numberOfRounds <= 0 && numberOfRounds != 6) roundSettingsProperties.setProperty("numberOfRounds", String.valueOf(numberOfRounds));
+        if (numberOfTurnsPerRound <= 0 && numberOfRounds != 3) roundSettingsProperties.setProperty("numberOfRounds", String.valueOf(numberOfTurnsPerRound));
+        else System.out.println("Please enter a proper number, other than the default!");
+    }
+
+    public Button getRoundRewardsConfigButton() {
+        return roundRewardsConfigButton;
+    }
 
     public Button getRedConfigButton() {
         return redConfigButton;
@@ -138,5 +173,27 @@ public class ConfigScene {
     public Scene getConfigScene() {
         return configScene;
     }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public int getNumberOfTurnsPerRound() {
+        return numberOfTurnsPerRound;
+    }
+
+    public TextField getNumberOFRoundsField() {
+        return numberOFRoundsField;
+    }
+
+    public TextField getNumberOfTurnsPerRoundField() {
+        return numberOfTurnsPerRoundField;
+    }
+
+    public Button getSaveRoundSettingsConfig() {
+        return saveRoundSettingsConfig;
+    }
+
 }
+
 
