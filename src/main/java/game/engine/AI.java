@@ -4,17 +4,8 @@ import java.util.*;
 
 import game.collectibles.ArcaneBoost;
 import game.collectibles.TimeWarp;
-import game.creatures.Lion;
-import game.creatures.Phoenix;
-import game.dice.ArcanePrism;
-import game.dice.BlueDice;
 import game.dice.Dice;
-import game.dice.GreenDice;
-import game.dice.MagentaDice;
-import game.dice.RedDice;
-import game.dice.YellowDice;
 import game.engine.enums.RealmColor;
-import game.exceptions.InvalidMoveException;
 
 /*IDEAS:-
  *  - EVALUATION:-
@@ -81,10 +72,10 @@ public class AI extends Player implements Cloneable {
     private ScoreSheet scoreSheet;
     private ArrayList<ArcaneBoost> arcaneBoosts;
     private ArrayList<TimeWarp> timeWarps;
-    private Move[] allPossibleMoves;
     private ArrayList<Dice> playedDice;
     private ArrayList<Dice> usedArcaneDice;
     private int turnsPlayed;
+    public int arcanesUsed;
 
     public AI(PlayerStatus status){
         super();
@@ -94,7 +85,7 @@ public class AI extends Player implements Cloneable {
         this.arcaneBoosts=scoreSheet.getAllArcaneBoosts();
         this.timeWarps=scoreSheet.getAllTimeWarps();
         this.usedArcaneDice = new ArrayList<>();
-        allPossibleMoves = getAllPossibleMoves();
+        getAllPossibleMoves();
         gameScore = new GameScore();
         playedDice = new ArrayList<>();
         turnsPlayed = 0;
@@ -104,6 +95,9 @@ public class AI extends Player implements Cloneable {
     }
     public int getTurnsPlayed(){
         return this.turnsPlayed;
+    }
+    public void incrementArcaneBoosts(){
+        arcanesUsed++;
     }
     public int incrementTurnsPlayed(){
         return this.turnsPlayed++;
@@ -119,7 +113,6 @@ public class AI extends Player implements Cloneable {
         for (int i = 0; i < allMoves.size(); i++) {
             res[i] = allMoves.get(i);
         }
-        allPossibleMoves = res;
         return res;
     }
 
@@ -158,7 +151,7 @@ public class AI extends Player implements Cloneable {
         return this.arcaneBoosts;
     }
     public void updateAllPossibleMoves(){
-        this.allPossibleMoves = getAllPossibleMoves();
+        getAllPossibleMoves();
     }
 
     public ArrayList<Dice> getUsedArcaneDice() {
@@ -193,7 +186,6 @@ public class AI extends Player implements Cloneable {
                         return moveSet[i];
                     }
                     if(moveSet[i].getDice().getRealm()== RealmColor.WHITE){
-                        Move[] whiteMoveSet = new Move[5];
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package game.engine;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 import game.collectibles.ArcaneBoost;
@@ -12,7 +11,6 @@ import game.creatures.Phoenix;
 import game.creatures.greenclasses.Gaia;
 import game.dice.*;
 import game.engine.enums.*;
-import javafx.scene.shape.Arc;
 
 public class Player {
     private String name;
@@ -154,7 +152,6 @@ public class Player {
 
     public ArrayList<Dice> getPlayedDice () {
         ArrayList<Dice> playedDice = new ArrayList<>(this.playedDice);
-        this.playedDice.clear();
         return playedDice;
     }
 

@@ -1,6 +1,5 @@
 package game.dice;
 
-import game.creatures.Dragon;
 import game.engine.enums.RealmColor;
 
 public class RedDice extends Dice{

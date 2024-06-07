@@ -231,13 +231,12 @@ public class Hydra extends Creature{
                 isRewardOnSecondHead = (i>5);
             }
         }
-
-        /*if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
+        if(this.serpent.isEmpty())
+            return 1;
+        else if(this.serpent.peek() > elementalCrestCount && isRewardOnSecondHead == this.regenerateFlag) 
             return 1;
         else   
-            return 0;*/
-        //temp bc error
-        return 0;
+            return 0;
     }
 
     // Method that returns the part of the scoresheet that is relevant to the Blue Realm.

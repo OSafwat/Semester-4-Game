@@ -19,7 +19,6 @@ import game.engine.enums.RealmColor;
 import game.exceptions.BonusException;
 import game.engine.enums.RewardStates;
 import game.exceptions.InvalidMoveException;
-import javafx.scene.shape.Arc;
 
 public class Phoenix extends Creature{
     private Integer[] phoenixes;

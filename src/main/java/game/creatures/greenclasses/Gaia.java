@@ -253,15 +253,6 @@ public class Gaia extends Creature{
 
  
 
-    // EXP method to update the score of the realm
-    private void updateScore(){
-        int dead = this.getDeadGuardians()-1;
-        score= scores[dead];
-
-    }
-
-
-
     // EXP checks if a given move is possible
     public boolean checkMove(Dice dice)throws InvalidMoveException{
         if(!(dice instanceof GreenDice))
@@ -359,13 +350,7 @@ private void killGaiaGuardian(Guardians g){
 
 
  
-private int getDeadGuardians(){
-    return deadGuardians;
-}
-
-
-
-    // EXP checks if all guardians in a given col are dead if yes then true
+// EXP checks if all guardians in a given col are dead if yes then true
 private boolean checkCol(int c){
     return col[c];
 
@@ -719,6 +704,7 @@ private String getCorrectBonusInScore(String s){
 //EXP apply powers 
 private boolean applyNotBonusCollectable(String s){
     if(s.equals("TimeWarp")){
+        @SuppressWarnings("rawtypes")
         Iterator it = timeWarps.iterator();
         while(it.hasNext()){
             TimeWarp t = (TimeWarp)(it.next());
@@ -731,6 +717,7 @@ private boolean applyNotBonusCollectable(String s){
         return true;
     }
     else if(s.equals("ArcaneBoost")){
+        @SuppressWarnings("rawtypes")
         Iterator it = arcaneBoosts.iterator();
         while(it.hasNext()){
             ArcaneBoost a = (ArcaneBoost)(it.next());

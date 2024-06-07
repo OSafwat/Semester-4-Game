@@ -10,8 +10,6 @@ import game.engine.enums.RealmColor;
 import game.engine.enums.RewardStates;
 import game.exceptions.BonusException;
 import game.exceptions.RewardException;
-import javafx.scene.shape.Arc;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

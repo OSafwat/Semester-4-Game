@@ -1,18 +1,12 @@
 package game.gui.scenes;
 
-import game.gui.scenes.RedScene;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class MainMenuScene{
     ImageView background;
@@ -73,11 +67,6 @@ public class MainMenuScene{
             goBackButton.setLayoutX(832);
             goBackButton.setLayoutY(650);
             //exitButton.getStyleClass().add("");
-
-        TextField roundNum = new TextField();
-        
-
-
 
         // Add children to AnchorPane
         root.getChildren().addAll(background, startGameButton, optionsButton, exitButton);
