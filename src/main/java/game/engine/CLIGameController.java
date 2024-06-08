@@ -2055,7 +2055,8 @@ public class CLIGameController {
 
     public int evaluateWhiteDice(Player player, Dice dice){//problem with the green dice
         int highestScore=Math.max(evaluateRedDice(player,dice),Math.max(evaluateGreenDice(player,dice),Math.max(evaluateBlueDice(player,dice),
-        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))))-2;
+        Math.max(evaluateMagentaDice(player,dice),evaluateYellowDice(player,dice)))))+1;
+        //+1 to prevent the other player from getting the white dice in case theres another dice with the same value
         return highestScore;
     }
 
@@ -2105,16 +2106,16 @@ public class CLIGameController {
             handleRoundRewardsAI(activePlayer, reward);
 
         for (int turn = 0; turn < turnCount && getAvailableDice().length != 0; turn++) {
+            System.out.println();
+            System.out.println("IT IS CURRENTLY TURN: " + (turn+1));
+
             boolean valid = playTurnAI(activePlayer, false,roundCount,turn+1);
+            
+            
             if (!valid)
                 break;
         }
-
-
-        activePlayer.getScoreSheet().displayColoredScoreSheet();
-        System.out.println();
         moveAllIntoForgotten();
-
 
         //for the human player
         if(!(passivePlayer instanceof AI)){
@@ -2142,6 +2143,12 @@ public class CLIGameController {
                     aDice.add(die);
                 }
             }
+            Dice[] displayed=new Dice[aDice.size()];
+            for(int i=0;i<aDice.size();i++){
+                displayed[i]=aDice.get(i);
+            }
+            handleDiceDisplay(displayed, 1);
+
             Dice[] diceArray=aDice.toArray(new Dice[aDice.size()]);
             Move bestMove=pickBestMove(((AI) passivePlayer),diceArray,roundCount,-1);
             if(bestMove==null){
@@ -2164,7 +2171,7 @@ public class CLIGameController {
                     break;
                 }
             }
-            if(haveAB){
+            while(haveAB){
                 AI ai2=(AI) passivePlayer;
                 Dice[] abDice=getArcaneBoostDice(passivePlayer);
                 ArrayList<Dice> newDice=new ArrayList<Dice>();
@@ -2176,7 +2183,8 @@ public class CLIGameController {
                 Dice[] diceArray2=newDice.toArray(new Dice[newDice.size()]);
                 Move bestMove2=pickBestMove(((AI) passivePlayer),diceArray2,roundCount,-2);
                 if(bestMove2==null){
-                    System.out.println("no moves for the ai");
+                    System.out.println("no arcane boost moves for the ai");
+                    break;
                 }
                 else{
                     ai2.addToUsedArcaneDice(bestMove2.getDice());
@@ -2200,8 +2208,6 @@ public class CLIGameController {
                 
             }
         }
-        System.out.println("hi");
-        System.out.println(activePlayer.getArcaneBoostsNum());
 
 
         //ab for the active ai
@@ -2212,7 +2218,7 @@ public class CLIGameController {
                 break;
             }
         }
-        if(gotAB){
+        while(gotAB){
             Dice[] abDice=getArcaneBoostDice(activePlayer);
             ArrayList<Dice> newDice=new ArrayList<>();
             for(Dice die:abDice){
@@ -2223,7 +2229,8 @@ public class CLIGameController {
             Dice[] diceArray2=newDice.toArray(new Dice[newDice.size()]);
             Move bestMove2=pickBestMove(((AI) activePlayer),diceArray2,roundCount,-2);
             if(bestMove2==null){
-                System.out.println("no moves for the ai");
+                System.out.println("no arcane boost moves for the aiiii");
+                break;
             }
             else{
                 activePlayer.addToUsedArcaneDice(bestMove2.getDice());
@@ -2280,12 +2287,18 @@ public class CLIGameController {
         //ai passive
 
         Dice[] avDice = gameBoard.getForgottenRealmDice();
-        ArrayList<Dice> aDice = new ArrayList<Dice>();
+        ArrayList<Dice> aDice = new ArrayList<>();
         for(Dice die:avDice){
             if(getPossibleMovesForADie(passivePlayer, die).length!=0){
                 aDice.add(die);
             }
         }
+        Dice[] displayed=new Dice[aDice.size()];
+        for(int i=0;i<aDice.size();i++){
+            displayed[i]=aDice.get(i);
+        }
+        handleDiceDisplay(displayed, 1);
+
         Dice[] diceArray=aDice.toArray(new Dice[aDice.size()]);
         Move bestMove=pickBestMove(((AI) passivePlayer),diceArray,roundCount,-1);
         if(bestMove==null){
@@ -2317,7 +2330,7 @@ public class CLIGameController {
                 break;
             }
         }
-        if(aiAB){
+        while(aiAB){
             AI ai2=(AI) passivePlayer;
             Dice[] abDice=getArcaneBoostDice(passivePlayer);
             ArrayList<Dice> newDice=new ArrayList<>();
@@ -2329,7 +2342,8 @@ public class CLIGameController {
             Dice[] diceArray2=newDice.toArray(new Dice[newDice.size()]);
             Move bestMove2=pickBestMove(((AI) passivePlayer),diceArray2,roundCount,-2);
             if(bestMove2==null){
-                System.out.println("no moves for the ai");
+                System.out.println("no arcane boost moves for the ai raaa");
+                break;
             }
             else{
                 passivePlayer.addToUsedArcaneDice(bestMove2.getDice());
@@ -2460,12 +2474,23 @@ public class CLIGameController {
     public Dice[] actualDice(ArrayList<Dice> avDice,Player player){
         ArrayList<Dice> maybeDice=new ArrayList<Dice>();
         for(Dice idfk:avDice){
-            if(getPossibleMovesForADie(player, idfk).length!=0){
+            if(idfk.getRealm()==RealmColor.RED){
+                int dragonNumber=((Dragon) player.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(idfk.getValue());
+                if(dragonNumber!=-1){//in case there are no dragons (which might happen here)
+                    RedDice redDice=new RedDice(idfk.getValue());
+                    redDice.selectsDragon(dragonNumber+1);
+                    if(getPossibleMovesForADie(player, redDice).length!=0){
+                        maybeDice.add(redDice);
+                    }
+                }
+            }
+            else if(getPossibleMovesForADie(player, idfk).length!=0){
                 maybeDice.add(idfk);
             }
         }
         Dice[] diceArray=maybeDice.toArray(new Dice[maybeDice.size()]);
         return diceArray;
+        
     }
     public boolean playTurnAI(Player player, boolean isThisATimeWarpRerollCall,int roundCount,int turnCount) {
         
@@ -2473,6 +2498,15 @@ public class CLIGameController {
         gameBoard.resetGreenPostColorBonus();
         rollDice();
         ArrayList<Dice> avDice = gameBoard.getAvailableDice();
+        player.getScoreSheet().displayColoredScoreSheet();
+        System.out.println("Here is your scoresheet, " + player.getName() + " :\n");
+        System.out.println("It is currently the " + "ACTIVE" + " player's turn.");
+        System.out.println("I will now roll the dice...");
+        Dice[] displayed=new Dice[avDice.size()];
+        for(int i=0;i<avDice.size();i++){
+            displayed[i]=avDice.get(i);
+        }
+        handleDiceDisplay(displayed, 0);
 
         Dice[] diceArray=actualDice(avDice, player);
         boolean haveTimeWarp=false;
@@ -2671,12 +2705,13 @@ public class CLIGameController {
                         i=0;
                         break;
                 }
+                i--;
                 int temp=i;
                 
                 while(i>=0){
                     Dice die=diceSet[i];
                     if(die.getRealm()==RealmColor.GREEN){
-                        die=new GreenDice(die.getValue()+gameBoard.getWhite().getValue());//only in this loop to avoid like keep adding white dice to it
+                        die=new GreenDice(die.getValue());//only in this loop to avoid like keep adding white dice to it
                     }
                     if(die.getRealm()==min){
                         return die;
@@ -2760,6 +2795,7 @@ public class CLIGameController {
                         i=0;
                         break;
                 }
+                i--;
                 int temp=i;
 
                 scores=ai.getGameScore().getAllScores();//prolly between green blue and magenta
@@ -2806,6 +2842,7 @@ public class CLIGameController {
                     }
                     i--;
                 }
+                i=temp;
 
                 while(i>=0){
                     Dice die=diceSet[i];
@@ -2814,6 +2851,7 @@ public class CLIGameController {
                     }
                     i--;
                 }
+                i=temp;
                 
                 while(i>=0){
                     Dice die=diceSet[i];
@@ -2822,6 +2860,8 @@ public class CLIGameController {
                     }
                     i--;
                 }
+                i=temp;
+                
                 while(i>=0){
                     Dice die=diceSet[i];
                     if(die.getRealm()==RealmColor.GREEN||(getPossibleMovesForADie(ai, new GreenDice(die.getValue())).length!=0)){
@@ -2945,7 +2985,7 @@ public class CLIGameController {
                         return die;
                     }
                     if(die.getRealm()==RealmColor.GREEN){
-                        return new GreenDice(die.getValue()+gameBoard.getWhite().getValue());
+                        return new GreenDice(die.getValue());
                     }
                     if(die.getRealm()==RealmColor.RED){
                         return die;
@@ -2991,6 +3031,7 @@ public class CLIGameController {
                         i=0;
                         break;
                 }
+                i--;
                 int temp=i;
 
                 if(turn ==1){
@@ -3004,12 +3045,13 @@ public class CLIGameController {
                         i--;
                     }
                 }
+                
                 else{
                     while(i>=0){
-                        if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
+                        if(diceSet[i].getRealm() == RealmColor.MAGENTA||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new MagentaDice(diceSet[i].getValue())).length!=0)){
                             return diceSet[i];
                         }
-                        if(diceSet[i].getRealm() == RealmColor.MAGENTA||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new MagentaDice(diceSet[i].getValue())).length!=0)){
+                        if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
                             return diceSet[i];
                         }
                         i--;
@@ -3044,43 +3086,9 @@ public class CLIGameController {
 
             }
             if(turn==3){
-                int i=0;
-                switch(diceSet.length){
-                    case 1:
-                        i=1;
-                        break;
-                    case 2:
-                        i=1;
-                        break;
-                    case 3:
-                        i=1;
-                        break;
-                    case 4:
-                        if(turn == 1){
-                            i=1;
-                        }
-                        else{
-                            i=2;
-                        }
-                        break;
-                    case 5:
-                        if(turn == 1){
-                            i=2;
-                        }
-                        else{
-                            i=3;
-                        }
-                        break;
-                    case 6:
-                        i=3;
-                        break;
-                    default:
-                        i=0;
-                        break;
-                }
-                int temp=i;
+                
 
-                while(i>=0){
+                for(int i=diceSet.length-1;i>=0;i--){
                     if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
                         return diceSet[i];
                     }
@@ -3090,12 +3098,10 @@ public class CLIGameController {
                     if(diceSet[i].getRealm() == RealmColor.YELLOW||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new YellowDice(diceSet[i].getValue())).length!=0)){
                         return diceSet[i];
                    }
-                   i--;
                     
                 }
-                i=temp;
                 
-                while(i>=0){//try the promising moves first
+                for(int i=diceSet.length-1;i>=0;i--){//try the promising moves first
                     if(diceSet[i].getRealm() == RealmColor.RED){
                         int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
                         if(dragonNumber!=-1){// in case there are no dragons (which shouldnt happen bc i put the valid moves only in this method)
@@ -3105,7 +3111,7 @@ public class CLIGameController {
                         }
                     }
                     if(diceSet[i].getRealm() == RealmColor.GREEN||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue())).length!=0)){
-                        return new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue());
+                        return new GreenDice(diceSet[i].getValue());
                     }
                     if(diceSet[i].getRealm() == RealmColor.WHITE){
                         int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
@@ -3113,7 +3119,6 @@ public class CLIGameController {
                             return diceSet[i];
                         }
                     }
-                    i--;
                 }
             }
 
@@ -3125,6 +3130,21 @@ public class CLIGameController {
         }
         if(turn==-2){
             //arcane boost call
+            for(Dice die:diceSet){
+                if(die instanceof ArcanePrism&&die.getValue()==6){
+                    return die;
+                }
+            }   
+            for(Dice die:diceSet){
+                if(die instanceof MagentaDice&&die.getValue()==6){
+                    return die;
+                }
+            }
+            for(Dice die:diceSet){
+                if(die instanceof YellowDice&&die.getValue()==6){
+                    return die;
+                }
+            }
             if(round==4){
                 if(evaluateDice(ai, bestDice)>8){
                     return findBestdice(diceSet, ai);}
@@ -3239,7 +3259,7 @@ public class CLIGameController {
                 return diceSet[i];
             }
             if(diceSet[i].getRealm() == RealmColor.GREEN||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue())).length!=0)){
-                return new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue());
+                return new GreenDice(diceSet[i].getValue());
             }
             if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
                 return diceSet[i];
@@ -3282,17 +3302,17 @@ public class CLIGameController {
                         int dragonNumber=((Dragon) ai.getScoreSheet().getCreatureByColor(RealmColor.RED)).getBestDragon(diceSet[i].getValue());
                         if(dragonNumber!=-1){//in case there are no dragons (which might happen here)
                             return diceSet[i];
+                            }
+                            }
+                        if(diceSet[i].getRealm() == RealmColor.GREEN||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue())).length!=0)){
+                            return new GreenDice(diceSet[i].getValue());
                         }
-                    }
-                    if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
-                        return diceSet[i];
-                    }
-                    if(diceSet[i].getRealm() == RealmColor.MAGENTA||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new MagentaDice(diceSet[i].getValue())).length!=0)){
-                        return diceSet[i];
-                    }
-                    if(diceSet[i].getRealm() == RealmColor.GREEN||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new GreenDice(diceSet[i].getValue())).length!=0)){
-                        return new GreenDice(diceSet[i].getValue()+gameBoard.getWhite().getValue());
-                    }
+                        if(diceSet[i].getRealm() == RealmColor.BLUE||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new BlueDice(diceSet[i].getValue())).length!=0)){
+                            return diceSet[i];
+                        }
+                        if(diceSet[i].getRealm() == RealmColor.MAGENTA||(diceSet[i].getRealm() == RealmColor.WHITE&&getPossibleMovesForADie(ai, new MagentaDice(diceSet[i].getValue())).length!=0)){
+                            return diceSet[i];
+                        }
             }
 
         return null;
@@ -3315,7 +3335,7 @@ public class CLIGameController {
         }
         return bestDice;
     }
-    
+
     public void sortMoves(Move[] moves) {
         Arrays.sort(moves, Comparator.comparingInt((Move a) -> a.getDice().getValue()));
     }   
